@@ -60,7 +60,6 @@ public class Task330 {
 	 * in the method a sum of a number's divisor is calculated and returned
 	 * @param number - long, the number in question
 	 * @return - sum of the number's divisors
-	 * 
 	 */
 	public static long sumDivisors(long number){
 
