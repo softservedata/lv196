@@ -4,7 +4,7 @@ public class Task86a {
 
 	public static void main(String[] args) {
 		
-		//the natural number
+		//the initial natural number
 		long number = 95684;
 
 		//processing and printing the result of the calculation
