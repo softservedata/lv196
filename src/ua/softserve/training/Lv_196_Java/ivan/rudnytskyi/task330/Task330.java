@@ -1,58 +1,47 @@
 package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task330;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 public class Task330 {
 
 	public static void main(String[] args) {
 
 		//the limit for perfect numbers search
-		long number = 10000;
+		long number = 50000;
 
-		//set with the results. TreeSet is used for a natural ordering of the results
-		//(just for convenience). The set if filled with the results from the method
-		//perfectNumbers
-		Set <Long> perfectNumbersSet = perfectNumbers(number);
-
-		//if the set is not empty - print the results
-		if (perfectNumbersSet.size() > 0){
-
-			System.out.println("Perfect numbers under " + number + ":");
-
-			perfectNumbersSet.forEach(System.out::println);
-
-		//otherwise - print the message
-		} else {
-			
-			System.out.println("There are no perfect numbers, which are less than " 
-					+ number + ":");
-			
-		}
-
+		// the method, which searches for perfect numbers		
+		perfectNumbers(number);
+		
 	}
 	/**
-	 * in the method a set is filled with the perfect numbers, and the set is returned.
-	 *  If there are none - the empty set is returned 
+	 * in the method perfect number are searched for. If a perfect number is found
+	 *  - it is printed. Otherwise, the message is printed - no perfect numbers found.
 	 * @param number - long, high limit of the search for perfect numbers
-	 * @return Set<Long> - set with perfect numbers
+	 * @throws IllegalArgumentException - the number must be greater than 1
 	 */
-	public static Set<Long> perfectNumbers (long number){
-
-		Set <Long> perfectNumbers = new TreeSet<>();
+	public static void perfectNumbers (long number){
+		
+		if (number < 1)
+			throw new IllegalArgumentException("The number must be geater then 1");
+		
+		//if a perfect number is found, the variable is set true
+		boolean perfectNumberPresent = false;
 		
 		//starting from 2 - no need to check number 1. 
 		for (long i = 2; i <= number; i++) {
 			
 			//calling sumDivisors method, which calculates the sum of the divisor of 
 			//the given number. If they are equal - the number is perfect and it is 
-			//added to the set
-			if (i == sumDivisors(i))
-				perfectNumbers.add(i);
-
+			//printed
+			if (i == sumDivisors(i)){
+				
+				perfectNumberPresent = true;
+				System.out.println("Perfect number under " + number + ": " + i);				
+				
+			}
+			
 		}
-
-		return perfectNumbers;
+		//otherwise - if no perfect number is found, print the message
+		if (!perfectNumberPresent)
+			System.out.println("There are no perfect numbers under " + number);
 
 	}
 
