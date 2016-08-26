@@ -5,7 +5,7 @@ package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task86a;
 * @author Ivan Rudnytskyi
  * date 2016/08/26 (yyyy/mm/dd)
  *
- * The task (#86à):
+ * The task (#86a):
  * 
  * A natural number is given. How many digits does it contain?
  *
@@ -26,11 +26,11 @@ public class Task86a {
 	}	
 
 	/**
-	 * the methos calculates length (number of digits in a natural number
+	 * the method calculates length (number of digits in a natural number)
 	 * @param number - long, the number, typed by a user 
 	 * @return - int, number of digits in the entered number
 	 * @throws IllegalArgumentException if the number is not natural (natural number is
-	 * a non-negative whole number
+	 * a non-negative whole number)
 	 */
 
 	public static int digitCount(long number){
