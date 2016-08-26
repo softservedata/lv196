@@ -3,6 +3,17 @@ package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task182;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * @author Ivan Rudnytskyi
+ * date 2016/08/26 (yyyy/mm/dd)
+ *
+ * Умови задачі (№ 182):
+ *
+ * Дано натуральне число n, цілі числа a1, ..., an. Знайти кількість і суму тих членів 
+ * послідовності, які діляться на 5 і не діляться на 7. 
+ *
+ */
+
 public class Task182 {
 
 	public static void main(String[] args) {
@@ -11,7 +22,7 @@ public class Task182 {
 		long n = 39;
 		
 		//the start number of the sequence
-		long a1 = 4;
+		long a1 = -26;
 		
 		//set with the results. TreeSet is used for a natural ordering of the results
 		//(just for convenience). The set if filled with the results from the method
@@ -24,7 +35,13 @@ public class Task182 {
 			System.out.println("Numbers, which divide by 5 and not by 7 under number "
 					+ n + ":");
 
+			//printing the numbers
 			divisors5Not7.forEach(System.out::println);
+			
+			//printing the sum of the found numbers
+			
+			System.out.println("The sum of the numbers is "
+					+  divisors5Not7.stream().reduce(0L, (a,b) -> a+b));
 
 		//otherwise - print the message
 		} else {

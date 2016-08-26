@@ -3,6 +3,19 @@ package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task330;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * 
+ * @author Ivan Rudnytskyi
+ * date 2016/08/26 (yyyy/mm/dd)
+ *
+ * Умови задачі (№ 330):
+ * 
+ * Натуральне число називається досконалим, якщо дорівнює сумі всіх дільників, за виключенням 
+ * самого себе. Число 6 - досконале, так як 6 = 1 + 2 + 3. Число 8 - недосконале, так як 
+ * 8 != 1 + 2 + 4. Дано натуральне число n. Отримати всі досконалі числа, які менше n.
+ *
+ */
+
 public class Task330 {
 
 	public static void main(String[] args) {
