@@ -8,11 +8,12 @@ import java.util.TreeSet;
  * @author Ivan Rudnytskyi
  * date 2016/08/26 (yyyy/mm/dd)
  *
- * Умови задачі (№ 330):
+ * The task (#330):
  * 
- * Натуральне число називається досконалим, якщо дорівнює сумі всіх дільників, за виключенням 
- * самого себе. Число 6 - досконале, так як 6 = 1 + 2 + 3. Число 8 - недосконале, так як 
- * 8 != 1 + 2 + 4. Дано натуральне число n. Отримати всі досконалі числа, які менше n.
+ * A natural number is perfect, if it equals to sum of its divisors, except itself.
+ * Number 6 is perfect, because 6 = 1 + 2 + 3. Number 8 is not perfect, since 8 != 1 + 2 + 4.
+ * A natural number n is given. Find all the perfect numbers under the number n.
+
  *
  */
 
@@ -35,12 +36,12 @@ public class Task330 {
 
 			perfectNumbersSet.forEach(System.out::println);
 
-		//otherwise - print the message
+			//otherwise - print the message
 		} else {
-			
+
 			System.out.println("There are no perfect numbers, which are less than " 
 					+ number + ":");
-			
+
 		}
 
 	}
@@ -53,10 +54,10 @@ public class Task330 {
 	public static Set<Long> perfectNumbers (long number){
 
 		Set <Long> perfectNumbers = new TreeSet<>();
-		
+
 		//starting from 2 - no need to check number 1. 
 		for (long i = 2; i <= number; i++) {
-			
+
 			//calling sumDivisors method, which calculates the sum of the divisor of 
 			//the given number. If they are equal - the number is perfect and it is 
 			//added to the set

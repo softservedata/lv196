@@ -1,8 +1,5 @@
 package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task182;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * @author Ivan Rudnytskyi
  * date 2016/08/26 (yyyy/mm/dd)

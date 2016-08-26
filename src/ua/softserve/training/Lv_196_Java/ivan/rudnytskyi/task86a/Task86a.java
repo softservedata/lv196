@@ -5,9 +5,9 @@ package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task86a;
 * @author Ivan Rudnytskyi
  * date 2016/08/26 (yyyy/mm/dd)
  *
- * Умови задачі (№ 86а):
+ * The task (#86а):
  * 
- * Дано натуральне число n. Скільки цифр в числі n?
+ * A natural number is given. How many digits does it contain?
  *
  *
  */
