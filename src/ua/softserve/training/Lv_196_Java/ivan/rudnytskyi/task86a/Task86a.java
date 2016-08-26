@@ -1,9 +1,21 @@
 package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task86a;
 
+
+/**
+ * 
+ * @author Ivan Rudnytskyi
+ * date 2016/08/26 (yyyy/mm/dd)
+ * 
+ * The task (#86à):
+ * 
+ * A natural number is given. How many digits does it contain?
+ *
+ */
+
 public class Task86a {
 
 	public static void main(String[] args) {
-		
+
 		//the natural number
 		long number = 95684;
 

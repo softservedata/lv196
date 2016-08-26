@@ -1,5 +1,20 @@
 package ua.softserve.training.Lv_196_Java.ivan.rudnytskyi.task330;
 
+
+/**
+ * @author Ivan Rudnytskyi
+ * date 2016/08/26 (yyyy/mm/dd)
+ *
+ * The task (#330):
+ * 
+ * A natural number is perfect, if it equals to sum of its divisors, except itself.
+ * Number 6 is perfect, because 6 = 1 + 2 + 3. Number 8 is not perfect, since 8 != 1 + 2 + 4.
+ * A natural number n is given. Find all the perfect numbers under the number n.
+
+ * 
+ **/
+
+
 public class Task330 {
 
 	public static void main(String[] args) {
@@ -9,7 +24,7 @@ public class Task330 {
 
 		// the method, which searches for perfect numbers		
 		perfectNumbers(number);
-		
+
 	}
 	/**
 	 * in the method perfect number are searched for. If a perfect number is found
@@ -18,26 +33,26 @@ public class Task330 {
 	 * @throws IllegalArgumentException - the number must be greater than 1
 	 */
 	public static void perfectNumbers (long number){
-		
+
 		if (number < 1)
 			throw new IllegalArgumentException("The number must be geater then 1");
-		
+
 		//if a perfect number is found, the variable is set true
 		boolean perfectNumberPresent = false;
-		
+
 		//starting from 2 - no need to check number 1. 
 		for (long i = 2; i <= number; i++) {
-			
+
 			//calling sumDivisors method, which calculates the sum of the divisor of 
 			//the given number. If they are equal - the number is perfect and it is 
 			//printed
 			if (i == sumDivisors(i)){
-				
+
 				perfectNumberPresent = true;
 				System.out.println("Perfect number under " + number + ": " + i);				
-				
+
 			}
-			
+
 		}
 		//otherwise - if no perfect number is found, print the message
 		if (!perfectNumberPresent)
