@@ -1,20 +1,4 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @ivanrudnytskyi
- Watch 0
-  Star 0
-  Fork 0 ivanrudnytskyi/softserve.training.Lv-196_Java.Task_1
- Code  Issues 0  Pull requests 0  Wiki  Pulse  Graphs  Settings
-Branch: simplified Find file Copy pathsoftserve.training.Lv-196_Java.Task_1/.gitignore
-e7b17b6  42 minutes ago
-@ivanrudnytskyi ivanrudnytskyi changed gitignore
-1 contributor
-RawBlameHistory     47 lines (37 sloc)  609 Bytes
-.class
+*.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -61,5 +45,3 @@ hs_err_pid*
 *.doc
 *.docx
 *.pdf
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
