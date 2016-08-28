@@ -1,0 +1,47 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Ignore all temporary files in the root directory
+*.[oa]
+/bin/
+
+/.externalToolBuilders/
+/.settings/
+/target/
+/doc/
+/test-output/
+/report/
+/.classpath
+/.project
+/.checkstyle
+/reports
+/af.reporting
+/.idea/
+*.iml
+
+# ignore log
+*.log
+
+# ignore log
+*.bmp
+
+# ignore doc/notes.txt, but not doc/info/arch.txt
+# doc/*.txt
+
+# ignore all .txt files in the directory doc/
+# doc/**/*.txt
+
+# ignore .doc .pfd .docx
+*.doc
+*.docx
+*.pdf
