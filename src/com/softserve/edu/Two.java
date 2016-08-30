@@ -12,7 +12,7 @@ import static java.lang.Math.sqrt;
 
 public class Two {
 
-//243 б)
+//243 б) Дано натуральное число n. Можно ли представить его в виде суммы двух квадратов натуральных чисел? Если можно, то б) указать все пары x, y таких натуральных чисел, что n = x2 + y2,x≥ y.
     public static void main(String[] args) throws IOException {
         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
         Integer n=Integer.parseInt(br.readLine());
