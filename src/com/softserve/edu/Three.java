@@ -4,7 +4,7 @@ package MainDirectory;
 public class Three {
 
     public static void main(String[] args) {
-        Three three=new Three;
+        Three three=new Three();
         three.method();
     }
     public void method() {
@@ -13,17 +13,17 @@ public class Three {
 
             int sum=0;
             for (char cha : arr) {
-                sum += Math.pow(Double.parseDouble(((Character) cha).toString()),arr.length);
+                sum += Math.pow(method2(cha),arr.length);
             }
             if (sum==i){
                 System.out.println("n="+i);
-                for (char g:arr) {
-                    System.out.print(" " + g);
-                }
                 System.out.println();
             }
 
         }
+    }
+    public Double method2(char c){            //метод для перетворення, конвертації char to double
+        return Double.parseDouble(((Character) c).toString());
     }
 
 }
