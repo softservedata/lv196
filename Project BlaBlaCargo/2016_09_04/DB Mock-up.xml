@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
-<!-- Active URL: http://ondras.zarovi.cz/sql/demo/?keyword=default -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/?keyword=BlaBlaCargo -->
 <sql>
 <datatypes db="mysql">
 	<group color="rgb(238,238,170)" label="Numeric">
@@ -37,7 +37,7 @@
 		<type label="SET" quote="" sql="SET" length="1"/>
 		<type label="Bit" quote="" sql="bit" length="0"/>
 	</group>
-</datatypes><table x="53" y="18" name="User">
+</datatypes><table x="10" y="10" name="User">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -83,7 +83,7 @@
 <key type="INDEX" name="">
 </key>
 </table>
-<table x="50" y="343" name="Cargo">
+<table x="29" y="349" name="Cargo">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -117,7 +117,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="251" y="350" name="Route">
+<table x="302" y="347" name="Route">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -154,7 +154,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="250" y="19" name="Vehicle">
+<table x="301" y="9" name="Vehicle">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -187,7 +187,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="450" y="350" name="Locations">
+<table x="599" y="350" name="Locations">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
