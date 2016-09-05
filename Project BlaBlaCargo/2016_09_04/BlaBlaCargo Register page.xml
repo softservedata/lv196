@@ -1,0 +1,279 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="875" measuredH="833" mockupW="815" mockupH="813">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="60" y="20" w="679" h="813" measuredW="450" measuredH="400" zOrder="0" locked="true" isInGroup="-1"/>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Link" x="650" y="103" w="-1" h="-1" measuredW="24" measuredH="19" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Eng</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Link" x="621" y="103" w="-1" h="-1" measuredW="23" measuredH="19" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u0423%u043A%u0440</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="157" w="262" h="-1" measuredW="87" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <borderColor>10066329</borderColor>
+        <text>Enter%20e-mail</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Label" x="78" y="160" w="147" h="-1" measuredW="140" measuredH="21" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>e-mail%20%28also%20your%20login%29*</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::LinkBar" x="67" y="103" w="-1" h="-1" measuredW="201" measuredH="19" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Home%2C%20Tracking%2C%20About%2C%20Help</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="184" w="262" h="-1" measuredW="111" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20first%20name</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Label" x="78" y="187" w="147" h="-1" measuredW="69" measuredH="21" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>First%20name*</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="211" w="262" h="-1" measuredW="110" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20last%20name</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::Label" x="78" y="214" w="147" h="-1" measuredW="70" measuredH="21" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Last%20name*</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="238" w="262" h="-1" measuredW="107" measuredH="27" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20password</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Label" x="78" y="241" w="147" h="-1" measuredW="62" measuredH="21" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Password*</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="265" w="262" h="-1" measuredW="117" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Repeat%20password</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Label" x="78" y="268" w="147" h="-1" measuredW="109" measuredH="21" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Repeat%20password*</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="292" w="262" h="-1" measuredW="86" measuredH="27" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20phone</text>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Label" x="78" y="295" w="147" h="-1" measuredW="43" measuredH="21" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Phone*</text>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="319" w="262" h="-1" measuredW="144" measuredH="27" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20passport%20series</text>
+      </controlProperties>
+    </control>
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::Label" x="78" y="322" w="147" h="-1" measuredW="99" measuredH="21" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Passport%20series*</text>
+      </controlProperties>
+    </control>
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::Label" x="78" y="455" w="169" h="-1" measuredW="151" measuredH="21" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Register%20as%20a%20transporter</text>
+      </controlProperties>
+    </control>
+    <control controlID="21" controlTypeID="com.balsamiq.mockups::CheckBox" x="414" y="455" w="-1" h="-1" measuredW="20" measuredH="21" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="485" w="262" h="-1" measuredW="128" measuredH="27" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16777215</color>
+        <state>disabled</state>
+        <text>Enter%20vehicle%20name</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::Label" x="78" y="488" w="-1" h="-1" measuredW="84" measuredH="21" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>16777215</borderColor>
+        <color>0</color>
+        <state>disabled</state>
+        <text>Vehicle%20name*</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="512" w="262" h="-1" measuredW="174" measuredH="27" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16777215</color>
+        <state>disabled</state>
+        <text>Enter%20vehicle%20state%20number</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::Label" x="78" y="515" w="-1" h="-1" measuredW="130" measuredH="21" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>16777215</borderColor>
+        <color>0</color>
+        <state>disabled</state>
+        <text>Vehicle%20state%20number*</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="568" w="262" h="-1" measuredW="136" measuredH="27" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16777215</color>
+        <state>disabled</state>
+        <text>Upload%20vehicle%20photo</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::Label" x="78" y="571" w="-1" h="-1" measuredW="78" measuredH="21" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>16777215</borderColor>
+        <color>0</color>
+        <state>disabled</state>
+        <text>Vehicle%20photo</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="346" w="262" h="-1" measuredW="152" measuredH="27" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20passport%20number</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::Label" x="78" y="349" w="147" h="-1" measuredW="107" measuredH="21" zOrder="27" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Passport%20number*</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="595" w="262" h="-1" measuredW="189" measuredH="27" zOrder="28" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16777215</color>
+        <state>disabled</state>
+        <text>Enter%20max%20cargo%20weight%20in%20kg</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::Label" x="78" y="598" w="-1" h="-1" measuredW="134" measuredH="21" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>16777215</borderColor>
+        <color>0</color>
+        <state>disabled</state>
+        <text>Max%20cargo%20weight%2C%20kg*</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="622" w="262" h="-1" measuredW="200" measuredH="27" zOrder="30" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16777215</color>
+        <state>disabled</state>
+        <text>Enter%20max%20cargo%20size%20in%20meters</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Label" x="78" y="625" w="-1" h="-1" measuredW="160" measuredH="21" zOrder="31" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>16777215</borderColor>
+        <color>0</color>
+        <state>disabled</state>
+        <text>Max%20cargo%20size%2C%20L*W*h%2C%20m*</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::Button" x="414" y="666" w="262" h="27" measuredW="138" measuredH="27" zOrder="32" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>16777215</borderColor>
+        <color>16777215</color>
+        <state>disabled</state>
+        <text>Add%20another%20vehicle</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::Button" x="603" y="723" w="-1" h="-1" measuredW="73" measuredH="27" zOrder="33" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Register</text>
+      </controlProperties>
+    </control>
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Label" x="71" y="765" w="474" h="-1" measuredW="226" measuredH="21" zOrder="34" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>All%20fields%2C%20marked%20with%20*%2C%20must%20be%20filled.</text>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="540" w="262" h="-1" measuredW="174" measuredH="27" zOrder="35" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16777215</color>
+        <state>disabled</state>
+        <text>Enter%20vehicle%20state%20number</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::Label" x="78" y="543" w="-1" h="-1" measuredW="228" measuredH="21" zOrder="36" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>1</backgroundAlpha>
+        <borderColor>16777215</borderColor>
+        <color>0</color>
+        <state>disabled</state>
+        <text>Vehicle%20registration%20certificate%20number*</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::Label" x="77" y="125" w="597" h="-1" measuredW="191" measuredH="24" zOrder="37" locked="false" isInGroup="-1">
+      <controlProperties>
+        <align>center</align>
+        <color>2848996</color>
+        <size>16</size>
+        <text>Registration%20of%20a%20new%20user</text>
+      </controlProperties>
+    </control>
+    <control controlID="42" controlTypeID="com.balsamiq.mockups::Button" x="601" y="413" w="-1" h="-1" measuredW="73" measuredH="27" zOrder="38" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Register</text>
+      </controlProperties>
+    </control>
+    <control controlID="43" controlTypeID="com.balsamiq.mockups::VCurly" x="695" y="462" w="180" h="246" measuredW="180" measuredH="140" zOrder="39" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Unless%20the%20checkbox%20is%20checked%2C%20all%20fields%20are%20disabled</text>
+      </controlProperties>
+    </control>
+    <control controlID="44" controlTypeID="com.balsamiq.mockups::TextInput" x="414" y="372" w="262" h="-1" measuredW="121" measuredH="27" zOrder="40" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Upload%20your%20photo</text>
+      </controlProperties>
+    </control>
+    <control controlID="45" controlTypeID="com.balsamiq.mockups::Label" x="78" y="375" w="147" h="-1" measuredW="107" measuredH="21" zOrder="41" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Upload%20your%20photo</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

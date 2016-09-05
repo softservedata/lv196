@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/?keyword=BlaBlaCargo -->
+<sql>
+<datatypes db="mysql">
+	<group color="rgb(238,238,170)" label="Numeric">
+		<type label="Integer" quote="" sql="INTEGER" length="0"/>
+	 	<type label="TINYINT" quote="" sql="TINYINT" length="0"/>
+	 	<type label="SMALLINT" quote="" sql="SMALLINT" length="0"/>
+	 	<type label="MEDIUMINT" quote="" sql="MEDIUMINT" length="0"/>
+	 	<type label="INT" quote="" sql="INT" length="0"/>
+		<type label="BIGINT" quote="" sql="BIGINT" length="0"/>
+		<type label="Decimal" quote="" sql="DECIMAL" length="1" re="DEC"/>
+		<type label="Single precision" quote="" sql="FLOAT" length="0"/>
+		<type label="Double precision" quote="" sql="DOUBLE" length="0" re="DOUBLE"/>
+	</group>
+
+	<group color="rgb(255,200,200)" label="Character">
+		<type label="Char" quote="'" sql="CHAR" length="1"/>
+		<type label="Varchar" quote="'" sql="VARCHAR" length="1"/>
+		<type label="Text" quote="'" sql="MEDIUMTEXT" length="0" re="TEXT"/>
+		<type label="Binary" quote="'" sql="BINARY" length="1"/>
+		<type label="Varbinary" quote="'" sql="VARBINARY" length="1"/>
+		<type label="BLOB" quote="'" sql="BLOB" length="0" re="BLOB"/>
+	</group>
+
+	<group color="rgb(200,255,200)" label="Date &amp; Time">
+		<type label="Date" quote="'" sql="DATE" length="0"/>
+		<type label="Time" quote="'" sql="TIME" length="0"/>
+		<type label="Datetime" quote="'" sql="DATETIME" length="0"/>
+		<type label="Year" quote="" sql="YEAR" length="0"/>
+		<type label="Timestamp" quote="'" sql="TIMESTAMP" length="0"/>
+	</group>
+	
+	<group color="rgb(200,200,255)" label="Miscellaneous">
+		<type label="ENUM" quote="" sql="ENUM" length="1"/>
+		<type label="SET" quote="" sql="SET" length="1"/>
+		<type label="Bit" quote="" sql="bit" length="0"/>
+	</group>
+</datatypes><table x="10" y="10" name="User">
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="email" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="first_name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="last_name" null="1" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>NULL</default></row>
+<row name="phone_number" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="passport_series" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="passport_number" null="0" autoincrement="0">
+<datatype>TINYINT</datatype>
+<default>NULL</default></row>
+<row name="user_photo" null="1" autoincrement="0">
+<datatype>BLOB</datatype>
+<default>NULL</default></row>
+<row name="isAdmin" null="1" autoincrement="0">
+<datatype>bit</datatype>
+<default>NULL</default></row>
+<row name="new field" null="1" autoincrement="0">
+<datatype>bit</datatype>
+<default>NULL</default><comment>BOOL</comment>
+</row>
+<row name="IsModer" null="1" autoincrement="0">
+<datatype>bit</datatype>
+<default>NULL</default><comment>BOOL</comment>
+</row>
+<row name="isTransporter" null="1" autoincrement="0">
+<datatype>bit</datatype>
+<default>NULL</default><comment>BOOL</comment>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<key type="INDEX" name="">
+</key>
+</table>
+<table x="29" y="349" name="Cargo">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="status" null="0" autoincrement="0">
+<datatype>ENUM</datatype>
+<default>NULL</default></row>
+<row name="weight" null="0" autoincrement="0">
+<datatype>DOUBLE</datatype>
+<default>NULL</default></row>
+<row name="length" null="0" autoincrement="0">
+<datatype>DOUBLE</datatype>
+<default>NULL</default></row>
+<row name="width" null="0" autoincrement="0">
+<datatype>DOUBLE</datatype>
+<default>NULL</default></row>
+<row name="height" null="1" autoincrement="0">
+<datatype>DOUBLE</datatype>
+<default>NULL</default></row>
+<row name="user_ID" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="User" row="id" />
+</row>
+<row name="transporter_ID" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="User" row="id" />
+</row>
+<row name="location" null="0" autoincrement="0">
+<datatype>SET</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="302" y="347" name="Route">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="start_point" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="intermediate_point_0" null="1" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>NULL</default></row>
+<row name="intermediate_point_1" null="1" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>NULL</default></row>
+<row name="intermediate_point_2" null="1" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>NULL</default></row>
+<row name="end_point" null="1" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>NULL</default></row>
+<row name="start_time" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+<default>'NULL'</default></row>
+<row name="end_time" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+<default>'NULL'</default></row>
+<row name="user_ID" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="User" row="id" />
+</row>
+<row name="transporter_ID" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="User" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="301" y="9" name="Vehicle">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="transporterID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="User" row="id" />
+</row>
+<row name="vehicle_state_number" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="vehicle_reg_number" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="vehicle_photo" null="1" autoincrement="0">
+<datatype>BLOB</datatype>
+<default>NULL</default></row>
+<row name="max_cargo_weight" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="max_cargo_length" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="max_cargo_width" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="max_cargo_heigth" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="599" y="350" name="Locations">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="Country" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="Region" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<row name="City" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+</sql>
