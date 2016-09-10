@@ -1,152 +1,196 @@
 package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "USERS")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "EMAIL")
+    @Column(name = "email", unique = true, length = 255)
     private String email;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "FIRST_NAME")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "LAST_NAME")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "PASSPORT")
-    private String passport;
-
-    @Column(name = "PHONE")
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "RATE")
-    private Integer rate;
+    @Column(name = "rate")
+    private BigDecimal rate;
 
-    @Column(name = "RATE")
-    private String photoUrl;
+    @Column(name = "photo_url")
+    private String avatarUrl;
 
     @Enumerated
-    @Column(name = "USER_ROLE")
+    @Column(name = "user_role")
     private Role userRole;
 
-    public enum Role {
-        ADMIN, MODERATOR, DRIVER, CUSTOMER
-    }
+    @OneToOne
+    @JoinColumn(name ="passport_id")
+    Passport passport;
 
-    public User() {
-    }
+    @Column(name = "approved")
+    private Boolean approved;
+
+    @Column(name = "blocked")
+    private Boolean blocked;
 
     public Long getId() {
         return id;
     }
 
-    public User setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public User setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public User setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public User setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
-        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public User setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
-        return this;
-    }
-
-    public String getPassport() {
-        return passport;
-    }
-
-    public User setPassport(String passport) {
-        this.passport = passport;
-        return this;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public User setPhone(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
-        return this;
     }
 
-    public Integer getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public User setRate(Integer rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
-        return this;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public User setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-        return this;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public Role getUserRole() {
         return userRole;
     }
 
-    public User setUserRole(Role userRole) {
+    public void setUserRole(Role userRole) {
         this.userRole = userRole;
-        return this;
+    }
+
+    public Passport getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public User(String email,
+                String password,
+                String firstName,
+                String lastName,
+                String phone,
+                BigDecimal rate,
+                String avatarUrl,
+                Role userRole,
+                Passport passport,
+                Boolean approved,
+                Boolean blocked) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.rate = rate;
+        this.avatarUrl = avatarUrl;
+        this.userRole = userRole;
+        this.passport = passport;
+        this.approved = approved;
+        this.blocked = blocked;
+    }
+
+    public User() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         User user = (User) o;
-        return Objects.equals(id, user.id);
+
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        return lastName != null ? lastName.equals(user.lastName) : user.lastName == null;
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        int result = email != null ? email.hashCode() : 0;
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        return result;
     }
 
     @Override
