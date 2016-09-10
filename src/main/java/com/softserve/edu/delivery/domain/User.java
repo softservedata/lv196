@@ -1,11 +1,15 @@
 package com.softserve.edu.delivery.domain;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "USERS")
+@Access(AccessType.PROPERTY)
+@Proxy(lazy = false)
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +41,7 @@ public class User implements Serializable {
     @Column(name = "user_role")
     private Role userRole;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="passport_id")
     Passport passport;
 
@@ -46,6 +50,33 @@ public class User implements Serializable {
 
     @Column(name = "blocked")
     private Boolean blocked;
+
+    public User(String email,
+                String password,
+                String firstName,
+                String lastName,
+                String phone,
+                BigDecimal rate,
+                String avatarUrl,
+                Role userRole,
+                Passport passport,
+                Boolean approved,
+                Boolean blocked) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.rate = rate;
+        this.avatarUrl = avatarUrl;
+        this.userRole = userRole;
+        this.passport = passport;
+        this.approved = approved;
+        this.blocked = blocked;
+    }
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -141,33 +172,6 @@ public class User implements Serializable {
 
     public void setBlocked(Boolean blocked) {
         this.blocked = blocked;
-    }
-
-    public User(String email,
-                String password,
-                String firstName,
-                String lastName,
-                String phone,
-                BigDecimal rate,
-                String avatarUrl,
-                Role userRole,
-                Passport passport,
-                Boolean approved,
-                Boolean blocked) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.rate = rate;
-        this.avatarUrl = avatarUrl;
-        this.userRole = userRole;
-        this.passport = passport;
-        this.approved = approved;
-        this.blocked = blocked;
-    }
-
-    public User() {
     }
 
     @Override
