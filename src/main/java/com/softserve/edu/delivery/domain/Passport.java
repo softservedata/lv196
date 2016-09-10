@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Proxy(lazy = false)
 public class Passport implements Serializable{
 
+    @Id
     @Column(name = "passport_id")
     private Integer passportId;
 

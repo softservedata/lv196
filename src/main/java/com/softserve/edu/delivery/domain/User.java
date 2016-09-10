@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @Access(AccessType.PROPERTY)
 @Proxy(lazy = false)
 public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
