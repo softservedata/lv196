@@ -11,7 +11,7 @@ import org.hibernate.Transaction;
 public class App {
     public static void main(String[] args) {
         Session session = Hibernate.openSession();
-        Transaction tx = null;
+        Transaction tx = session.getTransaction();
         try {
             tx.begin();
             session.persist(new User().setEmail("example@site.com").setUserRole(Role.ADMIN));
