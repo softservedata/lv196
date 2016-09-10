@@ -1,15 +1,11 @@
 package com.softserve.edu.delivery.domain;
 
-import org.hibernate.annotations.Proxy;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "USERS")
-@Access(AccessType.PROPERTY)
-@Proxy(lazy = false)
 public class User implements Serializable {
 
     @Id
@@ -17,7 +13,7 @@ public class User implements Serializable {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "email", unique = true, length = 255)
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
@@ -32,49 +28,25 @@ public class User implements Serializable {
     @Column(name = "phone")
     private String phone;
 
+    /* 10 is 1 star, 40 is 4 stars and so on */
     @Column(name = "rate")
-    private BigDecimal rate;
+    private Integer rate;
 
     @Column(name = "photo_url")
-    private String avatarUrl;
+    private String photoUrl;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private Role userRole;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name ="passport_id")
-    Passport passport;
+    @Column(name = "passport")
+    private String passport;
 
     @Column(name = "approved")
     private Boolean approved;
 
     @Column(name = "blocked")
     private Boolean blocked;
-
-    public User(String email,
-                String password,
-                String firstName,
-                String lastName,
-                String phone,
-                BigDecimal rate,
-                String avatarUrl,
-                Role userRole,
-                Passport passport,
-                Boolean approved,
-                Boolean blocked) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.rate = rate;
-        this.avatarUrl = avatarUrl;
-        this.userRole = userRole;
-        this.passport = passport;
-        this.approved = approved;
-        this.blocked = blocked;
-    }
 
     public User() {
     }
@@ -83,119 +55,122 @@ public class User implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public User setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public User setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public User setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public User setPhone(String phone) {
         this.phone = phone;
+        return this;
     }
 
-    public BigDecimal getRate() {
+    public Integer getRate() {
         return rate;
     }
 
-    public void setRate(BigDecimal rate) {
+    public User setRate(Integer rate) {
         this.rate = rate;
+        return this;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public User setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+        return this;
     }
 
     public Role getUserRole() {
         return userRole;
     }
 
-    public void setUserRole(Role userRole) {
+    public User setUserRole(Role userRole) {
         this.userRole = userRole;
+        return this;
     }
 
-    public Passport getPassport() {
+    public String getPassport() {
         return passport;
     }
 
-    public void setPassport(Passport passport) {
+    public User setPassport(String passport) {
         this.passport = passport;
+        return this;
     }
 
     public Boolean getApproved() {
         return approved;
     }
 
-    public void setApproved(Boolean approved) {
+    public User setApproved(Boolean approved) {
         this.approved = approved;
+        return this;
     }
 
     public Boolean getBlocked() {
         return blocked;
     }
 
-    public void setBlocked(Boolean blocked) {
+    public User setBlocked(Boolean blocked) {
         this.blocked = blocked;
+        return this;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         User user = (User) o;
-
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
-        return lastName != null ? lastName.equals(user.lastName) : user.lastName == null;
-
+        return Objects.equals(id, user.id) &&
+                Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        int result = email != null ? email.hashCode() : 0;
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        return result;
+        return Objects.hash(id, email);
     }
 
     @Override
