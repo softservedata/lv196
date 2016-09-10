@@ -32,5 +32,4 @@ public class App {
 
         Hibernate.close();
     }
-
 }
