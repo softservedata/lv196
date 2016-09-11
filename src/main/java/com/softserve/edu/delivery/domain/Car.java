@@ -7,12 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "CARS")
-public class Car{
+public class Car {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +35,19 @@ public class Car{
 	@Column(name = "isApproved")
 	private Boolean isApproved;
 
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	public Car() {
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Long getCarId() {
@@ -111,6 +124,7 @@ public class Car{
 
 	@Override
 	public String toString() {
-		return "Car id: " + carId + "\nWidth: " + width + ", height: " + height + ", length: " + length + "\nWeight: " + weight + "\nDocument: " + document.toString();
+		return "Car id: " + carId + "\nWidth: " + width + ", height: " + height + ", length: " + length + "\nWeight: " + weight + 
+			"\nDocument: " + document.toString() + "\nUser: " + user.toString();
 	}
 }
