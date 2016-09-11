@@ -40,6 +40,8 @@
 		<javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
 		<javax.servlet.jsp.jstl.version>1.2</javax.servlet.jsp.jstl.version>
 		<taglibs.standard.version>1.1.2</taglibs.standard.version>
+		<!-- - - - XML - - - -->
+		<com.thoughtworks.xstream.version>1.4.9</com.thoughtworks.xstream.version>
 	</properties>
 
 	<dependencies>
@@ -119,7 +121,7 @@
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.4.9</version>
+			<version>${com.thoughtworks.xstream.version}</version>
 		</dependency>
 
 	</dependencies>
