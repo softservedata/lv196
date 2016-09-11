@@ -38,6 +38,6 @@
 		<mapping class="com.softserve.edu.delivery.domain.RouteCity" />
 		<mapping class="com.softserve.edu.delivery.domain.State" />
 		<mapping class="com.softserve.edu.delivery.domain.User" />
-		<mapping class="com.softserve.edu.delivery.domain.UserCar" />
+		<!--mapping class="com.softserve.edu.delivery.domain.UserCar" /-->
 	</session-factory>
 </hibernate-configuration>
