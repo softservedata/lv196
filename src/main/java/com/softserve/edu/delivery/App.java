@@ -5,9 +5,6 @@ import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
 import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.utils.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 // Just on purpose for quick testing ...
 public class App {
@@ -15,7 +12,8 @@ public class App {
         UserDao userDao = new UserDaoImpl();
         try {
             User user = new User().setEmail("example@site.com").setUserRole(Role.ADMIN);
-            userDao.add(user);
+            userDao.save(user);
+            userDao.findAll().forEach(System.out::println);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

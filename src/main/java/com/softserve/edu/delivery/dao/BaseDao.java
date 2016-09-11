@@ -1,18 +1,18 @@
 package com.softserve.edu.delivery.dao;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseDao<T> {
+public interface BaseDao<T, ID extends Serializable> {
 
-    void add(T element);
+    void save(T element);
 
     void update(T element);
 
-    void remove(T element);
+    void delete(T element);
 
-    Optional<T> getById(Long id);
+    Optional<T> findOne(ID id);
 
-    List<T> getAll();
-
+    List<T> findAll();
 }
