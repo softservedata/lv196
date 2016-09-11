@@ -7,17 +7,17 @@
 <hibernate-configuration>
 	<session-factory>
 		<!--Config-->
-		<!--<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="connection.url">jdbc:mysql://localhost/delivery</property>
 		<property name="connection.username">root</property>
 		<property name="connection.password">root</property>
-		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>-->
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 
-		<property name="connection.driver_class">org.postgresql.Driver</property>
+		<!--<property name="connection.driver_class">org.postgresql.Driver</property>
 		<property name="connection.url">jdbc:postgresql://localhost:5432/delivery</property>
 		<property name="connection.username">postgres</property>
 		<property name="connection.password">postgres</property>
-		<property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
+		<property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>-->
 
 
 		<property name="hbm2ddl.auto">update</property>
@@ -26,5 +26,6 @@
 		<!--Mapping-->
 		<mapping package="com.softserve.edu.delivery.domain" />
 		<mapping class="com.softserve.edu.delivery.domain.User" />
+		<mapping class="com.softserve.edu.delivery.domain.Order" />
 	</session-factory>
 </hibernate-configuration>

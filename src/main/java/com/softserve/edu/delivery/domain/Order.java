@@ -47,15 +47,15 @@ public class Order {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User idUser;
+	private User user;
 	
 	@ManyToOne
 	@JoinColumn(name = "route_id")
-	private Route idRoute;
+	private Route route;
 	
 	@ManyToOne
 	@JoinColumn(name = "order_status_id")
-	private OrderStatus idOredrStatus;
+	private OrderStatus oredrStatus;
 
 	public Order() {
 	}
@@ -131,37 +131,38 @@ public class Order {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public User getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(User idUser) {
-		this.idUser = idUser;
-	}
-
-	public Route getIdRoute() {
-		return idRoute;
-	}
-
-	public void setIdRoute(Route idRoute) {
-		this.idRoute = idRoute;
-	}
-
-	public OrderStatus getIdOredrStatus() {
-		return idOredrStatus;
-	}
-
-	public void setIdOredrStatus(OrderStatus idOredrStatus) {
-		this.idOredrStatus = idOredrStatus;
-	}
 	
-    @Override
+    public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Route getRoute() {
+		return route;
+	}
+
+	public void setRoute(Route route) {
+		this.route = route;
+	}
+
+	public OrderStatus getOredrStatus() {
+		return oredrStatus;
+	}
+
+	public void setOredrStatus(OrderStatus oredrStatus) {
+		this.oredrStatus = oredrStatus;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id);
+        return Objects.equals(id, order.id)&&
+                Objects.equals(weight, order.weight);
     }
 
     @Override
