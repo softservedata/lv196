@@ -30,7 +30,7 @@ public class Baggage {
     private Double weight;
 
     @Column(name = "description")
-    private Double description;
+    private String description;
 
 
     public Baggage() {
@@ -84,11 +84,11 @@ public class Baggage {
         this.weight = weight;
     }
 
-    public Double getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Double description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 }

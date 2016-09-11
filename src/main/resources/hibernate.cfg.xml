@@ -8,7 +8,7 @@
 	<session-factory>
 		<!--Config-->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost/delivery</property>
+		<property name="connection.url">jdbc:mysql://localhost/delivery?useSSL=false</property>
 		<property name="connection.username">root</property>
 		<property name="connection.password">root</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -25,7 +25,19 @@
 
 		<!--Mapping-->
 		<mapping package="com.softserve.edu.delivery.domain" />
-		<mapping class="com.softserve.edu.delivery.domain.User" />
+		<mapping class="com.softserve.edu.delivery.domain.Baggage" />
+		<mapping class="com.softserve.edu.delivery.domain.Car" />
+		<mapping class="com.softserve.edu.delivery.domain.City" />
+		<mapping class="com.softserve.edu.delivery.domain.Document" />
+		<mapping class="com.softserve.edu.delivery.domain.Feedback" />
 		<mapping class="com.softserve.edu.delivery.domain.Order" />
+		<mapping class="com.softserve.edu.delivery.domain.OrderStatus" />
+		<mapping class="com.softserve.edu.delivery.domain.Region" />
+		<mapping class="com.softserve.edu.delivery.domain.Role" />
+		<mapping class="com.softserve.edu.delivery.domain.Route" />
+		<mapping class="com.softserve.edu.delivery.domain.RouteCity" />
+		<mapping class="com.softserve.edu.delivery.domain.State" />
+		<mapping class="com.softserve.edu.delivery.domain.User" />
+		<mapping class="com.softserve.edu.delivery.domain.UserCar" />
 	</session-factory>
 </hibernate-configuration>
