@@ -16,99 +16,34 @@ public abstract class AbstractDAO<T> implements DAO<T> {
 
     @Override
     public void add(T element) {
-        Session session = null;
-        Transaction tx = null;
-        try {
-            session = Hibernate.openSession();
-            tx = session.beginTransaction();
-            session.save(element);
-            tx.commit();
-        }catch (Exception exception) {
-           rollback(tx);
-        }finally{
-            closeSession(session);
-        }
+        Hibernate.withTransaction(session -> session.save(element));
     }
 
     @Override
     public void update(T element) {
-        Session session = null;
-        Transaction tx = null;
-        try {
-            session = Hibernate.openSession();
-            tx = session.beginTransaction();
+        Hibernate.withTransaction(session -> {
             session.update(element);
-            tx.commit();
-        }catch (Exception exception) {
-            rollback(tx);
-        }finally {
-            closeSession(session);
-        }
+            return null;
+        });
     }
 
     @Override
     public void remove(T element) {
-        Session session = null;
-        Transaction tx = null;
-        try {
-            session = Hibernate.openSession();
-            tx = session.beginTransaction();
-            session.delete(element);
-            tx.commit();
-        }catch (Exception exception) {
-            rollback(tx);
-        }finally {
-            closeSession(session);
-        }
+        Hibernate.withTransaction(session -> {
+            session.update(element);
+            return null;
+        });
     }
 
     @Override
     public T getById(Long id) {
-        Session session = null;
-        Transaction tx = null;
-        T result = null;
-        try {
-            session = Hibernate.openSession();
-            tx = session.beginTransaction();
-            result = session.get(this.clazz, id); // return null if id is not exists in db
-            tx.commit();
-        }catch (Exception exeption) {
-            rollback(tx);
-        }finally {
-            closeSession(session);
-        }
-        return result;
+        return Hibernate.withTransaction(session -> session.get(this.clazz, id));
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAll() {
-        Session session = null;
-        Transaction tx = null;
-        List<T> result = null;
-        try {
-            session = Hibernate.openSession();
-            tx = session.beginTransaction();
-            result = session.createCriteria(clazz).list();
-            tx.commit();
-        }catch (Exception exception) {
-            rollback(tx);
-        }finally {
-            closeSession(session);
-        }
-        return  result;
-    }
-
-
-    private static void rollback(Transaction tx) {
-        if (tx != null) {
-            tx.rollback();
-        }
-    }
-
-    private static void closeSession(Session session) {
-        if (session != null && session.isOpen()) {
-            session.close();
-        }
+        return Hibernate.withTransaction(session ->
+            session.createQuery("From " + clazz.getSimpleName(), clazz).getResultList()
+        );
     }
 }

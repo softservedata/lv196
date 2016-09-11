@@ -2,9 +2,12 @@ package com.softserve.edu.delivery.utils;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import java.util.function.Function;
 
 public class Hibernate {
     private Hibernate() {
@@ -22,6 +25,27 @@ public class Hibernate {
             StandardServiceRegistryBuilder.destroy(registry);
             throw e;
         }
+    }
+
+    public static <T> T withTransaction(Function<Session, T> transactionBlock) {
+        Session session = openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            T result = transactionBlock.apply(session);
+            tx.commit();
+            return result;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
     }
 
     public static Session openSession() {
