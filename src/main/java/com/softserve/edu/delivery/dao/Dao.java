@@ -2,7 +2,7 @@ package com.softserve.edu.delivery.dao;
 
 import java.util.List;
 
-public interface DAO<T> {
+public interface Dao<T> {
 
     void add(T element);
 

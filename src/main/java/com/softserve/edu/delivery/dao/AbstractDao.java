@@ -1,16 +1,14 @@
 package com.softserve.edu.delivery.dao;
 
 import com.softserve.edu.delivery.utils.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
-public abstract class AbstractDAO<T> implements DAO<T> {
+public abstract class AbstractDao<T> implements Dao<T> {
 
     private Class<T> clazz;
 
-    public AbstractDAO(Class<T> clazz) {
+    public AbstractDao(Class<T> clazz) {
         this.clazz = clazz;
     }
 
@@ -30,7 +28,7 @@ public abstract class AbstractDAO<T> implements DAO<T> {
     @Override
     public void remove(T element) {
         Hibernate.withTransaction(session -> {
-            session.update(element);
+            session.delete(element);
             return null;
         });
     }

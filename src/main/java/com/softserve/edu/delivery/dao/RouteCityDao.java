@@ -5,9 +5,9 @@ import com.softserve.edu.delivery.domain.RouteCity;
 /**
  * Created by Ivan Rudnytskyi on 11.09.2016.
  */
-public class RouteCityDAO extends AbstractDAO<RouteCity> {
+public class RouteCityDao extends AbstractDao<RouteCity> {
 
-    public RouteCityDAO() {
+    public RouteCityDao() {
         super(RouteCity.class);
     }
 }
