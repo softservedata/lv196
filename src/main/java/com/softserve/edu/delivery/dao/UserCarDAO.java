@@ -5,9 +5,9 @@ import com.softserve.edu.delivery.domain.UserCar;
 /**
  * Created by Ivan Rudnytskyi on 11.09.2016.
  */
-public class UserCarDao extends AbstractDAO<UserCar>{
+public class UserCarDAO extends AbstractDAO<UserCar>{
 
-    public UserCarDao() {
+    public UserCarDAO() {
         super(UserCar.class);
     }
 
