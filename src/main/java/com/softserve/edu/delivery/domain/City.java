@@ -64,6 +64,6 @@ public class City {
 	
 	@Override
 	public String toString() {
-		return "City [id = " + cityId + "City = " + cityName + "Region = " + region + "]";
+		return "City [id = " + cityId + ", City = " + cityName + ", Region = " + region + "]";
 	}
 }
