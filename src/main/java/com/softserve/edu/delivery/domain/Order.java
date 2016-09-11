@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -53,7 +54,7 @@ public class Order {
 	@JoinColumn(name = "route_id")
 	private Route route;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "order_status_id")
 	private OrderStatus oredrStatus;
 
