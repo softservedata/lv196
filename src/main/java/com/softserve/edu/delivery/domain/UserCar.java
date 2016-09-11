@@ -11,19 +11,13 @@ public class UserCar {
     public UserCar() {
     }
 
+    private Long usercar_id;
+    private User user;
+    private Car car;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usercar_id")
-    private Long usercar_id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "car_id")
-    private Car car;
-
     public Long getUsercar_id() {
         return usercar_id;
     }
@@ -32,6 +26,8 @@ public class UserCar {
         this.usercar_id = usercar_id;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     public User getUser() {
         return user;
     }
@@ -40,6 +36,8 @@ public class UserCar {
         this.user = user;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "car_id")
     public Car getCar() {
         return car;
     }
