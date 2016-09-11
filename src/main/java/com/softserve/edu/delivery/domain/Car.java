@@ -1,4 +1,4 @@
-package natalia.hibernate.start;
+package com.softserve.edu.delivery.domain;
 
 import java.util.Objects;
 import javax.persistence.Column;
