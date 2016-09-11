@@ -1,14 +1,16 @@
-package com.softserve.edu.delivery.dao;
+package com.softserve.edu.delivery.dao.impl;
 
+import com.softserve.edu.delivery.dao.BaseDao;
 import com.softserve.edu.delivery.utils.Hibernate;
 
 import java.util.List;
+import java.util.Optional;
 
-public abstract class AbstractDao<T> implements Dao<T> {
+public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 
     private Class<T> clazz;
 
-    public AbstractDao(Class<T> clazz) {
+    public BaseDaoImpl(Class<T> clazz) {
         this.clazz = clazz;
     }
 
@@ -34,8 +36,8 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     @Override
-    public T getById(Long id) {
-        return Hibernate.withTransaction(session -> session.get(this.clazz, id));
+    public Optional<T> getById(Long id) {
+        return Hibernate.withTransaction(session -> Optional.ofNullable(session.get(this.clazz, id)));
     }
 
     @Override

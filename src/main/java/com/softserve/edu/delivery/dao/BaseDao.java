@@ -1,8 +1,9 @@
 package com.softserve.edu.delivery.dao;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface Dao<T> {
+public interface BaseDao<T> {
 
     void add(T element);
 
@@ -10,7 +11,7 @@ public interface Dao<T> {
 
     void remove(T element);
 
-    T getById(Long id);
+    Optional<T> getById(Long id);
 
     List<T> getAll();
 
