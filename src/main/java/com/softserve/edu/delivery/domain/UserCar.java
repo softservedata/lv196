@@ -26,8 +26,9 @@ public class UserCar {
         this.usercar_id = usercar_id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+
+    /*@ManyToOne
+    @JoinColumn(name = "user_id")*/
     public User getUser() {
         return user;
     }
@@ -36,8 +37,8 @@ public class UserCar {
         this.user = user;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "car_id")
+  /*  @OneToOne
+    @JoinColumn(name = "car_id")*/
     public Car getCar() {
         return car;
     }
