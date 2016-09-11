@@ -3,10 +3,11 @@ package com.softserve.edu.delivery.dao.impl;
 import com.softserve.edu.delivery.dao.BaseDao;
 import com.softserve.edu.delivery.utils.Hibernate;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BaseDaoImpl<T> implements BaseDao<T> {
+public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
 
     private Class<T> clazz;
 
@@ -15,7 +16,7 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public void add(T element) {
+    public void save(T element) {
         Hibernate.withTransaction(session -> session.save(element));
     }
 
@@ -28,7 +29,7 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public void remove(T element) {
+    public void delete(T element) {
         Hibernate.withTransaction(session -> {
             session.delete(element);
             return null;
@@ -36,12 +37,12 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public Optional<T> getById(Long id) {
+    public Optional<T> findOne(ID id) {
         return Hibernate.withTransaction(session -> Optional.ofNullable(session.get(this.clazz, id)));
     }
 
     @Override
-    public List<T> getAll() {
+    public List<T> findAll() {
         return Hibernate.withTransaction(session ->
             session.createQuery("From " + clazz.getSimpleName(), clazz).getResultList()
         );
