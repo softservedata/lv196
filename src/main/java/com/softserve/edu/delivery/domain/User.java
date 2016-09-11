@@ -11,10 +11,6 @@ import java.util.Objects;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
-
     @Column(name = "email", unique = true)
     private String email;
 
@@ -54,15 +50,6 @@ public class User implements Serializable {
     private Boolean blocked;
 
     public User() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public User setId(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getEmail() {
@@ -178,19 +165,18 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(email);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
+                "email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
