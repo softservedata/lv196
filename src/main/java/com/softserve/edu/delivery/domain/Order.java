@@ -3,14 +3,7 @@ package com.softserve.edu.delivery.domain;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ORDERS")
@@ -53,9 +46,9 @@ public class Order {
 	@JoinColumn(name = "route_id")
 	private Route route;
 	
-	@ManyToOne
-	@JoinColumn(name = "order_status_id")
-	private OrderStatus oredrStatus;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "order_status")
+	private OrderStatus orderStatus;
 
 	public Order() {
 	}
@@ -148,12 +141,12 @@ public class Order {
 		this.route = route;
 	}
 
-	public OrderStatus getOredrStatus() {
-		return oredrStatus;
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
 	}
 
-	public void setOredrStatus(OrderStatus oredrStatus) {
-		this.oredrStatus = oredrStatus;
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	@Override
