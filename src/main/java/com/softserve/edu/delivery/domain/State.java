@@ -61,6 +61,13 @@ public class State implements Serializable, Comparable<State> {
         this.regions = regions;
     }
 
+    public void addRegion(Region region) {
+        if (regions == null) {
+            regions = new ArrayList<>();
+        }
+        regions.add(region);
+    }
+
     @Override
     public int hashCode() {
         return this.stateName.hashCode();

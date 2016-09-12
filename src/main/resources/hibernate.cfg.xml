@@ -24,7 +24,6 @@
 		<property name="show_sql">true</property>
 
 		<!--Mapping-->
-		<mapping package="com.softserve.edu.delivery.domain" />
 		<mapping class="com.softserve.edu.delivery.domain.Baggage" />
 		<mapping class="com.softserve.edu.delivery.domain.Car" />
 		<mapping class="com.softserve.edu.delivery.domain.City" />
@@ -38,6 +37,6 @@
 		<mapping class="com.softserve.edu.delivery.domain.RouteCity" />
 		<mapping class="com.softserve.edu.delivery.domain.State" />
 		<mapping class="com.softserve.edu.delivery.domain.User" />
-		<!--mapping class="com.softserve.edu.delivery.domain.UserCar" /-->
+		<mapping class="com.softserve.edu.delivery.domain.UserCar"/>
 	</session-factory>
 </hibernate-configuration>

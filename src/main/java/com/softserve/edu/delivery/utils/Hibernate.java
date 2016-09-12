@@ -15,7 +15,7 @@ public class Hibernate {
 
     private static SessionFactory sessionFactory = buildSessionFactory();
 
-    private static SessionFactory buildSessionFactory() {
+    public static SessionFactory buildSessionFactory() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure() // reads settings from hibernate.cfg.xml
                 .build();

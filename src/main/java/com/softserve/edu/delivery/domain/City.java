@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Cities")
+@Table(name = "CITIES")
 public class City {
 
 	private Long cityId;

@@ -5,7 +5,7 @@ package com.softserve.edu.delivery.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "BAGGAGE")
+@Table(name = "BAGGAGES")
 public class Baggage {
 
     @Id
@@ -13,7 +13,7 @@ public class Baggage {
     @Column(name = "baggage_id")
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
