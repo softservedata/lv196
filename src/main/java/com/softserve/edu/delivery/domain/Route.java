@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.domain;
-
+/**
+ * Author - Ivan Synyshyn
+ */
 import java.util.Date;
 import java.util.Objects;
 
