@@ -10,7 +10,6 @@ import java.util.List;
  * */
 @Entity
 @Table(name = "STATES")
-@Access(AccessType.PROPERTY)
 public class State implements Serializable, Comparable<State> {
 
     @Id
