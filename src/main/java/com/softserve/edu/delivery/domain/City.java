@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.domain;
-
+/**
+ * Author - Ivan Synyshyn
+ */
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -45,7 +47,7 @@ public class City {
 		return region;
 	}
 
-	public void setRegionId(Region region) {
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 
