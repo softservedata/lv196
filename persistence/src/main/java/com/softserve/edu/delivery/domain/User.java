@@ -2,8 +2,6 @@ package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,8 +24,8 @@ public class User implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "user")
-    private List<Car> cars = new ArrayList<>();
+   /*@OneToMany(mappedBy = "user")
+    private List<Car> cars = new ArrayList<>();*/
 
     /* 10 is 1 star, 40 is 4 stars and so on */
     @Column(name = "rate")
@@ -97,14 +95,14 @@ public class User implements Serializable {
         return this;
     }
 
-    public List<Car> getCars() {
+    /*public List<Car> getCars() {
         return cars;
     }
 
     public User setCars(List<Car> cars) {
         this.cars = cars;
         return this;
-    }
+    }*/
 
     public Integer getRate() {
         return rate;

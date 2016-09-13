@@ -1,10 +1,11 @@
 package com.softserve.edu.delivery.service;
 
-import java.util.Set;
-
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.State;
+
+import java.util.Set;
+
 /**
  * Author - Ivan Synyshyn
  */
