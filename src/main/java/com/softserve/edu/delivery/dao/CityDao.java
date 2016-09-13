@@ -4,6 +4,6 @@ package com.softserve.edu.delivery.dao;
  */
 import com.softserve.edu.delivery.domain.City;
 
-public interface CityDao extends BaseDao<City> {
+public interface CityDao extends BaseDao<City, Long> {
 
 }

@@ -6,8 +6,8 @@ import com.softserve.edu.delivery.domain.Offer;
 /**
  * Created by Ivan Rudnytskyi on 12.09.2016.
  */
-public class OfferCityDaoImpl extends BaseDaoImpl<Offer> implements OfferDao {
-    public OfferCityDaoImpl() {
+public class OfferDaoImpl extends BaseDaoImpl<Offer, Long> implements OfferDao {
+    public OfferDaoImpl() {
         super(Offer.class);
     }
 }

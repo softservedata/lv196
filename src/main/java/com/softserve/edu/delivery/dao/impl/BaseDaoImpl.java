@@ -6,9 +6,10 @@ import com.softserve.edu.delivery.utils.Jpa;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 
-public abstract class BaseDaoImpl<T> implements BaseDao<T> {
+public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
 
     private Class<T> clazz;
     private EntityManager em = Jpa.getEntityManager();
@@ -33,14 +34,13 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public T findById(Serializable id) {
-        return em.find(clazz, id);
+    public Optional<T> findOne(ID id) {
+        return Optional.ofNullable(em.find(this.clazz, id));
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        return (List<T>) em.createNamedQuery("Select o from " + clazz.getSimpleName() + " o");
+        return em.createQuery("From " + clazz.getSimpleName(), clazz).getResultList();
     }
 
     protected EntityManager getEntityManager() {

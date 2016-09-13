@@ -3,7 +3,7 @@ package com.softserve.edu.delivery.dao.impl;
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.User;
 
-public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
+public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 
     public UserDaoImpl() {
         super(User.class);

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseDao<T> {
+public interface BaseDao<T, ID extends Serializable> {
 
     void save(T element);
 
@@ -12,7 +12,7 @@ public interface BaseDao<T> {
 
     void delete(T element);
 
-    T findById(Serializable id);
+    Optional<T> findOne(ID id);
 
     List<T> findAll();
 }
