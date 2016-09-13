@@ -2,8 +2,8 @@ package com.softserve.edu.delivery.dao;
 /**
  * Author - Ivan Synyshyn
  */
-import com.softserve.edu.delivery.domain.Route;
+import com.softserve.edu.delivery.domain.Offer;
 
-public interface RouteDao extends BaseDao<Route, Long> {
+public interface RouteDao extends BaseDao<Offer, Long> {
 
 }

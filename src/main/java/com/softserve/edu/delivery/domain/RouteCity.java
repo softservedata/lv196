@@ -15,7 +15,7 @@ public class RouteCity {
     }
 
     private Long route_city_id;
-    private Route route;
+    private Offer route;
     private City city;
     private Boolean visited;
     private Timestamp visitDate;
@@ -33,11 +33,11 @@ public class RouteCity {
 
     @ManyToOne
     @JoinColumn(name = "route_id")
-    public Route getRoute() {
+    public Offer getRoute() {
         return route;
     }
 
-    public void setRoute(Route route) {
+    public void setRoute(Offer route) {
         this.route = route;
     }
 
