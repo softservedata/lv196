@@ -32,7 +32,7 @@ public class Region {
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State state;
-    @OneToMany(mappedBy = "region_id",
+    @OneToMany(mappedBy = "region",
                     cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<City> cities;
 
