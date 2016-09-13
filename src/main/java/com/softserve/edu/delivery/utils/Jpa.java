@@ -8,33 +8,29 @@ import javax.persistence.Persistence;
  * @author Petro Shtenovych
  */
 public class Jpa {
-    private Jpa(){};
+    private Jpa() {}
 
-    static {
-        init();
-    }
-
-    private static EntityManager entityManager;
+    private static EntityManagerFactory emf = createEntityManagerFactory();
+    private static EntityManager em = getEntityManager();
 
     public static EntityManager getEntityManager() {
-        if (entityManager == null) {
-            synchronized (Jpa.class) {
-                if (entityManager == null) {
-                    init();
-                }
-            }
+        if (em == null) {
+            em = emf.createEntityManager();
         }
-        return entityManager;
+        return em;
     }
 
-    private static void init() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("delivery");
-        entityManager = factory.createEntityManager();
+    private static EntityManagerFactory createEntityManagerFactory() {
+        return Persistence.createEntityManagerFactory("delivery");
     }
 
     public static void close() {
-        if (entityManager != null && entityManager.isOpen()) {
-            entityManager.close();
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+
+        if (emf != null && emf.isOpen()) {
+            emf.close();
         }
     }
 }
