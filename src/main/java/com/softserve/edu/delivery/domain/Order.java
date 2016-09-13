@@ -3,7 +3,18 @@ package com.softserve.edu.delivery.domain;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
 
 @Entity
 @Table(name = "ORDERS")
@@ -43,8 +54,16 @@ public class Order {
 	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name = "route_id")
-	private Route route;
+	@JoinColumn(name = "city_id")
+	private City cityFrom;
+	
+	@ManyToOne
+	@JoinColumn(name = "city_id")
+	private City cityTo;
+	
+	@ManyToOne
+	@JoinColumn(name = "offer_id")
+	private Offer offer;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "order_status")
@@ -133,12 +152,12 @@ public class Order {
 		this.user = user;
 	}
 
-	public Route getRoute() {
-		return route;
+	public Offer getRoute() {
+		return offer;
 	}
 
-	public void setRoute(Route route) {
-		this.route = route;
+	public void setRoute(Offer offer) {
+		this.offer = offer;
 	}
 
 	public OrderStatus getOrderStatus() {
@@ -147,6 +166,30 @@ public class Order {
 
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
+	}
+
+	public City getCityFrom() {
+		return cityFrom;
+	}
+
+	public void setCityFrom(City cityFrom) {
+		this.cityFrom = cityFrom;
+	}
+
+	public City getCityTo() {
+		return cityTo;
+	}
+
+	public void setCityTo(City cityTo) {
+		this.cityTo = cityTo;
+	}
+
+	public Offer getOffer() {
+		return offer;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
 	}
 
 	@Override
