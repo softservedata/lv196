@@ -11,7 +11,7 @@ public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 
     public boolean exists(String email) {
         return getEntityManager()
-                .createQuery("select u from User u where u.email = :email", User.class)
+                .createQuery("select 1 from User u where u.email = :email")
                 .setParameter("email", email)
                 .getResultList()
                 .size() > 0;
