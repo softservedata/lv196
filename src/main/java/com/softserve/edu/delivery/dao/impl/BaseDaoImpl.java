@@ -40,7 +40,7 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     @Override
     @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        return (List<T>) em.createNamedQuery("Select o from " + clazz.getSimpleName() + " e");
+        return (List<T>) em.createNamedQuery("Select o from " + clazz.getSimpleName() + " o");
     }
 
     protected EntityManager getEntityManager() {
