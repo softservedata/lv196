@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CITIES")
-public class City {
+public class City implements Comparable<City>{
 
 	private Long cityId;
 	private String cityName;
@@ -51,6 +51,13 @@ public class City {
 		this.region = region;
 	}
 
+	public City(Long cityId, String cityName, Region region) {
+		super();
+		this.cityId = cityId;
+		this.cityName = cityName;
+		this.region = region;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
@@ -67,5 +74,10 @@ public class City {
 	@Override
 	public String toString() {
 		return "City [id = " + cityId + ", City = " + cityName + ", Region = " + region + "]";
+	}
+
+	@Override
+	public int compareTo(City city) {
+		return cityName.compareTo(city.cityName);
 	}
 }
