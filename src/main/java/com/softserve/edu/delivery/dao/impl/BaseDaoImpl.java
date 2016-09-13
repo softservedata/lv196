@@ -1,15 +1,14 @@
 package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.BaseDao;
-import com.softserve.edu.delivery.utils.Hibernate;
 import com.softserve.edu.delivery.utils.Jpa;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
-public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
+
+public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 
     private Class<T> clazz;
     private EntityManager em = Jpa.getEntityManager();
@@ -20,29 +19,28 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
 
     @Override
     public void save(T element) {
-        Hibernate.withTransaction(session -> session.save(element));
+        em.persist(element);
     }
 
     @Override
     public void update(T element) {
-        Hibernate.withTransactionVoid(session -> session.update(element));
+        em.merge(element);
     }
 
     @Override
     public void delete(T element) {
-        Hibernate.withTransactionVoid(session -> session.delete(element));
+        em.remove(element);
     }
 
     @Override
-    public Optional<T> findOne(ID id) {
-        return Hibernate.withTransaction(session -> Optional.ofNullable(session.get(this.clazz, id)));
+    public T findById(Serializable id) {
+        return em.find(clazz, id);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        return Hibernate.withTransaction(session ->
-            session.createQuery("From " + clazz.getSimpleName(), clazz).getResultList()
-        );
+        return (List<T>) em.createNamedQuery("Select o from " + clazz.getSimpleName() + " e");
     }
 
     protected EntityManager getEntityManager() {

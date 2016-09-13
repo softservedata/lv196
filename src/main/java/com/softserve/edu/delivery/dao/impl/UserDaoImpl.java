@@ -4,7 +4,7 @@ import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.utils.Hibernate;
 
-public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
+public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     public UserDaoImpl() {
         super(User.class);

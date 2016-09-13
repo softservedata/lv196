@@ -4,6 +4,6 @@ package com.softserve.edu.delivery.dao;
  */
 import com.softserve.edu.delivery.domain.Offer;
 
-public interface RouteDao extends BaseDao<Offer, Long> {
+public interface OfferDao extends BaseDao<Offer, Long> {
 
 }
