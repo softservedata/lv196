@@ -25,7 +25,12 @@ public class Jpa {
 
     private static EntityManagerFactory createEntityManagerFactory() {
         if (emf == null) {
-            emf = Persistence.createEntityManagerFactory("delivery");
+            try {
+                emf = Persistence.createEntityManagerFactory("delivery");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
         }
         return emf;
     }
