@@ -1,11 +1,20 @@
 package com.softserve.edu.delivery.domain;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Ivan Rudnytskyi on 11.09.2016.
+ * @author Ivan Rudnytskyi, 11.09.2016.
  */
 @Entity
 @Table(name = "REGIONS")
@@ -14,14 +23,20 @@ public class Region {
     public Region() {
     }
 
-    private Long regionId;
-    private String regionName;
-    private State state;
-    private List<City> cities;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "region_id")
+    private Long regionId;
+    @Column(name = "region_name")
+    private String regionName;
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State state;
+    @OneToMany(mappedBy = "region_id",
+                    cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<City> cities;
+
+
     public Long getRegionId() {
         return regionId;
     }
@@ -30,7 +45,7 @@ public class Region {
         this.regionId = regionId;
     }
 
-    @Column(name = "region_name")
+
     public String getRegionName() {
         return regionName;
     }
@@ -39,8 +54,7 @@ public class Region {
         this.regionName = regionName;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "state_id")
+
     public State getState() {
         return state;
     }
@@ -49,8 +63,7 @@ public class Region {
         this.state = state;
     }
 
-    @OneToMany
-    @JoinColumn(name = "city_id")
+
     public List<City> getCities() {
         return cities;
     }

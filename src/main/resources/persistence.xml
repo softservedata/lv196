@@ -26,12 +26,11 @@
         <class>com.softserve.edu.delivery.domain.OrderStatus</class>
         <class>com.softserve.edu.delivery.domain.Region</class>
         <class>com.softserve.edu.delivery.domain.Role</class>
-        <class>com.softserve.edu.delivery.domain.Route</class>
-        <class>com.softserve.edu.delivery.domain.RouteCity</class>
+        <class>com.softserve.edu.delivery.domain.Offer</class>
+        <class>com.softserve.edu.delivery.domain.RouteCities</class>
         <class>com.softserve.edu.delivery.domain.RouteStatus</class>
         <class>com.softserve.edu.delivery.domain.State</class>
         <class>com.softserve.edu.delivery.domain.User</class>
-        <class>com.softserve.edu.delivery.domain.UserCar</class>
 
     </persistence-unit>
 </persistence>

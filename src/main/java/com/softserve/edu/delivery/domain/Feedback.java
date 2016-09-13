@@ -1,9 +1,16 @@
 package com.softserve.edu.delivery.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by Ivan Rudnytskyi on 11.09.2016.
+ * @author Ivan Rudnytskyi, 11.09.2016.
  */
 @Entity
 @Table(name = "FEEDBACK")
@@ -12,16 +19,23 @@ public class Feedback {
     public Feedback() {
     }
 
-    private Long feedbackId;
-    private Order order;
-    private String text;
-    private User user;
-    private Integer rate;
-    private Boolean approved;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id")
+    private Long feedbackId;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+    @Column(name = "text")
+    private String text;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @Column(name = "rate")
+    private Integer rate;
+    @Column(name = "approved")
+    private Boolean approved;
+
     public Long getFeedbackId() {
         return feedbackId;
     }
@@ -30,8 +44,6 @@ public class Feedback {
         this.feedbackId = feedbackId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
     public Order getOrder() {
         return order;
     }
@@ -40,7 +52,6 @@ public class Feedback {
         this.order = order;
     }
 
-    @Column(name = "text")
     public String getText() {
         return text;
     }
@@ -49,8 +60,6 @@ public class Feedback {
         this.text = text;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     public User getUser() {
         return user;
     }
@@ -59,7 +68,6 @@ public class Feedback {
         this.user = user;
     }
 
-    @Column(name = "rate")
     public Integer getRate() {
         return rate;
     }
@@ -68,7 +76,6 @@ public class Feedback {
         this.rate = rate;
     }
 
-    @Column(name = "approved")
     public Boolean isApproved() {
         return approved;
     }
