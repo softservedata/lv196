@@ -152,14 +152,6 @@ public class Order {
 		this.user = user;
 	}
 
-	public Offer getRoute() {
-		return offer;
-	}
-
-	public void setRoute(Offer offer) {
-		this.offer = offer;
-	}
-
 	public OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
