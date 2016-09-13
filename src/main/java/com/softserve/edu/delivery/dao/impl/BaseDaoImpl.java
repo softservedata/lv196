@@ -22,18 +22,12 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
 
     @Override
     public void update(T element) {
-        Hibernate.withTransaction(session -> {
-            session.update(element);
-            return null;
-        });
+        Hibernate.withTransactionVoid(session -> session.update(element));
     }
 
     @Override
     public void delete(T element) {
-        Hibernate.withTransaction(session -> {
-            session.delete(element);
-            return null;
-        });
+        Hibernate.withTransactionVoid(session -> session.delete(element));
     }
 
     @Override

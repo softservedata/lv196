@@ -7,6 +7,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class Hibernate {
@@ -46,6 +47,13 @@ public class Hibernate {
             }
         }
 
+    }
+
+    public static void withTransactionVoid(Consumer<Session> transactionBlock) {
+        withTransaction(session -> {
+            transactionBlock.accept(session);
+            return null;
+        });
     }
 
     public static Session openSession() {
