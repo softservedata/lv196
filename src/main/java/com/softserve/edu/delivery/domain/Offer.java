@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Routes")
-public class Route {
+public class Offer {
 	
 	private long routeId;
 	private City cityFrom;
@@ -94,7 +94,7 @@ public class Route {
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if ((obj == null) || this.getClass() != obj.getClass()) return false;
-		Route route = (Route) obj;
+		Offer route = (Offer) obj;
 		return Objects.equals(routeId, route.routeId);
 	}
 
