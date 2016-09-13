@@ -8,20 +8,29 @@ import javax.persistence.Persistence;
  * @author Petro Shtenovych
  */
 public class Jpa {
-    private Jpa() {}
+    private Jpa() {
+    }
 
     private static EntityManagerFactory emf = createEntityManagerFactory();
     private static EntityManager em = getEntityManager();
 
     public static EntityManager getEntityManager() {
         if (em == null) {
-            em = emf.createEntityManager();
+            try {
+                em = emf.createEntityManager();
+            } catch (Exception e) {
+                emf.close();
+                throw e;
+            }
         }
         return em;
     }
 
     private static EntityManagerFactory createEntityManagerFactory() {
-        return Persistence.createEntityManagerFactory("delivery");
+        if (emf == null) {
+            emf = Persistence.createEntityManagerFactory("delivery");
+        }
+        return emf;
     }
 
     public static void close() {

@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.BaseDao;
-import com.softserve.edu.delivery.utils.Hibernate;
 import com.softserve.edu.delivery.utils.Jpa;
 
 import javax.persistence.EntityManager;
@@ -20,29 +19,27 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
 
     @Override
     public void save(T element) {
-        Hibernate.withTransaction(session -> session.save(element));
+        em.persist(element);
     }
 
     @Override
     public void update(T element) {
-        Hibernate.withTransactionVoid(session -> session.update(element));
+        em.merge(element);
     }
 
     @Override
     public void delete(T element) {
-        Hibernate.withTransactionVoid(session -> session.delete(element));
+        em.remove(element);
     }
 
     @Override
     public Optional<T> findOne(ID id) {
-        return Hibernate.withTransaction(session -> Optional.ofNullable(session.get(this.clazz, id)));
+        return Optional.ofNullable(em.find(this.clazz, id));
     }
 
     @Override
     public List<T> findAll() {
-        return Hibernate.withTransaction(session ->
-            session.createQuery("From " + clazz.getSimpleName(), clazz).getResultList()
-        );
+        return em.createQuery("From " + clazz.getSimpleName(), clazz).getResultList();
     }
 
     protected EntityManager getEntityManager() {
