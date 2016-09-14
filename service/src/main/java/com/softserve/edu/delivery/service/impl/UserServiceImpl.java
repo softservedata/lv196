@@ -3,7 +3,12 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.service.UserService;
+import com.softserve.edu.delivery.utils.Jpa;
 import com.softserve.edu.delivery.utils.TransactionManager;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -26,5 +31,26 @@ public class UserServiceImpl implements UserService {
                 throw new IllegalArgumentException("User with given email already exists.");
             }
         });
+    }
+
+    public void register(User user, boolean withoutLambda) {
+        if (!withoutLambda) {
+            register(user);
+        } else {
+            EntityTransaction tx = null;
+            try {
+                EntityManager entityManager = Jpa.getEntityManager();
+                tx = entityManager.getTransaction();
+                tx.begin();
+                if (! userDao.exists(user.getEmail())) {
+                    throw new IllegalArgumentException("User with given email already exists.");
+                } else {
+                    userDao.save(user);
+                    tx.commit();
+                }
+            }catch (Exception rollback) {
+                if (tx != null) tx.rollback();
+            }
+        }
     }
 }
