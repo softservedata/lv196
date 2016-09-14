@@ -4,14 +4,14 @@
 	<!-- 3 ERROR 5 WARNING 7 INFO -->
 	<test verbose="5" name="Test1">
 		<parameter name="language" value="english" />
-		<classes>
+		<!--<classes>
 			<class name="com.softserve.edu.delivery.AppTest">
 				<methods>
 					<include name="testApp" />
 				</methods>
 			</class>
-			<!-- <class name="com.softserve.edu.delivery.SmokeTest" /> -->
-		</classes>
+			 <class name="com.softserve.edu.delivery.SmokeTest" />
+		</classes>-->
 	</test> <!-- Test -->
 	<!-- - - - - - - - - - -->
 </suite> <!-- Suite -->
