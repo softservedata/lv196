@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
                 EntityManager entityManager = Jpa.getEntityManager();
                 tx = entityManager.getTransaction();
                 tx.begin();
-                if (! userDao.exists(user.getEmail())) {
+                if (userDao.exists(user.getEmail())) {
                     throw new IllegalArgumentException("User with given email already exists.");
                 } else {
                     userDao.save(user);
