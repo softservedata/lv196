@@ -17,9 +17,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllActiveOrders(int page, int size) {
+    public List<Order> findAllActiveOrders(String email, int page, int size) {
         return TransactionManager.withTransaction(() ->
-            orderDao.findAllOrdersByStatus(page, size, OrderStatus.ACTIVE)
+            orderDao.findAllOrdersByStatus(email, page, size, OrderStatus.ACTIVE)
         );
     }
 }

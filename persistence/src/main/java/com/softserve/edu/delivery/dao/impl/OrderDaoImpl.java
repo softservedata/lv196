@@ -12,10 +12,12 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
         super(Order.class);
     }
 
-    public List<Order> findAllOrdersByStatus(int page, int size, OrderStatus orderStatus) {
+    public List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus) {
         return getEntityManager()
-                .createQuery("select o from Order o where o.orderStatus = :orderStatus " +
+                .createQuery("select o from Order o where o.user.email = :email " +
+                        "and o.orderStatus = :orderStatus " +
                         "order by o.registrationDate", Order.class)
+                .setParameter("email", email)
                 .setParameter("orderStatus", orderStatus)
                 .setFirstResult((page - 1) * size)
                 .setMaxResults(size)

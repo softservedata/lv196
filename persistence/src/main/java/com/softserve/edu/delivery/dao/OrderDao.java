@@ -6,5 +6,5 @@ import com.softserve.edu.delivery.domain.OrderStatus;
 import java.util.List;
 
 public interface OrderDao extends BaseDao<Order, Long> {
-    List<Order> findAllOrdersByStatus(int page, int size, OrderStatus orderStatus);
+    List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus);
 }
