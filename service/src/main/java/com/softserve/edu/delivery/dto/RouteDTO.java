@@ -164,4 +164,21 @@ public class RouteDTO {
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
+
+    @Override
+    public String toString() {
+        return "RouteDTO{" +
+                "lastLocation=" + lastLocation +
+                ", expectedArrivalTime=" + expectedArrivalTime +
+                ", lastTimeVisited=" + lastTimeVisited +
+                ", visitedLocations=" + visitedLocations +
+                ", height=" + height +
+                ", width=" + width +
+                ", length=" + length +
+                ", weight=" + weight +
+                ", owner=" + owner +
+                ", transporter=" + transporter +
+                ", orderStatus=" + orderStatus +
+                '}';
+    }
 }

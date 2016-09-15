@@ -5,7 +5,10 @@ import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.RouteDTO;
 import com.softserve.edu.delivery.service.RouteService;
+import com.softserve.edu.delivery.utils.Jpa;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,6 @@ import java.util.List;
  * @author Petro Shtenovych
  *
  * */
-
 public class RouteServiceImpl implements RouteService {
 
     private OrderDao orderDao;
@@ -25,29 +27,55 @@ public class RouteServiceImpl implements RouteService {
         this.routeCityDao = routeCityDao;
     }
 
-    //This method is responsible to get information(tracking) about user's order
+    /**This method is responsible to get information(tracking) about user's order
+     * @param id - order number (tracking page)
+     * @throws IllegalArgumentException if param ref null or id doesn't exist in database
+     * @throws RuntimeException if database errors occur
+     * */
     @Override
     public RouteDTO getRouteById(Long id) {
-        Order order = orderDao.findOne(id).get(); // find order by given id
+        if (id == null) {
+            throw new IllegalArgumentException("id shouldn't be null!");
+        }
+        Order order;
+        List<RouteCities> trackingList;
+        EntityTransaction tx = null;
+        try {
+            EntityManager em = Jpa.getEntityManager();
+            tx = em.getTransaction();
+            tx.begin();
+            order = orderDao.findOne(id).get(); // find order by given id
+            trackingList = routeCityDao.getRouteCitiesByOrder(order); //get all tracked cities
+            tx.commit();
+        }catch (RuntimeException ex) {
+            if (tx != null) tx.rollback();
+            throw ex;
+        }
+        if (order == null || trackingList == null) {
+            throw new IllegalArgumentException("id doesn't exist");
+        }
+        return getRouteDTO(order, trackingList);
+    }
 
-        //Retrieve all parameters
-        List<RouteCities> trackingList = routeCityDao.getRouteCitiesByOrder(order); //get all tracked cities
-        City lastLocation = calcLastVisitedCity(trackingList); // get last visited city
-        Timestamp lastTimeVisited = getLastTime(trackingList); // get time when visited last city
-        Timestamp expectedArrivalTime = order.getArrivalDate(); //get expected arrival time
+
+    //<----------------------------------------Private--------------------------------------->
+
+    //Retrieve all parameters
+    private static RouteDTO getRouteDTO(Order order, List<RouteCities> trackingList) {
+        City lastCity = calcLastVisitedCity(trackingList); // get last visited city
+        Timestamp lastTime = getLastTime(trackingList); // get time when visited last city
+        Timestamp expectedTime = order.getArrivalDate(); //get expected arrival time
         List<City> visitedCities = getAllVisitedCities(trackingList); // get all visited places
-        Double h = order.getHeight(); //Get baggage parameters
-        Double w = order.getWidth();
-        Double l = order.getLength();
-        Double wei = order.getWeight();
+        Double height = order.getHeight(); //Get baggage parameters
+        Double width = order.getWidth();
+        Double length = order.getLength();
+        Double weight = order.getWeight();
         User owner = order.getUser();
         User transporter = null; //todo: realize it later
         OrderStatus status = order.getOrderStatus();
         //Return result
-        return new RouteDTO(lastLocation, expectedArrivalTime, lastTimeVisited, visitedCities, h, w, l, wei, owner, transporter, status);
+        return new RouteDTO(lastCity, expectedTime, lastTime, visitedCities, height, width, length, weight, owner, transporter, status);
     }
-
-    //<----------------Private---------------->
 
     private static City calcLastVisitedCity(List<RouteCities> trackingList) {
         City result = null;
