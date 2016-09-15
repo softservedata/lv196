@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.domain;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -62,9 +64,9 @@ public class Order {
 	@JoinColumn(name = "to_id", referencedColumnName = "city_id")
 	private City cityTo;
 	
-	@ManyToOne
+	@OneToMany
 	@JoinColumn(name = "offer_id")
-	private Offer offer;
+	private List<Offer> offers;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "order_status")
@@ -177,12 +179,12 @@ public class Order {
 		this.cityTo = cityTo;
 	}
 
-	public Offer getOffer() {
-		return offer;
+	public List<Offer> getOffer() {
+		return offers;
 	}
 
-	public void setOffer(Offer offer) {
-		this.offer = offer;
+	public void setOffer(List<Offer> offers) {
+		this.offers = offers;
 	}
 
 	@Override
