@@ -1,8 +1,20 @@
 package com.softserve.edu.delivery.domain;
 
-import javax.persistence.*;
-import java.util.Date;
+
+
+import java.sql.Timestamp;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 @Entity
@@ -30,10 +42,10 @@ public class Order {
 	private Double price;
 	
 	@Column(name = "registration_date")
-	private Date registrationDate;
+	private Timestamp registrationDate;
 	
 	@Column(name = "arrival_date")
-	private Date arrivalDate;
+	private Timestamp arrivalDate;
 	
 	@Column(name = "description")
 	private String description;
@@ -43,11 +55,11 @@ public class Order {
 	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name = "city_id")
+	@JoinColumn(name = "from_id", referencedColumnName = "city_id")
 	private City cityFrom;
 	
 	@ManyToOne
-	@JoinColumn(name = "city_id")
+	@JoinColumn(name = "to_id", referencedColumnName = "city_id")
 	private City cityTo;
 	
 	@ManyToOne
@@ -109,19 +121,19 @@ public class Order {
 		this.price = price;
 	}
 
-	public Date getRegistrationDate() {
+	public Timestamp getRegistrationDate() {
 		return registrationDate;
 	}
 
-	public void setRegistrationDate(Date registrationDate) {
+	public void setRegistrationDate(Timestamp registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
-	public Date getArrivalDate() {
+	public Timestamp getArrivalDate() {
 		return arrivalDate;
 	}
 
-	public void setArrivalDate(Date arrivalDate) {
+	public void setArrivalDate(Timestamp arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
