@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.dto;
 
+import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 
 /**

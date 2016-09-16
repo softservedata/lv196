@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.OrderDao;
+import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.utils.TransactionManager;
