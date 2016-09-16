@@ -43,7 +43,7 @@ public class Order {
 	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name = "city_id")
+	@JoinColumn(name = "city_id1")
 	private City cityFrom;
 	
 	@ManyToOne

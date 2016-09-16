@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" verbose="0" name="Failed suite [Suite]">
+  <parameter name="language" value="english"/>
+  <test verbose="5" name="Test1">
+    <parameter name="language" value="english"/>
+  </test> <!-- Test1 -->
+</suite> <!-- Failed suite [Suite] -->
