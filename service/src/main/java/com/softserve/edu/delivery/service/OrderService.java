@@ -1,9 +1,10 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.domain.Order;
-
+import com.softserve.edu.delivery.dto.OrderForAddDto;
+import com.softserve.edu.delivery.dto.OrderForListDto;
 import java.util.List;
 
 public interface OrderService {
-    List<Order> findAllActiveOrders(String email, int page, int size);
+    List<OrderForListDto> findAllActiveOrders(String email, int page, int size);
+    void addOrder(OrderForAddDto dto, String email);
 }
