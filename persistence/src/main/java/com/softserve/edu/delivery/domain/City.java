@@ -69,7 +69,7 @@ public class City implements Comparable<City> {
 		if ((obj == null) || this.getClass() != obj.getClass())
 			return false;
 		City city = (City) obj;
-		return Objects.equals(cityName, city.cityName) && Objects.equals(region, city.region);
+		return Objects.equals(cityId, city.cityId) && Objects.equals(cityName, city.cityName);
 	}
 
 	@Override
