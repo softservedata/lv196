@@ -1,198 +1,212 @@
 package com.softserve.edu.delivery.domain;
 
-import javax.persistence.*;
-import java.util.Date;
+
+
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 @Entity
 @Table(name = "ORDERS")
 public class Order {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
-	private Long id;
-	
-	@Column(name = "height")
-	private Double height;
-	
-	@Column(name = "width")
-	private Double width;
-	
-	@Column(name = "length")
-	private Double length;
-	
-	@Column(name = "weight")
-	private Double weight;
-	
-	@Column(name = "price")
-	private Double price;
-	
-	@Column(name = "registration_date")
-	private Date registrationDate;
-	
-	@Column(name = "arrival_date")
-	private Date arrivalDate;
-	
-	@Column(name = "description")
-	private String description;
-	
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
-	
-	@ManyToOne
-	@JoinColumn(name = "city_id1")
-	private City cityFrom;
-	
-	@ManyToOne
-	@JoinColumn(name = "city_id")
-	private City cityTo;
-	
-	@ManyToOne
-	@JoinColumn(name = "offer_id")
-	private Offer offer;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "order_status")
-	private OrderStatus orderStatus;
 
-	public Order() {
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "order_id")
+  private Long id;
 
-	public Long getId() {
-		return id;
-	}
+  @Column(name = "height")
+  private Double height;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Column(name = "width")
+  private Double width;
 
-	public Double getHeight() {
-		return height;
-	}
+  @Column(name = "length")
+  private Double length;
 
-	public void setHeight(Double height) {
-		this.height = height;
-	}
+  @Column(name = "weight")
+  private Double weight;
 
-	public Double getWidth() {
-		return width;
-	}
+  @Column(name = "price")
+  private Double price;
 
-	public void setWidth(Double width) {
-		this.width = width;
-	}
+  @Column(name = "registration_date")
+  private Timestamp registrationDate;
 
-	public Double getLength() {
-		return length;
-	}
+  @Column(name = "arrival_date")
+  private Timestamp arrivalDate;
 
-	public void setLength(Double length) {
-		this.length = length;
-	}
+  @Column(name = "description")
+  private String description;
 
-	public Double getWeight() {
-		return weight;
-	}
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-	public void setWeight(Double weight) {
-		this.weight = weight;
-	}
+  @ManyToOne
+  @JoinColumn(name = "from_id", referencedColumnName = "city_id")
+  private City cityFrom;
 
-	public Double getPrice() {
-		return price;
-	}
+  @ManyToOne
+  @JoinColumn(name = "to_id", referencedColumnName = "city_id")
+  private City cityTo;
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+  @OneToMany
+  @JoinColumn(name = "offer_id")
+  private List<Offer> offers;
 
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
+  @Enumerated(EnumType.STRING)
+  @Column(name = "order_status")
+  private OrderStatus orderStatus;
 
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
+  public Order() {
+  }
 
-	public Date getArrivalDate() {
-		return arrivalDate;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public void setArrivalDate(Date arrivalDate) {
-		this.arrivalDate = arrivalDate;
-	}
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public String getDescription() {
-		return description;
-	}
+  public Double getHeight() {
+    return height;
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-    public User getUser() {
-		return user;
-	}
+  public void setHeight(Double height) {
+    this.height = height;
+  }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+  public Double getWidth() {
+    return width;
+  }
 
-	public OrderStatus getOrderStatus() {
-		return orderStatus;
-	}
+  public void setWidth(Double width) {
+    this.width = width;
+  }
 
-	public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus;
-	}
+  public Double getLength() {
+    return length;
+  }
 
-	public City getCityFrom() {
-		return cityFrom;
-	}
+  public void setLength(Double length) {
+    this.length = length;
+  }
 
-	public void setCityFrom(City cityFrom) {
-		this.cityFrom = cityFrom;
-	}
+  public Double getWeight() {
+    return weight;
+  }
 
-	public City getCityTo() {
-		return cityTo;
-	}
+  public void setWeight(Double weight) {
+    this.weight = weight;
+  }
 
-	public void setCityTo(City cityTo) {
-		this.cityTo = cityTo;
-	}
+  public Double getPrice() {
+    return price;
+  }
 
-	public Offer getOffer() {
-		return offer;
-	}
+  public void setPrice(Double price) {
+    this.price = price;
+  }
 
-	public void setOffer(Offer offer) {
-		this.offer = offer;
-	}
+  public Timestamp getRegistrationDate() {
+    return registrationDate;
+  }
 
-	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return Objects.equals(id, order.id)&&
-                Objects.equals(weight, order.weight);
-    }
+  public void setRegistrationDate(Timestamp registrationDate) {
+    this.registrationDate = registrationDate;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+  public Timestamp getArrivalDate() {
+    return arrivalDate;
+  }
 
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", height=" + height + ", width=" + width +
-				", length=" + length + ", weight=" + weight + ", price=" + price + 
-				", registrationDate=" + registrationDate + ", arrivalDate="	+ arrivalDate +
-				", description=" + description + "]";
-	}
-	
+  public void setArrivalDate(Timestamp arrivalDate) {
+    this.arrivalDate = arrivalDate;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public OrderStatus getOrderStatus() {
+    return orderStatus;
+  }
+
+  public void setOrderStatus(OrderStatus orderStatus) {
+    this.orderStatus = orderStatus;
+  }
+
+  public City getCityFrom() {
+    return cityFrom;
+  }
+
+  public void setCityFrom(City cityFrom) {
+    this.cityFrom = cityFrom;
+  }
+
+  public City getCityTo() {
+    return cityTo;
+  }
+
+  public void setCityTo(City cityTo) {
+    this.cityTo = cityTo;
+  }
+
+  public List<Offer> getOffer() {
+    return offers;
+  }
+
+  public void setOffer(List<Offer> offers) {
+    this.offers = offers;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Order order = (Order) o;
+    return Objects.equals(id, order.id)&&
+            Objects.equals(weight, order.weight);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
+  public String toString() {
+    return "Order [id=" + id + ", height=" + height + ", width=" + width +
+            ", length=" + length + ", weight=" + weight + ", price=" + price +
+            ", registrationDate=" + registrationDate + ", arrivalDate="	+ arrivalDate +
+            ", description=" + description + "]";
+  }
+
 }

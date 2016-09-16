@@ -2,7 +2,7 @@ package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "USERS")
@@ -24,8 +24,14 @@ public class User implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-   /*@OneToMany(mappedBy = "user")
-    private List<Car> cars = new ArrayList<>();*/
+    @OneToMany(mappedBy = "user")
+    private List<Car> cars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Feedback> feedbacks = new ArrayList<>();
 
     /* 10 is 1 star, 40 is 4 stars and so on */
     @Column(name = "rate")
@@ -95,14 +101,32 @@ public class User implements Serializable {
         return this;
     }
 
-    /*public List<Car> getCars() {
+    public List<Car> getCars() {
         return cars;
     }
 
     public User setCars(List<Car> cars) {
         this.cars = cars;
         return this;
-    }*/
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public User setOrders(List<Order> orders) {
+        this.orders = orders;
+        return this;
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public User setFeedbacks(List<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
+        return this;
+    }
 
     public Integer getRate() {
         return rate;

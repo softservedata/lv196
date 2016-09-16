@@ -1,9 +1,6 @@
 package com.softserve.edu.delivery.dto;
 
-import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
-
-import javax.persistence.*;
 
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.

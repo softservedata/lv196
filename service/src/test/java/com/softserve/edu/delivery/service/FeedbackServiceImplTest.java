@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
 import com.softserve.edu.delivery.utils.Jpa;

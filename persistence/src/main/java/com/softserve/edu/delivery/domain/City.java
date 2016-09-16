@@ -3,16 +3,27 @@ package com.softserve.edu.delivery.domain;
  * Author - Ivan Synyshyn
  */
 
-import javax.persistence.*;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "CITIES")
-public class City implements Comparable<City>{
+public class City implements Comparable<City> {
 
 	private Long cityId;
 	private String cityName;
 	private Region region;
+
+	public City() {
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,11 +61,13 @@ public class City implements Comparable<City>{
 		this.cityName = cityName;
 		this.region = region;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if ((obj == null) || this.getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if ((obj == null) || this.getClass() != obj.getClass())
+			return false;
 		City city = (City) obj;
 		return Objects.equals(cityName, city.cityName) && Objects.equals(region, city.region);
 	}
@@ -63,7 +76,7 @@ public class City implements Comparable<City>{
 	public int hashCode() {
 		return (int) (17 * cityId + 37 * cityName.length());
 	}
-	
+
 	@Override
 	public String toString() {
 		return "City [id = " + cityId + ", City = " + cityName + ", Region = " + region + "]";
