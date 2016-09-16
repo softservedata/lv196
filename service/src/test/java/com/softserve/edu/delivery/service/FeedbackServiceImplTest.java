@@ -5,6 +5,7 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
 import com.softserve.edu.delivery.utils.Jpa;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import javax.persistence.EntityManager;
@@ -91,6 +92,15 @@ public class FeedbackServiceImplTest {
         feedbackDTO.setText("changed text");
 
         return feedbackDTO;
+    }
+
+    @BeforeTest
+    private void checkIfTableHasEntries(){
+        long feedbackCount = getFeedbackCount();
+
+        if (feedbackCount < 10)
+            for (int i = 0; i < (10 - feedbackCount); i++)
+                fsi.save(createFeedbackDTOWithoutId());
     }
 
     @Test(enabled = true)
