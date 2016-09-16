@@ -76,7 +76,7 @@ public class FeedbackServiceImplTest {
         Long endId = new Long(0);
         try {
             tx.begin();
-            endId = (Long) entityManager.createQuery("select min(f.feedbackId) from Feedback f").getSingleResult();
+            endId = (Long) entityManager.createQuery("select max(f.feedbackId) from Feedback f").getSingleResult();
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();

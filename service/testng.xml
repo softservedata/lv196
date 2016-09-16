@@ -2,16 +2,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
 	<!-- 3 ERROR 5 WARNING 7 INFO -->
-	<test verbose="5" name="Test1">
-		<parameter name="language" value="english" />
-		<!--<classes>
-			<class name="com.softserve.edu.delivery.AppTest">
+	<test name="Test1">
+		<classes>
+			<class name="com.softserve.edu.delivery.service.FeedbackServiceImplTest">
 				<methods>
-					<include name="testApp" />
+					<!--include name="test" /-->
 				</methods>
 			</class>
-			 <class name="com.softserve.edu.delivery.SmokeTest" />
-		</classes>-->
+			 <!--class name="com.softserve.edu.delivery.SmokeTest" /-->
+		</classes>
 	</test> <!-- Test -->
 	<!-- - - - - - - - - - -->
 </suite> <!-- Suite -->

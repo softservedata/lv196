@@ -20,6 +20,7 @@ D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\deliv
 D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\delivery\dao\RegionDao.java
 D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\delivery\dao\impl\CarDaoImpl.java
 D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\delivery\utils\Jpa.java
+D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\delivery\dao\impl\RouteCityDaoImpl.java
 D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\delivery\dao\impl\StateDaoImpl.java
 D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\delivery\domain\Role.java
 D:\Google Диск\SoftServe\lv196\persistence\src\main\java\com\softserve\edu\delivery\domain\RouteStatus.java

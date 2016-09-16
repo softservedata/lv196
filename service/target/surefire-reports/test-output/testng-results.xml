@@ -1,11 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" total="0" passed="0">
+<testng-results skipped="0" failed="0" total="10" passed="10">
   <reporter-output>
   </reporter-output>
-  <suite name="Suite" duration-ms="4" started-at="2016-09-16T06:25:51Z" finished-at="2016-09-16T06:25:51Z">
+  <suite name="Suite" duration-ms="792" started-at="2016-09-16T07:32:01Z" finished-at="2016-09-16T07:32:01Z">
     <groups>
     </groups>
-    <test name="Test1" duration-ms="4" started-at="2016-09-16T06:25:51Z" finished-at="2016-09-16T06:25:51Z">
+    <test name="Test1" duration-ms="792" started-at="2016-09-16T07:32:01Z" finished-at="2016-09-16T07:32:01Z">
+      <class name="com.softserve.edu.delivery.service.FeedbackServiceImplTest">
+        <test-method status="PASS" signature="testChangeFeedbackStatus()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testChangeFeedbackStatus" duration-ms="622" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testChangeFeedbackStatus -->
+        <test-method status="PASS" signature="testCopyDTOToFeedback()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testCopyDTOToFeedback" duration-ms="0" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCopyDTOToFeedback -->
+        <test-method status="PASS" signature="testCopyFeedbackToDTO()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testCopyFeedbackToDTO" duration-ms="0" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCopyFeedbackToDTO -->
+        <test-method status="PASS" signature="testDelete()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testDelete" duration-ms="33" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDelete -->
+        <test-method status="PASS" signature="testFindAll1()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testFindAll1" duration-ms="22" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testFindAll1 -->
+        <test-method status="PASS" signature="testFindAll2()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testFindAll2" duration-ms="31" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testFindAll2 -->
+        <test-method status="PASS" signature="testFindOne()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testFindOne" duration-ms="6" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testFindOne -->
+        <test-method status="PASS" signature="testGetFeedbackById()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testGetFeedbackById" duration-ms="6" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetFeedbackById -->
+        <test-method status="PASS" signature="testSave()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testSave" duration-ms="26" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSave -->
+        <test-method status="PASS" signature="testUpdate()[pri:0, instance:com.softserve.edu.delivery.service.FeedbackServiceImplTest@4af46df3]" name="testUpdate" duration-ms="17" started-at="2016-09-16T10:32:01Z" finished-at="2016-09-16T10:32:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdate -->
+      </class> <!-- com.softserve.edu.delivery.service.FeedbackServiceImplTest -->
     </test> <!-- Test1 -->
   </suite> <!-- Suite -->
 </testng-results>

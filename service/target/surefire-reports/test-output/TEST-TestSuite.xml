@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="TestSuite" time="0.738" tests="0" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="TestSuite" time="7.169" tests="10" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_102\jre\bin"/>
@@ -64,4 +64,14 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
+  <testcase name="testChangeFeedbackStatus" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.622"/>
+  <testcase name="testCopyDTOToFeedback" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.001"/>
+  <testcase name="testCopyFeedbackToDTO" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0"/>
+  <testcase name="testDelete" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.077"/>
+  <testcase name="testFindAll1" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.1"/>
+  <testcase name="testFindAll2" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.035"/>
+  <testcase name="testFindOne" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.003"/>
+  <testcase name="testGetFeedbackById" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.003"/>
+  <testcase name="testSave" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.006"/>
+  <testcase name="testUpdate" classname="com.softserve.edu.delivery.service.FeedbackServiceImplTest" time="0.001"/>
 </testsuite>
