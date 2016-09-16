@@ -1,12 +1,12 @@
 package com.softserve.edu.delivery.domain;
 
 public enum  OrderStatus {
-    NEW("New"),
-    PENDING("Pending"),
+    OPEN("Open"),
+    IN_PROGRESS("In progress"),
     APPROVED("Approved"),
     ACTIVE("Active"),
     SUBMITTED("Submitted"),
-    FINISHED("Finished");
+    CLOSED("Closed");
 
     String name;
 

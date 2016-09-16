@@ -2,10 +2,10 @@ package com.softserve.edu.delivery.domain;
 
 
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,19 +29,19 @@ public class Order {
   private Long id;
 
   @Column(name = "height")
-  private Double height;
+  private BigDecimal height;
 
   @Column(name = "width")
-  private Double width;
+  private BigDecimal width;
 
   @Column(name = "length")
-  private Double length;
+  private BigDecimal length;
 
   @Column(name = "weight")
-  private Double weight;
+  private BigDecimal weight;
 
   @Column(name = "price")
-  private Double price;
+  private BigDecimal price;
 
   @Column(name = "registration_date")
   private Timestamp registrationDate;
@@ -53,8 +53,8 @@ public class Order {
   private String description;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
-  private User user;
+  @JoinColumn(name = "customer_user_id")
+  private User customer;
 
   @ManyToOne
   @JoinColumn(name = "from_id", referencedColumnName = "city_id")
@@ -79,112 +79,126 @@ public class Order {
     return id;
   }
 
-  public void setId(Long id) {
+  public Order setId(Long id) {
     this.id = id;
+    return this;
   }
 
-  public Double getHeight() {
+  public BigDecimal getHeight() {
     return height;
   }
 
-  public void setHeight(Double height) {
+  public Order setHeight(BigDecimal height) {
     this.height = height;
+    return this;
   }
 
-  public Double getWidth() {
+  public BigDecimal getWidth() {
     return width;
   }
 
-  public void setWidth(Double width) {
+  public Order setWidth(BigDecimal width) {
     this.width = width;
+    return this;
   }
 
-  public Double getLength() {
+  public BigDecimal getLength() {
     return length;
   }
 
-  public void setLength(Double length) {
+  public Order setLength(BigDecimal length) {
     this.length = length;
+    return this;
   }
 
-  public Double getWeight() {
+  public BigDecimal getWeight() {
     return weight;
   }
 
-  public void setWeight(Double weight) {
+  public Order setWeight(BigDecimal weight) {
     this.weight = weight;
+    return this;
   }
 
-  public Double getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 
-  public void setPrice(Double price) {
+  public Order setPrice(BigDecimal price) {
     this.price = price;
+    return this;
   }
 
   public Timestamp getRegistrationDate() {
     return registrationDate;
   }
 
-  public void setRegistrationDate(Timestamp registrationDate) {
+  public Order setRegistrationDate(Timestamp registrationDate) {
     this.registrationDate = registrationDate;
+    return this;
   }
 
   public Timestamp getArrivalDate() {
     return arrivalDate;
   }
 
-  public void setArrivalDate(Timestamp arrivalDate) {
+  public Order setArrivalDate(Timestamp arrivalDate) {
     this.arrivalDate = arrivalDate;
+    return this;
   }
 
   public String getDescription() {
     return description;
   }
 
-  public void setDescription(String description) {
+  public Order setDescription(String description) {
     this.description = description;
+    return this;
   }
 
-  public User getUser() {
-    return user;
+  public User getCustomer() {
+    return customer;
   }
 
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public OrderStatus getOrderStatus() {
-    return orderStatus;
-  }
-
-  public void setOrderStatus(OrderStatus orderStatus) {
-    this.orderStatus = orderStatus;
+  public Order setCustomer(User customer) {
+    this.customer = customer;
+    return this;
   }
 
   public City getCityFrom() {
     return cityFrom;
   }
 
-  public void setCityFrom(City cityFrom) {
+  public Order setCityFrom(City cityFrom) {
     this.cityFrom = cityFrom;
+    return this;
   }
 
   public City getCityTo() {
     return cityTo;
   }
 
-  public void setCityTo(City cityTo) {
+  public Order setCityTo(City cityTo) {
     this.cityTo = cityTo;
+    return this;
   }
 
-  public List<Offer> getOffer() {
+  public List<Offer> getOffers() {
     return offers;
   }
 
-  public void setOffer(List<Offer> offers) {
+  public Order setOffers(List<Offer> offers) {
     this.offers = offers;
+    return this;
+  }
+
+  public OrderStatus getOrderStatus() {
+    return orderStatus;
+  }
+
+  public Order setOrderStatus(OrderStatus orderStatus) {
+    this.orderStatus = orderStatus;
+    return this;
   }
 
   @Override
@@ -192,8 +206,7 @@ public class Order {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Order order = (Order) o;
-    return Objects.equals(id, order.id)&&
-            Objects.equals(weight, order.weight);
+    return Objects.equals(id, order.id);
   }
 
   @Override
