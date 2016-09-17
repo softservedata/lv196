@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
+import com.softserve.edu.delivery.dao.OfferDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.*;
@@ -22,10 +23,12 @@ public class RouteServiceImpl implements RouteService {
 
     private OrderDao orderDao;
     private RouteCityDao routeCityDao;
+    private OfferDao offerDao;
 
-    public RouteServiceImpl(OrderDao orderDao, RouteCityDao routeCityDao) {
+    public RouteServiceImpl(OrderDao orderDao, RouteCityDao routeCityDao, OfferDao offerDao) {
         this.orderDao = orderDao;
         this.routeCityDao = routeCityDao;
+        this.offerDao = offerDao;
     }
 
     /**This method is responsible to get information(tracking) about user's order
@@ -40,6 +43,7 @@ public class RouteServiceImpl implements RouteService {
         }
         Order order;
         List<RouteCities> trackingList;
+        List<Offer> offerList;
         EntityTransaction tx = null;
         try {
             EntityManager em = Jpa.getEntityManager();
@@ -47,22 +51,25 @@ public class RouteServiceImpl implements RouteService {
             tx.begin();
             order = orderDao.findOne(id).get(); // find order by given id
             trackingList = routeCityDao.getRouteCitiesByOrder(order); //get all tracked cities
-            tx.commit();
+            offerList = offerDao.getAllOffersByOrder(order);
         }catch (RuntimeException ex) {
             if (tx != null) tx.rollback();
             throw ex;
         }
-        if (order == null || trackingList == null) {
+        if (order == null) {
+            tx.commit();
             throw new IllegalArgumentException("id doesn't exist");
         }
-        return getRouteDTO(order, trackingList);
+        RouteDTO result = getRouteDTO(order, trackingList, offerList);
+        tx.commit();
+        return result;
     }
 
 
     //<----------------------------------------Private--------------------------------------->
 
     //Retrieve all parameters
-    private static RouteDTO getRouteDTO(Order order, List<RouteCities> trackingList) {
+    private static RouteDTO getRouteDTO(Order order, List<RouteCities> trackingList, List<Offer> offerList) {
         City lastCity = calcLastVisitedCity(trackingList); // get last visited city
         Timestamp lastTime = getLastTime(trackingList); // get time when visited last city
         Timestamp expectedTime = order.getArrivalDate(); //get expected arrival time
@@ -71,14 +78,17 @@ public class RouteServiceImpl implements RouteService {
         BigDecimal width = order.getWidth();
         BigDecimal length = order.getLength();
         BigDecimal weight = order.getWeight();
-        User owner = order.getCustomer();
-        User transporter = null; //todo: realize it later
+        User owner = order.getCustomer(); //get customer
+        User transporter = getTransporterByOffers(offerList); // get transporter from offer which was improved
         OrderStatus status = order.getOrderStatus();
         //Return result
         return new RouteDTO(lastCity, expectedTime, lastTime, visitedCities, height, width, length, weight, owner, transporter, status);
     }
 
     private static City calcLastVisitedCity(List<RouteCities> trackingList) {
+        if (trackingList == null || trackingList.isEmpty()) {
+            return null;
+        }
         City result = null;
         Long temp = 0L;
         for (RouteCities rc : trackingList) {
@@ -91,6 +101,9 @@ public class RouteServiceImpl implements RouteService {
     }
 
     private static Timestamp getLastTime(List<RouteCities> trackingList) {
+        if (trackingList == null || trackingList.isEmpty()) {
+            return null;
+        }
         Timestamp result = null;
         Long temp = 0L;
         for (RouteCities rc : trackingList) {
@@ -102,10 +115,26 @@ public class RouteServiceImpl implements RouteService {
     }
 
     private static List<City> getAllVisitedCities(List<RouteCities> trackingList) {
+        if (trackingList == null || trackingList.isEmpty()) {
+            return null;
+        }
         List<City> result = new ArrayList<>();
         for (RouteCities tc : trackingList) {
             result.add(tc.getCity());
         }
         return result;
+    }
+
+    private static User getTransporterByOffers(List<Offer> offerList) {
+        if (offerList == null || offerList.isEmpty()) {
+            return null;
+        }
+        User transporter = null;
+        for (Offer offer : offerList) {
+            if (offer.getApproved()) {
+                transporter = offer.getCar().getUser();
+            }
+        }
+        return transporter;
     }
 }
