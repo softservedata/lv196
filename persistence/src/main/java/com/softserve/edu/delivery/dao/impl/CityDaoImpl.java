@@ -18,6 +18,7 @@ public class CityDaoImpl extends BaseDaoImpl<City, Long> implements CityDao {
     public List<City> getCityByName(String name) {
         EntityManager em = super.getEntityManager();
         Query query = em.createQuery("select from City where cityName = :name");
+        query.setParameter("name", name);
         return query.getResultList();
     }
 }

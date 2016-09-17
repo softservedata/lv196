@@ -8,9 +8,11 @@ import java.util.List;
 /**
  * Created by Ivan on 16.09.2016.
  */
-public class OrdersForTranspImpl implements OrdersForTranspService {
+public class OrdersForTranspServiceImpl implements OrdersForTranspService {
     @Override
-    public List<Order> getOrdersToOffer() {
+    public List<Order> getOrdersToOffer(String name) {
+
+
         return null;
     }
 }
