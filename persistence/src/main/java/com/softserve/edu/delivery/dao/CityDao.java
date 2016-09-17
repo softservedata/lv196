@@ -4,6 +4,10 @@ package com.softserve.edu.delivery.dao;
  */
 import com.softserve.edu.delivery.domain.City;
 
+import java.util.List;
+
 public interface CityDao extends BaseDao<City, Long> {
+
+    List<City> getCityByName (String name);
 
 }
