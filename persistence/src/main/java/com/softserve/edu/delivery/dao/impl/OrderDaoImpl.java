@@ -44,7 +44,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByCityFrom(String name) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select from Order where cityFrom = :name");
+        Query query = em.createQuery("select from Order o where o.cityFrom = :name");
         query.setParameter("name", name);
         return query.getResultList();
     }
@@ -52,7 +52,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByCityTo(String name) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select from Order where cityTo = :name");
+        Query query = em.createQuery("select from Order o where o.cityTo = :name");
         query.setParameter("name", name);
         return query.getResultList();
     }
@@ -60,7 +60,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByWeight(BigDecimal weight) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select from Order where weight = :weight");
+        Query query = em.createQuery("select from Order o where o.weight <= :weight");
         query.setParameter("weight", weight);
         return query.getResultList();
     }
@@ -68,7 +68,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByArrivalDate(Timestamp arrivalDate) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select from Order where arrivalDate = :arrivalDate");
+        Query query = em.createQuery("select from Order o where o.arrivalDate <= :arrivalDate");
         query.setParameter("arrivalDate", arrivalDate);
         return query.getResultList();
     }
