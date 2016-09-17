@@ -9,8 +9,8 @@ import com.softserve.edu.delivery.utils.Jpa;
 public class App {
     public static void main(String[] args) {
         try {
-            OrderService orderService = new OrderServiceImpl(new OrderDaoImpl());
-            orderService.findAllActiveOrders("blabla@exampl.com", 1, 2);
+           /* OrderService orderService = new OrderServiceImpl(new OrderDaoImpl());
+            orderService.findAllActiveOrders("blabla@exampl.com", 1, 2);*/
         } finally {
             Jpa.close();
         }
