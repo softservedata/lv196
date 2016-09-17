@@ -21,6 +21,22 @@ public class OrdersForTranspDTO {
     public OrdersForTranspDTO() {
     }
 
+    public OrdersForTranspDTO(City cityFrom,
+                              City cityTo,
+                              User user,
+                              Double weight,
+                              Double volume,
+                              Date startDate,
+                              Date endDate) {
+        this.cityFrom = cityFrom;
+        this.cityTo = cityTo;
+        this.user = user;
+        this.weight = weight;
+        this.volume = volume;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public City getCityFrom() {
         return cityFrom;
     }
