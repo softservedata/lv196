@@ -129,12 +129,11 @@ public class RouteServiceImpl implements RouteService {
         if (offerList == null || offerList.isEmpty()) {
             return null;
         }
-        User transporter = null;
         for (Offer offer : offerList) {
             if (offer.getApproved()) {
-                transporter = offer.getCar().getUser();
+                return offer.getCar().getUser();
             }
         }
-        return transporter;
+        return null;
     }
 }
