@@ -12,20 +12,30 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
+ * implementation for business logic of the feedback part of the application
  */
 public class FeedbackServiceImpl implements FeedbackService {
 
-    private EntityManager entityManager = Jpa.getEntityManager();
     private FeedbackDao feedbackDao = new FeedbackDaoImpl();
-    EntityTransaction tx = entityManager.getTransaction();
 
     public FeedbackServiceImpl() {
     }
 
+    public FeedbackServiceImpl(FeedbackDao feedbackDao) {
+        this.feedbackDao = feedbackDao;
+    }
+
+    /**
+     * @param feedback of Feddback class
+     * @return object of FeddbackDTO.class
+     * <p>
+     * copies all the fields of an object of Feedback.class to an object of FeedbackDTO.class
+     */
     public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setFeedbackId(feedback.getFeedbackId());
@@ -38,6 +48,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDTO;
     }
 
+    /**
+     * @param feedbackDTO of Feddback class
+     * @return object of Feddback.class
+     * <p>
+     * copies all the fields of an object of FeedbackDTO.class to an object of Feedback.class
+     */
     public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
@@ -50,50 +66,68 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<FeedbackDTO> getAllFeedbacks(int idFrom, int count) {
+    /**
+     * @param int idFrom, int number
+     * @return List<FeedbackDTO>
+     *
+     * accepts start id of a feedback in the db and number of feedbacks. Forms list of FeedbackDTO object,
+     * whose ids are within the range.
+     */
+    public List<FeedbackDTO> getAllFeedbacksInRange(int idFrom, int number) {
 
         List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
 
         Optional<Feedback> oFeedback;
 
-        entityManager.getTransaction().begin();
+        //increment of i is performed only in case, when a feedback with given id is found - since
+        //ids in feedback table will not be in perfect sequence - gaps will be present, caused by
+        //deleting feedbacks
 
-        for (long i = idFrom; i < idFrom + count;) {
+        long i = idFrom;
+        int count = 0;
+
+        while(count < number) {
             oFeedback = feedbackDao.findOne(i);
             if (oFeedback.isPresent()) {
                 feedbackDTOs.add(copyFeedbackToDTO(oFeedback.get()));
-                i++;
+                count++;
             }
+            i++;
         }
-
-        entityManager.getTransaction().commit();
 
         return feedbackDTOs;
 
     }
 
     @Override
+    /**
+     * @param long id - id of a feedback in db
+     * @return object of FeedbackDTO.class
+     * looks for a feedback with a given id
+     */
     public FeedbackDTO getFeedbackById(long id) {
 
         FeedbackDTO feedbackDTO = null;
 
-        entityManager.getTransaction().begin();
-
         Optional<Feedback> oFeedback = feedbackDao.findOne(id);
 
-        if (oFeedback.isPresent())
+        if (oFeedback.isPresent()) {
             feedbackDTO = copyFeedbackToDTO(oFeedback.get());
-
-        entityManager.getTransaction().commit();
+        } else {
+            throw new NoSuchElementException();
+        }
 
         return feedbackDTO;
 
     }
 
     @Override
+    /**
+     * @param long id, boolean status
+     *
+     * sets a status of a feedback with the id equal to variable status
+     */
     public void changeFeedbackStatus(long id, boolean status) {
-
-        entityManager.getTransaction().begin();
 
         Optional<Feedback> oFeedback = feedbackDao.findOne(id);
 
@@ -101,12 +135,19 @@ public class FeedbackServiceImpl implements FeedbackService {
             Feedback feedback = oFeedback.get();
             feedback.setApproved(status);
             feedbackDao.update(feedback);
+        } else {
+            throw new NoSuchElementException();
         }
 
-        entityManager.getTransaction().commit();
+
     }
 
     @Override
+    /**
+     * @param feedbackDTO
+     *
+     * transforms the object of FeedbackDTO.class to Feedback.class, which is saved to the db.
+     */
     public void save(FeedbackDTO feedbackDTO) {
         TransactionManager.withTransaction(() ->
                 feedbackDao.save(copyDTOToFeedback(feedbackDTO))
@@ -114,6 +155,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    /**
+     * @param feedbackDTO
+     *
+     * transforms the object of FeedbackDTO.class to Feedback.class, which is updated in the db.
+     */
     public void update(FeedbackDTO feedbackDTO) {
 
         TransactionManager.withTransaction(() ->
@@ -122,25 +168,38 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    /**
+     * @param feedbackDTO
+     *
+     * transforms the object of FeedbackDTO.class to Feedback.class, which is deleted from the db.
+     */
     public void delete(Long id) {
 
-        TransactionManager.withTransaction(() ->
-                feedbackDao.delete(feedbackDao.findOne(id).get())
-        );
+        TransactionManager.withTransaction(() -> {
+            if (feedbackDao.findOne(id).isPresent()) {
+                feedbackDao.delete(feedbackDao.findOne(id).get());
+            } else {
+                throw new NoSuchElementException();
+            }
+        });
     }
 
     @Override
-    public FeedbackDTO findOne(FeedbackDTO feedbackDTO) {
+    /**
+     * @param feedbackDTO
+     * @return object of FeedbackDTO.class
+     *
+     * looks for a feedback with the id of feedbackDTO object and return object of Feedback.class with the id.
+     * If it is not found - throws NoSuchElementException
+     */
+    public FeedbackDTO findOne(Long id) {
 
-        Feedback feedback = new Feedback();
+        Feedback feedback = null;
 
-        try {
-            tx.begin();
-            feedback = feedbackDao.findOne(feedbackDTO.getFeedbackId()).get();
-            tx.commit();
-
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
+        if (feedbackDao.findOne(id).isPresent()) {
+            feedback = feedbackDao.findOne(id).get();
+        } else {
+            throw new NoSuchElementException();
         }
 
         return copyFeedbackToDTO(feedback);
@@ -148,7 +207,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<FeedbackDTO> findAll() {
+    /**
+     * @return List of FeedbackDTO.class
+     *
+     * looks for all feedbacks and returns list of found feedbacks
+     *
+     */
+    public List<FeedbackDTO> getAllFeedbacks() {
         List<FeedbackDTO> listDTO = new ArrayList<>();
         List<Feedback> list = feedbackDao.findAll();
 
@@ -158,6 +223,4 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         return listDTO;
     }
-
-
 }

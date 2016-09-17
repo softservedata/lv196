@@ -4,7 +4,12 @@
 	<!-- 3 ERROR 5 WARNING 7 INFO -->
 	<test name="Test1">
 		<classes>
-			<class name="com.softserve.edu.delivery.service.FeedbackServiceImplTest">
+			<class name="com.softserve.edu.delivery.service.FeedbackServiceImplTestDBTest">
+				<methods>
+					<!--include name="test" /-->
+				</methods>
+			</class>
+			<class name="com.softserve.edu.delivery.service.FeedbackServiceImplMockTest">
 				<methods>
 					<!--include name="test" /-->
 				</methods>

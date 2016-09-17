@@ -3,10 +3,16 @@ package com.softserve.edu.delivery.dto;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 
+import java.io.Serializable;
+
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
+ *
+ * serves as a transport object between persistence and service layers
  */
-public class FeedbackDTO {
+public class FeedbackDTO implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     public FeedbackDTO() {
     }

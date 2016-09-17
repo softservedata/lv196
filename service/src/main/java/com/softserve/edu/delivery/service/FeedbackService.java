@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface FeedbackService {
 
-    List<FeedbackDTO> getAllFeedbacks(int from, int count);
+    List<FeedbackDTO> getAllFeedbacksInRange(int from, int count);
 
     FeedbackDTO getFeedbackById(long id);
 
@@ -28,8 +28,8 @@ public interface FeedbackService {
 
     public void delete(Long id);
 
-    public FeedbackDTO findOne(FeedbackDTO feedbackDTO);
+    public FeedbackDTO findOne(Long id);
 
-    public List<FeedbackDTO> findAll();
+    public List<FeedbackDTO> getAllFeedbacks();
 
 }
