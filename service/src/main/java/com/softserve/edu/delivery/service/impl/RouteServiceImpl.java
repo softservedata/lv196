@@ -9,6 +9,7 @@ import com.softserve.edu.delivery.utils.Jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,11 +67,11 @@ public class RouteServiceImpl implements RouteService {
         Timestamp lastTime = getLastTime(trackingList); // get time when visited last city
         Timestamp expectedTime = order.getArrivalDate(); //get expected arrival time
         List<City> visitedCities = getAllVisitedCities(trackingList); // get all visited places
-        Double height = order.getHeight(); //Get baggage parameters
-        Double width = order.getWidth();
-        Double length = order.getLength();
-        Double weight = order.getWeight();
-        User owner = order.getUser();
+        BigDecimal height = order.getHeight(); //Get baggage parameters
+        BigDecimal width = order.getWidth();
+        BigDecimal length = order.getLength();
+        BigDecimal weight = order.getWeight();
+        User owner = order.getCustomer();
         User transporter = null; //todo: realize it later
         OrderStatus status = order.getOrderStatus();
         //Return result

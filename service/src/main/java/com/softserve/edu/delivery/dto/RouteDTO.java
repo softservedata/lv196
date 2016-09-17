@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.domain.User;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -22,15 +23,15 @@ public class RouteDTO {
 
     private List<City> visitedLocations;
 
-    private Double height;
+    private BigDecimal height;
 
-    private Double width;
+    private BigDecimal width;
 
-    private Double length;
+    private BigDecimal length;
 
-    private Double weight;
+    private BigDecimal weight;
 
-    private User owner;
+    private User customer;
 
     private User transporter;
 
@@ -40,11 +41,11 @@ public class RouteDTO {
                     Timestamp expectedArrivalTime,
                     Timestamp lastTimeVisited,
                     List<City> visitedLocations,
-                    Double height,
-                    Double width,
-                    Double length,
-                    Double weight,
-                    User owner,
+                    BigDecimal height,
+                    BigDecimal width,
+                    BigDecimal length,
+                    BigDecimal weight,
+                    User costumer,
                     User transporter,
                     OrderStatus orderStatus) {
         this.lastLocation = lastLocation;
@@ -55,7 +56,7 @@ public class RouteDTO {
         this.width = width;
         this.length = length;
         this.weight = weight;
-        this.owner = owner;
+        this.customer = costumer;
         this.transporter = transporter;
         this.orderStatus = orderStatus;
     }
@@ -84,28 +85,28 @@ public class RouteDTO {
         return this;
     }
 
-    public RouteDTO setHeight(Double height) {
+    public RouteDTO setHeight(BigDecimal height) {
         this.height = height;
         return this;
     }
 
-    public RouteDTO setWidth(Double width) {
+    public RouteDTO setWidth(BigDecimal width) {
         this.width = width;
         return this;
     }
 
-    public RouteDTO setLength(Double length) {
+    public RouteDTO setLength(BigDecimal length) {
         this.length = length;
         return this;
     }
 
-    public RouteDTO setWeight(Double weight) {
+    public RouteDTO setWeight(BigDecimal weight) {
         this.weight = weight;
         return this;
     }
 
-    public RouteDTO setOwner(User owner) {
-        this.owner = owner;
+    public RouteDTO setCustomer(User customer) {
+        this.customer = customer;
         return this;
     }
 
@@ -137,24 +138,24 @@ public class RouteDTO {
         return visitedLocations;
     }
 
-    public Double getHeight() {
+    public BigDecimal getHeight() {
         return height;
     }
 
-    public Double getWidth() {
+    public BigDecimal getWidth() {
         return width;
     }
 
-    public Double getLength() {
+    public BigDecimal getLength() {
         return length;
     }
 
-    public Double getWeight() {
+    public BigDecimal getWeight() {
         return weight;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getCustomer() {
+        return customer;
     }
 
     public User getTransporter() {
@@ -176,7 +177,7 @@ public class RouteDTO {
                 ", width=" + width +
                 ", length=" + length +
                 ", weight=" + weight +
-                ", owner=" + owner +
+                ", customer=" + customer +
                 ", transporter=" + transporter +
                 ", orderStatus=" + orderStatus +
                 '}';
