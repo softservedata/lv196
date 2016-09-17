@@ -5,6 +5,8 @@ import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.OrderStatus;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface OrderDao extends BaseDao<Order, Long> {
@@ -16,4 +18,14 @@ public interface OrderDao extends BaseDao<Order, Long> {
 
 //    As customer I want to write transporter feedback.
     String feedback(String order_id, Feedback feedback);
+
+    //	As transporter I want to choose orders by filter.
+    List<Order> getOrderByCityFrom(String name);
+    List<Order> getOrderByCityTo(String name);
+    List<Order> getOrderByWeight(BigDecimal weight);
+    List<Order> getOrderByArrivalDate(Timestamp arrivalDate);
+
+
+
+
 }

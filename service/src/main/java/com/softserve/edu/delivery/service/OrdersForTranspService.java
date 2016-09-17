@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface OrdersForTranspService {
 
-    List<Order> getOrdersToOffer();
+    List<Order> getOrdersToOffer(String name);
 
 }
