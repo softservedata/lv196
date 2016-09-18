@@ -1,4 +1,4 @@
-package java.com.softserve.edu.delivery.service.tracking;
+package com.softserve.edu.delivery.service.tracking;
 
 
 import com.softserve.edu.delivery.dao.OfferDao;
