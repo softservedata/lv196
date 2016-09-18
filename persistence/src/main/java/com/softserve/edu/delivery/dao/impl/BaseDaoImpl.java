@@ -24,8 +24,8 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     }
 
     @Override
-    public void update(T element) {
-        em.merge(element);
+    public T update(T element) {
+         return em.merge(element);
     }
 
     @Override
@@ -41,11 +41,6 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     @Override
     public List<T> findAll() {
         return em.createQuery("From " + clazz.getSimpleName(), clazz).getResultList();
-    }
-    
-    @Override
-    public T updateWithReturn(T element) {
-        return em.merge(element);
     }
 
     protected EntityManager getEntityManager() {

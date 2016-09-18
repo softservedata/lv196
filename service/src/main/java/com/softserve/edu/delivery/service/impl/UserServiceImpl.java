@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
 						.findOne(mail)
 						.map(user -> {	
 						user.setBlocked(blocked);
-						return userDao.updateWithReturn(user);
+						return userDao.update(user);
 						})
 						.map(UserProfileDto::create)
 						.orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"))

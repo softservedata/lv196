@@ -8,7 +8,7 @@ public interface BaseDao<T, ID extends Serializable> {
 
     void save(T element);
 
-    void update(T element);
+    T update(T element);
 
     void delete(T element);
 
@@ -16,5 +16,4 @@ public interface BaseDao<T, ID extends Serializable> {
 
     List<T> findAll();
     
-    T updateWithReturn(T element);
 }
