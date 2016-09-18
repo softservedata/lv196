@@ -1,20 +1,22 @@
 package com.softserve.edu.delivery.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DriverRegistrationDto extends UserRegistrationDto{
+public class DriverRegistrationDTO extends UserRegistrationDTO{
 
-    List<CarDto> carDtos;
+    List<CarDTO> carsDto;
 
-    public DriverRegistrationDto() {
+    public DriverRegistrationDTO() {
+        new ArrayList<CarDTO>();
     }
 
-    public List<CarDto> getCarDtos() {
-        return carDtos;
+    public List<CarDTO> getCarDtos() {
+        return carsDto;
     }
 
-    public void setCarDtos(List<CarDto> carDtos) {
-        this.carDtos = carDtos;
+    public void setCarDtos(List<CarDTO> carDtos) {
+        this.carsDto = carDtos;
     }
     
 }

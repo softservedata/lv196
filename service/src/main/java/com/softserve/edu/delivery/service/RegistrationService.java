@@ -1,10 +1,8 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.dto.DriverRegistrationDto;
-import com.softserve.edu.delivery.dto.UserRegistrationDto;
+import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 
 public interface RegistrationService {
 
-    void register(UserRegistrationDto userRegistrationDto);
-//  void register(DriverRegistrationDto driverRegistrationDto);
+    void register(UserRegistrationDTO userRegistrationDto);
 }
