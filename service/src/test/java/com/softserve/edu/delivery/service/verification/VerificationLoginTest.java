@@ -1,4 +1,4 @@
-package java.com.softserve.edu.delivery.service.verification;
+package com.softserve.edu.delivery.service.verification;
 
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
