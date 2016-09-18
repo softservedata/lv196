@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.dto;
 
-public class UserRegistrationDto {
+public class UserRegistrationDTO {
 
 	private String email;
 	private String firstName;
@@ -11,7 +11,7 @@ public class UserRegistrationDto {
 	private String passport;
 	private String photoURL;
 	
-    public UserRegistrationDto() {
+    public UserRegistrationDTO() {
     }
     
     public String getEmail() {
