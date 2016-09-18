@@ -83,4 +83,17 @@ public class OrderServiceImpl implements OrderService {
         });
         return dto.getText();
     }
+
+    @Override
+    public List<OrderForListDto> changeStatus(String order_id, Boolean offerStatus) {
+        return TransactionManager.withTransaction(() ->
+                orderDao
+                        .changeStatus(order_id, offerStatus)
+                        .stream()
+                        .map(OrderForListDto::of)
+                        .collect(Collectors.toList())
+        );
+    }
+
+
 }
