@@ -24,8 +24,22 @@ public class OfferDaoImpl extends BaseDaoImpl<Offer, Long> implements OfferDao {
     @SuppressWarnings("unchecked")
     public List<Offer> getAllOffersByOrder(Order order) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select of, o from Order of join of.offers o where o.id = :id ");
+        //Query query = em.createQuery("select of, o from Order of join of.offers o where o.id = :id "); //before adding bidirection references
+        Query query = em.createQuery("select o from Offer o where o.order.id = :id");
         query.setParameter("id", order.getId());
         return (List<Offer>) query.getResultList();
+    }
+
+    /**Method returns offer by given order where offer has status - is aprroved
+     * Author - Petro Shtenovych
+     * */
+    @Override
+    public Offer getApprovedOfferByOrder(Order order) {
+        EntityManager em = super.getEntityManager();
+        Query query =
+                em.createQuery("select o from Offer o where o.order.id = :id and o.isApproved = :isApproved");
+        query.setParameter("id", order.getId());
+        query.setParameter("isApproved", true);
+        return (Offer) query.getSingleResult();
     }
 }

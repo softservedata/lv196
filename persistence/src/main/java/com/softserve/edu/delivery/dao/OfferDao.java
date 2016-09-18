@@ -11,4 +11,6 @@ public interface OfferDao extends BaseDao<Offer, Long> {
 
 
     List<Offer> getAllOffersByOrder(Order order);
+
+    Offer getApprovedOfferByOrder(Order order);
 }
