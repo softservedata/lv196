@@ -3,9 +3,15 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
+import com.softserve.edu.delivery.dto.UserProfileDto;
+import com.softserve.edu.delivery.dto.UserProfileFilterDto;
 import com.softserve.edu.delivery.service.UserService;
 import com.softserve.edu.delivery.utils.Jpa;
 import com.softserve.edu.delivery.utils.TransactionManager;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -102,4 +108,44 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+    
+    
+    
+    
+	@Override
+	public List<UserProfileDto> getAllUsers(int from, int count, UserProfileFilterDto filter) {
+		return TransactionManager.withTransaction(() ->
+				userDao
+						.findAll().stream()
+						.skip(from)
+						.filter(filter::test)
+						.map(UserProfileDto::create)
+						.limit(count)
+						.collect(Collectors.toList())
+				);
+	}
+
+	@Override
+	public UserProfileDto changeUserStatus(String mail, boolean blocked) {
+		return TransactionManager.withTransaction(() ->
+				userDao
+						.findOne(mail)
+						.map(user -> {	
+						user.setBlocked(blocked);
+						return userDao.updateWithReturn(user);
+						})
+						.map(UserProfileDto::create)
+						.orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"))
+				);
+	}
+	
+	@Override
+	public List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map) {
+		return TransactionManager.withTransaction(() ->
+				map
+					.keySet().stream()
+					.map(mail -> changeUserStatus(mail, map.get(mail)))
+					.collect(Collectors.toList())
+				);			
+	}
 }

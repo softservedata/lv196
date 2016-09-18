@@ -15,4 +15,6 @@ public interface BaseDao<T, ID extends Serializable> {
     Optional<T> findOne(ID id);
 
     List<T> findAll();
+    
+    T updateWithReturn(T element);
 }
