@@ -67,18 +67,33 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String addFeedback(FeedbackDTO dto, String email) {
-        User user = userDao.findOne(email)
-                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-        Order order = orderDao.findOne(dto.getOrder().getId())
-                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrder().getId()));
+        TransactionManager.withTransaction(() -> {
+            User user = userDao.findOne(email)
+                    .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+            Order order = orderDao.findOne(dto.getOrder().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrder().getId()));
 
-        Feedback feedback= new Feedback();
-        feedback.setOrder(order);
-        feedback.setUser(user);
-        feedback.setRate(dto.getRate());
-        feedback.setText(dto.getText());
-        feedback.setApproved(false);
-        feedbackDao.save(feedback);
-        return feedback.getText();
+            Feedback feedback = new Feedback();
+            feedback.setOrder(order);
+            feedback.setUser(user);
+            feedback.setRate(dto.getRate());
+            feedback.setText(dto.getText());
+            feedback.setApproved(false);
+            feedbackDao.save(feedback);
+        });
+        return dto.getText();
     }
+
+    @Override
+    public List<OrderForListDto> changeStatus(String order_id, Boolean offerStatus) {
+        return TransactionManager.withTransaction(() ->
+                orderDao
+                        .changeStatus(order_id, offerStatus)
+                        .stream()
+                        .map(OrderForListDto::of)
+                        .collect(Collectors.toList())
+        );
+    }
+
+
 }

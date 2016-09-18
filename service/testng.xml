@@ -17,5 +17,13 @@
 			 <!--class name="com.softserve.edu.delivery.SmokeTest" /-->
 		</classes>
 	</test> <!-- Test -->
+	
+	<test name="verificationUser">
+		<classes>
+			<class name="java.com.softserve.edu.delivery.service.verification.VerificationLoginTest"/>
+		</classes>
+	</test>
 	<!-- - - - - - - - - - -->
 </suite> <!-- Suite -->
+
+
