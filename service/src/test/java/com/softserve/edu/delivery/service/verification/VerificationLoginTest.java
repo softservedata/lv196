@@ -46,23 +46,23 @@ public class VerificationLoginTest {
     UserAuthDTO userDTO5 = new UserAuthDTO(user5.getEmail(), user5.getPassword());
 
     //Wrong credentials
-    UserAuthDTO userDtoNULL = null; //expect IllegalArgumentException
-
+    UserAuthDTO NULL = null; //expect IllegalArgumentException
     UserAuthDTO UserDTOwrong2 = new UserAuthDTO(null, null);
     UserAuthDTO UserDTOwrong3 = new UserAuthDTO(null, "Password");
     UserAuthDTO UserDTOwrong4 = new UserAuthDTO("wrongUser@domain.com", null);
     UserAuthDTO UserDTOwrong5 = new UserAuthDTO("notExist@domain.com", "notExistPassword");
 
-    @BeforeTest
+    @BeforeClass
     void initDatabaseProvider() {
         em = Jpa.getEntityManager();
     }
 
 
-    @BeforeTest
+    @BeforeClass
     void saveTestUserEntitiesToDatabase() {
-        EntityTransaction tx = em.getTransaction();
+        EntityTransaction tx = null;
         try {
+            tx = em.getTransaction();
             tx.begin();
             userMockDao.save(user1);
             userMockDao.save(user2);
@@ -78,8 +78,9 @@ public class VerificationLoginTest {
 
     @Test
     void testLegalUserCredentials() {
-        EntityTransaction tx = em.getTransaction();
+        EntityTransaction tx = null;
         try {
+            tx = em.getTransaction();
             tx.begin();
             Assert.assertTrue(userService.verificationLogin(userDTO1));
             Assert.assertTrue(userService.verificationLogin(userDTO2));
@@ -96,13 +97,15 @@ public class VerificationLoginTest {
 
     @Test
     void testIllegalUserCredentials() {
-        EntityTransaction tx = em.getTransaction();
+        EntityTransaction tx = null;
         try {
+            tx = em.getTransaction();
             tx.begin();
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong2));
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong3));
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong4));
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong5));
+            tx.commit();
         }catch (RuntimeException exception) {
             if (tx != null) tx.rollback();
             throw new AssertionError("Test: Some problems occur when read from db", exception);
@@ -111,27 +114,28 @@ public class VerificationLoginTest {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     void testNullRefference() {
-        EntityTransaction tx = em.getTransaction();
-            userService.verificationLogin(userDtoNULL);
+        userService.verificationLogin(NULL);
     }
 
-    @AfterTest
+    @AfterClass
     void removeTestEntitiesFromDatabase() {
-        EntityTransaction tx = em.getTransaction();
+        EntityTransaction tx = null;
         try {
+            tx = em.getTransaction();
             tx.begin();
-            userMockDao.delete(user1);
+            userMockDao.delete(user1); //Maybe user's entities should have persistence state before delete from db?
             userMockDao.delete(user2);
             userMockDao.delete(user3);
             userMockDao.delete(user4);
             userMockDao.delete(user5);
+            tx.commit();
         }catch (Exception exception) {
             if (tx != null) tx.rollback();
             throw new AssertionError("Test: Some problems occur when delete test entities from db", exception);
         }
     }
 
-    @AfterTest
+    @AfterClass
     void closeDatabaseProvider() {
         Jpa.close();
     }

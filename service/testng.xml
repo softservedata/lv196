@@ -20,10 +20,13 @@
 	
 	<test name="verificationUser">
 		<classes>
-			<class name="java.com.softserve.edu.delivery.service.verification.VerificationLoginTest"/>
+			<class name="com.softserve.edu.delivery.service.verification.VerificationLoginTest"/>
+		</classes>
+	</test>
+	<test name="routesById">
+		<classes>
+			<class name="com.softserve.edu.delivery.service.tracking.RouteByIdTest"/>
 		</classes>
 	</test>
 	<!-- - - - - - - - - - -->
 </suite> <!-- Suite -->
-
-
