@@ -1,12 +1,11 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.CityDao;
+import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
-import com.softserve.edu.delivery.domain.City;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.OrderStatus;
-import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
@@ -19,11 +18,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDao orderDao;
     private final UserDao userDao;
     private final CityDao cityDao;
+    private final FeedbackDao feedbackDao;
 
-    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao) {
+    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
         this.cityDao = cityDao;
+        this.feedbackDao=feedbackDao;
     }
 
     @Override
@@ -62,5 +63,22 @@ public class OrderServiceImpl implements OrderService {
                     .setDescription(dto.getDescription())
             );
         });
+    }
+
+    @Override
+    public String addFeedback(FeedbackDTO dto, String email) {
+        User user = userDao.findOne(email)
+                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+        Order order = orderDao.findOne(dto.getOrder().getId())
+                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrder().getId()));
+
+        Feedback feedback= new Feedback();
+        feedback.setOrder(order);
+        feedback.setUser(user);
+        feedback.setRate(dto.getRate());
+        feedback.setText(dto.getText());
+        feedback.setApproved(false);
+        feedbackDao.save(feedback);
+        return feedback.getText();
     }
 }
