@@ -10,8 +10,8 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class CityDaoImpl extends BaseDaoImpl<City, Long> implements CityDao {
-    public CityDaoImpl(Class<City> clazz) {
-        super(clazz);
+    public CityDaoImpl() {
+        super(City.class);
     }
 
     @Override

@@ -20,8 +20,8 @@ public interface OrderDao extends BaseDao<Order, Long> {
     String feedback(String order_id, Feedback feedback);
 
     //	As transporter I want to choose orders by filter.
-    List<Order> getOrderByCityFrom(String name);
-    List<Order> getOrderByCityTo(String name);
+    List<Order> getOrderByCityFrom(Long id);
+    List<Order> getOrderByCityTo(Long id);
     List<Order> getOrderByWeight(BigDecimal weight);
     List<Order> getOrderByArrivalDate(Timestamp arrivalDate);
 

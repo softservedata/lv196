@@ -1,10 +1,7 @@
 package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.Offer;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.OrderStatus;
+import com.softserve.edu.delivery.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -42,18 +39,18 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
 
     // next 4 methods author Ivan Synyshyn
     @Override
-    public List<Order> getOrderByCityFrom(String name) {
+    public List<Order> getOrderByCityFrom(Long id) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select o from Order o where o.cityFrom = :name");
-        query.setParameter("name", name);
+        Query query = em.createQuery("select o from Order o where o.cityFrom.cityId = :cityId");
+        query.setParameter("cityId", id);
         return query.getResultList();
     }
 
     @Override
-    public List<Order> getOrderByCityTo(String name) {
+    public List<Order> getOrderByCityTo(Long id) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select o from Order o where o.cityTo = :name");
-        query.setParameter("name", name);
+        Query query = em.createQuery("select o from Order o where o.cityTo.cityId = :cityId");
+        query.setParameter("cityId", id);
         return query.getResultList();
     }
 
