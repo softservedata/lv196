@@ -42,6 +42,11 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     public List<T> findAll() {
         return em.createQuery("From " + clazz.getSimpleName(), clazz).getResultList();
     }
+    
+    @Override
+    public T updateWithReturn(T element) {
+        return em.merge(element);
+    }
 
     protected EntityManager getEntityManager() {
         return em;
