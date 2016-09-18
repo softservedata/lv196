@@ -27,6 +27,10 @@ public class Offer {
 	@JoinColumn(name = "car_id")
 	private Car car;
 
+	@ManyToOne
+	@JoinColumn(name = "order_id")
+	private Order order;
+
 	@Column(name = "isApproved")
 	private Boolean isApproved;
 

@@ -31,14 +31,19 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
 
-    public List<Order> changeStatus(String id, Offer offer) {
+    public List<Order> changeStatus(String order_id, Boolean offerStatus) {
+        Order order=(Order)getEntityManager()                                   //get order from DB by order_id
+                .createQuery("select o from Order o where o.id = :id ")
+                .setParameter("id", Long.parseLong(order_id))
+                .getSingleResult();
+
+        getEntityManager()                                                      //update offer's with offerStatus where is our order
+                .createQuery("update Offer set isApproved=:offerStatus where order = :order")
+                .setParameter("order", order)
+                .setParameter("offerStatus", offerStatus);
         return findAll();
     }
 
-    @Override
-    public String feedback(String order_id, Feedback feedback) {
-        return null;
-    }
 
     // next 4 methods author Ivan Synyshyn
     @Override
