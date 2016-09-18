@@ -105,7 +105,7 @@ public class Car {
 		if (obj == null)
 			return false;
 		Car car = (Car) obj;
-		return Objects.equals(carId, car.carId) && Objects.equals(document, car.document);
+		return Objects.equals(carId, car.carId);
 	}
 
 	@Override
