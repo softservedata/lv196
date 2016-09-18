@@ -5,11 +5,8 @@ import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
-import com.softserve.edu.delivery.utils.Jpa;
 import com.softserve.edu.delivery.utils.TransactionManager;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -63,6 +60,24 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setApproved(feedbackDTO.isApproved());
 
         return feedback;
+    }
+
+    @Override
+    /**
+     * @return List of FeedbackDTO.class
+     *
+     * looks for all feedbacks and returns list of found feedbacks
+     *
+     */
+    public List<FeedbackDTO> getAllFeedbacks() {
+        List<FeedbackDTO> listDTO = new ArrayList<>();
+        List<Feedback> list = feedbackDao.findAll();
+
+        list.forEach(f -> {
+            listDTO.add(copyFeedbackToDTO(f));
+        });
+
+        return listDTO;
     }
 
     @Override
@@ -138,8 +153,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         } else {
             throw new NoSuchElementException();
         }
-
-
     }
 
     @Override
@@ -203,24 +216,5 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
 
         return copyFeedbackToDTO(feedback);
-
-    }
-
-    @Override
-    /**
-     * @return List of FeedbackDTO.class
-     *
-     * looks for all feedbacks and returns list of found feedbacks
-     *
-     */
-    public List<FeedbackDTO> getAllFeedbacks() {
-        List<FeedbackDTO> listDTO = new ArrayList<>();
-        List<Feedback> list = feedbackDao.findAll();
-
-        list.forEach(f -> {
-            listDTO.add(copyFeedbackToDTO(f));
-        });
-
-        return listDTO;
     }
 }

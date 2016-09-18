@@ -11,16 +11,17 @@ import java.util.Optional;
  */
 public interface FeedbackService {
 
+    FeedbackDTO copyFeedbackToDTO(Feedback feedback);
+
+    Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO);
+
+    public List<FeedbackDTO> getAllFeedbacks();
+
     List<FeedbackDTO> getAllFeedbacksInRange(int from, int count);
 
     FeedbackDTO getFeedbackById(long id);
 
     void changeFeedbackStatus(long id, boolean status);
-
-    FeedbackDTO copyFeedbackToDTO(Feedback feedback);
-
-    Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO);
-
 
     public void save(FeedbackDTO feedbackDTO);
 
@@ -29,7 +30,4 @@ public interface FeedbackService {
     public void delete(Long id);
 
     public FeedbackDTO findOne(Long id);
-
-    public List<FeedbackDTO> getAllFeedbacks();
-
 }
