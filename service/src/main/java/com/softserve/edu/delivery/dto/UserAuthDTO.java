@@ -11,8 +11,8 @@ public class UserAuthDTO {
     private String password;
 
     public UserAuthDTO(String email, String password) {
-        this.email = (email != null) ? email : "null";
-        this.password = (password != null) ? password : "null";
+        this.email = (email != null) ? email : "";
+        this.password = (password != null) ? password : "";
     }
 
     public UserAuthDTO() {
@@ -20,12 +20,12 @@ public class UserAuthDTO {
     }
 
     public UserAuthDTO setEmail(String email) {
-        this.email = (email != null) ? email : "null";
+        this.email = (email != null) ? email : "";
         return this;
     }
 
     public UserAuthDTO setPassword(String password) {
-        this.password = (password != null) ? password : "null";
+        this.password = (password != null) ? password : "";
         return this;
     }
 
