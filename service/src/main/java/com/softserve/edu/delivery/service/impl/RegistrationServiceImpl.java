@@ -1,10 +1,5 @@
 package com.softserve.edu.delivery.service.impl;
 
-/*
- * add settlements to car
- * */
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,12 +35,15 @@ public class RegistrationServiceImpl implements RegistrationService {
             List<Car> cars = new ArrayList<>();
             for(CarDTO carDTO : driverRegistrationDTO.getCarDtos()) {
                 Car car = new Car();
-                car.setDocument(carDTO.getVehicleVIN());
-                car.setLength(carDTO.getVehicleLenght());
-                car.setWeight(carDTO.getVehicleWeight());
-                car.setHeight(carDTO.getVehicleHeight());
-                car.setWidth(carDTO.getVehicleWidth());
-                //add settlements to car
+                car.setVehicleName(carDTO.getVehicleName());
+                car.setVehicleNumber(carDTO.getVehicleNumber());
+                car.setVehicleVIN(carDTO.getVehicleVIN());
+                car.setVehicleFrontPhotoURL(carDTO.getVehicleFrontPhotoURL());
+                car.setVehicleBackPhotoURL(carDTO.getVehicleBackPhotoURL());
+                car.setVehicleWeight(carDTO.getVehicleWeight());
+                car.setVehicleLength(carDTO.getVehicleLength());
+                car.setVehicleWidth(carDTO.getVehicleWidth());
+                car.setVehicleHeight(carDTO.getVehicleHeight());
                 
                 cars.add(car);
                 

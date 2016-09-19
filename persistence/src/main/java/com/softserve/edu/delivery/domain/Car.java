@@ -1,27 +1,47 @@
 package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "CARS")
 public class Car {
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "car_id")
 	private Long carId;
-	@Column(name = "width")
-	private Double width;
-	@Column(name = "height")
-	private Double height;
-	@Column(name = "length")
-	private Double length;
-	@Column(name = "weight")
-	private Double weight;
-	@Column(name = "document")
-	private String document;
+	
+	//vehicle brand name
+	@Column(name = "vehicleName")
+	private String vehicleName;
+	
+	//vehicle license plate
+	@Column(name = "vehicleNumber")
+	private String vehicleNumber;
+	
+	//vehicle registration card
+	@Column(name = "vehicleVIN")
+	private String vehicleVIN;
+	
+	//String type variable to store the URL to vehicle photos
+	@Column(name = "vehicleFrontPhotoURL")
+    private String vehicleFrontPhotoURL;
+    @Column(name = "vehicleBackPhotoURL")
+    private String vehicleBackPhotoURL;
+    
+    //Maximum carrying capacity of the vehicle
+    @Column(name = "vehicleWeight")
+    private Double vehicleWeight;
+    
+    //Vehicle maximum volume L W H
+    @Column(name = "vehicleLength")
+    private Double vehicleLength;
+	@Column(name = "vehicleWidth")
+	private Double vehicleWidth;
+	@Column(name = "vehicleHeight")
+	private Double vehicleHeight;
+	
+	//Class Car has one to many relationship to class User
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -29,88 +49,93 @@ public class Car {
 	public Car() {
 	}
 
-	public User getUser() {
-		return user;
-	}
+    public Long getCarId() {
+        return carId;
+    }
 
-	public Car setUser(User user) {
-		this.user = user;
-		return this;
-	}
+    public String getVehicleName() {
+        return vehicleName;
+    }
 
-	public Long getCarId() {
-		return carId;
-	}
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
 
-	public Car setCarId(Long carId) {
-		this.carId = carId;
-		return this;
-	}
+    public String getVehicleVIN() {
+        return vehicleVIN;
+    }
 
-	public Double getWidth() {
-		return width;
-	}
+    public String getVehicleFrontPhotoURL() {
+        return vehicleFrontPhotoURL;
+    }
 
-	public Car setWidth(Double width) {
-		this.width = width;
-		return this;
-	}
+    public String getVehicleBackPhotoURL() {
+        return vehicleBackPhotoURL;
+    }
 
-	public Double getHeight() {
-		return height;
-	}
+    public Double getVehicleWeight() {
+        return vehicleWeight;
+    }
 
-	public Car setHeight(Double height) {
-		this.height = height;
-		return this;
-	}
+    public Double getVehicleLength() {
+        return vehicleLength;
+    }
 
-	public Double getLength() {
-		return length;
-	}
+    public Double getVehicleWidth() {
+        return vehicleWidth;
+    }
 
-	public Car setLength(Double length) {
-		this.length = length;
-		return this;
-	}
+    public Double getVehicleHeight() {
+        return vehicleHeight;
+    }
 
-	public Double getWeight() {
-		return weight;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public Car setWeight(Double weight) {
-		this.weight = weight;
-		return this;
-	}
+    public void setCarId(Long carId) {
+        this.carId = carId;
+    }
 
-	public String getDocument() {
-		return document;
-	}
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
 
-	public Car setDocument(String document) {
-		this.document = document;
-		return this;
-	}
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(carId);
-	}
+    public void setVehicleVIN(String vehicleVIN) {
+        this.vehicleVIN = vehicleVIN;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
+    public void setVehicleFrontPhotoURL(String vehicleFrontPhotoURL) {
+        this.vehicleFrontPhotoURL = vehicleFrontPhotoURL;
+    }
 
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		Car car = (Car) obj;
-		return Objects.equals(carId, car.carId);
-	}
+    public void setVehicleBackPhotoURL(String vehicleBackPhotoURL) {
+        this.vehicleBackPhotoURL = vehicleBackPhotoURL;
+    }
 
-	@Override
-	public String toString() {
-		return "Car id: " + carId + "\nWidth: " + width + ", height: " + height + ", length: " + length + 
-		"\nWeight: " + weight + "\nDocument: " + document + "\nUser: " + user.toString();
-	}
+    public void setVehicleWeight(Double vehicleWeight) {
+        this.vehicleWeight = vehicleWeight;
+    }
+
+    public void setVehicleLength(Double vehicleLength) {
+        this.vehicleLength = vehicleLength;
+    }
+
+    public void setVehicleWidth(Double vehicleWidth) {
+        this.vehicleWidth = vehicleWidth;
+    }
+
+    public void setVehicleHeight(Double vehicleHeight) {
+        this.vehicleHeight = vehicleHeight;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+	
 }

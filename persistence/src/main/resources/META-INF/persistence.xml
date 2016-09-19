@@ -7,7 +7,6 @@
 		<class>com.softserve.edu.delivery.domain.Baggage</class>
 		<class>com.softserve.edu.delivery.domain.Car</class>
 		<class>com.softserve.edu.delivery.domain.City</class>
-		<class>com.softserve.edu.delivery.domain.Document</class>
 		<class>com.softserve.edu.delivery.domain.Feedback</class>
 		<class>com.softserve.edu.delivery.domain.Order</class>
 		<!-- <class>com.softserve.edu.delivery.domain.OrderStatus</class> -->
