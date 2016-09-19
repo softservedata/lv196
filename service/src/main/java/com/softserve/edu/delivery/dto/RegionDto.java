@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.dto;
 
+import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.State;
 
 /**
@@ -41,5 +42,9 @@ public class RegionDto {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public static RegionDto convertEntity(Region region){
+        return new RegionDto(region.getRegionId(), region.getRegionName(), region.getState());
     }
 }

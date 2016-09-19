@@ -6,6 +6,8 @@ import com.softserve.edu.delivery.domain.State;
 import com.softserve.edu.delivery.service.TransporterService;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import com.softserve.edu.delivery.dto.CityDto;
 import com.softserve.edu.delivery.dto.RegionDto;
 import com.softserve.edu.delivery.dto.StateDto;
@@ -25,53 +27,32 @@ public class TransporterServiceImpl implements TransporterService {
         this.regionDao = regionDao;
         this.stateDao = stateDao;
     }
-    public List<StateDto> getAllState(){
+    public List<StateDto> getAllState() {
         return TransactionManager.withTransaction(() ->
-                copyStateToDto(stateDao.getAllState())
+                stateDao.getAllState()
+                        .stream()
+                        .map(entity -> StateDto.convertEntity(entity))
+                        .collect(Collectors.toList())
         );
     }
     public List<RegionDto> getRegionByState(String state){
         return TransactionManager.withTransaction(() ->
-                copyRegionToDto(regionDao.getRegionByState(state))
+                regionDao.getRegionByState(state)
+                        .stream()
+                        .map(entity -> RegionDto.convertEntity(entity))
+                        .collect(Collectors.toList())
         );
+
     }
     public List<CityDto> getCityByRegion(String region){
         return TransactionManager.withTransaction(() ->
-                copyCityToDto(cityDao.getCityByRegion(region))
+                cityDao.getCityByRegion(region)
+                        .stream()
+                        .map(entity -> CityDto.convertEntity(entity))
+                        .collect(Collectors.toList())
         );
-    }
-    private List<StateDto> copyStateToDto(List<State> list){
-        List<StateDto> resultList = new ArrayList<StateDto>();
-        StateDto dto = new StateDto();
-        for(State state : list){
-            dto.setName(state.getStateName());
-            dto.setStateId(state.getStateId());
-            resultList.add(dto);
-        }
-        return resultList;
-    }
-    private List<RegionDto> copyRegionToDto(List<Region> list){
-        List<RegionDto> resultList = new ArrayList<RegionDto>();
-        RegionDto dto = new RegionDto();
-        for(Region region : list){
-            dto.setName(region.getRegionName());
-            dto.setRegionId(region.getRegionId());
-            dto.setState(region.getState());
-            resultList.add(dto);
-        }
-        return resultList;
+
     }
 
-    private List<CityDto> copyCityToDto(List<City> list){
-        List<CityDto> resultList = new ArrayList<>();
-        CityDto dto = new CityDto();
-        for(City city : list){
-            dto.setName(city.getCityName());
-            dto.setRegion(city.getRegion());
-            dto.setCityId(city.getCityId());
-            resultList.add(dto);
-        }
-        return resultList;
-    }
 
 }

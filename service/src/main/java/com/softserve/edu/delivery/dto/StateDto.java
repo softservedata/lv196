@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.dto;
 
+import com.softserve.edu.delivery.domain.State;
 /**
  * Created by Natalia on 18.09.2016.
  */
@@ -11,6 +12,7 @@ public class StateDto {
         this.stateId = stateId;
         this.name = name;
     }
+
     public StateDto(){}
 
     public Long getStateId() {
@@ -27,5 +29,9 @@ public class StateDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static StateDto convertEntity(State state){
+        return new StateDto(state.getStateId(), state.getStateName());
     }
 }

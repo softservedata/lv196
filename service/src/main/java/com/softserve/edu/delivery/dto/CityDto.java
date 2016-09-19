@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.Region;
+import com.softserve.edu.delivery.domain.City;
 /**
  * Created by Natalia on 18.09.2016.
  */
@@ -41,5 +42,9 @@ public class CityDto {
 
     public void setRegion(Region region) {
         this.region = region;
+    }
+
+    public static CityDto convertEntity(City city){
+        return new CityDto(city.getCityId(), city.getCityName(), city.getRegion());
     }
 }

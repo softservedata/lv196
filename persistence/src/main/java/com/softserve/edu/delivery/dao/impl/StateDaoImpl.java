@@ -14,6 +14,8 @@ public class StateDaoImpl extends BaseDaoImpl<State, Long> implements StateDao {
     }
     @Override
     public List<State> getAllState() {
-        return getEntityManager().createQuery("select s from State s", State.class).getResultList();
+        return getEntityManager()
+                .createQuery("select s from State s", State.class)
+                .getResultList();
     }
 }
