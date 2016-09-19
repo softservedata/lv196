@@ -25,37 +25,31 @@ import static org.mockito.Mockito.*;
  * */
 public class VerificationLoginTest {
 
-    private EntityManager em;
-
+    private EntityManager em = Jpa.getEntityManager();
 
     private UserDao userMockDao = mock(UserDaoImpl.class);
     private UserService userService = new UserServiceImpl(userMockDao);
 
     //User entities for testing method
-    User user1 = new User().setEmail("user1@domain.com").setPassport("user1");
-    User user2 = new User().setEmail("user2@domain.com").setPassport("user2");
-    User user3 = new User().setEmail("user3@domain.com").setPassport("user3");
-    User user4 = new User().setEmail("user4@domain.com").setPassport("user4");
-    User user5 = new User().setEmail("user5@domain.com").setPassport("user5");
+    private User user1 = new User().setEmail("user1@domain.com").setPassword("user1");
+    private User user2 = new User().setEmail("user2@domain.com").setPassword("user2");
+    private User user3 = new User().setEmail("user3@domain.com").setPassword("user3");
+    private User user4 = new User().setEmail("user4@domain.com").setPassword("user4");
+    private User user5 = new User().setEmail("user5@domain.com").setPassword("user5");
 
     //Legal credentials for testing method
-    UserAuthDTO userDTO1 = new UserAuthDTO(user1.getEmail(), user1.getPassword());
-    UserAuthDTO userDTO2 = new UserAuthDTO(user2.getEmail(), user2.getPassword());
-    UserAuthDTO userDTO3 = new UserAuthDTO(user3.getEmail(), user3.getPassword());
-    UserAuthDTO userDTO4 = new UserAuthDTO(user4.getEmail(), user4.getPassword());
-    UserAuthDTO userDTO5 = new UserAuthDTO(user5.getEmail(), user5.getPassword());
+    private UserAuthDTO userDTO1 = new UserAuthDTO(user1.getEmail(), user1.getPassword());
+    private UserAuthDTO userDTO2 = new UserAuthDTO(user2.getEmail(), user2.getPassword());
+    private UserAuthDTO userDTO3 = new UserAuthDTO(user3.getEmail(), user3.getPassword());
+    private UserAuthDTO userDTO4 = new UserAuthDTO(user4.getEmail(), user4.getPassword());
+    private UserAuthDTO userDTO5 = new UserAuthDTO(user5.getEmail(), user5.getPassword());
 
     //Wrong credentials
-    UserAuthDTO NULL = null; //expect IllegalArgumentException
-    UserAuthDTO UserDTOwrong2 = new UserAuthDTO(null, null);
-    UserAuthDTO UserDTOwrong3 = new UserAuthDTO(null, "Password");
-    UserAuthDTO UserDTOwrong4 = new UserAuthDTO("wrongUser@domain.com", null);
-    UserAuthDTO UserDTOwrong5 = new UserAuthDTO("notExist@domain.com", "notExistPassword");
-
-    @BeforeClass
-    void initDatabaseProvider() {
-        em = Jpa.getEntityManager();
-    }
+    private UserAuthDTO NULL = null; //expect IllegalArgumentException
+    private UserAuthDTO UserDTOwrong2 = new UserAuthDTO(null, null);
+    private UserAuthDTO UserDTOwrong3 = new UserAuthDTO(null, "Password");
+    private UserAuthDTO UserDTOwrong4 = new UserAuthDTO("wrongUser@domain.com", null);
+    private UserAuthDTO UserDTOwrong5 = new UserAuthDTO("notExist@domain.com", "notExistPassword");
 
 
     @BeforeClass
@@ -78,38 +72,19 @@ public class VerificationLoginTest {
 
     @Test
     void testLegalUserCredentials() {
-        EntityTransaction tx = null;
-        try {
-            tx = em.getTransaction();
-            tx.begin();
             Assert.assertTrue(userService.verificationLogin(userDTO1));
             Assert.assertTrue(userService.verificationLogin(userDTO2));
             Assert.assertTrue(userService.verificationLogin(userDTO3));
             Assert.assertTrue(userService.verificationLogin(userDTO4));
             Assert.assertTrue(userService.verificationLogin(userDTO5));
-            tx.commit();
-        }catch (RuntimeException exception) {
-            if (tx != null) tx.rollback();
-            throw new AssertionError("Test: Some problems occur when read from db", exception);
-        }
-
     }
 
     @Test
     void testIllegalUserCredentials() {
-        EntityTransaction tx = null;
-        try {
-            tx = em.getTransaction();
-            tx.begin();
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong2));
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong3));
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong4));
             Assert.assertFalse(userService.verificationLogin(UserDTOwrong5));
-            tx.commit();
-        }catch (RuntimeException exception) {
-            if (tx != null) tx.rollback();
-            throw new AssertionError("Test: Some problems occur when read from db", exception);
-        }
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -132,11 +107,8 @@ public class VerificationLoginTest {
         }catch (Exception exception) {
             if (tx != null) tx.rollback();
             throw new AssertionError("Test: Some problems occur when delete test entities from db", exception);
+        }finally {
+            Jpa.close();
         }
-    }
-
-    @AfterClass
-    void closeDatabaseProvider() {
-        Jpa.close();
     }
 }
