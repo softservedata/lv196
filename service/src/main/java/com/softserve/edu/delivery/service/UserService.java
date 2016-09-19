@@ -13,9 +13,9 @@ public interface UserService {
     void register(User user);
     boolean verificationLogin(UserAuthDTO user);
     
-	List<UserProfileDto> getAllUsers(int from, int count, UserProfileFilterDto filter);
+    List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter);
 	
-	UserProfileDto changeUserStatus(String mail, boolean blocked);
+    UserProfileDto changeUserStatus(String mail, boolean blocked)throws IllegalStateException;
 	
 	List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map);
 

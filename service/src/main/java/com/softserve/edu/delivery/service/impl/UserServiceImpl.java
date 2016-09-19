@@ -101,31 +101,28 @@ public class UserServiceImpl implements UserService {
     }
     
 	@Override
-	public List<UserProfileDto> getAllUsers(int from, int count, UserProfileFilterDto filter) {
+	public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
 		return TransactionManager.withTransaction(() ->
-				userDao
-						.findAll().stream()
-						.skip(from)
+				 userDao
+						.getAllUsersInRange(page, size)
+						.stream()
 						.filter(filter::test)
 						.map(UserProfileDto::create)
-						.limit(count)
 						.collect(Collectors.toList())
-				);
+		);
 	}
 
 	@Override
-	public UserProfileDto changeUserStatus(String mail, boolean blocked) {
-		/*return TransactionManager.withTransaction(() ->
-				userDao
+	public UserProfileDto changeUserStatus(String mail, boolean blocked) throws IllegalStateException{
+		return TransactionManager.withTransaction(() ->
+				 userDao
 						.findOne(mail)
-						.map(user -> {	
-						user.setBlocked(blocked);
-						return userDao.update(user);
-						})
+						.map(user -> { user.setBlocked(blocked);
+									 return userDao.update(user);
+									 })
 						.map(UserProfileDto::create)
 						.orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"))
-				);*/
-		return null;
+		);
 	}
 	
 	@Override
@@ -135,7 +132,7 @@ public class UserServiceImpl implements UserService {
 					.keySet().stream()
 					.map(mail -> changeUserStatus(mail, map.get(mail)))
 					.collect(Collectors.toList())
-				);			
+		);			
 	}
 
 	//<---------------------Private------------------------->
