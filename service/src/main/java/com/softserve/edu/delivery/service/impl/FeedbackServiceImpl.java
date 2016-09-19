@@ -175,8 +175,10 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void update(FeedbackDTO feedbackDTO) {
 
+        Feedback feedback = copyDTOToFeedback(feedbackDTO);
+
         TransactionManager.withTransaction(() ->
-                feedbackDao.update(copyDTOToFeedback(feedbackDTO))
+                feedbackDao.update(feedback)
         );
     }
 

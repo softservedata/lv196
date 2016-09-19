@@ -24,9 +24,6 @@ public class FeedbackServiceImplMockTest {
     private final Long START_ID = 10L;
     private final Long COUNT = 5L;
 
-    private FeedbackDTO mockFeedbackDTO = Mockito.mock(FeedbackDTO.class);
-    private List<FeedbackDTO> listDTO;
-
     private FeedbackDao mockFDao = Mockito.mock(com.softserve.edu.delivery.dao.FeedbackDao.class);
     private FeedbackService fsi;
 
@@ -35,7 +32,7 @@ public class FeedbackServiceImplMockTest {
      */
 
     @BeforeClass
-    public void injectMockFeedbackDAO(){
+    public void injectMockFeedbackDAO() {
         fsi = new FeedbackServiceImpl(mockFDao);
     }
 
@@ -52,7 +49,6 @@ public class FeedbackServiceImplMockTest {
         when(mockFDao.findAll()).thenReturn(feedbackList);
 
         Assert.assertNotNull(fsi.getAllFeedbacks());
-
     }
 
     @Test(enabled = true, groups = {"mock"})
@@ -83,7 +79,6 @@ public class FeedbackServiceImplMockTest {
     }
 
 
-
     @Test(enabled = true, groups = {"mock"})
     /**
      *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
@@ -92,7 +87,7 @@ public class FeedbackServiceImplMockTest {
      */
     public void testGetAllFeedbacksInRange0() {
         //creating stub object
-        Optional <Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
+        Optional<Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
 
         when(mockFDao.findOne(anyLong())).thenReturn(oFeedback);
 
@@ -110,7 +105,7 @@ public class FeedbackServiceImplMockTest {
      */
     public void testGetAllFeedbacksInRange1() {
         //creating stub object
-        Optional <Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
+        Optional<Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
 
         when(mockFDao.findOne(anyLong())).thenReturn(oFeedback);
 
@@ -139,7 +134,7 @@ public class FeedbackServiceImplMockTest {
 
         Feedback feedback = fsi.copyDTOToFeedback(feedbackDTO0);
 
-        Optional <Feedback> oFeedback = Optional.of(feedback);
+        Optional<Feedback> oFeedback = Optional.of(feedback);
 
         when(mockFDao.findOne(FEEDBACK_ID)).thenReturn(oFeedback);
 
@@ -164,10 +159,8 @@ public class FeedbackServiceImplMockTest {
         //changing the status to an opposite
         feedbackDTO0.setApproved(!previousStatus);
 
-        Optional <Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(feedbackDTO0));
-
-        doNothing().when(mockFDao).update(fsi.copyDTOToFeedback(feedbackDTO0));
-
+        Optional<Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(feedbackDTO0));
+        
         when(mockFDao.findOne(anyLong())).thenReturn(oFeedback);
 
         //updating the status
@@ -188,7 +181,7 @@ public class FeedbackServiceImplMockTest {
         //retrieving previous number of entries in the db
         long former = 10L;
 
-        doNothing().when(mockFDao).save(fsi.copyDTOToFeedback(FeedbackServiceImplTest.createFeedbackDTOWithoutId()));
+        doNothing().when(mockFDao).save(any(Feedback.class));
 
         fsi.save(FeedbackServiceImplTest.createFeedbackDTOWithoutId());
 
@@ -206,10 +199,9 @@ public class FeedbackServiceImplMockTest {
     public void testUpdate() {
 
         //creating stub object with changed data
-        Optional <Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
+        Optional<Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
 
         when(mockFDao.findOne(anyLong())).thenReturn(oFeedback);
-        doNothing().when(mockFDao).update(any(Feedback.class));
 
         //retrieving an object of FeedbackDTO.class from the db
         FeedbackDTO feedbackDTO0 = fsi.getFeedbackById(FEEDBACK_ID);
@@ -255,7 +247,7 @@ public class FeedbackServiceImplMockTest {
      */
     public void testFindOne() {
         //creating stub object
-        Optional <Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
+        Optional<Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(FeedbackServiceImplTest.changeData(FeedbackServiceImplTest.createFeedbackDTO())));
 
         when(mockFDao.findOne(anyLong())).thenReturn(oFeedback);
 
