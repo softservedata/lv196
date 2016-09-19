@@ -12,15 +12,10 @@ public class Jpa {
     private static EntityManager em = getEntityManager();
 
     public static EntityManager getEntityManager() {
-        if (em == null) {
-            try {
-                em = emf.createEntityManager();
-            } catch (Exception e) {
-                emf.close();
-                throw e;
-            }
+        if (emf == null) {
+            throw new IllegalStateException("Entity manager factory is not defined");
         }
-        return em;
+        return emf.createEntityManager();
     }
 
     private static EntityManagerFactory createEntityManagerFactory() {
@@ -29,7 +24,7 @@ public class Jpa {
                 emf = Persistence.createEntityManagerFactory("delivery");
             } catch (Exception e) {
                 e.printStackTrace();
-                throw e;
+                close();
             }
         }
         return emf;
