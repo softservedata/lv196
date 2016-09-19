@@ -18,7 +18,8 @@ import javax.persistence.EntityTransaction;
  *
  * The goal of this test is testing verificationLogin(UserAuthDTO user) method
  * from UserServiceImpl. Method should return true if given user with his credentials
- * exists in database, and return false if user isn't exist.
+ * exists in database, and return false if user isn't exist. Method also throws
+ * IllegalArgumentException if get null
  *
  * */
 public class VerificationLoginTest {
@@ -28,39 +29,31 @@ public class VerificationLoginTest {
     private UserDao userDao = new UserDaoImpl(); //mock(UserDaoImpl.class);
     private UserService userService = new UserServiceImpl(userDao);
 
-    //User entities for testing method
-    private User user1 = new User().setEmail("user1@domain.com").setPassword("user1");
-    private User user2 = new User().setEmail("user2@domain.com").setPassword("user2");
-    private User user3 = new User().setEmail("user3@domain.com").setPassword("user3");
-    private User user4 = new User().setEmail("user4@domain.com").setPassword("user4");
-    private User user5 = new User().setEmail("user5@domain.com").setPassword("user5");
+    //User entity for testing
+    private User testUserEntity = new User().setEmail("testUserEntity@domain.com").setPassword("testUserEntity");
 
     //Legal credentials for testing method
-    private UserAuthDTO userDTO1 = new UserAuthDTO(user1.getEmail(), user1.getPassword());
-    private UserAuthDTO userDTO2 = new UserAuthDTO(user2.getEmail(), user2.getPassword());
-    private UserAuthDTO userDTO3 = new UserAuthDTO(user3.getEmail(), user3.getPassword());
-    private UserAuthDTO userDTO4 = new UserAuthDTO(user4.getEmail(), user4.getPassword());
-    private UserAuthDTO userDTO5 = new UserAuthDTO(user5.getEmail(), user5.getPassword());
+    private UserAuthDTO legalUserDTO = new UserAuthDTO(testUserEntity.getEmail(), testUserEntity.getPassword());
 
     //Wrong credentials
-    private UserAuthDTO NULL = null; //expect IllegalArgumentException
-    private UserAuthDTO UserDTOwrong2 = new UserAuthDTO(null, null);
-    private UserAuthDTO UserDTOwrong3 = new UserAuthDTO(null, "Password");
-    private UserAuthDTO UserDTOwrong4 = new UserAuthDTO("wrongUser@domain.com", null);
-    private UserAuthDTO UserDTOwrong5 = new UserAuthDTO("notExist@domain.com", "notExistPassword");
+    @DataProvider(name = "WrongCredentialsDataProvider")
+    public Object [][] wrongUserDTOCredentialsDataProvider() {
+        return new Object[][] {
+                {"WrongUserDTO_1", new UserAuthDTO(null, null)},
+                {"WrongUserDTO_2", new UserAuthDTO(null, "Password")},
+                {"WrongUserDTO_3", new UserAuthDTO("wrongUser@domain.com", null)},
+                {"WrongUserDTO_4", new UserAuthDTO("wrongUser@domain.com", "WrongPassword")},
+        };
+    }
 
-
+    //Save to database test user entity
     @BeforeClass
     void saveTestUserEntitiesToDatabase() {
         EntityTransaction tx = null;
         try {
             tx = em.getTransaction();
             tx.begin();
-            userDao.save(user1);
-            userDao.save(user2);
-            userDao.save(user3);
-            userDao.save(user4);
-            userDao.save(user5);
+            userDao.save(testUserEntity);
             tx.commit();
         }catch (RuntimeException exception) {
             if (tx != null) tx.rollback();
@@ -68,39 +61,32 @@ public class VerificationLoginTest {
         }
     }
 
+    //Legal credentials testing. Return true - user exists in database
     @Test
     void testLegalUserCredentials() {
-            Assert.assertTrue(userService.verificationLogin(userDTO1));
-            Assert.assertTrue(userService.verificationLogin(userDTO2));
-            Assert.assertTrue(userService.verificationLogin(userDTO3));
-            Assert.assertTrue(userService.verificationLogin(userDTO4));
-            Assert.assertTrue(userService.verificationLogin(userDTO5));
+            Assert.assertTrue(userService.verificationLogin(legalUserDTO));
     }
 
-    @Test
-    void testIllegalUserCredentials() {
-            Assert.assertFalse(userService.verificationLogin(UserDTOwrong2));
-            Assert.assertFalse(userService.verificationLogin(UserDTOwrong3));
-            Assert.assertFalse(userService.verificationLogin(UserDTOwrong4));
-            Assert.assertFalse(userService.verificationLogin(UserDTOwrong5));
+    //Wrong credentials. Return false - user isn't exist in database
+    @Test(dataProvider = "WrongCredentialsDataProvider")
+    void testIllegalUserCredentials(String s, UserAuthDTO wrongDTO) {
+        Assert.assertFalse(userService.verificationLogin(wrongDTO));
     }
 
+    //Expect IllegalArgumentException if method gets null.
     @Test(expectedExceptions = IllegalArgumentException.class)
-    void testNullRefference() {
-        userService.verificationLogin(NULL);
+    void testNullReference() {
+        userService.verificationLogin(null);
     }
 
+    //Remove test entity from database
     @AfterClass
     void removeTestEntitiesFromDatabase() {
         EntityTransaction tx = null;
         try {
             tx = em.getTransaction();
             tx.begin();
-            userDao.delete(user1); //Maybe user's entities should have persistence state before delete from db?
-            userDao.delete(user2);
-            userDao.delete(user3);
-            userDao.delete(user4);
-            userDao.delete(user5);
+            userDao.delete(testUserEntity);
             tx.commit();
         }catch (Exception exception) {
             if (tx != null) tx.rollback();
