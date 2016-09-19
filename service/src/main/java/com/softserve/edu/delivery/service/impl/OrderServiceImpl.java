@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String addFeedback(FeedbackDTO dto, String email) {
+    public void addFeedback(FeedbackDTO dto, String email) {
         TransactionManager.withTransaction(() -> {
             User user = userDao.findOne(email)
                     .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
@@ -81,17 +81,13 @@ public class OrderServiceImpl implements OrderService {
             feedback.setApproved(false);
             feedbackDao.save(feedback);
         });
-        return dto.getText();
     }
 
     @Override
-    public List<OrderForListDto> changeStatus(String order_id, Boolean offerStatus) {
-        return TransactionManager.withTransaction(() ->
+    public void changeStatus(String order_id, Boolean offerStatus) {
+        TransactionManager.withTransaction(() ->
                 orderDao
                         .changeStatus(order_id, offerStatus)
-                        .stream()
-                        .map(OrderForListDto::of)
-                        .collect(Collectors.toList())
         );
     }
 
