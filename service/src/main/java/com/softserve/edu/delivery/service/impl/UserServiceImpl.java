@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     /*** This method verifies user credentials(login page)
      * author Petro Shtenovych
      * @param user with credentials email and password
@@ -87,6 +86,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 User dbUser = this.userDao.findOne(user.getEmail()).get();
                 tx.commit();
+                System.out.println(dbUser);
                 if ( ! checkPassword(user, dbUser)) {
                     return false;
                 }
@@ -99,18 +99,6 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
-
-    //<-----------------------Petro Shtenovych---------------------------->
-
-    private static boolean checkPassword(UserAuthDTO user, User dbUser) {
-        if( ! user.getPassword().equals(dbUser.getPassport())) {
-            return false;
-        }
-        return true;
-    }
-    
-    
-    
     
 	@Override
 	public List<UserProfileDto> getAllUsers(int from, int count, UserProfileFilterDto filter) {
@@ -127,7 +115,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserProfileDto changeUserStatus(String mail, boolean blocked) {
-		return TransactionManager.withTransaction(() ->
+		/*return TransactionManager.withTransaction(() ->
 				userDao
 						.findOne(mail)
 						.map(user -> {	
@@ -136,7 +124,8 @@ public class UserServiceImpl implements UserService {
 						})
 						.map(UserProfileDto::create)
 						.orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"))
-				);
+				);*/
+		return null;
 	}
 	
 	@Override
@@ -148,4 +137,16 @@ public class UserServiceImpl implements UserService {
 					.collect(Collectors.toList())
 				);			
 	}
+
+	//<---------------------Private------------------------->
+
+    private static boolean checkPassword(UserAuthDTO user, User dbUser) {
+        if( ! user.getPassword().equals(dbUser.getPassword())) {
+            return false;
+        }
+        return true;
+    }
+
+
+
 }

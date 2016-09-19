@@ -13,8 +13,6 @@ import org.testng.annotations.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import static org.mockito.Mockito.*;
-
 /**
  * @author Petro Shtenovych
  *
@@ -27,8 +25,8 @@ public class VerificationLoginTest {
 
     private EntityManager em = Jpa.getEntityManager();
 
-    private UserDao userMockDao = mock(UserDaoImpl.class);
-    private UserService userService = new UserServiceImpl(userMockDao);
+    private UserDao userDao = new UserDaoImpl(); //mock(UserDaoImpl.class);
+    private UserService userService = new UserServiceImpl(userDao);
 
     //User entities for testing method
     private User user1 = new User().setEmail("user1@domain.com").setPassword("user1");
@@ -58,11 +56,11 @@ public class VerificationLoginTest {
         try {
             tx = em.getTransaction();
             tx.begin();
-            userMockDao.save(user1);
-            userMockDao.save(user2);
-            userMockDao.save(user3);
-            userMockDao.save(user4);
-            userMockDao.save(user5);
+            userDao.save(user1);
+            userDao.save(user2);
+            userDao.save(user3);
+            userDao.save(user4);
+            userDao.save(user5);
             tx.commit();
         }catch (RuntimeException exception) {
             if (tx != null) tx.rollback();
@@ -98,11 +96,11 @@ public class VerificationLoginTest {
         try {
             tx = em.getTransaction();
             tx.begin();
-            userMockDao.delete(user1); //Maybe user's entities should have persistence state before delete from db?
-            userMockDao.delete(user2);
-            userMockDao.delete(user3);
-            userMockDao.delete(user4);
-            userMockDao.delete(user5);
+            userDao.delete(user1); //Maybe user's entities should have persistence state before delete from db?
+            userDao.delete(user2);
+            userDao.delete(user3);
+            userDao.delete(user4);
+            userDao.delete(user5);
             tx.commit();
         }catch (Exception exception) {
             if (tx != null) tx.rollback();
