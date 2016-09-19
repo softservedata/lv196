@@ -7,10 +7,9 @@ import com.softserve.edu.delivery.dto.OrderForListDto;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-/**
- * Created by Marina Chepurna
- */
+
 public interface OrderService {
+
     List<OrderForListDto> findAllActiveOrders(String email, int page, int size);
     void addOrder(OrderForAddDto dto, String email);
 

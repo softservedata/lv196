@@ -1,16 +1,15 @@
 package com.softserve.edu.delivery.dao;
 
-import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.Offer;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.OrderStatus;
+import com.softserve.edu.delivery.domain.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderDao extends BaseDao<Order, Long> {
 
+    Optional<User> getDriver(Long id);
     List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus);
 
     //  As customer I want to choose transporter.

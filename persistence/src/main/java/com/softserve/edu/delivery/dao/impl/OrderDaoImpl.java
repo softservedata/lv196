@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
 
@@ -15,6 +16,18 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
         super(Order.class);
     }
 
+    @Override
+    public Optional<User> getDriver(Long id) {
+        return getEntityManager()
+                .createQuery("select off.car.user from Offer off " +
+                        "where off.order.id = :id and off.approved = true", User.class)
+                .setParameter("id", id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    @Override
     public List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus) {
         return getEntityManager()
                 .createQuery("select o from Order o where o.user.email = :email " +
