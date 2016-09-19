@@ -10,6 +10,11 @@ import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.utils.TransactionManager;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,5 +96,69 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
+
+/*--------------------IvanSynyshyn----------------------------*/
+    @Override
+    public List<OrderForListDto> getOrdersByCityFrom(String name) {
+        List<OrderForListDto> result = new ArrayList<>();
+        Long cityId = Long.valueOf(0);
+        if (name == null) {
+            throw new IllegalArgumentException("Write name of city");
+        }
+        for (City city : cityDao.getCityByName(name)) {
+            cityId = city.getCityId();
+            if (cityId == 0) {
+                throw new IllegalArgumentException("Incorrect name of city");
+            }
+        }
+        for (Order ord : orderDao.getOrderByCityFrom(cityId)) {
+            result.add(OrderForListDto.of(ord));
+        }
+        return result;
+    }
+    @Override
+    public List<OrderForListDto> getOrdersByCityTo(String name) {
+        List<OrderForListDto> result = new ArrayList<>();
+        Long cityId = Long.valueOf(0);
+        if (name == null) {
+            throw new IllegalArgumentException("Write name of city");
+        }
+
+        for (City city : cityDao.getCityByName(name)) {
+            cityId = city.getCityId();
+            if (cityId == 0) {
+                throw new IllegalArgumentException("Incorrect name of city");
+            }
+        }
+        for (Order ord : orderDao.getOrderByCityTo(cityId)) {
+            result.add(OrderForListDto.of(ord));
+        }
+        return result;
+    }
+
+    @Override
+    public List<OrderForListDto> getOrdersByWeight(BigDecimal weight) {
+        List<OrderForListDto> result = new ArrayList<>();
+        if (weight.doubleValue() <= 0.0) {
+            throw new IllegalArgumentException("Incorect weight");
+        }
+        for (Order ord : orderDao.getOrderByWeight(weight)) {
+            result.add(OrderForListDto.of(ord));
+        }
+        return result;
+    }
+
+    @Override
+    public List<OrderForListDto> getOrdersByArriwalDate(Timestamp arrivalDate) {
+        List<OrderForListDto> result = new ArrayList<>();
+        Date date = new Date();
+        if (arrivalDate.getTime() < date.getTime()) {
+            throw new IllegalArgumentException("Wrong date format");
+        }
+        for (Order ord : orderDao.getOrderByArrivalDate(arrivalDate)) {
+            result.add(OrderForListDto.of(ord));
+        }
+        return result;
+    }
 
 }
