@@ -81,7 +81,7 @@ public class RouteServiceImpl implements RouteService {
         BigDecimal length = order.getLength();
         BigDecimal weight = order.getWeight();
         User owner = order.getCustomer(); //get customer
-        User transporter = approvedOf.getCar().getUser(); // get transporter
+        User transporter = approvedOf.getCar().getDriver(); // get transporter
         OrderStatus status = order.getOrderStatus();
         //Return result
         return new RouteDTO(lastCity, expectedTime, lastTime, visitedCities, height, width, length, weight, owner, transporter, status);
