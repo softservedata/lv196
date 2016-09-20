@@ -15,15 +15,6 @@ public class OrderForListDto {
     private String orderStatus;
     private String driverName;
 
-    public String getDriverName() {
-        return driverName;
-    }
-
-    public OrderForListDto setDriverName(String driverName) {
-        this.driverName = driverName;
-        return this;
-    }
-
     public OrderForListDto() {
     }
 
@@ -103,6 +94,15 @@ public class OrderForListDto {
 
     public OrderForListDto setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
+        return this;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public OrderForListDto setDriverName(String driverName) {
+        this.driverName = driverName;
         return this;
     }
 
