@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 				 userDao
 						.getAllUsersInRange(page, size)
 						.stream()
-						.filter(filter::test)
+						.filter(filter)
 						.map(UserProfileDto::create)
 						.collect(Collectors.toList())
 		);
@@ -117,11 +117,9 @@ public class UserServiceImpl implements UserService {
 		return TransactionManager.withTransaction(() ->
 				 userDao
 						.findOne(mail)
-						.map(user -> { user.setBlocked(blocked);
-									 return userDao.update(user);
-									 })
+						.map(user -> userDao.update(user.setBlocked(blocked)))
 						.map(UserProfileDto::create)
-						.orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"))
+						.<IllegalStateException>orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"))
 		);
 	}
 	
