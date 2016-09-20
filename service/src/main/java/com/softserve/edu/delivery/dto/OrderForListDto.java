@@ -108,4 +108,17 @@ public class OrderForListDto {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "OrderForListDto{" +
+                "id=" + id +
+                ", registrationDate=" + registrationDate +
+                ", description='" + description + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", cityNameFrom='" + cityNameFrom + '\'' +
+                ", cityNameTo='" + cityNameTo + '\'' +
+                ", orderStatus='" + orderStatus + '\'' +
+                '}';
+    }
 }

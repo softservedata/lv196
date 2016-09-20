@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
@@ -159,6 +160,14 @@ public class OrderServiceImpl implements OrderService {
             result.add(OrderForListDto.of(ord));
         }
         return result;
+    }
+
+    @Override
+    public List<Offer> addOffer(Long orderId, Offer offer) {
+        Order order = orderDao.findOne(orderId).get();
+        order.getOffers().add(offer);
+        Order updated = orderDao.update(order);
+        return updated.getOffers();
     }
 
 }
