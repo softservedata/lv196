@@ -84,7 +84,7 @@ public class RouteByIdTest {
         List<Car> cars = new ArrayList<>();
         cars.add(car);
         transporter.setCars(cars);
-        car.setUser(transporter);
+        car.setDriver(transporter);
 
 
     }
