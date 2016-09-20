@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.dto;
 
+import java.math.BigDecimal;
+
 public class CarDTO {
 
     private String vehicleName;
@@ -7,10 +9,10 @@ public class CarDTO {
     private String vehicleVIN;
     private String vehicleFrontPhotoURL;
     private String vehicleBackPhotoURL;
-    private Double vehicleWeight;
-    private Double vehicleLength;
-    private Double vehicleWidth;
-    private Double vehicleHeight;
+    private BigDecimal vehicleWeight;
+    private BigDecimal vehicleLength;
+    private BigDecimal vehicleWidth;
+    private BigDecimal vehicleHeight;
     
     public CarDTO() {
     }
@@ -35,19 +37,19 @@ public class CarDTO {
         return vehicleBackPhotoURL;
     }
 
-    public Double getVehicleWeight() {
+    public BigDecimal getVehicleWeight() {
         return vehicleWeight;
     }
 
-    public Double getVehicleLength() {
+    public BigDecimal getVehicleLength() {
         return vehicleLength;
     }
 
-    public Double getVehicleWidth() {
+    public BigDecimal getVehicleWidth() {
         return vehicleWidth;
     }
 
-    public Double getVehicleHeight() {
+    public BigDecimal getVehicleHeight() {
         return vehicleHeight;
     }
 
@@ -71,21 +73,21 @@ public class CarDTO {
         this.vehicleBackPhotoURL = vehicleBackPhotoURL;
     }
 
-    public void setVehicleWeight(Double vehicleWeight) {
+    public void setVehicleWeight(BigDecimal vehicleWeight) {
         this.vehicleWeight = vehicleWeight;
     }
 
-    public void setVehicleLength(Double vehicleLength) {
+    public void setVehicleLength(BigDecimal vehicleLength) {
         this.vehicleLength = vehicleLength;
     }
 
-    public void setVehicleWidth(Double vehicleWidth) {
+    public void setVehicleWidth(BigDecimal vehicleWidth) {
         this.vehicleWidth = vehicleWidth;
     }
 
-    public void setVehicleHeight(Double vehicleHeight) {
+    public void setVehicleHeight(BigDecimal vehicleHeight) {
         this.vehicleHeight = vehicleHeight;
     }
-    
+
     
 }

@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.domain;
 
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 
 @Entity
@@ -31,20 +33,20 @@ public class Car {
     
     //Maximum carrying capacity of the vehicle
     @Column(name = "vehicleWeight")
-    private Double vehicleWeight;
+    private BigDecimal vehicleWeight;
     
     //Vehicle maximum volume L W H
     @Column(name = "vehicleLength")
-    private Double vehicleLength;
+    private BigDecimal vehicleLength;
 	@Column(name = "vehicleWidth")
-	private Double vehicleWidth;
+	private BigDecimal vehicleWidth;
 	@Column(name = "vehicleHeight")
-	private Double vehicleHeight;
+	private BigDecimal vehicleHeight;
 	
 	//Class Car has one to many relationship to class User
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "driver_id")
+	private User driver;
 
 	public Car() {
 	}
@@ -73,24 +75,24 @@ public class Car {
         return vehicleBackPhotoURL;
     }
 
-    public Double getVehicleWeight() {
+    public BigDecimal getVehicleWeight() {
         return vehicleWeight;
     }
 
-    public Double getVehicleLength() {
+    public BigDecimal getVehicleLength() {
         return vehicleLength;
     }
 
-    public Double getVehicleWidth() {
+    public BigDecimal getVehicleWidth() {
         return vehicleWidth;
     }
 
-    public Double getVehicleHeight() {
+    public BigDecimal getVehicleHeight() {
         return vehicleHeight;
     }
 
-    public User getUser() {
-        return user;
+    public User getDriver() {
+        return driver;
     }
 
     public void setCarId(Long carId) {
@@ -117,25 +119,24 @@ public class Car {
         this.vehicleBackPhotoURL = vehicleBackPhotoURL;
     }
 
-    public void setVehicleWeight(Double vehicleWeight) {
+    public void setVehicleWeight(BigDecimal vehicleWeight) {
         this.vehicleWeight = vehicleWeight;
     }
 
-    public void setVehicleLength(Double vehicleLength) {
+    public void setVehicleLength(BigDecimal vehicleLength) {
         this.vehicleLength = vehicleLength;
     }
 
-    public void setVehicleWidth(Double vehicleWidth) {
+    public void setVehicleWidth(BigDecimal vehicleWidth) {
         this.vehicleWidth = vehicleWidth;
     }
 
-    public void setVehicleHeight(Double vehicleHeight) {
+    public void setVehicleHeight(BigDecimal vehicleHeight) {
         this.vehicleHeight = vehicleHeight;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setDriver(User driver) {
+        this.driver = driver;
     }
 
-	
 }
