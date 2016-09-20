@@ -60,7 +60,15 @@ public class Offer {
 	public void setApproved(Boolean approved) {
 		isApproved = approved;
 	}
-	
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;

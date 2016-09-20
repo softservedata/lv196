@@ -24,7 +24,7 @@ public class User implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "driver")
     private List<Car> cars = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")

@@ -17,10 +17,10 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
     @Override
-    public Optional<User> getDriver(Long id) {
+    public Optional<User> findDriverByOrderId(Long id) {
         return getEntityManager()
-                .createQuery("select off.car.user from Offer off " +
-                        "where off.order.id = :id and off.approved = true", User.class)
+                .createQuery("select off.car.driver from Offer off " +
+                        "where off.order.id = :id and off.isApproved = true", User.class)
                 .setParameter("id", id)
                 .getResultList()
                 .stream()
