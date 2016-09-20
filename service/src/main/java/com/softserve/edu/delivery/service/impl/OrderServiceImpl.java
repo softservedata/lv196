@@ -39,6 +39,14 @@ public class OrderServiceImpl implements OrderService {
                         .findAllOrdersByStatus(email, page, size, OrderStatus.ACTIVE)
                         .stream()
                         .map(OrderForListDto::of)
+                        .map(dto -> {
+                            String name = orderDao
+                                    .findDriverByOrderId(dto.getId())
+                                    .map(driver -> driver.getFirstName() + " " + driver.getLastName())
+                                    .orElse(null);
+
+                            return dto.setDriverName(name);
+                        })
                         .collect(Collectors.toList())
         );
     }

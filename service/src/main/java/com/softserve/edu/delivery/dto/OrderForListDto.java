@@ -13,6 +13,16 @@ public class OrderForListDto {
     private String cityNameFrom;
     private String cityNameTo;
     private String orderStatus;
+    private String driverName;
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public OrderForListDto setDriverName(String driverName) {
+        this.driverName = driverName;
+        return this;
+    }
 
     public OrderForListDto() {
     }
