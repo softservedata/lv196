@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface OrderDao extends BaseDao<Order, Long> {
 
-    Optional<User> findDriverByOrderId(Long id);
+    Optional<String> findDriverNameByOrderId(Long id);
     List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus);
 
     //  As customer I want to choose transporter.

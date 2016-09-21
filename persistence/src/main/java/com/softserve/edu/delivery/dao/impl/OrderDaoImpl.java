@@ -2,7 +2,6 @@ package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.domain.*;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
@@ -17,10 +16,13 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
     @Override
-    public Optional<User> findDriverByOrderId(Long id) {
+    public Optional<String> findDriverNameByOrderId(Long id) {
         return getEntityManager()
-                .createQuery("select off.car.driver from Offer off " +
-                        "where off.order.id = :id and off.isApproved = true", User.class)
+                .createQuery("select concat(u.firstName, ' ', u.lastName) from User u " +
+                        "join u.cars c " +
+                        "join c.offers off " +
+                        "join off.order ord " +
+                        "where ord.id = :id and off.isApproved = true", String.class)
                 .setParameter("id", id)
                 .getResultList()
                 .stream()
@@ -30,7 +32,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus) {
         return getEntityManager()
-                .createQuery("select o from Order o where o.user.email = :email " +
+                .createQuery("select o from Order o where o.customer.email = :email " +
                         "and o.orderStatus = :orderStatus " +
                         "order by o.registrationDate", Order.class)
                 .setParameter("email", email)
@@ -39,7 +41,6 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
                 .setMaxResults(size)
                 .getResultList();
     }
-
 
     public void changeStatus(String order_id, Boolean offerStatus) {
 

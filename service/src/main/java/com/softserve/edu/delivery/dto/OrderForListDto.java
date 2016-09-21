@@ -129,6 +129,7 @@ public class OrderForListDto {
                 ", cityNameFrom='" + cityNameFrom + '\'' +
                 ", cityNameTo='" + cityNameTo + '\'' +
                 ", orderStatus='" + orderStatus + '\'' +
+                ", driverName='" + driverName + '\'' +
                 '}';
     }
 }

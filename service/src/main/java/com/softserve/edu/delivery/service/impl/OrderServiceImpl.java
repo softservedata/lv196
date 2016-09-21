@@ -10,13 +10,11 @@ import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.utils.TransactionManager;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
@@ -42,10 +40,8 @@ public class OrderServiceImpl implements OrderService {
                         .map(OrderForListDto::of)
                         .map(dto -> {
                             String name = orderDao
-                                    .findDriverByOrderId(dto.getId())
-                                    .map(driver -> driver.getFirstName() + " " + driver.getLastName())
+                                    .findDriverNameByOrderId(dto.getId())
                                     .orElse(null);
-
                             return dto.setDriverName(name);
                         })
                         .collect(Collectors.toList())
