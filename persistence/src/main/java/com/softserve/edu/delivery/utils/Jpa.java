@@ -15,7 +15,9 @@ public class Jpa {
         if (emf == null) {
             throw new IllegalStateException("Entity manager factory is not defined");
         }
-        return emf.createEntityManager();
+        if (em == null)
+            return emf.createEntityManager();
+        return em;
     }
 
     private static EntityManagerFactory createEntityManagerFactory() {

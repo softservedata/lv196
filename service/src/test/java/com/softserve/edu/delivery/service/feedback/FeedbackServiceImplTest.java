@@ -1,10 +1,19 @@
 package com.softserve.edu.delivery.service.feedback;
 
+import com.softserve.edu.delivery.dao.FeedbackDao;
+import com.softserve.edu.delivery.dao.OrderDao;
+import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
+import com.softserve.edu.delivery.dao.impl.OrderDaoImpl;
+import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
 import com.softserve.edu.delivery.utils.Jpa;
+import com.softserve.edu.delivery.utils.TransactionManager;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -15,10 +24,9 @@ import java.util.NoSuchElementException;
  */
 public class FeedbackServiceImplTest {
 
-    static EntityManager entityManager = Jpa.getEntityManager();
+    static EntityManager entityManager;
+    static EntityTransaction tx;
     static FeedbackService fsi = new FeedbackServiceImpl();
-    static EntityTransaction tx = entityManager.getTransaction();
-    ;
 
     public FeedbackServiceImplTest() {
     }
@@ -36,10 +44,12 @@ public class FeedbackServiceImplTest {
      */
     static FeedbackDTO createFeedbackDTO() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
-        feedbackDTO.setFeedbackId(2L);
+        feedbackDTO.setFeedbackId(getRandomFeedbackId());
         feedbackDTO.setRate(20);
         feedbackDTO.setApproved(true);
         feedbackDTO.setText("text");
+        feedbackDTO.setUser(getUser("email0@gmail.com"));
+        feedbackDTO.setOrder(getOrder(1L));
         return feedbackDTO;
     }
 
@@ -52,8 +62,11 @@ public class FeedbackServiceImplTest {
     static FeedbackDTO createFeedbackDTOWithoutId() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setRate(20);
-        feedbackDTO.setApproved(true);
+        feedbackDTO.setApproved(false);
         feedbackDTO.setText("text");
+        feedbackDTO.setOrder(getOrder(1L));
+        feedbackDTO.setUser(getUser("email0@gmail.com"));
+
         return feedbackDTO;
     }
 
@@ -64,10 +77,12 @@ public class FeedbackServiceImplTest {
      */
     static Feedback createFeedback() {
         Feedback feedback = new Feedback();
-        feedback.setFeedbackId(12L);
+        feedback.setFeedbackId(getRandomFeedbackId());
         feedback.setRate(35);
         feedback.setApproved(false);
         feedback.setText("some text");
+        feedback.setUser(getUser("email0@gmail.com"));
+        feedback.setOrder(getOrder(1L));
         return feedback;
     }
 
@@ -78,7 +93,9 @@ public class FeedbackServiceImplTest {
      */
     static Long getFeedbackCount() {
         Long count = new Long(0);
+        entityManager = Jpa.getEntityManager();
         try {
+            tx = entityManager.getTransaction();
             tx.begin();
             count = (Long) entityManager.createQuery("select count(f) from Feedback f").getSingleResult();
             tx.commit();
@@ -152,13 +169,25 @@ public class FeedbackServiceImplTest {
         do {
             feedbackId = (long) (Math.random() * getLastFeedbackId());
             try {
-                fsi.findOne(feedbackId);
+                fsi.getFeedbackById(feedbackId);
                 found = true;
-            } catch (NoSuchElementException e) {}
+            } catch (NoSuchElementException e) {
+            }
         } while (!found);
 
         return feedbackId;
 
+    }
+
+    private static User getUser(String email) {
+        UserDao udao = new UserDaoImpl();
+        return udao.findOne(email).get();
+    }
+
+    private static Order getOrder(Long id) {
+
+        OrderDao odao = new OrderDaoImpl();
+        return odao.findOne(id).get();
     }
 
 }

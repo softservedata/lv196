@@ -22,7 +22,7 @@ public class Feedback {
     @Column(name = "text")
     private String text;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "email")
     private User user;
     @Column(name = "rate")
     private Integer rate;
@@ -75,5 +75,21 @@ public class Feedback {
 
     public void setApproved(Boolean approved) {
         this.approved = approved;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Feedback feedback = (Feedback) o;
+
+        return feedbackId.equals(feedback.feedbackId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return feedbackId.hashCode();
     }
 }

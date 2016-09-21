@@ -36,9 +36,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setFeedbackId(feedback.getFeedbackId());
-        //feedbackDTO.setOrder(feedback.getOrder());
+        feedbackDTO.setOrder(feedback.getOrder());
         feedbackDTO.setText(feedback.getText());
-        //feedbackDTO.setUserName(feedback.getUser().getFirstName() + " " + feedback.getUser().getLastName());
+        feedbackDTO.setUser(feedback.getUser());
         feedbackDTO.setRate(feedback.getRate());
         feedbackDTO.setApproved(feedback.isApproved());
 
@@ -54,8 +54,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
-        //feedback.setOrder(feedbackDTO.getOrder());
+        feedback.setOrder(feedbackDTO.getOrder());
         feedback.setText(feedbackDTO.getText());
+        feedback.setUser(feedbackDTO.getUser());
         feedback.setRate(feedbackDTO.getRate());
         feedback.setApproved(feedbackDTO.isApproved());
 
@@ -71,7 +72,9 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public List<FeedbackDTO> getAllFeedbacks() {
         List<FeedbackDTO> listDTO = new ArrayList<>();
-        List<Feedback> list = feedbackDao.findAll();
+        List<Feedback> list = TransactionManager.withTransaction(() ->
+                feedbackDao.findAll()
+        );
 
         list.forEach(f -> {
             listDTO.add(copyFeedbackToDTO(f));
@@ -92,22 +95,23 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
 
-        Optional<Feedback> oFeedback;
+        FeedbackDTO feedbackDTO = null;
 
         //increment of i is performed only in case, when a feedback with given id is found - since
         //ids in feedback table will not be in perfect sequence - gaps will be present, caused by
         //deleting feedbacks
 
-        long i = idFrom;
+        long id = idFrom;
         int count = 0;
 
-        while(count < number) {
-            oFeedback = feedbackDao.findOne(i);
-            if (oFeedback.isPresent()) {
-                feedbackDTOs.add(copyFeedbackToDTO(oFeedback.get()));
+        while (count < number) {
+            try {
+                feedbackDTO = getFeedbackById(id);
+                feedbackDTOs.add(feedbackDTO);
                 count++;
+            } catch (NoSuchElementException e) {
             }
-            i++;
+            id++;
         }
 
         return feedbackDTOs;
@@ -124,7 +128,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         FeedbackDTO feedbackDTO = null;
 
-        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+        Optional<Feedback> oFeedback = TransactionManager.withTransaction(() ->
+                feedbackDao.findOne(id)
+        );
 
         if (oFeedback.isPresent()) {
             feedbackDTO = copyFeedbackToDTO(oFeedback.get());
@@ -144,12 +150,16 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void changeFeedbackStatus(long id, boolean status) {
 
-        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+        Optional<Feedback> oFeedback = TransactionManager.withTransaction(() ->
+                feedbackDao.findOne(id)
+        );
 
         if (oFeedback.isPresent()) {
             Feedback feedback = oFeedback.get();
             feedback.setApproved(status);
-            feedbackDao.update(feedback);
+            TransactionManager.withTransaction(() ->
+                    feedbackDao.update(feedback)
+            );
         } else {
             throw new NoSuchElementException();
         }
@@ -162,8 +172,11 @@ public class FeedbackServiceImpl implements FeedbackService {
      * transforms the object of FeedbackDTO.class to Feedback.class, which is saved to the db.
      */
     public void save(FeedbackDTO feedbackDTO) {
+
+        Feedback feedback = copyDTOToFeedback(feedbackDTO);
+
         TransactionManager.withTransaction(() ->
-                feedbackDao.save(copyDTOToFeedback(feedbackDTO))
+                feedbackDao.save(feedback)
         );
     }
 
