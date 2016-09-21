@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="delivery" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>com.softserve.edu.delivery.domain.Baggage</class>
+		<class>com.softserve.edu.delivery.domain.Car</class>
+		<class>com.softserve.edu.delivery.domain.City</class>
+		<class>com.softserve.edu.delivery.domain.Feedback</class>
+		<class>com.softserve.edu.delivery.domain.Order</class>
+		<!-- <class>com.softserve.edu.delivery.domain.OrderStatus</class> -->
+		<class>com.softserve.edu.delivery.domain.Region</class>
+		<!-- <class>com.softserve.edu.delivery.domain.Role</class> -->
+		<class>com.softserve.edu.delivery.domain.Offer</class>
+		<class>com.softserve.edu.delivery.domain.RouteCities</class>
+		<!-- <class>com.softserve.edu.delivery.domain.RouteStatus</class> -->
+		<class>com.softserve.edu.delivery.domain.State</class>
+		<class>com.softserve.edu.delivery.domain.User</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/delivery?useSSL=false" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="password" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+
+			<!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/delivery"/> 
+				<property name="javax.persistence.jdbc.user" value="postgres"/> <property 
+				name="javax.persistence.jdbc.password" value="postgres"/> <property name="javax.persistence.jdbc.driver" 
+				value="org.postgresql.Driver"/> <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/> -->
+
+
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>
