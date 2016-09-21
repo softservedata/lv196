@@ -1,6 +1,8 @@
 package com.softserve.edu.delivery.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -47,6 +49,9 @@ public class Car {
 	@ManyToOne
 	@JoinColumn(name = "driver_id")
 	private User driver;
+
+    @OneToMany(mappedBy = "car")
+    private List<Offer> offers = new ArrayList<>();
 
 	public Car() {
 	}
@@ -139,4 +144,12 @@ public class Car {
         this.driver = driver;
     }
 
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public Car setOffers(List<Offer> offers) {
+        this.offers = offers;
+        return this;
+    }
 }
