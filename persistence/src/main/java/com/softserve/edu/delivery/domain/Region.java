@@ -27,6 +27,10 @@ public class Region {
                     cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<City> cities;
 
+    public Region(String regionName, State state) {
+        this.regionName = regionName;
+        this.state = state;
+    }
 
     public Long getRegionId() {
         return regionId;
