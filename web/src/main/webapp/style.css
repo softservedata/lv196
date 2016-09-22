@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+#search {
+    height: 120px;
+    width: 250px;
+    position: absolute;
+    top:20px;
+    left:20px;
+
+}
+
+
+#info {
+    height: 590px;
+    width: 600px;
+    position: absolute;
+    top:20px;
+    left: 260px;
+
+}
+
+#order {
+    height: 610px;
+    width: 240px;
+    position: absolute;
+    top:130px;
+    left:20px;
+
+}
+
+#feedback {
+    height: 120px;
+    width: 610px;
+    position: absolute;
+    top:615px;
+    left:260px;
+
+}
+
+
+p {
+
+    padding: 7px;
+    margin: 10px;
+}
