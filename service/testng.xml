@@ -3,19 +3,19 @@
 <suite name="Suite">
 	<!-- 3 ERROR 5 WARNING 7 INFO -->
 	<test name="Test1">
-		<classes>
-			<class name="com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTestDBTest">
-				<methods>
-					<!--include name="test" /-->
-				</methods>
-			</class>
-			<class name="com.softserve.edu.delivery.service.feedback.FeedbackServiceImplMockTest">
-				<methods>
-					<!--include name="test" /-->
-				</methods>
-			</class>
-			 <!--class name="com.softserve.edu.delivery.SmokeTest" /-->
-		</classes>
+		<!--<classes>-->
+			<!--&lt;!&ndash;<class name="com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTestDBTest">&ndash;&gt;-->
+				<!--&lt;!&ndash;<methods>&ndash;&gt;-->
+					<!--&lt;!&ndash;&lt;!&ndash;include name="test" /&ndash;&gt;&ndash;&gt;-->
+				<!--&lt;!&ndash;</methods>&ndash;&gt;-->
+			<!--&lt;!&ndash;</class>&ndash;&gt;-->
+			<!--<class name="com.softserve.edu.delivery.service.feedback.FeedbackServiceImplMockTest">-->
+				<!--<methods>-->
+					<!--&lt;!&ndash;include name="test" /&ndash;&gt;-->
+				<!--</methods>-->
+			<!--</class>-->
+			 <!--&lt;!&ndash;class name="com.softserve.edu.delivery.SmokeTest" /&ndash;&gt;-->
+		<!--</classes>-->
 	</test> <!-- Test -->
 	
 	<test name="verificationUser">
