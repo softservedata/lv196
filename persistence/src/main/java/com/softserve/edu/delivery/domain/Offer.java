@@ -21,7 +21,7 @@ public class Offer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "offer_id")
-	private long offerId;
+	private Long offerId;
 
 	@ManyToOne
 	@JoinColumn(name = "car_id")

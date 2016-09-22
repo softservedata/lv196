@@ -47,7 +47,8 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
         getEntityManager()                                                      //update offer's with offerStatus where is our order
                 .createQuery("update Offer set isApproved=:offerStatus where order = :order")
                 .setParameter("order", Long.parseLong(order_id))
-                .setParameter("offerStatus", offerStatus);
+                .setParameter("offerStatus", offerStatus)
+                .executeUpdate();
     }
 
 
