@@ -45,3 +45,6 @@ hs_err_pid*
 *.doc
 *.docx
 *.pdf
+
+# bower
+bower_components
