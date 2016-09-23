@@ -8,9 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form method="get" action="order">
-    <button type="submit">getOrder</button>
-    <table border="1" cellpadding="8" cellspacing="0">
+<h2>Order List</h2>
+    <table rules="rows" border="0" cellpadding="8" cellspacing="0">
         <section>
         <thead>
         <tr>
@@ -19,14 +18,14 @@
         </tr>
         </thead>
         <c:forEach items="${orderList}" var="order">
-            <jsp:useBean id="order" scope="page" class="com.softserve.edu.delivery.domain.Order"/>
+         <jsp:useBean id="order" scope="request" class="com.softserve.edu.delivery.domain.Order"/>
             <tr>
                 <td><a href="order?action=showOrderById&id=${order.id}" target="orderInfo">${order.id}</a></td>
                 <td>${order.orderStatus}</td>
             </tr>
         </c:forEach>
+        </section>
     </table>
-</form>
-</section>
+
 </body>
 </html>

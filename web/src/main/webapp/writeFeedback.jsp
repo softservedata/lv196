@@ -7,6 +7,10 @@
 <title>WRITE FEEDBACK</title>
 </head>
 <body>
-<h1>writeFeedback</h1>
+<form name="test" method="post" action="order?action=writeFeedback">
+   <textarea title="Write Feedback here" name="message" cols="90" rows="4" >Write feedback here</textarea>
+    <textarea title="Write Rate here"  name="rate" cols="10" rows="1">Write rate here</textarea>
+    <input type="submit" value="Send">
+</form>
 </body>
 </html>

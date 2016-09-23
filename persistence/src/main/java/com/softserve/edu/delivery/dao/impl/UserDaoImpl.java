@@ -1,9 +1,14 @@
 package com.softserve.edu.delivery.dao.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 
@@ -27,4 +32,22 @@ public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 				.setMaxResults(size)
 				.getResultList();
 	}
+
+	@Override
+	public List<User> findAll() {
+		EntityManager em = super.getEntityManager();
+		Query query = em.createQuery("select o from User o");
+		return query.getResultList();
+	}
+
+	@Override
+	public Optional<User> findOne(String email) {
+		return getEntityManager()
+				.createQuery("select u from User u where u.email=:email", User.class)
+				.setParameter("email", email)
+				.getResultList()
+				.stream()
+				.findFirst();
+	}
+
 }

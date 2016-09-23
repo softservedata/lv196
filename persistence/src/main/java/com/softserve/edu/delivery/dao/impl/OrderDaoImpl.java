@@ -90,4 +90,14 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
         Query query = em.createQuery("select o from Order o");
         return query.getResultList();
     }
+
+    @Override
+    public Optional<Order> findOne(Long id) {
+        return getEntityManager()
+                .createQuery("select o from Order o where o.id=:id", Order.class)
+                .setParameter("id", id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
 }
