@@ -31,7 +31,7 @@ public class AppServlet extends HttpServlet {
         userDao = new UserDaoImpl();
         cityDao = new CityDaoImpl();
         feedbackDao = new FeedbackDaoImpl();
-        os=new OrderServiceImpl(orderDao,userDao,cityDao,feedbackDao);
+        os = new OrderServiceImpl(orderDao,userDao,cityDao,feedbackDao);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,6 +44,7 @@ public class AppServlet extends HttpServlet {
             Long id = getId(request);
             request.setAttribute("orderList", orderDao.findOne(id));
             request.getRequestDispatcher("orderList.jsp").forward(request, response);
+
         }
 
     }
