@@ -28,8 +28,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     /**
-     * @param feedback of Feddback class
-     * @return object of FeddbackDTO.class
+     * @param feedback of Feedback class
+     * @return object of FeedbackDTO.class
      * <p>
      * copies all the fields of an object of Feedback.class to an object of FeedbackDTO.class
      */
@@ -46,8 +46,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     /**
-     * @param feedbackDTO of Feddback class
-     * @return object of Feddback.class
+     * @param feedbackDTO of Feedback class
+     * @return object of Feedback.class
      * <p>
      * copies all the fields of an object of FeedbackDTO.class to an object of Feedback.class
      */
@@ -58,7 +58,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setText(feedbackDTO.getText());
         feedback.setUser(feedbackDTO.getUser());
         feedback.setRate(feedbackDTO.getRate());
-        feedback.setApproved(feedbackDTO.isApproved());
+        feedback.setApproved(feedbackDTO.getApproved());
 
         return feedback;
     }
@@ -76,9 +76,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 feedbackDao.findAll()
         );
 
-        list.forEach(f -> {
-            listDTO.add(copyFeedbackToDTO(f));
-        });
+        list.forEach(f -> listDTO.add(copyFeedbackToDTO(f)));
 
         return listDTO;
     }
@@ -91,11 +89,11 @@ public class FeedbackServiceImpl implements FeedbackService {
      * accepts start id of a feedback in the db and number of feedbacks. Forms list of FeedbackDTO object,
      * whose ids are within the range.
      */
-    public List<FeedbackDTO> getAllFeedbacksInRange(int idFrom, int number) {
+    public List<FeedbackDTO> getAllFeedbacksInRange(long idFrom, long number) {
 
         List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
 
-        FeedbackDTO feedbackDTO = null;
+        FeedbackDTO feedbackDTO;
 
         //increment of i is performed only in case, when a feedback with given id is found - since
         //ids in feedback table will not be in perfect sequence - gaps will be present, caused by
@@ -126,7 +124,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public FeedbackDTO getFeedbackById(long id) {
 
-        FeedbackDTO feedbackDTO = null;
+        FeedbackDTO feedbackDTO;
 
         Optional<Feedback> oFeedback = TransactionManager.withTransaction(() ->
                 feedbackDao.findOne(id)
@@ -204,8 +202,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public void delete(Long id) {
 
         TransactionManager.withTransaction(() -> {
-            if (feedbackDao.findOne(id).isPresent()) {
-                feedbackDao.delete(feedbackDao.findOne(id).get());
+            Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+            if (oFeedback.isPresent()) {
+                feedbackDao.delete(oFeedback.get());
             } else {
                 throw new NoSuchElementException();
             }
@@ -222,14 +221,20 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public FeedbackDTO findOne(Long id) {
 
-        Feedback feedback = null;
+        Feedback feedback;
 
-        if (feedbackDao.findOne(id).isPresent()) {
-            feedback = feedbackDao.findOne(id).get();
+        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+
+        if (oFeedback.isPresent()) {
+            feedback = oFeedback.get();
         } else {
             throw new NoSuchElementException();
         }
 
         return copyFeedbackToDTO(feedback);
+    }
+
+    public void setTransporterName(FeedbackDTO feedbackDTO){
+        //feedbackDTO.setTransporterName();
     }
 }

@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderForListDto> getOrdersByCityFrom(String name) {
         List<OrderForListDto> result = new ArrayList<>();
-        Long cityId = Long.valueOf(0);
+        Long cityId = 0L;
         if (name == null) {
             throw new IllegalArgumentException("Write name of city");
         }
@@ -124,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderForListDto> getOrdersByCityTo(String name) {
         List<OrderForListDto> result = new ArrayList<>();
-        Long cityId = Long.valueOf(0);
+        Long cityId = 0L;
         if (name == null) {
             throw new IllegalArgumentException("Write name of city");
         }

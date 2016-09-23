@@ -4,7 +4,6 @@ import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
-import com.softserve.edu.delivery.utils.Jpa;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -22,8 +21,9 @@ import static com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTes
 public class FeedbackServiceImplTestDBTest {
 
     private static final long REQUIRED_NUMBERS_OF_FEEDBACKS = 100;
+    private static final int COUNT = 12;
 
-    private FeedbackService fsi = new FeedbackServiceImpl();
+    private final FeedbackService fsi = new FeedbackServiceImpl();
 
     @BeforeTest
     /**
@@ -42,7 +42,7 @@ public class FeedbackServiceImplTestDBTest {
         first group of tests - on a real test db, included in the group testDB
      */
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which copies fields from an object of Feedback.class
      * to an object of feedbackDTO.class
@@ -53,13 +53,16 @@ public class FeedbackServiceImplTestDBTest {
 
         FeedbackDTO feedbackDTO = fsi.copyFeedbackToDTO(feedback);
 
-        Assert.assertTrue(feedback.getFeedbackId() == feedbackDTO.getFeedbackId() && feedback.getOrder() == feedbackDTO.getOrder()
-                && feedback.getRate() == feedbackDTO.getRate() && feedback.getText() == feedbackDTO.getText() &&
-                feedback.getUser() == feedbackDTO.getUser());
+        Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
+                feedback.getOrder().equals(feedbackDTO.getOrder()) &&
+                feedback.getText().equals(feedbackDTO.getText()) &&
+                feedback.getUser().equals(feedbackDTO.getUser()) &&
+                feedback.getRate().equals(feedbackDTO.getRate()) &&
+                feedback.isApproved().equals(feedbackDTO.getApproved()));
 
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which copies fields from an object of FeedbackDTO.class
      * to an object of Feedbac.class
@@ -70,12 +73,15 @@ public class FeedbackServiceImplTestDBTest {
 
         Feedback feedback = fsi.copyDTOToFeedback(feedbackDTO);
 
-        Assert.assertTrue(feedback.getFeedbackId() == feedbackDTO.getFeedbackId() && feedback.getOrder() == feedbackDTO.getOrder()
-                && feedback.getRate() == feedbackDTO.getRate() && feedback.getText() == feedbackDTO.getText() &&
-                feedback.getUser() == feedbackDTO.getUser());
+        Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
+                feedback.getOrder().equals(feedbackDTO.getOrder()) &&
+                feedback.getText().equals(feedbackDTO.getText()) &&
+                feedback.getUser().equals(feedbackDTO.getUser()) &&
+                feedback.getRate().equals(feedbackDTO.getRate()) &&
+                feedback.isApproved().equals(feedbackDTO.getApproved()));
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
      *  starting from startId, number of objects - startId + count
@@ -91,7 +97,7 @@ public class FeedbackServiceImplTestDBTest {
 
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
      *  starting from startId, number of objects - startId + count
@@ -101,17 +107,17 @@ public class FeedbackServiceImplTestDBTest {
 
         List<FeedbackDTO> feedbackList = fsi.getAllFeedbacks();
 
-        boolean notEmpty = true;
+        boolean passed = true;
 
         for (FeedbackDTO f : feedbackList) {
-            if (f == null || !(f instanceof FeedbackDTO))
-                notEmpty = false;
+            if (f == null)
+                passed = false;
         }
 
-        Assert.assertTrue(notEmpty);
+        Assert.assertTrue(passed);
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
      *  starting from startId, number of objects - startId + count
@@ -119,16 +125,14 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testgetAllFeedbacksInRange0TestDB() {
 
-        Long startId = 1L;
+        Long startId = getStartFeedbackId();
 
-        long count = 5L;
+        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(startId, COUNT);
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(startId.intValue(), (int) count);
-
-        Assert.assertTrue(count == feedbackList.size());
+        Assert.assertTrue(COUNT == feedbackList.size());
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
      *  starting from startId, number of objects - startId + count
@@ -136,20 +140,22 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testgetAllFeedbacksInRange1TestDB() {
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(1, 5);
+        Long startId = getStartFeedbackId();
 
-        boolean notEmpty = true;
+        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(startId, COUNT);
+
+        boolean passed = true;
 
         for (FeedbackDTO f : feedbackList) {
-            if (f == null || !(f instanceof FeedbackDTO))
-                notEmpty = false;
+            if (f == null)
+                passed = false;
         }
 
-        Assert.assertTrue(notEmpty);
+        Assert.assertTrue(passed);
     }
 
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which gets an object of FeedbackDTO.class with a given id
      *
@@ -163,7 +169,7 @@ public class FeedbackServiceImplTestDBTest {
         Assert.assertEquals(feedbackId, (long) feedbackDTO.getFeedbackId());
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which changes status of an feedback in the db
      */
@@ -174,7 +180,7 @@ public class FeedbackServiceImplTestDBTest {
         FeedbackDTO feedbackDTO = fsi.getFeedbackById(feedbackId);
 
         //retrieving actual status
-        boolean previousStatus = feedbackDTO.isApproved();
+        boolean previousStatus = feedbackDTO.getApproved();
         //changing the status to an opposite
         feedbackDTO.setApproved(!previousStatus);
         //updating the status
@@ -182,10 +188,10 @@ public class FeedbackServiceImplTestDBTest {
         //retrieving the updated object
         feedbackDTO = fsi.getFeedbackById(feedbackId);
 
-        Assert.assertFalse(previousStatus == feedbackDTO.isApproved());
+        Assert.assertFalse(previousStatus == feedbackDTO.getApproved());
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which saves an object of FeedbackDTO.class with a given id
      * to the db
@@ -199,19 +205,22 @@ public class FeedbackServiceImplTestDBTest {
         //retrieving number of entries in the db after adding an entry
         FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(getLastFeedbackId());
 
-        Assert.assertTrue(feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
+        //comparation of id is omitted - since in non-persistent object it is missing
+        Assert.assertTrue(feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
-                feedbackDTO0.isApproved().equals(feedbackDTO1.isApproved()));
+                feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
+                feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
+                feedbackDTO0.getApproved().equals(feedbackDTO1.getApproved()));
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which updates an object of FeedbackDTO.class with a given id
      * to the db
      */
     public void testUpdateTestDB() {
 
-        long feedbackId = getRandomFeedbackId();
+        long feedbackId = 1L;//getRandomFeedbackId();
 
         //retrieving an object of FeedbackDTO.class from the db
         FeedbackDTO feedbackDTO0 = fsi.getFeedbackById(feedbackId);
@@ -226,12 +235,14 @@ public class FeedbackServiceImplTestDBTest {
 
         //comparing fields of the objects
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
-                feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
+                feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
-                feedbackDTO0.isApproved().equals(feedbackDTO1.isApproved()));
+                feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
+                feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
+                feedbackDTO0.getApproved().equals(feedbackDTO1.getApproved()));
     }
 
-    @Test(enabled = true, groups = {"testDB"}, expectedExceptions = NoSuchElementException.class)
+    @Test(enabled = false, groups = {"testDB"}, expectedExceptions = NoSuchElementException.class)
     /**
      * tests method from FeedbackServiceImpl.class, which deletes an object of FeedbackDTO.class with a given id
      * from the db
@@ -248,7 +259,7 @@ public class FeedbackServiceImplTestDBTest {
         fsi.getFeedbackById(feedbackId);
     }
 
-    @Test(enabled = true, groups = {"testDB"})
+    @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which looks in the db for an object of FeedbackDTO.class
      * with a given id
