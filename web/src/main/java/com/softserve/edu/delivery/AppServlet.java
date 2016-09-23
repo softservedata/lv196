@@ -8,6 +8,7 @@ import com.softserve.edu.delivery.dao.impl.CityDaoImpl;
 import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.dao.impl.OrderDaoImpl;
 import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
+import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.service.impl.OrderServiceImpl;
 
@@ -40,10 +41,10 @@ public class AppServlet extends HttpServlet {
             request.setAttribute("orderList", orderDao.findAll());
             request.getRequestDispatcher("ordersList.jsp").forward(request, response);
         }
-        else if(action.equals("showorderbyid")){
+        else if(action.equals("showOrderById")){
             Long id = getId(request);
-            request.setAttribute("orderList", orderDao.findOne(id));
-            request.getRequestDispatcher("orderList.jsp").forward(request, response);
+            request.setAttribute("oneOrder", orderDao.findOne(id).get());
+            request.getRequestDispatcher("orderInfo.jsp").forward(request, response);
         }
 
     }

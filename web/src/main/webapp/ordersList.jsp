@@ -21,7 +21,7 @@
         <c:forEach items="${orderList}" var="order">
             <jsp:useBean id="order" scope="page" class="com.softserve.edu.delivery.domain.Order"/>
             <tr>
-                <td><a href="order?action=showorderbyid&id=${order.id}" target="orderInfo">${order.id}</a></td>
+                <td><a href="order?action=showOrderById&id=${order.id}" target="orderInfo">${order.id}</a></td>
                 <td>${order.orderStatus}</td>
             </tr>
         </c:forEach>
