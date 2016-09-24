@@ -4,11 +4,13 @@ package com.softserve.edu.delivery.dao.impl;
  */
 import com.softserve.edu.delivery.dao.CityDao;
 import com.softserve.edu.delivery.domain.City;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 
+@Repository
 public class CityDaoImpl extends BaseDaoImpl<City, Long> implements CityDao {
     public CityDaoImpl() {
         super(City.class);

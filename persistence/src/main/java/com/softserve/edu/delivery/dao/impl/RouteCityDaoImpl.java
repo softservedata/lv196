@@ -3,11 +3,13 @@ package com.softserve.edu.delivery.dao.impl;
 import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.RouteCities;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 
+@Repository
 public class RouteCityDaoImpl extends BaseDaoImpl<RouteCities, Long> implements RouteCityDao {
     public RouteCityDaoImpl() {
         super(RouteCities.class);

@@ -9,7 +9,10 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
-import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -17,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
@@ -24,85 +29,79 @@ public class OrderServiceImpl implements OrderService {
     private final CityDao cityDao;
     private final FeedbackDao feedbackDao;
 
+    @Autowired
     public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
         this.cityDao = cityDao;
-        this.feedbackDao=feedbackDao;
+        this.feedbackDao = feedbackDao;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderForListDto> findAllActiveOrders(String email, int page, int size) {
-        return TransactionManager.withTransaction(() ->
-                orderDao
-                        .findAllOrdersByStatus(email, page, size, OrderStatus.ACTIVE)
-                        .stream()
-                        .map(OrderForListDto::of)
-                        .map(dto -> {
-                            String name = orderDao
-                                    .findDriverNameByOrderId(dto.getId())
-                                    .orElse(null);
-                            return dto.setDriverName(name);
-                        })
-                        .collect(Collectors.toList())
-        );
+        return orderDao
+                .findAllOrdersByStatus(email, page, size, OrderStatus.ACTIVE)
+                .stream()
+                .map(OrderForListDto::of)
+                .map(dto -> {
+                    String name = orderDao
+                            .findDriverNameByOrderId(dto.getId())
+                            .orElse(null);
+                    return dto.setDriverName(name);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public void addOrder(OrderForAddDto dto, String email) {
-        TransactionManager.withTransaction(() -> {
-            User user = userDao.findOne(email)
-                    .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+        User user = userDao.findOne(email)
+                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
-            City from = cityDao.findOne(dto.getCityIdFrom())
-                    .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdFrom()));
+        City from = cityDao.findOne(dto.getCityIdFrom())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdFrom()));
 
-            City to = cityDao.findOne(dto.getCityIdTo())
-                    .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
+        City to = cityDao.findOne(dto.getCityIdTo())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
 
-            orderDao.save(new Order()
-                    .setCustomer(user)
-                    .setCityFrom(from)
-                    .setCityTo(to)
-                    .setArrivalDate(dto.getArrivalDate())
-                    .setHeight(dto.getHeight())
-                    .setWidth(dto.getWidth())
-                    .setLength(dto.getLength())
-                    .setWeight(dto.getWeight())
-                    .setPrice(dto.getPrice())
-                    .setDescription(dto.getDescription())
-            );
-        });
+        orderDao.save(new Order()
+                .setCustomer(user)
+                .setCityFrom(from)
+                .setCityTo(to)
+                .setArrivalDate(dto.getArrivalDate())
+                .setHeight(dto.getHeight())
+                .setWidth(dto.getWidth())
+                .setLength(dto.getLength())
+                .setWeight(dto.getWeight())
+                .setPrice(dto.getPrice())
+                .setDescription(dto.getDescription())
+        );
     }
 
     @Override
     public void addFeedback(FeedbackDTO dto, String email) {
-        TransactionManager.withTransaction(() -> {
-            User user = userDao.findOne(email)
-                    .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-            Order order = orderDao.findOne(dto.getOrder().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrder().getId()));
+        User user = userDao.findOne(email)
+                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+        Order order = orderDao.findOne(dto.getOrder().getId())
+                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrder().getId()));
 
-            Feedback feedback = new Feedback();
-            feedback.setOrder(order);
-            feedback.setUser(user);
-            feedback.setRate(dto.getRate());
-            feedback.setText(dto.getText());
-            feedback.setApproved(false);
-            feedbackDao.save(feedback);
-        });
+        Feedback feedback = new Feedback();
+        feedback.setOrder(order);
+        feedback.setUser(user);
+        feedback.setRate(dto.getRate());
+        feedback.setText(dto.getText());
+        feedback.setApproved(false);
+        feedbackDao.save(feedback);
     }
 
     @Override
     public void changeStatus(String order_id, Boolean offerStatus) {
-        TransactionManager.withTransaction(() ->
-                orderDao
-                        .changeStatus(order_id, offerStatus)
-        );
+        orderDao.changeStatus(order_id, offerStatus);
+
     }
 
 
-/*--------------------IvanSynyshyn----------------------------*/
+    /*--------------------IvanSynyshyn!!!----------------------------*/
     @Override
     public List<OrderForListDto> getOrdersByCityFrom(String name) {
         List<OrderForListDto> result = new ArrayList<>();
@@ -121,6 +120,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return result;
     }
+
     @Override
     public List<OrderForListDto> getOrdersByCityTo(String name) {
         List<OrderForListDto> result = new ArrayList<>();
