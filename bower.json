@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootswatch-dist": "3.3.6-paper",
+    "font-awesome": "4.6.3",
     "angular": "1.5.8",
     "angular-ui-router": "0.3.1"
   }
