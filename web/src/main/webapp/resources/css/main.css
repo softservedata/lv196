@@ -3,11 +3,6 @@ html, body {
     color: #555555;
 }
 
-.wrapper, .row {
-    height: 100%;
-    margin-left: 0;
-    margin-right: 0;
-}
 
 .wrapper:before, .wrapper:after,
 .site-column:before, .site-column:after {
@@ -23,7 +18,6 @@ html, body {
 .site-column {
     height: 100%;
     overflow: auto;
-    *zoom: 1;
 }
 
 .site-column.col-xs-10 {
@@ -52,6 +46,7 @@ html, body {
     top: 0;
     position: fixed;
     width: inherit;
+    box-shadow: 2px 1px 9px rgba(0, 0, 0, 0.52);
 }
 
 .navbar-inverse {
@@ -90,6 +85,11 @@ html, body {
     background-color: #fff;
 }
 
+.content-row {
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
 /* adjust the contents on smaller devices */
 @media (max-width: 768px) {
 
@@ -103,29 +103,4 @@ html, body {
         position: relative;
     }
 
-}
-
-@media screen and (max-width: 768px) {
-    .row-offcanvas {
-        position: relative;
-        -webkit-transition: all 0.25s ease-out;
-        -moz-transition: all 0.25s ease-out;
-        transition: all 0.25s ease-out;
-    }
-
-    .row-offcanvas-left.active {
-        left: 33%;
-    }
-
-    .row-offcanvas-left.active .sidebar-offcanvas {
-        left: -33%;
-        position: absolute;
-        top: 0;
-        width: 33%;
-        margin-left: 5px;
-    }
-
-    .sidebar-offcanvas, .sidebar-offcanvas a, .sidebar-footer a {
-        padding-left: 3px;
-    }
 }
