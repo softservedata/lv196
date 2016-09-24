@@ -9,12 +9,10 @@ import com.softserve.edu.delivery.dao.impl.OrderDaoImpl;
 import com.softserve.edu.delivery.dao.impl.RouteCityDaoImpl;
 import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
 import com.softserve.edu.delivery.domain.*;
-import com.softserve.edu.delivery.dto.RouteDTO;
+import com.softserve.edu.delivery.dto.OrderRouteDto;
 import com.softserve.edu.delivery.service.RouteService;
 import com.softserve.edu.delivery.service.impl.RouteServiceImpl;
 import com.softserve.edu.delivery.utils.Jpa;
-import org.mockito.Mockito;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -30,7 +28,7 @@ import java.util.List;
 /**
  * @author Petro Shtenovych
  * Testing method getRouteById(Long id) from RouteServieImpl class
- * Method should return RouteDTO class instance which represent all
+ * Method should return OrderRouteDto class instance which represent all
  * necessary tracking information about order
  * */
 public class RouteByIdTest {
@@ -118,7 +116,7 @@ public class RouteByIdTest {
             Order order = (Order) query.getSingleResult();
             Long orderId = order.getId();
             //test method
-            RouteDTO dto = routeService.getRouteById(orderId);
+            OrderRouteDto dto = routeService.getRouteById(orderId);
             System.out.println(dto);
             tx.commit();
         }catch (Exception e) {

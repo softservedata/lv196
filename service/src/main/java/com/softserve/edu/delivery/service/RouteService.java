@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.dto.RouteDTO;
+import com.softserve.edu.delivery.dto.OrderRouteDto;
 
 /**
  * @author Petro Shtenovych
@@ -8,6 +8,6 @@ import com.softserve.edu.delivery.dto.RouteDTO;
 
 public interface RouteService {
 
-    RouteDTO getRouteById(Long id);
+    OrderRouteDto getRouteById(Long id);
 
 }

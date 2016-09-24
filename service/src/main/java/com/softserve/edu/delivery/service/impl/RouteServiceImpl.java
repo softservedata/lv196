@@ -4,7 +4,7 @@ import com.softserve.edu.delivery.dao.OfferDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.*;
-import com.softserve.edu.delivery.dto.RouteDTO;
+import com.softserve.edu.delivery.dto.OrderRouteDto;
 import com.softserve.edu.delivery.service.RouteService;
 import com.softserve.edu.delivery.utils.Jpa;
 
@@ -37,7 +37,7 @@ public class RouteServiceImpl implements RouteService {
      * @throws RuntimeException if database errors occur
      * */
     @Override
-    public RouteDTO getRouteById(Long id) {
+    public OrderRouteDto getRouteById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("id shouldn't be null!");
         }
@@ -62,7 +62,7 @@ public class RouteServiceImpl implements RouteService {
             tx.commit();
             throw new IllegalArgumentException("id doesn't exist");
         }
-        RouteDTO result = createRouteDTO(order, lastTrack, trackingList, approvedOffer);
+        OrderRouteDto result = createRouteDTO(order, lastTrack, trackingList, approvedOffer);
         tx.commit();
         return result;
     }
@@ -71,7 +71,7 @@ public class RouteServiceImpl implements RouteService {
     //<----------------------------------------Private--------------------------------------->
 
     //Retrieve all parameters
-    private static RouteDTO createRouteDTO(Order order, RouteCities lastTrack, List<RouteCities> trackingList, Offer approvedOf) {
+    private static OrderRouteDto createRouteDTO(Order order, RouteCities lastTrack, List<RouteCities> trackingList, Offer approvedOf) {
         City lastCity = lastTrack.getCity(); // get last visited city
         Timestamp lastTime = lastTrack.getVisitDate(); // get time when visited last city
         Timestamp expectedTime = order.getArrivalDate(); //get expected arrival time
@@ -84,7 +84,7 @@ public class RouteServiceImpl implements RouteService {
         User transporter = approvedOf.getCar().getDriver(); // get transporter
         OrderStatus status = order.getOrderStatus();
         //Return result
-        return new RouteDTO(lastCity, expectedTime, lastTime, visitedCities, height, width, length, weight, owner, transporter, status);
+        return new OrderRouteDto(lastCity, expectedTime, lastTime, visitedCities, height, width, length, weight, owner, transporter, status);
     }
 
     private static List<City> retrieveAllVisitedCities(List<RouteCities> trackingList) {
