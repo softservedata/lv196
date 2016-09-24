@@ -1,0 +1,10 @@
+{
+  "name": "delivery",
+  "version": "0.1",
+  "private": true,
+  "dependencies": {
+    "bootswatch-dist": "3.3.6-paper",
+    "angular": "1.5.8",
+    "angular-ui-router": "0.3.1"
+  }
+}
