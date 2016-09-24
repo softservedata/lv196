@@ -55,6 +55,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addOrder(OrderForAddDto dto, String email) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Order dto must not be null");
+        }
+
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
