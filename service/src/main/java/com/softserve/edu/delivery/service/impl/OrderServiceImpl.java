@@ -10,6 +10,7 @@ import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.utils.TransactionManager;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -51,6 +52,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void addOrder(OrderForAddDto dto, String email) {
         TransactionManager.withTransaction(() -> {
+            if (dto == null) {
+                throw new IllegalArgumentException("Order dto must not be null");
+            }
+
             User user = userDao.findOne(email)
                     .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
