@@ -20,7 +20,7 @@ public interface OrderService {
      * @param size - orders amount on the page
      * @return list of active orders for the relevant parameters
      */
-    List<OrderForListDto> findAllActiveOrders(String email, int page, int size);
+    List<OrderForListDto> findAllOpenOrders(String email, int page, int size);
 
     /**
      * Creates new order based of given dto and assigns it to user with given email

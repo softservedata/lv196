@@ -32,8 +32,9 @@ public class City {
 		return cityId;
 	}
 
-	public void setCityId(Long cityId) {
+	public City setCityId(Long cityId) {
 		this.cityId = cityId;
+		return this;
 	}
 
 	@Column(name = "city_name")

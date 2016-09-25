@@ -4,8 +4,6 @@ public enum  OrderStatus {
     OPEN("Open"),
     IN_PROGRESS("In progress"),
     APPROVED("Approved"),
-    ACTIVE("Active"),
-    SUBMITTED("Submitted"),
     CLOSED("Closed");
 
     String name;
