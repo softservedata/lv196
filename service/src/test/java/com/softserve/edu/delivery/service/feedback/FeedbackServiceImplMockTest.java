@@ -38,7 +38,7 @@ public class FeedbackServiceImplMockTest {
 
     @BeforeClass
     public void injectMockFeedbackDAO() {
-        fsi = new FeedbackServiceImpl(mockFDao);
+        FeedbackServiceImpl.getInstance().setFeedbackDao(mockFDao);
     }
 
     @Test(enabled = true, groups = {"mock"})

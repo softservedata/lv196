@@ -5,12 +5,12 @@
          version="3.1">
 
     <servlet>
-        <servlet-name>feedback servlet</servlet-name>
+        <servlet-name>feedbackServlet</servlet-name>
         <servlet-class>com.softserve.edu.delivery.FeedbackServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>feedback servlet</servlet-name>
+        <servlet-name>feedbackServlet</servlet-name>
         <url-pattern>/feedback</url-pattern>
     </servlet-mapping>
 

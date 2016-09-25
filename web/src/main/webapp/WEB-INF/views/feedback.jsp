@@ -20,28 +20,14 @@
 </div>
 
 <script>
-    var feedbacks = [];
-    <c:forEach items="${allFeedbacksList}" var="feedback" varStatus="status">
-    newFeedback = {};
-    newFeedback.feedbackId = ${feedback.feedbackId};
-    newFeedback.orderId = ${feedback.orderId};
-    newFeedback.userName = '${feedback.userName}';
-    newFeedback.transporterName = "-";
-    <%--${feedback.transporterName};--%>
-    newFeedback.rate = "${feedback.rate}";
-    newFeedback.text = "${feedback.text}";
-    if ("${feedback.approved}" == "true") {
-        newFeedback.approved = '<select> <option value="true" selected>True</option><option value="false">False</option></select>';
-    }
-    else {
-        newFeedback.approved = '<select> <option value="true">True</option><option value="false" selected>False</option></select>';
-    }
-    feedbacks.push(newFeedback);
-    </c:forEach>
-
     $(document).ready(function () {
         $('#example').DataTable({
-            data: feedbacks,
+            processing: true,
+            ajax: {
+                url: "/web/feedback",
+                dataSrc: "feedbacks",
+                type: "POST"
+            },
             columns: [
                 {title: "Feedback id", data: "feedbackId"},
                 {title: "Order id", data: "orderId"},
@@ -49,7 +35,7 @@
                 {title: "Transporter name", data: "transporterName"},
                 {title: "Rate", data: "rate"},
                 {title: "Text", data: "text"},
-                {title: "Status", data: "approved"}
+                {title: "Approved", data: "approved"}
             ],
             columnDefs: [
                 {"width": "7%", "targets": 0},

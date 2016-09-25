@@ -23,7 +23,7 @@ public class FeedbackServiceImplTestDBTest {
     private static final long REQUIRED_NUMBERS_OF_FEEDBACKS = 100;
     private static final int COUNT = 12;
 
-    private final FeedbackService fsi = new FeedbackServiceImpl();
+    private final FeedbackService fsi = FeedbackServiceImpl.getInstance();
 
     @BeforeTest
     /**
@@ -225,7 +225,7 @@ public class FeedbackServiceImplTestDBTest {
         //retrieving an object of FeedbackDTO.class from the db
         FeedbackDTO feedbackDTO0 = fsi.getFeedbackById(feedbackId);
 
-        feedbackDTO0 = changeData(feedbackDTO0);
+        changeData(feedbackDTO0);
 
         //updating it
         fsi.update(feedbackDTO0);

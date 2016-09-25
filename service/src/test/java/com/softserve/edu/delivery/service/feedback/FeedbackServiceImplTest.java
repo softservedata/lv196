@@ -35,7 +35,7 @@ final class FeedbackServiceImplTest {
 
     private static EntityManager entityManager;
     private static EntityTransaction tx;
-    private static FeedbackService fsi = new FeedbackServiceImpl();
+    private static FeedbackService fsi = FeedbackServiceImpl.getInstance();
 
     public FeedbackServiceImplTest() {
     }
@@ -54,23 +54,48 @@ final class FeedbackServiceImplTest {
         return "email" + (int)(Math.random() * LAST_USER_ID) + "@gmail.com";
     }
 
+    /**
+     *
+     * @param email - id of a User
+     * @return user with the id
+     */
     private static User getUser(String email) {
         UserDao udao = new UserDaoImpl();
         return udao.findOne(email).get();
     }
 
+    /**
+     *
+     * @param id of the Order
+     * @return Order with the id
+     */
     private static Order getOrder(Long id) {
         OrderDao odao = new OrderDaoImpl();
         return odao.findOne(id).get();
     }
 
+    /**
+     *
+     * @return random rate
+     */
     private static int getRandomRate(){
+
         return (int)(Math.random() * MAX_FEEDBACK_RATE);
     }
 
+    /**
+     *
+     * @return random approved status
+     */
     private static boolean getRandomApproved(){
+
         return (int) (Math.random() * 2) > 0;
     }
+
+    /**
+     * creates random order ID
+     * @return order ID
+     */
 
     private static long getRandomOrderId(){
         long orderId =(long)(Math.random() * LAST_ORDER_ID) + START_ORDER_ID;
@@ -82,7 +107,7 @@ final class FeedbackServiceImplTest {
 
     /**
      * @return object of of FeedbackDTO.class
-     * 
+     *
      * creates an object of FeedbackDTO.class - for testing
      */
     static FeedbackDTO createFeedbackDTO() {
@@ -98,7 +123,7 @@ final class FeedbackServiceImplTest {
 
     /**
      * @return object of of FeedbackDTO.class
-     * 
+     *
      * creates a mock object of FeedbackDTO.class - for testing
      */
     static FeedbackDTO createMockFeedbackDTO() {
@@ -114,7 +139,7 @@ final class FeedbackServiceImplTest {
 
     /**
      * @return object of of FeedbackDTO.class
-     * 
+     *
      * creates an object of FeedbackDTO.class - for testing. Id is not created, since in some tests
      * it must be missing (save to bd)
      */
@@ -131,7 +156,7 @@ final class FeedbackServiceImplTest {
 
     /**
      * @return object of of Feedback.class
-     * 
+     *
      * creates an object of Feedback.class - for testing
      */
     static Feedback createFeedback() {
@@ -148,7 +173,7 @@ final class FeedbackServiceImplTest {
 
     /**
      * @return object of of Feedback.class
-     * 
+     *
      * creates an object of Feedback.class - for testing
      */
     static Feedback createMockFeedback() {
@@ -164,7 +189,7 @@ final class FeedbackServiceImplTest {
 
     /**
      * @return count
-     * 
+     *
      * retrieves number of feedback from db
      */
     static Long getFeedbackCount() {
@@ -223,19 +248,18 @@ final class FeedbackServiceImplTest {
     }
 
     /**
-     * @param feedbackDTO
-     * @return feedbackDTO
-     * 
+     * @param feedbackDTO - object of FeedbackDTO.class
+     *
+     *
      * changes data of an object of FeedbackDTO.class and sends it back
      */
-    static FeedbackDTO changeData(FeedbackDTO feedbackDTO) {
+    static void  changeData(FeedbackDTO feedbackDTO) {
 
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setText(getRandomText());
         feedbackDTO.setUser(getUser(getRandomUserEmail()));
         feedbackDTO.setOrder(getOrder(getRandomOrderId()));
-        return feedbackDTO;
     }
 
     /**

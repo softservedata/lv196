@@ -18,12 +18,22 @@ import java.util.Optional;
  */
 public class FeedbackServiceImpl implements FeedbackService {
 
-    private FeedbackDao feedbackDao = new FeedbackDaoImpl();
+    private FeedbackDao feedbackDao;
 
-    public FeedbackServiceImpl() {
+    private static FeedbackService fsi;
+
+    private  FeedbackServiceImpl() {
     }
 
-    public FeedbackServiceImpl(FeedbackDao feedbackDao) {
+    public static FeedbackService getInstance(){
+        if (fsi == null) {
+            return new FeedbackServiceImpl();
+        }
+        return fsi;
+    }
+
+    @Override
+    public void setFeedbackDao(FeedbackDao feedbackDao){
         this.feedbackDao = feedbackDao;
     }
 
