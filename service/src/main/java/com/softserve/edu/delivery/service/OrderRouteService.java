@@ -7,7 +7,9 @@ import com.softserve.edu.delivery.dto.OrderRouteDto;
  * @author Petro Shtenovych
  * */
 
-public interface RouteService {
+public interface OrderRouteService {
+
+    boolean exists(Long id);
 
     OrderRouteDto getOrderRouteById(OrderIdDto orderId);
 
