@@ -1,11 +1,13 @@
 package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.OrderStatus;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -33,16 +35,25 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
     @Override
-    public List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus) {
+    public List<Order> findAllOrdersByStatus(String email, OrderStatus orderStatus) {
+        return buildFindAllOrdersByStatusQuery(email, orderStatus).getResultList();
+    }
+
+    @Override
+    public List<Order> findAllOrdersByStatusPagination(String email, OrderStatus orderStatus, int page, int size) {
+        return buildFindAllOrdersByStatusQuery(email, orderStatus)
+                .setFirstResult((page - 1) * size)
+                .setMaxResults(size)
+                .getResultList();
+    }
+
+    private TypedQuery<Order> buildFindAllOrdersByStatusQuery(String email, OrderStatus orderStatus) {
         return getEntityManager()
                 .createQuery("select o from Order o where o.customer.email = :email " +
                         "and o.orderStatus = :orderStatus " +
                         "order by o.registrationDate", Order.class)
                 .setParameter("email", email)
-                .setParameter("orderStatus", orderStatus)
-                .setFirstResult((page - 1) * size)
-                .setMaxResults(size)
-                .getResultList();
+                .setParameter("orderStatus", orderStatus);
     }
 
     public void changeStatus(String order_id, Boolean offerStatus) {

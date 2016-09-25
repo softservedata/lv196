@@ -39,9 +39,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderForListDto> findAllOpenOrders(String email, int page, int size) {
+    public List<OrderForListDto> findAllOpenOrders(String email) {
         return orderDao
-                .findAllOrdersByStatus(email, page, size, OrderStatus.OPEN)
+                .findAllOrdersByStatus(email, OrderStatus.OPEN)
+                .stream()
+                .map(OrderForListDto::of)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderForListDto> findAllInProgressOrders(String email) {
+        return orderDao
+                .findAllOrdersByStatus(email, OrderStatus.IN_PROGRESS)
                 .stream()
                 .map(OrderForListDto::of)
                 .map(dto -> {

@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.domain.Offer;
-import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
@@ -13,14 +12,20 @@ import java.util.List;
 public interface OrderService {
 
     /**
-     * Finds the list of active orders by given parameters
+     * Finds the list of open orders by customer with given email
      *
      * @param email - email of assigned customer
-     * @param page - number of page
-     * @param size - orders amount on the page
-     * @return list of active orders for the relevant parameters
+     * @return list of open orders for the relevant parameters
      */
-    List<OrderForListDto> findAllOpenOrders(String email, int page, int size);
+    List<OrderForListDto> findAllOpenOrders(String email);
+
+    /**
+     * Finds the list of in progress orders by customer with given email
+     *
+     * @param email - email of assigned customer
+     * @return list of in progress  orders for the relevant parameters
+     */
+    List<OrderForListDto> findAllInProgressOrders(String email);
 
     /**
      * Creates new order based of given dto and assigns it to user with given email
