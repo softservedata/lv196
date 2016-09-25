@@ -16,6 +16,7 @@ hs_err_pid*
 /bin/
 
 /.externalToolBuilders/
+<<<<<<< HEAD
 /.settings/
 /target/
 /doc/
@@ -45,3 +46,37 @@ hs_err_pid*
 *.doc
 *.docx
 *.pdf
+=======
+/**/.settings/
+/**/target/
+/**/doc/
+/**/test-output/
+/**/report/
+/**/.classpath
+/**/.project
+/**/.checkstyle
+/**/reports
+/**/af.reporting
+/**/.idea/
+*.iml
+
+# ignore log
+*.log
+
+# ignore log
+*.bmp
+
+# ignore doc/notes.txt, but not doc/info/arch.txt
+# doc/*.txt
+
+# ignore all .txt files in the directory doc/
+# doc/**/*.txt
+
+# ignore .doc .pfd .docx
+*.doc
+*.docx
+*.pdf
+
+# bower
+bower_components
+>>>>>>> refs/heads/dev
