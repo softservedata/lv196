@@ -2,6 +2,8 @@ package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.domain.*;
+import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
@@ -9,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+@Repository("orderDao")
 public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
 
     public OrderDaoImpl() {

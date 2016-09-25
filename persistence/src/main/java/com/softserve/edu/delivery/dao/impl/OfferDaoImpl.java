@@ -3,14 +3,13 @@ package com.softserve.edu.delivery.dao.impl;
 import com.softserve.edu.delivery.dao.OfferDao;
 import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 
-/**
- * Created by Ivan Rudnytskyi on 12.09.2016.
- */
+@Repository("offerDao")
 public class OfferDaoImpl extends BaseDaoImpl<Offer, Long> implements OfferDao {
     public OfferDaoImpl() {
         super(Offer.class);

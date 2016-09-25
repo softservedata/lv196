@@ -4,14 +4,20 @@ import com.softserve.edu.delivery.dao.OfferDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.dto.OrderIdDto;
 import com.softserve.edu.delivery.dto.OrderRouteDto;
 import com.softserve.edu.delivery.service.RouteService;
 import com.softserve.edu.delivery.utils.Jpa;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +25,18 @@ import java.util.List;
  * @author Petro Shtenovych
  *
  * */
+@Service("routeService")
+@Transactional
 public class RouteServiceImpl implements RouteService {
 
-    private final OrderDao orderDao;
-    private final RouteCityDao routeCityDao;
+    @Autowired
+    private EntityManager entityManager;
+
+    private OrderDao orderDao;
+    private RouteCityDao routeCityDao;
     private final OfferDao offerDao;
 
+    @Autowired
     public RouteServiceImpl(OrderDao orderDao, RouteCityDao routeCityDao, OfferDao offerDao) {
         this.orderDao = orderDao;
         this.routeCityDao = routeCityDao;
@@ -33,37 +45,14 @@ public class RouteServiceImpl implements RouteService {
 
     /**This method is responsible to get information(tracking) about user's order
      * @param id - order number (tracking page)
-     * @throws IllegalArgumentException if param ref null or id doesn't exist in database
-     * @throws RuntimeException if database errors occur
      * */
     @Override
-    public OrderRouteDto getRouteById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id shouldn't be null!");
-        }
-        Order order;
-        RouteCities lastTrack;  // Last tracked city
-        List<RouteCities> trackingList; // All tracked cities
-        Offer approvedOffer;
-        EntityTransaction tx = null;
-        try {
-            EntityManager em = Jpa.getEntityManager();
-            tx = em.getTransaction();
-            tx.begin();
-            order = orderDao.findOne(id).get(); // find order by given id
-            lastTrack = routeCityDao.getRouteCityWhenLastVisitedByOrder(order);
-            trackingList = routeCityDao.getRouteCitiesByOrder(order); //get all tracked cities
-            approvedOffer = offerDao.getApprovedOfferByOrder(order);
-        }catch (RuntimeException ex) {
-            if (tx != null) tx.rollback();
-            throw ex;
-        }
-        if (order == null) {
-            tx.commit();
-            throw new IllegalArgumentException("id doesn't exist");
-        }
+    public OrderRouteDto getOrderRouteById(OrderIdDto id) {
+        Order order = orderDao.findOne(id.getOrderId()).get(); // find order by given id
+        RouteCities lastTrack = routeCityDao.getRouteCityWhenLastVisitedByOrder(order);
+        List<RouteCities> trackingList = routeCityDao.getRouteCitiesByOrder(order); //get all tracked cities
+        Offer approvedOffer = offerDao.getApprovedOfferByOrder(order);
         OrderRouteDto result = createRouteDTO(order, lastTrack, trackingList, approvedOffer);
-        tx.commit();
         return result;
     }
 
@@ -72,29 +61,22 @@ public class RouteServiceImpl implements RouteService {
 
     //Retrieve all parameters
     private static OrderRouteDto createRouteDTO(Order order, RouteCities lastTrack, List<RouteCities> trackingList, Offer approvedOf) {
-        City lastCity = lastTrack.getCity(); // get last visited city
-        Timestamp lastTime = lastTrack.getVisitDate(); // get time when visited last city
-        Timestamp expectedTime = order.getArrivalDate(); //get expected arrival time
-        List<City> visitedCities = retrieveAllVisitedCities(trackingList); // get all visited places
+        String cityFrom = order.getCityFrom().getCityName();
+        String cityTo = order.getCityTo().getCityName();
+        String lastLocation = lastTrack.getCity().getCityName();
+        LocalDate expArrivalDate = order.getArrivalDate().toLocalDateTime().toLocalDate();
+        LocalDate lastTimeVisited = lastTrack.getVisitDate().toLocalDateTime().toLocalDate();
         BigDecimal height = order.getHeight(); //Get baggage parameters
         BigDecimal width = order.getWidth();
         BigDecimal length = order.getLength();
         BigDecimal weight = order.getWeight();
-        User owner = order.getCustomer(); //get customer
-        User transporter = approvedOf.getCar().getDriver(); // get transporter
-        OrderStatus status = order.getOrderStatus();
-        //Return result
-        return new OrderRouteDto(lastCity, expectedTime, lastTime, visitedCities, height, width, length, weight, owner, transporter, status);
-    }
+        String customerName = order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName();
+        String transporterName = approvedOf.getCar().getDriver().getFirstName() + " "
+                + approvedOf.getCar().getDriver().getLastName();
+        String receiverName = customerName;
+        String orderStatus = order.getOrderStatus().getName();
 
-    private static List<City> retrieveAllVisitedCities(List<RouteCities> trackingList) {
-        if (trackingList == null || trackingList.isEmpty()) {
-            return null;
-        }
-        List<City> result = new ArrayList<>();
-        for (RouteCities tc : trackingList) {
-            result.add(tc.getCity());
-        }
-        return result;
+        return new OrderRouteDto(cityFrom, cityTo, lastLocation, expArrivalDate, lastTimeVisited, height,
+                width, length, weight, customerName, transporterName, receiverName, orderStatus);
     }
 }

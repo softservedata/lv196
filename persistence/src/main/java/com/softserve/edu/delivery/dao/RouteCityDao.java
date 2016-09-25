@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by Ivan Rudnytskyi on 11.09.2016.
  */
+
 public interface RouteCityDao extends BaseDao<RouteCities, Long> {
 
     //Petro Shtenovych

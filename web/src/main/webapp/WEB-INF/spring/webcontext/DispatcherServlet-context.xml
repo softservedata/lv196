@@ -13,6 +13,7 @@
 
     <context:component-scan base-package="com.softserve.edu.delivery.config"/>
     <context:component-scan base-package="com.softserve.edu.delivery.service"/>
+    <context:component-scan base-package="com.softserve.edu.delivery.dao"/>
 
     <context:annotation-config/>
     <mvc:annotation-driven/>
