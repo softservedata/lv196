@@ -41,13 +41,19 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
 
-    public void changeStatus(String order_id, Boolean offerStatus) {
-
+    public void changeStatus(Long offerId, String offerStatus) {
+        Boolean newOfferStatus=!(Boolean.parseBoolean(offerStatus));
         getEntityManager()                                                      //update offer's with offerStatus where is our order
-                .createQuery("update Offer set isApproved=:offerStatus where order = :order")
-                .setParameter("order", Long.parseLong(order_id))
-                .setParameter("offerStatus", offerStatus)
+                .createQuery("update Offer set isApproved=:offerStatus where offerId = :offerId")
+                .setParameter("offerId", offerId)
+                .setParameter("offerStatus", newOfferStatus)
                 .executeUpdate();
+//        EntityManager em = super.getEntityManager();
+//        Query query = em.createQuery("update Offer set isApproved=:offerStatus where offerId = :offerId");
+//        query.setParameter("offerId", offerId);
+//        query.setParameter("offerStatus", offerStatus);
+//        query.executeUpdate();
+
     }
 
 
@@ -84,20 +90,13 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
         return query.getResultList();
     }
 
-    @Override
-    public List<Order> findAll() {
+    public List<Order> findAllOrder() {
         EntityManager em = super.getEntityManager();
         Query query = em.createQuery("select o from Order o");
         return query.getResultList();
     }
 
-    @Override
-    public Optional<Order> findOne(Long id) {
-        return getEntityManager()
-                .createQuery("select o from Order o where o.id=:id", Order.class)
-                .setParameter("id", id)
-                .getResultList()
-                .stream()
-                .findFirst();
+    public Order findOneOrder(Long id) {
+        return findOne(id).get();
     }
 }

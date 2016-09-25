@@ -12,15 +12,16 @@ public interface OrderDao extends BaseDao<Order, Long> {
     List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus);
 
     //  As customer I want to choose transporter.
-    void changeStatus(String order_id, Boolean offerStatus);
+    void changeStatus(Long offerId, String offerStatus);
+    Order findOneOrder(Long id);
 
     //	As transporter I want to choose orders by filter.
     List<Order> getOrderByCityFrom(Long id);
     List<Order> getOrderByCityTo(Long id);
     List<Order> getOrderByWeight(BigDecimal weight);
     List<Order> getOrderByArrivalDate(Timestamp arrivalDate);
-    Optional<Order> findOne(Long id);
-    List<Order> findAll();
+    List<Order> findAllOrder();
+
 
 
 

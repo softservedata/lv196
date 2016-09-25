@@ -27,7 +27,7 @@ public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 	@Override
 	public List<User> getAllUsersInRange(int page, int size) {
 		return getEntityManager()
-				.createQuery("from User", User.class)
+				.createQuery("select u from User", User.class)
 				.setFirstResult((page - 1) * size)
 				.setMaxResults(size)
 				.getResultList();

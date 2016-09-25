@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.utils.TransactionManager;
@@ -232,4 +233,5 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         return copyFeedbackToDTO(feedback);
     }
+
 }

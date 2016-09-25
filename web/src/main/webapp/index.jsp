@@ -20,7 +20,7 @@
 </div>
 
 <div id="feedback">
-    <iframe src="writeFeedback.jsp" name="writeFeedback" width="844" height="140" align="left">
+    <iframe src="writeFeedback.jsp" name="writeFeedback" width="844" height="145" align="left">
         Ваш браузер не поддерживает встроенные фреймы!
     </iframe>
 </div>

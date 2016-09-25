@@ -6,6 +6,6 @@
 
 </head>
 <body>
-<jsp:forward page="/order?action=getLast"/>
+<jsp:forward page="/order?action=getFirstPage"/>
 </body>
 </html>

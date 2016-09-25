@@ -1,9 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.CityDao;
-import com.softserve.edu.delivery.dao.FeedbackDao;
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.dao.*;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
@@ -25,11 +22,13 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao;
     private final CityDao cityDao;
     private final FeedbackDao feedbackDao;
+    private final OfferDao offerDao;
 
-    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao) {
+    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
         this.cityDao = cityDao;
+        this.offerDao = offerDao;
         this.feedbackDao=feedbackDao;
     }
 
@@ -98,10 +97,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void changeStatus(String order_id, Boolean offerStatus) {
+    public void changeStatus(Long offerId, String offerStatus) {
         TransactionManager.withTransaction(() ->
                 orderDao
-                        .changeStatus(order_id, offerStatus)
+                        .changeStatus(offerId, offerStatus)
+        );
+    }
+
+    public Order findOne(Long orderId){
+        return TransactionManager.withTransaction(() ->
+                orderDao
+                        .findOneOrder(orderId)
+        );
+    }
+
+    public List<Order> findAll(){
+        return TransactionManager.withTransaction(() ->
+                orderDao
+                        .findAllOrder()
+        );
+    }
+
+    public List<Offer> getAllOffersByOrder(Order order){
+        return TransactionManager.withTransaction(() ->
+                offerDao
+                        .getAllOffersByOrder(order)
         );
     }
 

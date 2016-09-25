@@ -17,11 +17,11 @@
             <th>Order Status</th>
         </tr>
         </thead>
-        <c:forEach items="${orderList}" var="order">
-         <jsp:useBean id="order" scope="request" class="com.softserve.edu.delivery.domain.Order"/>
+        <c:forEach items="${orderList}" var="orders">
+         <jsp:useBean id="orders" scope="page" class="com.softserve.edu.delivery.domain.Order"/>
             <tr>
-                <td><a href="order?action=showOrderById&id=${order.id}" target="orderInfo">${order.id}</a></td>
-                <td>${order.orderStatus}</td>
+                <td><a href="order?action=showOrderById&id=${orders.id}" target="orderInfo">${orders.id}</a></td>
+                <td>${orders.orderStatus}</td>
             </tr>
         </c:forEach>
         </section>
