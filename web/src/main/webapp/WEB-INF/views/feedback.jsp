@@ -15,13 +15,13 @@
 <h1 align="center">Feedback page</h1>
 
 <div>
-    <table id="example" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+    <table id="feedback" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
     </table>
 </div>
 
 <script>
     $(document).ready(function () {
-        $('#example').DataTable({
+        $('#feedback').DataTable({
             processing: true,
             ajax: {
                 url: "/web/feedback",

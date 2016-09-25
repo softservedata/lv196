@@ -97,7 +97,7 @@ public class FeedbackServiceImplTestDBTest {
 
     }
 
-    @Test(enabled = false, groups = {"testDB"})
+    @Test(enabled = true, groups = {"testDB"})
     /**
      *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
      *

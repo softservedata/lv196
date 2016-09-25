@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 public class FeedbackServiceImpl implements FeedbackService {
 
-    private FeedbackDao feedbackDao;
+    private FeedbackDao feedbackDao = new FeedbackDaoImpl();
 
     private static FeedbackService fsi;
 
@@ -27,7 +27,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     public static FeedbackService getInstance(){
         if (fsi == null) {
-            return new FeedbackServiceImpl();
+            fsi = new FeedbackServiceImpl();
         }
         return fsi;
     }
