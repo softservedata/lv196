@@ -11,12 +11,21 @@ import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.service.RegistrationService;
 import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public class RegistrationServiceImpl implements RegistrationService {
 
-    private UserDao userDao;
-    
-    
+    private final UserDao userDao;
+
+    @Autowired
+    public RegistrationServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     @Override
     public void register(UserRegistrationDTO userRegistrationDto) {
 
@@ -50,7 +59,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             }
             user.setCars(cars);
         }
-        TransactionManager.withTransaction(() -> {
+        TransactionManager.withoutTransaction(() -> {
             if (!userDao.exists(user.getEmail())) {
                 userDao.save(user);
             } else {

@@ -12,13 +12,14 @@ public class UserProfileDto {
 	private String role;
 	private String approved;
 
-	public static UserProfileDto createInstance(User user) {
+	public static UserProfileDto create(User user) {
 		UserProfileDto dto = new UserProfileDto();
 		dto.email = user.getEmail();
 		dto.firstName = (user.getFirstName() != null) ? user.getFirstName() : "";
 		dto.lastName = (user.getLastName() != null) ? user.getLastName() : "";
 		dto.phoneNumber = (user.getPhone() != null) ? user.getPhone() : "";
-		dto.phoneNumber = user.getUserRole().getName();
+		dto.passport = (user.getPassport() != null) ? user.getPassport() : "";
+		dto.role = (user.getUserRole() != null) ? user.getUserRole().getName() : "";
 		dto.phoneNumber = (user.getApproved()) ? "Yes" : "No";
 		return dto;
 	}
@@ -62,7 +63,7 @@ public class UserProfileDto {
 		return this;
 	}
 
-	//<-----------------------Getters---------------->
+	//<---------------Getters---------------->
 
 	public String getEmail() {
 		return email;

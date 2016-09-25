@@ -95,7 +95,7 @@
                 <div class="col-sm-12 text-center">
                     <div class="home-wrapper">
                         <h1 class="text-uppercase" style="color: black">404! Oooppps!</h1>
-                        <h2 class="text-primary">${msg}</h2>
+                        <h2 class="text-primary" style="color: black;">${msg}</h2>
                     </div>
                 </div>
             </div>

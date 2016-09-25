@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("offerDao")
 public class OfferDaoImpl extends BaseDaoImpl<Offer, Long> implements OfferDao {
     public OfferDaoImpl() {
-        super(Offer.class);
+        setClazz(Offer.class);
     }
 
 
@@ -23,7 +23,6 @@ public class OfferDaoImpl extends BaseDaoImpl<Offer, Long> implements OfferDao {
     @SuppressWarnings("unchecked")
     public List<Offer> getAllOffersByOrder(Order order) {
         EntityManager em = super.getEntityManager();
-        //Query query = em.createQuery("select of, o from Order of join of.offers o where o.id = :id "); //before adding bidirection references
         Query query = em.createQuery("select o from Offer o where o.order.id = :id");
         query.setParameter("id", order.getId());
         return (List<Offer>) query.getResultList();

@@ -25,11 +25,8 @@ import java.util.List;
 @Transactional
 public class OrderRouteServiceImpl implements OrderRouteService {
 
-    @Autowired
-    private EntityManager entityManager;
-
-    private OrderDao orderDao;
-    private RouteCityDao routeCityDao;
+    private final OrderDao orderDao;
+    private final RouteCityDao routeCityDao;
     private final OfferDao offerDao;
 
     @Autowired
@@ -41,10 +38,7 @@ public class OrderRouteServiceImpl implements OrderRouteService {
 
     @Override
     public boolean exists(Long id) {
-        if (entityManager.find(Order.class, id) == null){
-            return false;
-        }
-        return true;
+        return (orderDao.findOne(id) != null);
     }
 
     /**This method is responsible to get information(tracking) about user's order

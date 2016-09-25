@@ -26,7 +26,7 @@ public class FeedbackServiceImplTest {
 
     static EntityManager entityManager;
     static EntityTransaction tx;
-    static FeedbackService fsi = new FeedbackServiceImpl();
+    static FeedbackService fsi = null;/*new FeedbackServiceImpl();*/
 
     public FeedbackServiceImplTest() {
     }

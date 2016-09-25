@@ -27,7 +27,8 @@ public class UserProfileFilterDto implements Predicate<User> {
 	}
 
 	private boolean checkBlocked(User user) {
-		return Objects.equals(user.getBlocked(), delegate.getBlocked());
+		/*return Objects.equals(user.getBlocked(), delegate.getBlocked());*/
+		return false;
 	}
 
 	private boolean checkRole(User user) {

@@ -4,17 +4,20 @@ package com.softserve.edu.delivery.dao.impl;
  */
 import com.softserve.edu.delivery.dao.CityDao;
 import com.softserve.edu.delivery.domain.City;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 
+@Repository("cityDao")
 public class CityDaoImpl extends BaseDaoImpl<City, Long> implements CityDao {
     public CityDaoImpl() {
-        super(City.class);
+        setClazz(City.class);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<City> getCityByName(String name) {
         EntityManager em = super.getEntityManager();
         Query query = em.createQuery("select c from City c where c.cityName = :name");

@@ -15,7 +15,7 @@ import java.util.Optional;
 public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
 
     public OrderDaoImpl() {
-        super(Order.class);
+        setClazz(Order.class);
     }
 
     @Override

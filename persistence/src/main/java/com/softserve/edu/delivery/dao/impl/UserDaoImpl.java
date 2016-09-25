@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.User;
+import org.springframework.stereotype.Repository;
 
+@Repository("userDao")
 public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 
     public UserDaoImpl() {
-        super(User.class);
+        setClazz(User.class);
     }
 
     public boolean exists(String email) {

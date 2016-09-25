@@ -1,11 +1,13 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.FeedbackDao;
-import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +18,13 @@ import java.util.Optional;
  * Created by Ivan Rudnytskyi on 15.09.2016.
  * implementation for business logic of the feedback part of the application
  */
+@Service("feedbackService")
+@Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
-    private FeedbackDao feedbackDao = new FeedbackDaoImpl();
+    private final FeedbackDao feedbackDao;
 
-    public FeedbackServiceImpl() {
-    }
-
+    @Autowired
     public FeedbackServiceImpl(FeedbackDao feedbackDao) {
         this.feedbackDao = feedbackDao;
     }
@@ -72,7 +74,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public List<FeedbackDTO> getAllFeedbacks() {
         List<FeedbackDTO> listDTO = new ArrayList<>();
-        List<Feedback> list = TransactionManager.withTransaction(() ->
+        List<Feedback> list = TransactionManager.withoutTransaction(() ->
                 feedbackDao.findAll()
         );
 
@@ -128,7 +130,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         FeedbackDTO feedbackDTO = null;
 
-        Optional<Feedback> oFeedback = TransactionManager.withTransaction(() ->
+        Optional<Feedback> oFeedback = TransactionManager.withoutTransaction(() ->
                 feedbackDao.findOne(id)
         );
 
@@ -150,14 +152,14 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void changeFeedbackStatus(long id, boolean status) {
 
-        Optional<Feedback> oFeedback = TransactionManager.withTransaction(() ->
+        Optional<Feedback> oFeedback = TransactionManager.withoutTransaction(() ->
                 feedbackDao.findOne(id)
         );
 
         if (oFeedback.isPresent()) {
             Feedback feedback = oFeedback.get();
             feedback.setApproved(status);
-            TransactionManager.withTransaction(() ->
+            TransactionManager.withoutTransaction(() ->
                     feedbackDao.update(feedback)
             );
         } else {
@@ -175,7 +177,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
 
-        TransactionManager.withTransaction(() ->
+        TransactionManager.withoutTransaction(() ->
                 feedbackDao.save(feedback)
         );
     }
@@ -190,7 +192,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
 
-        TransactionManager.withTransaction(() ->
+        TransactionManager.withoutTransaction(() ->
                 feedbackDao.update(feedback)
         );
     }
@@ -203,7 +205,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void delete(Long id) {
 
-        TransactionManager.withTransaction(() -> {
+        TransactionManager.withoutTransaction(() -> {
             if (feedbackDao.findOne(id).isPresent()) {
                 feedbackDao.delete(feedbackDao.findOne(id).get());
             } else {

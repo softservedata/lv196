@@ -10,6 +10,10 @@ import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -17,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
@@ -24,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private final CityDao cityDao;
     private final FeedbackDao feedbackDao;
 
+    @Autowired
     public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
@@ -33,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderForListDto> findAllActiveOrders(String email, int page, int size) {
-        return TransactionManager.withTransaction(() ->
+        return TransactionManager.withoutTransaction(() ->
                 orderDao
                         .findAllOrdersByStatus(email, page, size, OrderStatus.ACTIVE)
                         .stream()
@@ -50,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addOrder(OrderForAddDto dto, String email) {
-        TransactionManager.withTransaction(() -> {
+        TransactionManager.withoutTransaction(() -> {
             User user = userDao.findOne(email)
                     .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
@@ -77,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addFeedback(FeedbackDTO dto, String email) {
-        TransactionManager.withTransaction(() -> {
+        TransactionManager.withoutTransaction(() -> {
             User user = userDao.findOne(email)
                     .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
             Order order = orderDao.findOne(dto.getOrder().getId())
@@ -95,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void changeStatus(String order_id, Boolean offerStatus) {
-        TransactionManager.withTransaction(() ->
+        TransactionManager.withoutTransaction(() ->
                 orderDao
                         .changeStatus(order_id, offerStatus)
         );

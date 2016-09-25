@@ -22,6 +22,8 @@ public class OrderIdDto {
         this.orderId = orderId;
     }
 
+    public OrderIdDto() {}
+
     public Long getOrderId() {
         return orderId;
     }

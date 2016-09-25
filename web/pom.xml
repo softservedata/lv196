@@ -72,7 +72,7 @@
                 <configuration>
                     <!-- <warSourceDirectory>WebContent</warSourceDirectory> -->
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warName>delivery-web</warName>
+                    <warName>delivery</warName>
                 </configuration>
             </plugin>
         </plugins>

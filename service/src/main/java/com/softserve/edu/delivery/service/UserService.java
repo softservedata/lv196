@@ -7,11 +7,15 @@ import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserProfileFilterDto;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional
 public interface UserService {
     boolean exists(String email);
     void register(User user);
-    boolean verificationLogin(UserAuthDTO user);
+    UserProfileDto verificationLogin(UserAuthDTO user);
     
     List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter);
 	

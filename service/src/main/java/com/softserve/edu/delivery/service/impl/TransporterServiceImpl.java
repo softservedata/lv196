@@ -14,20 +14,26 @@ import  com.softserve.edu.delivery.dao.CityDao;
 import  com.softserve.edu.delivery.dao.RegionDao;
 import  com.softserve.edu.delivery.dao.StateDao;
 import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
+@Service("transporterService")
+@Transactional
 public class TransporterServiceImpl implements TransporterService {
+
     private final CityDao cityDao;
     private final RegionDao regionDao;
     private final StateDao stateDao;
 
+    @Autowired
     public TransporterServiceImpl(CityDao cityDao,RegionDao regionDao, StateDao stateDao){
         this.cityDao = cityDao;
         this.regionDao = regionDao;
         this.stateDao = stateDao;
     }
     public List<StateDto> getAllState() {
-        return TransactionManager.withTransaction(() ->
+        return TransactionManager.withoutTransaction(() ->
                 stateDao.getAllState()
                         .stream()
                         .map(entity -> StateDto.convertEntity(entity))
@@ -35,7 +41,7 @@ public class TransporterServiceImpl implements TransporterService {
         );
     }
     public List<RegionDto> getRegionByState(String state){
-        return TransactionManager.withTransaction(() ->
+        return TransactionManager.withoutTransaction(() ->
                 regionDao.getRegionByState(state)
                         .stream()
                         .map(entity -> RegionDto.convertEntity(entity))
@@ -44,7 +50,7 @@ public class TransporterServiceImpl implements TransporterService {
 
     }
     public List<CityDto> getCityByRegion(String region){
-        return TransactionManager.withTransaction(() ->
+        return TransactionManager.withoutTransaction(() ->
                 cityDao.getCityByRegion(region)
                         .stream()
                         .map(entity -> CityDto.convertEntity(entity))

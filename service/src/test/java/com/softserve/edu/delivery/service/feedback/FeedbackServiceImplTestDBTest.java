@@ -23,7 +23,7 @@ public class FeedbackServiceImplTestDBTest {
 
     private static final long REQUIRED_NUMBERS_OF_FEEDBACKS = 100;
 
-    private FeedbackService fsi = new FeedbackServiceImpl();
+    private FeedbackService fsi = null;/*new FeedbackServiceImpl();*/
 
     @BeforeTest
     /**

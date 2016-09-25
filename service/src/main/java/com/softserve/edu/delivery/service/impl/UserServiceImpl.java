@@ -5,9 +5,14 @@ import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserProfileFilterDto;
+import com.softserve.edu.delivery.exception.UserNotFoundException;
+import com.softserve.edu.delivery.exception.WrongPasswordException;
 import com.softserve.edu.delivery.service.UserService;
 import com.softserve.edu.delivery.utils.Jpa;
 import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -16,22 +21,25 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-
+@Service("userService")
+@Transactional
 public class UserServiceImpl implements UserService {
+
     private final UserDao userDao;
 
+    @Autowired
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
     @Override
     public boolean exists(String email) {
-        return TransactionManager.withTransaction(() -> userDao.exists(email));
+        return TransactionManager.withoutTransaction(() -> userDao.exists(email));
     }
 
     @Override
     public void register(User user) {
-        TransactionManager.withTransaction(() -> {
+        TransactionManager.withoutTransaction(() -> {
             if (!userDao.exists(user.getEmail())) {
                 userDao.save(user);
             } else {
@@ -42,67 +50,40 @@ public class UserServiceImpl implements UserService {
 
 
     public void register(User user, boolean withoutLambda) {
-        if (!withoutLambda) {
-            register(user);
+        if (userDao.exists(user.getEmail())) {
+            throw new IllegalArgumentException("User with given email already exists.");
         } else {
-            EntityTransaction tx = null;
-            try {
-                EntityManager entityManager = Jpa.getEntityManager();
-                tx = entityManager.getTransaction();
-                tx.begin();
-                if (userDao.exists(user.getEmail())) {
-                    throw new IllegalArgumentException("User with given email already exists.");
-                } else {
-                    userDao.save(user);
-                    tx.commit();
-                }
-            }catch (Exception ex) {
-                if (tx != null) tx.rollback();
-                throw ex;
-            }
+            userDao.save(user);
         }
     }
 
     /*** This method verifies user credentials(login page)
      * author Petro Shtenovych
-     * @param user with credentials email and password
+     * @param userAuthDTO with credentials email and password
      * @throws IllegalArgumentException if param ref null
-     * @throws RuntimeException if database errors occur
-     * @return true if user verification was success
+     * @throws UserNotFoundException if user isn't registered
+     * @throws WrongPasswordException if user typed wrong password
+     * @return UserProfileDto instance which has user profile information
      */
     @Override
-    public boolean verificationLogin(UserAuthDTO user) {
-        if (user == null) {
+    public UserProfileDto verificationLogin(UserAuthDTO userAuthDTO) {
+        if (userAuthDTO == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-        EntityTransaction tx = null;
-        try {
-            EntityManager entityManager = Jpa.getEntityManager();
-            tx = entityManager.getTransaction();
-            tx.begin();
-            if ( ! this.userDao.exists(user.getEmail())) {
-                tx.commit();
-                return false;
-            } else {
-                User dbUser = this.userDao.findOne(user.getEmail()).get();
-                tx.commit();
-                System.out.println(dbUser);
-                if ( ! checkPassword(user, dbUser)) {
-                    return false;
-                }
+        if (this.userDao.exists(userAuthDTO.getEmail())) {
+            User dbUser = this.userDao.findOne(userAuthDTO.getEmail()).get();
+            if ( ! checkPassword(userAuthDTO, dbUser)) {
+                throw new WrongPasswordException();
             }
-        }catch (RuntimeException ex) {
-            if (tx != null) {
-                tx.rollback();
-                throw ex;
-            }
+            return UserProfileDto.create(dbUser);
+        }else {
+            throw new UserNotFoundException(userAuthDTO.getEmail());
         }
-        return true;
     }
     
 	@Override
 	public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
-		return TransactionManager.withTransaction(() ->
+		return TransactionManager.withoutTransaction(() ->
 				 userDao
 						.getAllUsersInRange(page, size)
 						.stream()
@@ -114,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserProfileDto changeUserStatus(String mail, boolean blocked) throws IllegalStateException{
-		return TransactionManager.withTransaction(() ->
+		return TransactionManager.withoutTransaction(() ->
 				 userDao
 						.findOne(mail)
 						.map(user -> userDao.update(user.setBlocked(blocked)))
@@ -125,7 +106,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map) {
-		return TransactionManager.withTransaction(() ->
+		return TransactionManager.withoutTransaction(() ->
 				map
 					.keySet().stream()
 					.map(mail -> changeUserStatus(mail, map.get(mail)))
@@ -141,7 +122,4 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
-
-
-
 }
