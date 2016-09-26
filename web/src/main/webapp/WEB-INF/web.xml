@@ -4,14 +4,19 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <display-name>All users</display-name>
+    <welcome-file-list>
+        <welcome-file>users.jsp</welcome-file>
+    </welcome-file-list>
+
     <servlet>
-        <servlet-name>feedback servlet</servlet-name>
-        <servlet-class>com.softserve.edu.delivery.FeedbackServlet</servlet-class>
+        <servlet-name>user servlet</servlet-name>
+        <servlet-class>com.softserve.edu.delivery.UserServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>feedback servlet</servlet-name>
-        <url-pattern>/feedback</url-pattern>
+        <servlet-name>user servlet</servlet-name>
+        <url-pattern>/users</url-pattern>
     </servlet-mapping>
 
 </web-app>
