@@ -86,11 +86,10 @@ html, body {
 }
 
 .content-row {
-    margin-left: -8px;
-    margin-right: -8px;
+    margin-left: -4px;
+    margin-right: -4px;
 }
 
-/* adjust the contents on smaller devices */
 @media (max-width: 768px) {
 
     .site-content {

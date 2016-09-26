@@ -5,6 +5,7 @@ import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.service.impl.OrderServiceImpl;
@@ -13,12 +14,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class OrderServiceAddOrderTest {
@@ -65,6 +66,7 @@ public class OrderServiceAddOrderTest {
 
         Order captured = orderCaptor.getValue();
 
+        Assert.assertEquals(captured.getOrderStatus(), OrderStatus.OPEN);
         Assert.assertEquals(captured.getCustomer().getEmail(), dummyEmail);
         Assert.assertEquals((long) captured.getCityFrom().getCityId(), 1L);
         Assert.assertEquals((long) captured.getCityTo().getCityId(), 2L);

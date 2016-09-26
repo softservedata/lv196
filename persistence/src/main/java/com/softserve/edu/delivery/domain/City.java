@@ -3,16 +3,8 @@ package com.softserve.edu.delivery.domain;
  * Author - Ivan Synyshyn
  */
 
+import javax.persistence.*;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "CITIES")
@@ -23,6 +15,11 @@ public class City {
 	private Region region;
 
 	public City() {
+	}
+
+	public City(String cityName, Region region) {
+		this.cityName = cityName;
+		this.region = region;
 	}
 
 	@Id

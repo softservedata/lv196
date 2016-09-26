@@ -1,10 +1,9 @@
 package com.softserve.edu.delivery.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "CARS")
@@ -140,8 +139,9 @@ public class Car {
         this.vehicleHeight = vehicleHeight;
     }
 
-    public void setDriver(User driver) {
+    public Car setDriver(User driver) {
         this.driver = driver;
+        return this;
     }
 
     public List<Offer> getOffers() {

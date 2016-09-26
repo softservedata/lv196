@@ -79,9 +79,11 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
 
         orderDao.save(new Order()
+                .setOrderStatus(OrderStatus.OPEN)
                 .setCustomer(user)
                 .setCityFrom(from)
                 .setCityTo(to)
+                .setRegistrationDate(new Timestamp(new Date().getTime()))
                 .setArrivalDate(dto.getArrivalDate())
                 .setHeight(dto.getHeight())
                 .setWidth(dto.getWidth())

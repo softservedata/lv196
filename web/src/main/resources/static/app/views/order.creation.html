@@ -1,0 +1,58 @@
+<form name="newOrder" autocomplete="off" class="order-creation">
+    <div class="modal-header">
+        <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+            New order
+        </h4>
+        <div class="order-date">
+            <label for="arrivalDateInput">Deliver in <i class="fa fa-calendar" aria-hidden="true"></i></label>
+            <input ng-focus="datePicker.open()" ng-model="form.arrivalDate"
+                   is-open="datePicker.opened" uib-datepicker-popup="{{datePicker.format}}"
+                   datepicker-options="datePicker.options" close-text="Close"
+                   id="arrivalDateInput" class="form-control"/>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-6 form-group">
+                <label class="control-label label-lg" for="cityFromInput">From</label>
+                <input ng-model="form.cityIdFrom" ng-required="true" type="text" class="form-control input-lg"
+                       id="cityFromInput" name="cityFrom"/>
+            </div>
+            <div class="col-xs-6 form-group">
+                <label class="control-label label-lg" for="cityArrivalInput">To</label>
+                <input ng-model="form.cityIdTo" ng-required="true" type="text" class="form-control input-lg"
+                       id="cityArrivalInput" name="cityTo"/>
+            </div>
+        </div>
+        <h5 class="order-creation-details">Details:</h5>
+        <div class="row">
+            <div class="col-xs-3 form-group">
+                <label class="control-label" for="weightItnput">Weight</label>
+                <input name="weight" ng-model="form.weight" type="text" class="form-control" id="weightItnput">
+            </div>
+            <div class="col-xs-3 form-group">
+                <label class="control-label" for="heightInput">Height</label>
+                <input name="height" ng-model="form.height" type="text" class="form-control" id="heightInput">
+            </div>
+            <div class="col-xs-3 form-group">
+                <label class="control-label" for="widthInput">Width</label>
+                <input name="width" ng-model="form.width" type="text" class="form-control" id="widthInput">
+            </div>
+            <div class="col-xs-3 form-group">
+                <label class="control-label" for="lengthInput">Length</label>
+                <input name="length" ng-model="form.length" class="form-control" id="lengthInput">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label class="control-label" for="descriptionInput">Description</label>
+                <textarea ng-model="form.description" class="form-control" rows="1" id="descriptionInput"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="cancel()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button ng-click="form.submit()" type="button" class="btn btn-primary">Create</button>
+    </div>
+</form>

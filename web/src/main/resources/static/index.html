@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+
+    <title>Delivery</title>
+
+    <link href="./bower_components/bootswatch-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
+    <link href="./css/sidebar.css" rel="stylesheet">
+    <link href="./css/orders.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrapper" ng-app="delivery">
+    <div class="box">
+
+        <div class="site-column col-xs-2 sidebar-offcanvas">
+
+            <div class="visible-xs ">
+                <a href="#" data-toggle="offcanvas" class="text-center">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
+
+            <div class="sidebar-header hidden-xs">
+                <div class="user-avatar">
+                    <img src="../../img/male.svg" alt="User avatar">
+                </div>
+                <div class="user-name">Martin Odersky</div>
+            </div>
+            <div class="sidebar-menu hidden-xs">
+                <a ui-sref="profile" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    Profile
+                </a>
+                <a ui-sref="orders" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                    <i class="fa fa-truck" aria-hidden="true"></i>
+                    Orders
+                </a>
+                <a ui-sref="feedback" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                    <i class="fa fa-comment" aria-hidden="true"></i>
+                    Feedback
+                </a>
+                <hr/>
+                <a href="#" class="sidebar-menu-item">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    Log out
+                </a>
+            </div>
+
+            <div class="sidebar-footer hidden-xs">
+                <h3>Delivery</h3>
+            </div>
+
+            <div class="nav visible-xs">
+            </div>
+
+        </div>
+
+        <!-- main content -->
+        <div class="site-column main col-xs-10" ui-view>
+
+        </div>
+    </div>
+</div>
+
+<script src="./bower_components/angular/angular.min.js"></script>
+<script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="./bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="./app/app.js"></script>
+<script src="./app/controller/ordersController.js"></script>
+</body>
+</html>

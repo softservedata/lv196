@@ -2,12 +2,13 @@ package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public class OrderForListDto {
     private Long id;
-    private Timestamp registrationDate;
+    private Timestamp arrivalDate;
     private String description;
     private String customerName;
     private String cityNameFrom;
@@ -21,7 +22,7 @@ public class OrderForListDto {
     public static OrderForListDto of(Order order) {
         OrderForListDto dto = new OrderForListDto()
                 .setId(order.getId())
-                .setRegistrationDate(order.getRegistrationDate())
+                .setArrivalDate(order.getArrivalDate())
                 .setDescription(order.getDescription())
                 .setCityNameFrom(order.getCityFrom() == null ? null : order.getCityFrom().getCityName())
                 .setCityNameTo(order.getCityTo() == null ? null : order.getCityTo().getCityName());
@@ -43,12 +44,12 @@ public class OrderForListDto {
         return this;
     }
 
-    public Timestamp getRegistrationDate() {
-        return registrationDate;
+    public Timestamp getArrivalDate() {
+        return arrivalDate;
     }
 
-    public OrderForListDto setRegistrationDate(Timestamp registrationDate) {
-        this.registrationDate = registrationDate;
+    public OrderForListDto setArrivalDate(Timestamp arrivalDate) {
+        this.arrivalDate = arrivalDate;
         return this;
     }
 
@@ -123,7 +124,7 @@ public class OrderForListDto {
     public String toString() {
         return "OrderForListDto{" +
                 "id=" + id +
-                ", registrationDate=" + registrationDate +
+                ", arrivalDate=" + arrivalDate +
                 ", description='" + description + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", cityNameFrom='" + cityNameFrom + '\'' +
