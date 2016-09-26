@@ -18,5 +18,8 @@ public interface UserService {
     UserProfileDto changeUserStatus(String mail, boolean blocked)throws IllegalStateException;
 	
 	List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map);
+	
+	List<User> getAll();
 
+	User changeUserStatus2(String mail, boolean blocked);
 }

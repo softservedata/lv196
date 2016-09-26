@@ -8,4 +8,7 @@ public interface UserDao extends BaseDao<User, String> {
     boolean exists(String email);
     
     List<User> getAllUsersInRange(int page, int size);
+    
+    List<User> getAll();
+    
 }

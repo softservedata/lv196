@@ -9,7 +9,7 @@ public class UserProfileFilterDto implements Predicate<User> {
 	
 	private final UserProfileDto delegate;
 
-	private UserProfileFilterDto(UserProfileDto delegate) {
+	public UserProfileFilterDto(UserProfileDto delegate) {
 		this.delegate = delegate;
 	}
 

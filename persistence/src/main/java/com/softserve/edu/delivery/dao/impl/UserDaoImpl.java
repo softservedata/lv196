@@ -27,4 +27,12 @@ public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 				.setMaxResults(size)
 				.getResultList();
 	}
+	
+	public List<User> getAll() {
+		return getEntityManager()
+				.createQuery("from User", User.class)
+				.getResultList();
+	}
+	
+
 }

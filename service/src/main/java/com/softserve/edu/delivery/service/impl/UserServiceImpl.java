@@ -141,6 +141,23 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+    
+    public List<User> getAll() {
+        return TransactionManager.withTransaction(() ->
+                userDao
+                        .getAll()
+        );
+    }
+    
+    @Override
+    public User changeUserStatus2(String mail, boolean blocked) throws IllegalStateException{
+        return TransactionManager.withTransaction(() ->
+                userDao
+                        .findOne(mail)
+                        .map(user -> userDao.update(user.setBlocked(blocked)))
+                        .<IllegalStateException>orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"))
+        );
+    }
 
 
 
