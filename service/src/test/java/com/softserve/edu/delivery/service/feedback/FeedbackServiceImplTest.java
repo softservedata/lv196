@@ -18,6 +18,8 @@ import java.util.NoSuchElementException;
 
 /**
  * Created by Ivan Rudnytskyi on 17.09.2016.
+ *
+ * The class provides service methods for different test classes
  */
 final class FeedbackServiceImplTest {
 
@@ -37,13 +39,7 @@ final class FeedbackServiceImplTest {
     private static EntityTransaction tx;
     private static FeedbackService fsi = FeedbackServiceImpl.getInstance();
 
-    public FeedbackServiceImplTest() {
-    }
-
-    public FeedbackServiceImplTest(EntityManager entityManager, FeedbackService fsi, EntityTransaction tx) {
-        FeedbackServiceImplTest.entityManager = entityManager;
-        FeedbackServiceImplTest.fsi = fsi;
-        FeedbackServiceImplTest.tx = tx;
+    private  FeedbackServiceImplTest() {
     }
 
     private static String getRandomText() {
@@ -79,7 +75,6 @@ final class FeedbackServiceImplTest {
      * @return random rate
      */
     private static int getRandomRate(){
-
         return (int)(Math.random() * MAX_FEEDBACK_RATE);
     }
 
@@ -88,7 +83,6 @@ final class FeedbackServiceImplTest {
      * @return random approved status
      */
     private static boolean getRandomApproved(){
-
         return (int) (Math.random() * 2) > 0;
     }
 
@@ -254,7 +248,6 @@ final class FeedbackServiceImplTest {
      * changes data of an object of FeedbackDTO.class and sends it back
      */
     static void  changeData(FeedbackDTO feedbackDTO) {
-
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setText(getRandomText());

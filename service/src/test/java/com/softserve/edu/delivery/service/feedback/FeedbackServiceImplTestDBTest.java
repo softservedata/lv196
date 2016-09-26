@@ -243,7 +243,6 @@ public class FeedbackServiceImplTestDBTest {
      * tests method from FeedbackServiceImpl.class, which deletes an object of FeedbackDTO.class with a given id
      * from the db
      */
-
     public void testDeleteTestDB() {
 
         long feedbackId = FeedbackServiceImplTest.getRandomFeedbackId();

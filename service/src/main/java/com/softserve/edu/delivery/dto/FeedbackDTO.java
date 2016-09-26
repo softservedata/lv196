@@ -8,8 +8,7 @@ import com.softserve.edu.delivery.domain.User;
  *
  * serves as a transport object between persistence and service layers
  */
-public class FeedbackDTO /*implements Serializable*/ {
-    // private static final long serialVersionUID = 4710852270488569035L;
+public class FeedbackDTO {
 
     public FeedbackDTO() {
     }
