@@ -98,9 +98,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void changeStatus(Long offerId, String offerStatus) {
-        TransactionManager.withTransaction(() ->
-                orderDao
-                        .changeStatus(offerId, offerStatus)
+        Boolean newOfferStatus=!(Boolean.parseBoolean(offerStatus));
+        TransactionManager.withTransaction(() -> {
+            Offer offer = offerDao.findOne(offerId)
+                    .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
+            offer.setApproved(newOfferStatus);
+            offerDao.save(offer);
+                }
+
+
+
         );
     }
 

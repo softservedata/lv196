@@ -41,20 +41,18 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
 
-    public void changeStatus(Long offerId, String offerStatus) {
-        Boolean newOfferStatus=!(Boolean.parseBoolean(offerStatus));
-        getEntityManager()                                                      //update offer's with offerStatus where is our order
-                .createQuery("update Offer set isApproved=:offerStatus where offerId = :offerId")
-                .setParameter("offerId", offerId)
-                .setParameter("offerStatus", newOfferStatus)
-                .executeUpdate();
+//    public void changeStatus(Long offerId, String offerStatus) {
+//        getEntityManager()                                                      //update offer's with offerStatus where is our order
+//                .createQuery("select o from Offer o where o.offerId = :offerId")
+//                .setParameter("offerId", offerId)
+//                .getSingleResult();
 //        EntityManager em = super.getEntityManager();
 //        Query query = em.createQuery("update Offer set isApproved=:offerStatus where offerId = :offerId");
 //        query.setParameter("offerId", offerId);
 //        query.setParameter("offerStatus", offerStatus);
 //        query.executeUpdate();
 
-    }
+//    }
 
 
     // next 4 methods author Ivan Synyshyn
