@@ -16,17 +16,17 @@ hs_err_pid*
 /bin/
 
 /.externalToolBuilders/
-/.settings/
-/target/
-/doc/
-/test-output/
-/report/
-/.classpath
-/.project
-/.checkstyle
-/reports
-/af.reporting
-/.idea/
+/**/.settings/
+/**/target/
+/**/doc/
+/**/test-output/
+/**/report/
+/**/.classpath
+/**/.project
+/**/.checkstyle
+/**/reports
+/**/af.reporting
+/**/.idea/
 *.iml
 
 # ignore log
@@ -45,3 +45,6 @@ hs_err_pid*
 *.doc
 *.docx
 *.pdf
+
+# bower
+bower_components
