@@ -89,7 +89,6 @@ public class OrderServiceImpl implements OrderService {
                 .setWidth(dto.getWidth())
                 .setLength(dto.getLength())
                 .setWeight(dto.getWeight())
-                .setPrice(dto.getPrice())
                 .setDescription(dto.getDescription())
         );
     }

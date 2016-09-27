@@ -105,7 +105,7 @@ public class OrderServiceAddOrderTest {
                 .setCityIdFrom(1L).setCityIdTo(2L)
                 .setHeight(new BigDecimal(23)).setLength(new BigDecimal(15))
                 .setWeight(new BigDecimal(45)).setWidth(new BigDecimal(13))
-                .setPrice(new BigDecimal(11)).setDescription("dummy desc");
+                .setDescription("dummy desc");
     }
 
     private Timestamp parseTimestamp(String date) {

@@ -42,8 +42,8 @@ angular
                     formatYear: 'yyyy',
                     formatMonth: 'MMMM',
                     formatDay: 'dd',
-                    maxDate: new Date(),
-                    minDate: new Date(1970, 1, 1),
+                    maxDate: new Date(2016, 12, 31),
+                    minDate: new Date(),
                     startingDay: 1,
                     showWeeks: false
                 },
