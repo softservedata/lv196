@@ -136,27 +136,4 @@
 
         </div>
     </footer>
-
-    <spring:url value="/resources/js/analytics.js.download" var="analytics_js" />
-    <spring:url value="/resources/js/bootstrap.min.js.download" var="bootstrap_min_js" />
-    <spring:url value="/resources/js/jquery.app.js.download" var="jquery_app_js" />
-    <spring:url value="/resources/js/jquery.easing.1.3.min.js.download" var="jquery_easing_js" />
-    <spring:url value="/resources/js/jquery.js.download" var="jquery_js_download_js" />
-    <spring:url value="/resources/js/jquery.magnific-popup.min.js.download" var="jquery_magnific_js" />
-    <spring:url value="/resources/js/jquery.sticky.js.download" var="jquery_sticky_js" />
-
-    <!-- END FOOTER -->
-    <!-- js placed at the end of the document so the pages load faster -->
-    <script src="${analytics_js}"></script>
-    <script src="${bootstrap_min_js}"></script>
-    <!-- Jquery easing -->
-    <script type="text/javascript" src="${jquery_easing_js}"></script>
-    <script type="text/javascript" src="${jquery_magnific_js}"></script>
-
-    <!--sticky header-->
-    <script type="text/javascript" src="${jquery_sticky_js}"></script>
-
-    <!--common script for all pages-->
-    <script src="${jquery_app_js}"></script>
-
 </body></html>

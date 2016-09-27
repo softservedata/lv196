@@ -50,4 +50,8 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     protected EntityManager getEntityManager() {
         return em;
     }
+
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
 }

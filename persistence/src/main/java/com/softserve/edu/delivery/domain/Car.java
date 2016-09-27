@@ -47,7 +47,7 @@ public class Car {
 	
 	//Class Car has one to many relationship to class User
 	@ManyToOne
-	@JoinColumn(name = "driver_id")
+	@JoinColumn(name = "driver_id", referencedColumnName = "email")
 	private User driver;
 
     @OneToMany(mappedBy = "car")

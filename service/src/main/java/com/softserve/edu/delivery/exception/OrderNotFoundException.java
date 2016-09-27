@@ -9,6 +9,6 @@ public class OrderNotFoundException extends ApplicationException {
      * @param orderId - non-existent order id
      */
     public OrderNotFoundException(Long orderId) {
-        super("Order with " + orderId + " id isn't exist");
+        super("The order identifier \'" + orderId + "\' does not exist");
     }
 }

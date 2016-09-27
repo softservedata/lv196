@@ -3,9 +3,7 @@ package com.softserve.edu.delivery.controller;
 import com.softserve.edu.delivery.dto.OrderIdDto;
 import com.softserve.edu.delivery.dto.OrderRouteDto;
 import com.softserve.edu.delivery.service.OrderRouteService;
-import com.softserve.edu.delivery.service.impl.OrderRouteServiceImplFake;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +18,7 @@ public class HomeController {
     private OrderRouteService service;
 
     @Autowired
-    public HomeController setService(@Qualifier("fake") OrderRouteService service) {
+    public HomeController setService(OrderRouteService service) {
         this.service = service;
         return this;
     }

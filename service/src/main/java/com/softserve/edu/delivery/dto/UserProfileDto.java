@@ -20,7 +20,7 @@ public class UserProfileDto {
 		dto.phoneNumber = (user.getPhone() != null) ? user.getPhone() : "";
 		dto.passport = (user.getPassport() != null) ? user.getPassport() : "";
 		dto.role = (user.getUserRole() != null) ? user.getUserRole().getName() : "";
-		dto.phoneNumber = (user.getApproved()) ? "Yes" : "No";
+		dto.approved = (user.getApproved()) ? "Yes" : "No";
 		return dto;
 	}
 

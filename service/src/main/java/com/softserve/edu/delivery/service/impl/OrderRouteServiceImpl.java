@@ -38,7 +38,7 @@ public class OrderRouteServiceImpl implements OrderRouteService {
 
     @Override
     public boolean exists(Long id) {
-        return (orderDao.findOne(id) != null);
+        return (orderDao.findOne(id).isPresent());
     }
 
     /**This method is responsible to get information(tracking) about user's order
@@ -47,10 +47,10 @@ public class OrderRouteServiceImpl implements OrderRouteService {
      * */
     @Override
     public OrderRouteDto getOrderRouteById(OrderIdDto id) {
-        if ( ! exists(id.getOrderId())) {
+        if ( ! this.exists(id.getOrderId())) {
             throw new OrderNotFoundException(id.getOrderId());
         }
-        Order order = orderDao.findOne(id.getOrderId()).get(); // find order by given id
+        Order order = orderDao.findOne(id.getOrderId()).get();
         RouteCities lastTrack = routeCityDao.getRouteCityWhenLastVisitedByOrder(order);
         List<RouteCities> trackingList = routeCityDao.getRouteCitiesByOrder(order); //get all tracked cities
         Offer approvedOffer = offerDao.getApprovedOfferByOrder(order);
@@ -62,22 +62,26 @@ public class OrderRouteServiceImpl implements OrderRouteService {
 
     //Retrieve all parameters
     private static OrderRouteDto createRouteDTO(Order order, RouteCities lastTrack, List<RouteCities> trackingList, Offer approvedOf) {
-        String cityFrom = order.getCityFrom().getCityName();
-        String cityTo = order.getCityTo().getCityName();
-        String lastLocation = (lastTrack == null || lastTrack.getCity() == null)? "" : lastTrack.getCity().getCityName();
-        LocalDate expArrivalDate = order.getArrivalDate().toLocalDateTime().toLocalDate();
-        LocalDate lastTimeVisited = lastTrack.getVisitDate().toLocalDateTime().toLocalDate();
-        BigDecimal height = order.getHeight(); //Get baggage parameters
+        String cityFrom = isNull(order.getCityFrom()) ? null : order.getCityFrom().getCityName();
+        String cityTo = isNull(order.getCityTo()) ? null : order.getCityTo().getCityName();
+        String lastLocation = isNull(lastTrack) ? null : lastTrack.getCity().getCityName();
+        LocalDate expArrivalDate = isNull(order.getArrivalDate()) ? null : order.getArrivalDate().toLocalDateTime().toLocalDate();
+        LocalDate lastTimeVisited = isNull(lastTrack) ? null : lastTrack.getVisitDate().toLocalDateTime().toLocalDate();
+        BigDecimal height = order.getHeight();
         BigDecimal width = order.getWidth();
         BigDecimal length = order.getLength();
         BigDecimal weight = order.getWeight();
         String customerName = order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName();
-        String transporterName = approvedOf.getCar().getDriver().getFirstName() + " "
+        String transporterName = isNull(approvedOf.getCar()) ? null : approvedOf.getCar().getDriver().getFirstName() + " "
                 + approvedOf.getCar().getDriver().getLastName();
         String receiverName = customerName;
         String orderStatus = order.getOrderStatus().getName();
 
         return new OrderRouteDto(cityFrom, cityTo, lastLocation, expArrivalDate, lastTimeVisited, height,
                 width, length, weight, customerName, transporterName, receiverName, orderStatus);
+    }
+
+    private static boolean isNull(Object obj) {
+        return obj == null;
     }
 }
