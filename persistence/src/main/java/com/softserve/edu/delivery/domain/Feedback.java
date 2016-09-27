@@ -1,6 +1,13 @@
 package com.softserve.edu.delivery.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * @author Ivan Rudnytskyi, 11.09.2016.
@@ -85,7 +92,6 @@ public class Feedback {
         Feedback feedback = (Feedback) o;
 
         return feedbackId.equals(feedback.feedbackId);
-
     }
 
     @Override

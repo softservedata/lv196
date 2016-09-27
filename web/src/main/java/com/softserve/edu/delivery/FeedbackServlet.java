@@ -28,7 +28,7 @@ public class FeedbackServlet extends HttpServlet {
      *
      * converts list of FeedbackDTO.class objects to Json-formatted String
      */
-    private static String convertToJson(List<FeedbackDTO> list){
+    private static String convertToJSON(List<FeedbackDTO> list){
 
         StringBuffer jsonFeedbackList = new StringBuffer();
 
@@ -71,7 +71,7 @@ public class FeedbackServlet extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(convertToJson(allFeedbacksList));
+        response.getWriter().write(convertToJSON(allFeedbacksList));
     }
 
 }

@@ -22,7 +22,6 @@
 <script>
     $(document).ready(function () {
         $('#feedback').DataTable({
-            processing: true,
             ajax: {
                 url: "/web/feedback",
                 dataSrc: "feedbacks",

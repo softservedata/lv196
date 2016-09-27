@@ -22,6 +22,8 @@ import static com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTes
 
 /**
  * Created by Ivan Rudnytskyi on 17.09.2016.
+ *
+ * the class tests service layer methods. Dao layer is mocked using Mockito.
  */
 public class FeedbackServiceImplMockTest {
 

@@ -3,7 +3,6 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.utils.Jpa;
@@ -253,32 +252,31 @@ public class FeedbackServiceImpl implements FeedbackService {
      * @param Long orderId - id of the order
       * @return String approvedDriverName
      *
-     * the method searches in the DB the name of the approved driver for the order with the id
+     * the method searches in the DB the first and last name of the approved driver for the order with the id
      */
     public String getApprovedDriverName(Long orderId) {
         EntityManager entityManager = Jpa.getEntityManager();
         EntityTransaction tx = null;
-        User approvedDriver = null;
-        String query = "select u.email from orders ord " +
+        String query = "select u.first_name, u.last_name from orders ord " +
                 "join offer of on " +
                 "ord.order_id=of.order_id " +
                 "join cars c on " +
                 "of.car_id=c.car_id " +
                 "join users u on " +
                 "c.driver_id=u.email " +
-                "where of.isApproved and ord.order_id=" + orderId;
+                "where of.isApproved and ord.order_id=?1";
+        List<Object[]> approvedDriverName = new ArrayList<>();
         try {
             tx = entityManager.getTransaction();
             tx.begin();
-            String approvedDriverEmail = (String) entityManager.createNativeQuery(query).getSingleResult();
-            approvedDriver = (User) entityManager.createQuery("select u from User u where u.email=:email")
-                    .setParameter("email", approvedDriverEmail)
-                    .getSingleResult();
+            approvedDriverName  = entityManager.createNativeQuery(query)
+                    .setParameter(1, orderId)
+                    .getResultList();
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
         }
 
-        return approvedDriver.getFirstName() + " " + approvedDriver.getLastName();
+        return approvedDriverName.get(0)[0] + " " + approvedDriverName.get(0)[1];
     }
 }
