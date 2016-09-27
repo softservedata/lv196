@@ -8,19 +8,19 @@
 <body>
 
 <div id="order">
-    <iframe src="ListTransfer.jsp" name="orderList" width="240" height="600" align="left">
+    <iframe src="ListTransfer.jsp" name="orderList" width="240" height="455" align="left">
         Ваш браузер не поддерживает встроенные фреймы!
     </iframe>
 </div>
 
 <div id="info">
-    <iframe src="InfoTransfer.jsp" name="orderInfo"  width="600" height="600" >
+    <iframe src="InfoTransfer.jsp" name="orderInfo"  width="600" height="455" >
         Ваш браузер не поддерживает встроенные фреймы!
     </iframe>
 </div>
 
 <div id="feedback">
-    <iframe src="writeFeedback.jsp" name="writeFeedback" width="844" height="145" align="left">
+    <iframe src="writeFeedback.jsp" name="writeFeedback" width="844" height="150" align="left">
         Ваш браузер не поддерживает встроенные фреймы!
     </iframe>
 </div>
