@@ -57,17 +57,6 @@ public class DataConfiguration {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-   /* @Bean
-    public EntityManagerFactory entityManagerFactory(DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean factory =
-                new LocalContainerEntityManagerFactoryBean();
-        *//*factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);*//*
-        factory.setDataSource(dataSource);
-        factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        factory.setPackagesToScan("com.softserve.edu.delivery.domain");
-        factory.setJpaPropertyMap(jpaProperties());
-        return factory.getNativeEntityManagerFactory();
-    }*/
 
     //<---------------------PRIVATE-------------------------->
 
