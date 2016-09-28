@@ -2,6 +2,8 @@ package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
+
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -14,6 +16,8 @@ public class OrderForListDto {
     private String cityNameTo;
     private String orderStatus;
     private String driverName;
+    private Timestamp arrivalDate;
+    private BigDecimal weight;
 
     public OrderForListDto() {
     }
@@ -24,7 +28,9 @@ public class OrderForListDto {
                 .setRegistrationDate(order.getRegistrationDate())
                 .setDescription(order.getDescription())
                 .setCityNameFrom(order.getCityFrom() == null ? null : order.getCityFrom().getCityName())
-                .setCityNameTo(order.getCityTo() == null ? null : order.getCityTo().getCityName());
+                .setCityNameTo(order.getCityTo() == null ? null : order.getCityTo().getCityName())
+                .setArrivalDate(order.getArrivalDate())
+                .setWeight(order.getWeight());
 
         User customer = order.getCustomer();
         if (customer != null) {
@@ -106,6 +112,24 @@ public class OrderForListDto {
         return this;
     }
 
+    public Timestamp getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public OrderForListDto setArrivalDate(Timestamp arrivalDate) {
+        this.arrivalDate = arrivalDate;
+        return this;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public OrderForListDto setWeight(BigDecimal weight) {
+        this.weight = weight;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,6 +154,8 @@ public class OrderForListDto {
                 ", cityNameTo='" + cityNameTo + '\'' +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", driverName='" + driverName + '\'' +
+                ", arrivalDate=" + arrivalDate +
+                ", weight=" + weight +
                 '}';
     }
 }

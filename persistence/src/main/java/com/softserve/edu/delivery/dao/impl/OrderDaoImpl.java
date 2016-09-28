@@ -42,7 +42,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
                 .getResultList();
     }
 
-    // next 4 methods author Ivan Synyshyn
+    /*--------------------IvanSynyshyn----------------------------*/
     @Override
     public List<Order> getOrderByCityFrom(Long id) {
         EntityManager em = super.getEntityManager();
@@ -70,7 +70,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByArrivalDate(Timestamp arrivalDate) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select o from Order o where o.arrivalDate <= :arrivalDate");
+        Query query = em.createQuery("select o from Order o where o.arrivalDate >= :arrivalDate");
         query.setParameter("arrivalDate", arrivalDate);
         return query.getResultList();
     }
