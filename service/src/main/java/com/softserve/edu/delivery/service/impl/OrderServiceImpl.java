@@ -20,8 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service("orderService")
-@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
@@ -29,7 +27,6 @@ public class OrderServiceImpl implements OrderService {
     private final CityDao cityDao;
     private final FeedbackDao feedbackDao;
 
-    @Autowired
     public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
@@ -103,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderForListDto> getOrdersByCityFrom(String name) {
         List<OrderForListDto> result = new ArrayList<>();
-        Long cityId = Long.valueOf(0);
+        Long cityId = 0L;
         if (name == null) {
             throw new IllegalArgumentException("Write name of city");
         }
@@ -121,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderForListDto> getOrdersByCityTo(String name) {
         List<OrderForListDto> result = new ArrayList<>();
-        Long cityId = Long.valueOf(0);
+        Long cityId = 0L;
         if (name == null) {
             throw new IllegalArgumentException("Write name of city");
         }

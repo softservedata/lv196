@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.domain.Offer;
-import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
@@ -12,7 +11,24 @@ import java.util.List;
 
 public interface OrderService {
 
+    /**
+     * Finds the list of active orders by given parameters
+     *
+     * @param email - email of assigned customer
+     * @param page - number of page
+     * @param size - orders amount on the page
+     * @return list of active orders for the relevant parameters
+     */
     List<OrderForListDto> findAllActiveOrders(String email, int page, int size);
+
+    /**
+     * Creates new order based of given dto and assigns it to user with given email
+     *
+     * @param dto - order dto
+     * @param email - of user to assign
+     * @throws IllegalArgumentException if dto is null or no such user with given email
+     * or city from/to could not be found
+     */
     void addOrder(OrderForAddDto dto, String email);
 
 /**

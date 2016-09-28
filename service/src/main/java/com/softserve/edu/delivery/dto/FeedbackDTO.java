@@ -22,6 +22,9 @@ public class FeedbackDTO implements Serializable {
     private User user;
     private Integer rate;
     private Boolean approved;
+    private Long orderId;
+    private String userName;
+    private String transporterName;
 
     public Long getFeedbackId() {
         return feedbackId;
@@ -37,6 +40,7 @@ public class FeedbackDTO implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+        this.orderId = order.getId();
     }
 
     public String getText() {
@@ -52,7 +56,10 @@ public class FeedbackDTO implements Serializable {
     }
 
     public void setUser(User user) {
+
         this.user = user;
+        this.userName = user.getFirstName() + " " + user.getLastName();
+
     }
 
     public Integer getRate() {
@@ -63,11 +70,35 @@ public class FeedbackDTO implements Serializable {
         this.rate = rate;
     }
 
-    public Boolean isApproved() {
+    public Boolean getApproved() {
         return approved;
     }
 
     public void setApproved(Boolean approved) {
         this.approved = approved;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getTransporterName() {
+        return transporterName;
+    }
+
+    public void setTransporterName(String transporterName) {
+        this.transporterName = transporterName;
     }
 }

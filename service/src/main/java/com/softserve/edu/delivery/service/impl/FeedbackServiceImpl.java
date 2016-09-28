@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.FeedbackDao;
+import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
@@ -29,8 +30,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     /**
-     * @param feedback of Feddback class
-     * @return object of FeddbackDTO.class
+     * @param feedback of Feedback class
+     * @return object of FeedbackDTO.class
      * <p>
      * copies all the fields of an object of Feedback.class to an object of FeedbackDTO.class
      */
@@ -47,8 +48,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     /**
-     * @param feedbackDTO of Feddback class
-     * @return object of Feddback.class
+     * @param feedbackDTO of Feedback class
+     * @return object of Feedback.class
      * <p>
      * copies all the fields of an object of FeedbackDTO.class to an object of Feedback.class
      */
@@ -59,7 +60,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setText(feedbackDTO.getText());
         feedback.setUser(feedbackDTO.getUser());
         feedback.setRate(feedbackDTO.getRate());
-        feedback.setApproved(feedbackDTO.isApproved());
+        feedback.setApproved(feedbackDTO.getApproved());
 
         return feedback;
     }
@@ -88,11 +89,11 @@ public class FeedbackServiceImpl implements FeedbackService {
      * accepts start id of a feedback in the db and number of feedbacks. Forms list of FeedbackDTO object,
      * whose ids are within the range.
      */
-    public List<FeedbackDTO> getAllFeedbacksInRange(int idFrom, int number) {
+    public List<FeedbackDTO> getAllFeedbacksInRange(long idFrom, long number) {
 
         List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
 
-        FeedbackDTO feedbackDTO = null;
+        FeedbackDTO feedbackDTO;
 
         //increment of i is performed only in case, when a feedback with given id is found - since
         //ids in feedback table will not be in perfect sequence - gaps will be present, caused by
