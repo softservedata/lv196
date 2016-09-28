@@ -13,15 +13,20 @@
 </head>
 <body>
 <h1 align="center">Feedback page</h1>
+<p id='status'>Test</p>
+<p id='info'>Test</p>
 
 <div>
     <table id="feedback" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
     </table>
 </div>
 
+
 <script>
+
     $(document).ready(function () {
         $('#feedback').DataTable({
+            responsive: true,
             ajax: {
                 url: "/web/feedback",
                 dataSrc: "feedbacks",
@@ -46,7 +51,34 @@
                 {"width": "5%", "targets": 6}
             ]
         });
+
+        $('.status').change(function(e) {
+            alert('change!!');
+            console.log($(this).find("option:selected").text());
+            console.log(e.currentTarget)
+        });
     });
+
+
+    //    onload = function() {
+    //        var changeFeedbackStatus = document.getElementsByTagName('select');
+    //        document.getElementById('info').innerHTML = changeFeedbackStatus.length;
+    //        for (i = 0; i < changeFeedbackStatus.length; i++) {
+    //            var current = changeFeedbackStatus[i];
+    //            current.addEventListener("change", changeStatus(current));
+    //
+    //        }
+    //    };
+    //
+    //    function changeStatus(current) {
+    //        if (current.innerHTML == "True") {
+    //            document.getElementById('status').innerHTML = 'true' + current.id;
+    //        } else {
+    //            document.getElementById('status').innerHTML = 'false' + current.id;
+    //        }
+    //    }
+
 </script>
+
 </body>
 </html>

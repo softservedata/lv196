@@ -42,11 +42,11 @@ public class FeedbackServlet extends HttpServlet {
             jsonFeedbackList.append("\"rate\":").append(f.getRate()).append(",");
             jsonFeedbackList.append("\"text\":" + "\"").append(f.getText()).append("\",");
             if (f.getApproved()) {
-                jsonFeedbackList.append("\"approved\":" + "\"<select> <option value=true" +
-                        " selected>True</option><option value=false>False</option></select>\"" + "},");
+                jsonFeedbackList.append("\"approved\":" + "\"<select class='status' id='s").append(f.getFeedbackId())
+                        .append("'> <option value=true selected>True</option><option value=false>False</option></select>\"" + "},");
             } else {
-                jsonFeedbackList.append("\"approved\":" + "\"<select> <option value=true" +
-                        ">True</option><option value=false selected>False</option></select>\"" + "},");
+                jsonFeedbackList.append("\"approved\":" + "\"<select class='status' id='s").append(f.getFeedbackId())
+                        .append("'> <option value=true>True</option><option value=false selected>False</option></select>\"" + "},");
             }
         }
 
