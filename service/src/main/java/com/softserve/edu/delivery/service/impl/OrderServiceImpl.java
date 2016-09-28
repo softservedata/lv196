@@ -1,9 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.CityDao;
-import com.softserve.edu.delivery.dao.FeedbackDao;
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.dao.*;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
@@ -24,12 +21,14 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao;
     private final CityDao cityDao;
     private final FeedbackDao feedbackDao;
+    private final OfferDao offerDao;
 
-    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao) {
+    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
         this.cityDao = cityDao;
-        this.feedbackDao=feedbackDao;
+        this.feedbackDao = feedbackDao;
+        this.offerDao = offerDao;
     }
 
     @Override
@@ -99,15 +98,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void changeStatus(String order_id, Boolean offerStatus) {
-        TransactionManager.withTransaction(() ->
-                orderDao
-                        .changeStatus(order_id, offerStatus)
+    public void changeStatus(Long offerId, String offerStatus) {
+        Boolean newOfferStatus=!(Boolean.parseBoolean(offerStatus));
+        TransactionManager.withTransaction(() -> {
+                    Offer offer = offerDao.findOne(offerId)
+                            .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
+                    offer.setApproved(newOfferStatus);
+                    offerDao.save(offer);
+                }
         );
     }
 
 
-/*--------------------IvanSynyshyn----------------------------*/
+
+    /*--------------------IvanSynyshyn----------------------------*/
     @Override
     public List<OrderForListDto> getOrdersByCityFrom(String name) {
         List<OrderForListDto> result = new ArrayList<>();

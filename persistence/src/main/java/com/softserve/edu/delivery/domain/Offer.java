@@ -37,11 +37,11 @@ public class Offer {
 	public Offer(){
 	}
 
-	public long getOfferId() {
+	public Long getOfferId() {
 		return offerId;
 	}
 
-	public void setOfferId(long offerId) {
+	public void setOfferId(Long offerId) {
 		this.offerId = offerId;
 	}
 

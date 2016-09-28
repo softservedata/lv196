@@ -42,16 +42,6 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
                 .getResultList();
     }
 
-    public void changeStatus(String order_id, Boolean offerStatus) {
-
-        getEntityManager()                                                      //update offer's with offerStatus where is our order
-                .createQuery("update Offer set isApproved=:offerStatus where order = :order")
-                .setParameter("order", Long.parseLong(order_id))
-                .setParameter("offerStatus", offerStatus)
-                .executeUpdate();
-    }
-
-
     // next 4 methods author Ivan Synyshyn
     @Override
     public List<Order> getOrderByCityFrom(Long id) {

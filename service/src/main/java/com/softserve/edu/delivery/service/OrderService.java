@@ -37,7 +37,7 @@ public interface OrderService {
     //Method for user story - "As customer I want to write transporter feedback."
     void addFeedback (FeedbackDTO dto, String email);
     //Method for user story - "As customer I want to change offer status."
-    void changeStatus(String order_id, Boolean offerStatus);
+    void changeStatus(Long order_id, String offerStatus);
 
 /**
 * Author - Ivan Synyshyn
