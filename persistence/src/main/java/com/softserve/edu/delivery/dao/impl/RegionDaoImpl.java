@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("regionDao")
 public class RegionDaoImpl extends BaseDaoImpl<Region, Long> implements RegionDao {
     public RegionDaoImpl() {
-        setClazz(Region.class);
+        super(Region.class);
     }
 
 

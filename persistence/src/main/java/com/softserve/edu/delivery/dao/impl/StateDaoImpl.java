@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("stateDao")
 public class StateDaoImpl extends BaseDaoImpl<State, Long> implements StateDao {
     public StateDaoImpl() {
-        setClazz(State.class);
+        super(State.class);
     }
     @Override
     public List<State> getAllState() {

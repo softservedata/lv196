@@ -18,7 +18,7 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     @PersistenceContext
     private EntityManager em;
 
-    public final void setClazz(Class<T> clazz) {
+    public BaseDaoImpl(Class<T> clazz) {
         this.clazz = clazz;
     }
 
@@ -47,10 +47,11 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
         return em.createQuery("From " + clazz.getSimpleName(), clazz).getResultList();
     }
 
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return em;
     }
 
+    //Don't remove this method!!! It's need for some testing
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }

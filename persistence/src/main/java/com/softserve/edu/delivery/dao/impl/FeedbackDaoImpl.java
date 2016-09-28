@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository("feedbackDao")
 public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements FeedbackDao {
     public FeedbackDaoImpl() {
-        setClazz(Feedback.class);
+        super(Feedback.class);
     }
 }

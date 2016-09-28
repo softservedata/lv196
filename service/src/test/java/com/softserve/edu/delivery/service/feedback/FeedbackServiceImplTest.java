@@ -1,9 +1,7 @@
 package com.softserve.edu.delivery.service.feedback;
 
-import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
-import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.dao.impl.OrderDaoImpl;
 import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
@@ -11,9 +9,7 @@ import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
-import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
 import com.softserve.edu.delivery.utils.Jpa;
-import com.softserve.edu.delivery.utils.TransactionManager;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("offerDao")
 public class OfferDaoImpl extends BaseDaoImpl<Offer, Long> implements OfferDao {
     public OfferDaoImpl() {
-        setClazz(Offer.class);
+        super(Offer.class);
     }
 
 

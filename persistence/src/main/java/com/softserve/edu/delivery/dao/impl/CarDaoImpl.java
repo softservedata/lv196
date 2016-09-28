@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public class CarDaoImpl extends BaseDaoImpl<Car, Long> implements CarDao {
 
     public CarDaoImpl() {
-        setClazz(Car.class);
+        super(Car.class);
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("routeCityDao")
 public class RouteCityDaoImpl extends BaseDaoImpl<RouteCities, Long> implements RouteCityDao {
     public RouteCityDaoImpl() {
-        setClazz(RouteCities.class);
+        super(RouteCities.class);
     }
 
     /**author method - Petro Shtenovych

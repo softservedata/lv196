@@ -10,7 +10,6 @@ import com.softserve.edu.delivery.dto.CarDTO;
 import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.service.RegistrationService;
-import com.softserve.edu.delivery.utils.TransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,18 +54,13 @@ public class RegistrationServiceImpl implements RegistrationService {
                 car.setVehicleHeight(carDTO.getVehicleHeight());
                 
                 cars.add(car);
-                
             }
             user.setCars(cars);
         }
-        TransactionManager.withoutTransaction(() -> {
-            if (!userDao.exists(user.getEmail())) {
-                userDao.save(user);
-            } else {
-                throw new IllegalArgumentException("User with given email already exists.");
-            }
-        });
+        if (!userDao.exists(user.getEmail())) {
+            userDao.save(user);
+        } else {
+            throw new IllegalArgumentException("User with given email already exists.");
+        }
     }
-
-    
 }

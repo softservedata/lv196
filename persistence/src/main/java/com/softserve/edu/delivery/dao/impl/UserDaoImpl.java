@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 
     public UserDaoImpl() {
-        setClazz(User.class);
+        super(User.class);
     }
 
     public boolean exists(String email) {

@@ -13,7 +13,6 @@ import com.softserve.edu.delivery.dto.StateDto;
 import  com.softserve.edu.delivery.dao.CityDao;
 import  com.softserve.edu.delivery.dao.RegionDao;
 import  com.softserve.edu.delivery.dao.StateDao;
-import com.softserve.edu.delivery.utils.TransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,31 +32,25 @@ public class TransporterServiceImpl implements TransporterService {
         this.stateDao = stateDao;
     }
     public List<StateDto> getAllState() {
-        return TransactionManager.withoutTransaction(() ->
-                stateDao.getAllState()
+        return stateDao.getAllState()
                         .stream()
                         .map(entity -> StateDto.convertEntity(entity))
-                        .collect(Collectors.toList())
-        );
+                        .collect(Collectors.toList());
     }
     public List<RegionDto> getRegionByState(String state){
-        return TransactionManager.withoutTransaction(() ->
-                regionDao.getRegionByState(state)
+        return regionDao.getRegionByState(state)
                         .stream()
                         .map(entity -> RegionDto.convertEntity(entity))
-                        .collect(Collectors.toList())
-        );
-
+                        .collect(Collectors.toList());
     }
+
     public List<CityDto> getCityByRegion(String region){
-        return TransactionManager.withoutTransaction(() ->
-                cityDao.getCityByRegion(region)
+        return cityDao.getCityByRegion(region)
                         .stream()
                         .map(entity -> CityDto.convertEntity(entity))
-                        .collect(Collectors.toList())
-        );
-
+                        .collect(Collectors.toList());
     }
+
     public State convertToEntity(StateDto stateDto){
         return  new State(stateDto.getName());
     }

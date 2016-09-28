@@ -4,7 +4,6 @@ import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
-import com.softserve.edu.delivery.utils.TransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,14 +73,10 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public List<FeedbackDTO> getAllFeedbacks() {
         List<FeedbackDTO> listDTO = new ArrayList<>();
-        List<Feedback> list = TransactionManager.withoutTransaction(() ->
-                feedbackDao.findAll()
-        );
-
-        list.forEach(f -> {
-            listDTO.add(copyFeedbackToDTO(f));
-        });
-
+        List<Feedback> list = feedbackDao.findAll();
+        for (Feedback feedback : list) {
+            listDTO.add(copyFeedbackToDTO(feedback));
+        }
         return listDTO;
     }
 
@@ -128,20 +123,15 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public FeedbackDTO getFeedbackById(long id) {
 
-        FeedbackDTO feedbackDTO = null;
+        FeedbackDTO feedbackDTO;
 
-        Optional<Feedback> oFeedback = TransactionManager.withoutTransaction(() ->
-                feedbackDao.findOne(id)
-        );
-
+        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
         if (oFeedback.isPresent()) {
             feedbackDTO = copyFeedbackToDTO(oFeedback.get());
         } else {
             throw new NoSuchElementException();
         }
-
         return feedbackDTO;
-
     }
 
     @Override
@@ -152,16 +142,12 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void changeFeedbackStatus(long id, boolean status) {
 
-        Optional<Feedback> oFeedback = TransactionManager.withoutTransaction(() ->
-                feedbackDao.findOne(id)
-        );
+        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
 
         if (oFeedback.isPresent()) {
             Feedback feedback = oFeedback.get();
             feedback.setApproved(status);
-            TransactionManager.withoutTransaction(() ->
-                    feedbackDao.update(feedback)
-            );
+            feedbackDao.update(feedback);
         } else {
             throw new NoSuchElementException();
         }
@@ -174,12 +160,8 @@ public class FeedbackServiceImpl implements FeedbackService {
      * transforms the object of FeedbackDTO.class to Feedback.class, which is saved to the db.
      */
     public void save(FeedbackDTO feedbackDTO) {
-
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
-
-        TransactionManager.withoutTransaction(() ->
-                feedbackDao.save(feedback)
-        );
+        feedbackDao.save(feedback);
     }
 
     @Override
@@ -189,12 +171,8 @@ public class FeedbackServiceImpl implements FeedbackService {
      * transforms the object of FeedbackDTO.class to Feedback.class, which is updated in the db.
      */
     public void update(FeedbackDTO feedbackDTO) {
-
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
-
-        TransactionManager.withoutTransaction(() ->
-                feedbackDao.update(feedback)
-        );
+        feedbackDao.update(feedback);
     }
 
     @Override
@@ -204,14 +182,11 @@ public class FeedbackServiceImpl implements FeedbackService {
      * transforms the object of FeedbackDTO.class to Feedback.class, which is deleted from the db.
      */
     public void delete(Long id) {
-
-        TransactionManager.withoutTransaction(() -> {
-            if (feedbackDao.findOne(id).isPresent()) {
-                feedbackDao.delete(feedbackDao.findOne(id).get());
-            } else {
-                throw new NoSuchElementException();
-            }
-        });
+        if (feedbackDao.findOne(id).isPresent()) {
+            feedbackDao.delete(feedbackDao.findOne(id).get());
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override
@@ -223,15 +198,12 @@ public class FeedbackServiceImpl implements FeedbackService {
      * If it is not found - throws NoSuchElementException
      */
     public FeedbackDTO findOne(Long id) {
-
-        Feedback feedback = null;
-
+        Feedback feedback;
         if (feedbackDao.findOne(id).isPresent()) {
             feedback = feedbackDao.findOne(id).get();
         } else {
             throw new NoSuchElementException();
         }
-
         return copyFeedbackToDTO(feedback);
     }
 }

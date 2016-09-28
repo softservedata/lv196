@@ -1,4 +1,5 @@
 package com.softserve.edu.delivery.dao.impl;
+
 /**
  * Author - Ivan Synyshyn
  */
@@ -13,7 +14,7 @@ import java.util.List;
 @Repository("cityDao")
 public class CityDaoImpl extends BaseDaoImpl<City, Long> implements CityDao {
     public CityDaoImpl() {
-        setClazz(City.class);
+        super(City.class);
     }
 
     @Override
