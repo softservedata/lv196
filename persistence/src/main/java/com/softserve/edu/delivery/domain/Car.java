@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.domain;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -151,5 +152,19 @@ public class Car {
     public Car setOffers(List<Offer> offers) {
         this.offers = offers;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Car car = (Car) o;
+        return car.carId.equals(this.carId) && car.driver.equals(this.driver);
+
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.carId, this.driver);
     }
 }

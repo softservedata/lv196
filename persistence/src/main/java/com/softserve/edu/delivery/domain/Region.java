@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Ivan Rudnytskyi, 11.09.2016.
@@ -72,5 +73,20 @@ public class Region {
             cities = new ArrayList<>();
         }
         cities.add(city);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Region region = (Region) o;
+        return region.getRegionName().equals(this.getRegionName());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.getRegionName());
     }
 }

@@ -5,7 +5,9 @@ import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.State;
 import com.softserve.edu.delivery.service.TransporterService;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.softserve.edu.delivery.dto.CityDto;
@@ -54,15 +56,16 @@ public class TransporterServiceImpl implements TransporterService {
                 .collect(Collectors.toList());
     }
 
-    public State convertToEntity(StateDto stateDto) {
+
+    public static State convertToEntity(StateDto stateDto) {
         return new State(stateDto.getName());
     }
 
-    public City convertToEntity(CityDto cityDto) {
+    public static City convertToEntity(CityDto cityDto) {
         return new City(cityDto.getCityId(), cityDto.getName(), cityDto.getRegion());
     }
 
-    public Region convertToEntity(RegionDto regionDto) {
+    public static Region convertToEntity(RegionDto regionDto) {
         return new Region(regionDto.getName(), regionDto.getState());
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public class RegionDaoImpl extends BaseDaoImpl<Region, Long> implements RegionDao {
+
     public RegionDaoImpl() {
         super(Region.class);
     }
@@ -16,7 +17,7 @@ public class RegionDaoImpl extends BaseDaoImpl<Region, Long> implements RegionDa
     @Override
     public List<Region> getRegionByState(String state) {
         return getEntityManager()
-                .createQuery("select r from Region r where r.state.stateName =: state", Region.class)
+                .createQuery("select r from Region r where r.state.stateName = :state", Region.class)
                 .setParameter("state", state)
                 .getResultList();
     }
