@@ -31,7 +31,7 @@ public class Offer {
 	@JoinColumn(name = "order_id")
 	private Order order;
 
-	@Column(name = "isApproved")
+	@Column(name = "getApproved")
 	private Boolean isApproved;
 
 	public Offer(){

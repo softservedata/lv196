@@ -10,4 +10,9 @@ public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements Feed
     public FeedbackDaoImpl() {
         super(Feedback.class);
     }
+
+    @Override
+    public Long getId(String query) {
+        return (Long) super.getEntityManager().createQuery(query).getSingleResult();
+    }
 }

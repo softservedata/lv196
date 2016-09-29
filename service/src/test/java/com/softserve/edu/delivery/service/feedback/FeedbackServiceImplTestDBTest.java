@@ -23,7 +23,7 @@ public class FeedbackServiceImplTestDBTest {
     private static final long REQUIRED_NUMBERS_OF_FEEDBACKS = 100;
     private static final int COUNT = 12;
 
-    private final FeedbackService fsi = new FeedbackServiceImpl();
+    private final FeedbackService fsi = FeedbackServiceImpl.getInstance();
 
     @BeforeTest
     /**
@@ -58,14 +58,14 @@ public class FeedbackServiceImplTestDBTest {
                 feedback.getText().equals(feedbackDTO.getText()) &&
                 feedback.getUser().equals(feedbackDTO.getUser()) &&
                 feedback.getRate().equals(feedbackDTO.getRate()) &&
-                feedback.isApproved().equals(feedbackDTO.getApproved()));
+                feedback.getApproved().equals(feedbackDTO.getApproved()));
 
     }
 
     @Test(enabled = false, groups = {"testDB"})
     /**
      * tests method from FeedbackServiceImpl.class, which copies fields from an object of FeedbackDTO.class
-     * to an object of Feedbac.class
+     * to an object of Feedback.class
      */
     public void testCopyDTOToFeedbackTestDB() {
 
@@ -78,16 +78,16 @@ public class FeedbackServiceImplTestDBTest {
                 feedback.getText().equals(feedbackDTO.getText()) &&
                 feedback.getUser().equals(feedbackDTO.getUser()) &&
                 feedback.getRate().equals(feedbackDTO.getRate()) &&
-                feedback.isApproved().equals(feedbackDTO.getApproved()));
+                feedback.getApproved().equals(feedbackDTO.getApproved()));
     }
 
     @Test(enabled = false, groups = {"testDB"})
     /**
-     *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
-     *  starting from startId, number of objects - startId + count
+     *  test#0 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
+     *
      *  the method check the size of the list
      */
-    public void testgetAllFeedbacks0TestDB() {
+    public void testGetAllFeedbacks0TestDB() {
 
         long count = getFeedbackCount();
 
@@ -100,18 +100,19 @@ public class FeedbackServiceImplTestDBTest {
     @Test(enabled = false, groups = {"testDB"})
     /**
      *  test#1 for the method from FeedbackServiceImpl.class, which get a list of objects of FeedbackDTO.class
-     *  starting from startId, number of objects - startId + count
-     *  the method check the contents of the list - objects must not be null and their type must be FeedbackDTO
+     *
+     *  the method check the contents of the list - objects must not be null
      */
-    public void testgetAllFeedbacks1TestDB() {
+    public void testGetAllFeedbacks1TestDB() {
 
         List<FeedbackDTO> feedbackList = fsi.getAllFeedbacks();
 
         boolean passed = true;
 
         for (FeedbackDTO f : feedbackList) {
-            if (f == null)
+            if (f == null) {
                 passed = false;
+            }
         }
 
         Assert.assertTrue(passed);
@@ -147,8 +148,9 @@ public class FeedbackServiceImplTestDBTest {
         boolean passed = true;
 
         for (FeedbackDTO f : feedbackList) {
-            if (f == null)
+            if (f == null) {
                 passed = false;
+            }
         }
 
         Assert.assertTrue(passed);
@@ -179,13 +181,12 @@ public class FeedbackServiceImplTestDBTest {
 
         FeedbackDTO feedbackDTO = fsi.getFeedbackById(feedbackId);
 
-        //retrieving actual status
         boolean previousStatus = feedbackDTO.getApproved();
-        //changing the status to an opposite
+
         feedbackDTO.setApproved(!previousStatus);
-        //updating the status
+
         fsi.changeFeedbackStatus(feedbackDTO.getFeedbackId(), !previousStatus);
-        //retrieving the updated object
+
         feedbackDTO = fsi.getFeedbackById(feedbackId);
 
         Assert.assertFalse(previousStatus == feedbackDTO.getApproved());
@@ -202,10 +203,9 @@ public class FeedbackServiceImplTestDBTest {
 
         fsi.save(feedbackDTO0);
 
-        //retrieving number of entries in the db after adding an entry
         FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(getLastFeedbackId());
 
-        //comparation of id is omitted - since in non-persistent object it is missing
+        //comparison of id is omitted - since in non-persistent object it is missing
         Assert.assertTrue(feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
                 feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
@@ -220,20 +220,16 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testUpdateTestDB() {
 
-        long feedbackId = 1L;//getRandomFeedbackId();
+        long feedbackId = getRandomFeedbackId();
 
-        //retrieving an object of FeedbackDTO.class from the db
         FeedbackDTO feedbackDTO0 = fsi.getFeedbackById(feedbackId);
 
-        feedbackDTO0 = changeData(feedbackDTO0);
+        changeData(feedbackDTO0);
 
-        //updating it
         fsi.update(feedbackDTO0);
 
-        //retrieving the same object of FeedbackDTO.class from the db
         FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(feedbackId);
 
-        //comparing fields of the objects
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
@@ -247,7 +243,6 @@ public class FeedbackServiceImplTestDBTest {
      * tests method from FeedbackServiceImpl.class, which deletes an object of FeedbackDTO.class with a given id
      * from the db
      */
-
     public void testDeleteTestDB() {
 
         long feedbackId = FeedbackServiceImplTest.getRandomFeedbackId();

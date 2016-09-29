@@ -69,7 +69,7 @@ public class Feedback {
         this.rate = rate;
     }
 
-    public Boolean isApproved() {
+    public Boolean getApproved() {
         return approved;
     }
 
