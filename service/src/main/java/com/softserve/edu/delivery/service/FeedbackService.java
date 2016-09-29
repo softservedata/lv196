@@ -1,8 +1,6 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 
 import java.util.List;
@@ -29,8 +27,6 @@ public interface FeedbackService {
     void update(FeedbackDTO feedbackDTO);
 
     void delete(Long id);
-
-    void setFeedbackDao(FeedbackDao feedbackDAO);
 
     FeedbackDTO findOne(Long id);
 

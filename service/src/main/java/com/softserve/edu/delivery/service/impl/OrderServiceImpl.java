@@ -1,9 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.CityDao;
-import com.softserve.edu.delivery.dao.FeedbackDao;
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.dao.*;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
@@ -111,19 +108,13 @@ public class OrderServiceImpl implements OrderService {
         feedbackDao.save(feedback);
     }
 
-    @Override
-    public void changeStatus(String order_id, Boolean offerStatus) {
-        orderDao.changeStatus(order_id, offerStatus);
-
     public void changeStatus(Long offerId, String offerStatus) {
         Boolean newOfferStatus=!(Boolean.parseBoolean(offerStatus));
-        TransactionManager.withTransaction(() -> {
                     Offer offer = offerDao.findOne(offerId)
                             .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
                     offer.setApproved(newOfferStatus);
                     offerDao.save(offer);
-                }
-        );
+
     }
 
 

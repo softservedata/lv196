@@ -223,16 +223,17 @@ public class FeedbackServiceImpl implements FeedbackService {
         return copyFeedbackToDTO(feedback);
     }
 
-    //@Override
+    @Override
     /**
      * @param Long orderId - id of the order
      * @return String approvedDriverName
      *
      * the method searches in the DB the first and last name of the approved driver for the order with the id
      */
-    /*public String getApprovedDriverName(Long orderId) {
-        EntityManager entityManager = Jpa.getEntityManager();
-        EntityTransaction tx = null;
+    // RE-IMPLEMENT THIS BY USING DAO!
+    public String getApprovedDriverName(Long orderId) {
+        /*EntityManager entityManager = Jpa.getEntityManager();
+        EntityTransaction tx = null;*/
         String query = "select u.first_name, u.last_name from orders ord " +
                 "join offer of on " +
                 "ord.order_id=of.order_id " +
@@ -241,7 +242,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 "join users u on " +
                 "c.driver_id=u.email " +
                 "where of.isApproved and ord.order_id=?1";
-        List<Object[]> approvedDriverName = new ArrayList<>();
+       /* List<Object[]> approvedDriverName = new ArrayList<>();
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -251,8 +252,8 @@ public class FeedbackServiceImpl implements FeedbackService {
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
-        }
+        }*/
 
-        return approvedDriverName.get(0)[0] + " " + approvedDriverName.get(0)[1];
-    }*/
+        return null;/*approvedDriverName.get(0)[0] + " " + approvedDriverName.get(0)[1];*/
+    }
 }
