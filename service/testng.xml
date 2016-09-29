@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
-	<!-- 3 ERROR 5 WARNING 7 INFO -->
+	<!-- 3 ERROR 5 WARNING 7 INFO
 	<test name="Test1">
 		<classes>
 			<class name="com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTestDBTest">
 				<methods>
-					<!--include name="test" /-->
+					<!-include name="test" /
 				</methods>
 			</class>
 			<class name="com.softserve.edu.delivery.service.feedback.FeedbackServiceImplMockTest">
 				<methods>
-					<!--include name="test" /-->
+					<!-include name="test" /
 				</methods>
 			</class>
-			 <!--class name="com.softserve.edu.delivery.SmokeTest" /-->
+			 <!-class name="com.softserve.edu.delivery.SmokeTest"
 		</classes>
-	</test> <!-- Test -->
+	</test> <!- Test
 	
 	<test name="verificationUser">
 		<classes>
@@ -28,5 +28,5 @@
 			<class name="com.softserve.edu.delivery.service.tracking.RouteByIdTest"/>
 		</classes>
 	</test>
-	<!-- - - - - - - - - - -->
+	<!- - - - - - - - - - -->
 </suite> <!-- Suite -->

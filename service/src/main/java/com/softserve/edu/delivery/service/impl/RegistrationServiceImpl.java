@@ -10,13 +10,21 @@ import com.softserve.edu.delivery.dto.CarDTO;
 import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.service.RegistrationService;
-import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional
 public class RegistrationServiceImpl implements RegistrationService {
 
     private UserDao userDao;
-    
-    
+
+    @Autowired
+    public RegistrationServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     @Override
     public void register(UserRegistrationDTO userRegistrationDto) {
 
@@ -28,12 +36,12 @@ public class RegistrationServiceImpl implements RegistrationService {
         user.setPhone(userRegistrationDto.getPhoneNumber());
         user.setPassport(userRegistrationDto.getPassport());
         user.setPhotoUrl(userRegistrationDto.getPhotoURL());
-        
-        
-        if(userRegistrationDto instanceof DriverRegistrationDTO) {
+
+
+        if (userRegistrationDto instanceof DriverRegistrationDTO) {
             DriverRegistrationDTO driverRegistrationDTO = (DriverRegistrationDTO) userRegistrationDto;
             List<Car> cars = new ArrayList<>();
-            for(CarDTO carDTO : driverRegistrationDTO.getCarDtos()) {
+            for (CarDTO carDTO : driverRegistrationDTO.getCarDtos()) {
                 Car car = new Car();
                 car.setVehicleName(carDTO.getVehicleName());
                 car.setVehicleNumber(carDTO.getVehicleNumber());
@@ -44,20 +52,18 @@ public class RegistrationServiceImpl implements RegistrationService {
                 car.setVehicleLength(carDTO.getVehicleLength());
                 car.setVehicleWidth(carDTO.getVehicleWidth());
                 car.setVehicleHeight(carDTO.getVehicleHeight());
-                
+
                 cars.add(car);
-                
+
             }
             user.setCars(cars);
         }
-        TransactionManager.withTransaction(() -> {
-            if (!userDao.exists(user.getEmail())) {
-                userDao.save(user);
-            } else {
-                throw new IllegalArgumentException("User with given email already exists.");
-            }
-        });
+        if (!userDao.exists(user.getEmail())) {
+            userDao.save(user);
+        } else {
+            throw new IllegalArgumentException("User with given email already exists.");
+        }
     }
 
-    
+
 }

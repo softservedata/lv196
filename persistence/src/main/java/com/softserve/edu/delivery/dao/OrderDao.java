@@ -20,7 +20,16 @@ public interface OrderDao extends BaseDao<Order, Long> {
     Optional<String> findDriverNameByOrderId(Long id);
 
     /**
-     * Finds orders by given parameters.
+     * Finds orders by given parameters
+     *
+     * @param email - email of assigned customer
+     * @param orderStatus - status of order
+     * @return list of orders for the relevant parameters
+     */
+    List<Order> findAllOrdersByStatus(String email, OrderStatus orderStatus);
+
+    /**
+     * Finds orders by given parameters with pagination
      *
      * @param email - email of assigned customer
      * @param page - number of page
@@ -28,7 +37,7 @@ public interface OrderDao extends BaseDao<Order, Long> {
      * @param orderStatus - status of order
      * @return list of orders for the relevant parameters
      */
-    List<Order> findAllOrdersByStatus(String email, int page, int size, OrderStatus orderStatus);
+    List<Order> findAllOrdersByStatusPagination(String email, OrderStatus orderStatus, int page, int size);
 
     //	As transporter I want to choose orders by filter.
     List<Order> getOrderByCityFrom(Long id);

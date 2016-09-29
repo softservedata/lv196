@@ -6,7 +6,9 @@ import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.RouteDTO;
 import com.softserve.edu.delivery.service.RouteService;
-import com.softserve.edu.delivery.utils.Jpa;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -16,15 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Petro Shtenovych
+ * @author Petro Shtenovych !!!
  *
  * */
+@Service
+@Transactional
 public class RouteServiceImpl implements RouteService {
 
     private final OrderDao orderDao;
     private final RouteCityDao routeCityDao;
     private final OfferDao offerDao;
 
+    @Autowired
     public RouteServiceImpl(OrderDao orderDao, RouteCityDao routeCityDao, OfferDao offerDao) {
         this.orderDao = orderDao;
         this.routeCityDao = routeCityDao;
@@ -47,7 +52,7 @@ public class RouteServiceImpl implements RouteService {
         Offer approvedOffer;
         EntityTransaction tx = null;
         try {
-            EntityManager em = Jpa.getEntityManager();
+            EntityManager em = /*Jpa.getEntityManager(); Entity manager in service? */ null;
             tx = em.getTransaction();
             tx.begin();
             order = orderDao.findOne(id).get(); // find order by given id

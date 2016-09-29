@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.User;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 
     public UserDaoImpl() {

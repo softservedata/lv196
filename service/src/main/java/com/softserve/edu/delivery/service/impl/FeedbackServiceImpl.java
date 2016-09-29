@@ -5,11 +5,10 @@ import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
-import com.softserve.edu.delivery.utils.Jpa;
-import com.softserve.edu.delivery.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,24 +18,14 @@ import java.util.Optional;
  * Created by Ivan Rudnytskyi on 15.09.2016.
  * implementation for business logic of the feedback part of the application
  */
+@Service
+@Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
     private FeedbackDao feedbackDao = new FeedbackDaoImpl();
 
-    private static FeedbackService fsi;
-
-    private  FeedbackServiceImpl() {
-    }
-
-    public static FeedbackService getInstance(){
-        if (fsi == null) {
-            fsi = new FeedbackServiceImpl();
-        }
-        return fsi;
-    }
-
-    @Override
-    public void setFeedbackDao(FeedbackDao feedbackDao){
+    @Autowired
+    public FeedbackServiceImpl(FeedbackDao feedbackDao) {
         this.feedbackDao = feedbackDao;
     }
 
@@ -85,9 +74,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public List<FeedbackDTO> getAllFeedbacks() {
         List<FeedbackDTO> listDTO = new ArrayList<>();
-        List<Feedback> list = TransactionManager.withTransaction(() ->
-                feedbackDao.findAll()
-        );
+        List<Feedback> list = feedbackDao.findAll();
 
         list.forEach(f -> listDTO.add(copyFeedbackToDTO(f)));
 
@@ -139,9 +126,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         FeedbackDTO feedbackDTO;
 
-        Optional<Feedback> oFeedback = TransactionManager.withTransaction(() ->
-                feedbackDao.findOne(id)
-        );
+        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
 
         if (oFeedback.isPresent()) {
             feedbackDTO = copyFeedbackToDTO(oFeedback.get());
@@ -161,16 +146,13 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void changeFeedbackStatus(long id, boolean status) {
 
-        Optional<Feedback> oFeedback = TransactionManager.withTransaction(() ->
-                feedbackDao.findOne(id)
-        );
-
+        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
         if (oFeedback.isPresent()) {
             Feedback feedback = oFeedback.get();
             feedback.setApproved(status);
-            TransactionManager.withTransaction(() ->
-                    feedbackDao.update(feedback)
-            );
+
+            feedbackDao.update(feedback);
+
         } else {
             throw new NoSuchElementException();
         }
@@ -186,9 +168,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
 
-        TransactionManager.withTransaction(() ->
-                feedbackDao.save(feedback)
-        );
+        feedbackDao.save(feedback);
     }
 
     @Override
@@ -201,9 +181,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
 
-        TransactionManager.withTransaction(() ->
-                feedbackDao.update(feedback)
-        );
+        feedbackDao.update(feedback);
     }
 
     @Override
@@ -214,14 +192,12 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void delete(Long id) {
 
-        TransactionManager.withTransaction(() -> {
-            Optional<Feedback> oFeedback = feedbackDao.findOne(id);
-            if (oFeedback.isPresent()) {
-                feedbackDao.delete(oFeedback.get());
-            } else {
-                throw new NoSuchElementException();
-            }
-        });
+        if (feedbackDao.findOne(id).isPresent()) {
+            feedbackDao.delete(feedbackDao.findOne(id).get());
+        } else {
+            throw new NoSuchElementException();
+        }
+
     }
 
     @Override
@@ -247,14 +223,14 @@ public class FeedbackServiceImpl implements FeedbackService {
         return copyFeedbackToDTO(feedback);
     }
 
-    @Override
+    //@Override
     /**
      * @param Long orderId - id of the order
      * @return String approvedDriverName
      *
      * the method searches in the DB the first and last name of the approved driver for the order with the id
      */
-    public String getApprovedDriverName(Long orderId) {
+    /*public String getApprovedDriverName(Long orderId) {
         EntityManager entityManager = Jpa.getEntityManager();
         EntityTransaction tx = null;
         String query = "select u.first_name, u.last_name from orders ord " +
@@ -278,5 +254,5 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
 
         return approvedDriverName.get(0)[0] + " " + approvedDriverName.get(0)[1];
-    }
+    }*/
 }

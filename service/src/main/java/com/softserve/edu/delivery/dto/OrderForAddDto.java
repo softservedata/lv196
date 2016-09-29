@@ -12,7 +12,6 @@ public class OrderForAddDto {
     private BigDecimal width;
     private BigDecimal length;
     private BigDecimal weight;
-    private BigDecimal price;
     private String description;
 
     public OrderForAddDto() {}
@@ -77,15 +76,6 @@ public class OrderForAddDto {
 
     public OrderForAddDto setWeight(BigDecimal weight) {
         this.weight = weight;
-        return this;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public OrderForAddDto setPrice(BigDecimal price) {
-        this.price = price;
         return this;
     }
 

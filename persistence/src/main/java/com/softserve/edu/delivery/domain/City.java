@@ -3,16 +3,8 @@ package com.softserve.edu.delivery.domain;
  * Author - Ivan Synyshyn
  */
 
+import javax.persistence.*;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "CITIES")
@@ -25,6 +17,11 @@ public class City {
 	public City() {
 	}
 
+	public City(String cityName, Region region) {
+		this.cityName = cityName;
+		this.region = region;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "city_id")
@@ -32,8 +29,9 @@ public class City {
 		return cityId;
 	}
 
-	public void setCityId(Long cityId) {
+	public City setCityId(Long cityId) {
 		this.cityId = cityId;
+		return this;
 	}
 
 	@Column(name = "city_name")

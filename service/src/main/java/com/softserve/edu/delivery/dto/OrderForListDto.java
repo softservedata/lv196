@@ -9,14 +9,13 @@ import java.util.Objects;
 
 public class OrderForListDto {
     private Long id;
-    private Timestamp registrationDate;
+    private Timestamp arrivalDate;
     private String description;
     private String customerName;
     private String cityNameFrom;
     private String cityNameTo;
     private String orderStatus;
     private String driverName;
-    private Timestamp arrivalDate;
     private BigDecimal weight;
 
     public OrderForListDto() {
@@ -25,11 +24,10 @@ public class OrderForListDto {
     public static OrderForListDto of(Order order) {
         OrderForListDto dto = new OrderForListDto()
                 .setId(order.getId())
-                .setRegistrationDate(order.getRegistrationDate())
+                .setArrivalDate(order.getArrivalDate())
                 .setDescription(order.getDescription())
                 .setCityNameFrom(order.getCityFrom() == null ? null : order.getCityFrom().getCityName())
                 .setCityNameTo(order.getCityTo() == null ? null : order.getCityTo().getCityName())
-                .setArrivalDate(order.getArrivalDate())
                 .setWeight(order.getWeight());
 
         User customer = order.getCustomer();
@@ -49,12 +47,12 @@ public class OrderForListDto {
         return this;
     }
 
-    public Timestamp getRegistrationDate() {
-        return registrationDate;
+    public Timestamp getArrivalDate() {
+        return arrivalDate;
     }
 
-    public OrderForListDto setRegistrationDate(Timestamp registrationDate) {
-        this.registrationDate = registrationDate;
+    public OrderForListDto setArrivalDate(Timestamp arrivalDate) {
+        this.arrivalDate = arrivalDate;
         return this;
     }
 
@@ -112,15 +110,6 @@ public class OrderForListDto {
         return this;
     }
 
-    public Timestamp getArrivalDate() {
-        return arrivalDate;
-    }
-
-    public OrderForListDto setArrivalDate(Timestamp arrivalDate) {
-        this.arrivalDate = arrivalDate;
-        return this;
-    }
-
     public BigDecimal getWeight() {
         return weight;
     }
@@ -147,15 +136,13 @@ public class OrderForListDto {
     public String toString() {
         return "OrderForListDto{" +
                 "id=" + id +
-                ", registrationDate=" + registrationDate +
+                ", arrivalDate=" + arrivalDate +
                 ", description='" + description + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", cityNameFrom='" + cityNameFrom + '\'' +
                 ", cityNameTo='" + cityNameTo + '\'' +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", driverName='" + driverName + '\'' +
-                ", arrivalDate=" + arrivalDate +
-                ", weight=" + weight +
                 '}';
     }
 }

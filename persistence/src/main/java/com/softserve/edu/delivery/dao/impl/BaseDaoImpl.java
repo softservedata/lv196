@@ -1,9 +1,9 @@
 package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.BaseDao;
-import com.softserve.edu.delivery.utils.Jpa;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,9 @@ import java.util.Optional;
 public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
 
     private Class<T> clazz;
-    private EntityManager em = Jpa.getEntityManager();
+
+    @PersistenceContext
+    private EntityManager em;
 
     public BaseDaoImpl(Class<T> clazz) {
         this.clazz = clazz;

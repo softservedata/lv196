@@ -1,73 +1,48 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<modules>
-		<module>persistence</module>
-		<module>service</module>
-		<module>web</module>
-	</modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-	<groupId>com.softserve.edu</groupId>
-	<artifactId>delivery</artifactId>
-	<version>0.1</version>
-	<packaging>pom</packaging>
+    <modules>
+        <module>persistence</module>
+        <module>service</module>
+        <module>web</module>
+    </modules>
 
-	<name>delivery</name>
-	<url>http://maven.apache.org</url>
+    <groupId>com.softserve.edu</groupId>
+    <artifactId>delivery</artifactId>
+    <version>0.1</version>
+    <packaging>pom</packaging>
 
-	<properties>
-		<delivery.version>0.1</delivery.version>
-		<!-- - - - - - Encoding - - - - - -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.resources.plugin.version>2.7</maven.resources.plugin.version>
-		<!-- - - - - - Java - - - - - -->
-		<jdk.source.version>1.8</jdk.source.version>
-		<jdk.compiler.version>1.8</jdk.compiler.version>
-		<maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
-		<!-- - - - - - Persistence - - - - - -->
-		<mysql.connector.version>5.1.39</mysql.connector.version>
-		<postgresql.connector.version>9.4-1200-jdbc41</postgresql.connector.version>
-		<hibernate.version>5.2.2.Final</hibernate.version>
-		<hibernate.validator>5.2.2.Final</hibernate.validator>
-		<!-- - - - - - Test - - - - - -->
-		<org.testng.version>6.9.10</org.testng.version>
-		<maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
-		<org.mockito.version>1.10.19</org.mockito.version>
-		<testng.reports.directory>./target/surefire-reports/test-output</testng.reports.directory>
-		<!-- - - - - - Logging - - - - - -->
-		<org.slf4j.version>1.7.13</org.slf4j.version>
-		<!-- - - - - - Web - - - - - -->
-		<maven.war.plugin.version>2.6</maven.war.plugin.version>
-		<!-- <javax.servlet.api.version>2.5</javax.servlet.api.version> -->
-		<javax.javax.servlet.api.version>3.1.0</javax.javax.servlet.api.version>
-		<javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
-		<javax.servlet.jsp.jstl.version>1.2</javax.servlet.jsp.jstl.version>
-		<taglibs.standard.version>1.1.2</taglibs.standard.version>
-	</properties>
+    <name>delivery</name>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>${maven.resources.plugin.version}</version>
-				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.plugin.version}</version>
-				<configuration>
-					<source>${jdk.source.version}</source>
-					<target>${jdk.compiler.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <properties>
+        <delivery.version>0.1</delivery.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <!-- - - - - - Test - - - - - -->
+        <org.testng.version>6.9.10</org.testng.version>
+        <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
+        <org.mockito.version>1.10.19</org.mockito.version>
+        <testng.reports.directory>./target/surefire-reports/test-output</testng.reports.directory>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,15 +1,7 @@
 package com.softserve.edu.delivery.domain;
 
+import javax.persistence.*;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * Author - Taras Kurdiukov
@@ -49,24 +41,27 @@ public class Offer {
 		return car;
 	}
 
-	public void setCar(Car car) {
+	public Offer setCar(Car car) {
 		this.car = car;
+		return this;
 	}
 
 	public Boolean getApproved() {
 		return isApproved;
 	}
 
-	public void setApproved(Boolean approved) {
+	public Offer setApproved(Boolean approved) {
 		isApproved = approved;
+		return this;
 	}
 
 	public Order getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public Offer setOrder(Order order) {
 		this.order = order;
+		return this;
 	}
 
 	@Override
