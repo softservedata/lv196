@@ -1,13 +1,16 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.FeedbackDao;
+import com.softserve.edu.delivery.dao.OrderDao;
+import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
+import com.softserve.edu.delivery.dao.impl.OrderDaoImpl;
+import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +21,37 @@ import java.util.Optional;
  * Created by Ivan Rudnytskyi on 15.09.2016.
  * implementation for business logic of the feedback part of the application
  */
-@Service
-@Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
     private FeedbackDao feedbackDao = new FeedbackDaoImpl();
+    private UserDao userDao = new UserDaoImpl();
+    private OrderDao orderDao = new OrderDaoImpl();
 
-    @Autowired
-    public FeedbackServiceImpl(FeedbackDao feedbackDao) {
+    private static FeedbackService fsi;
+
+    private FeedbackServiceImpl() {
+    }
+
+    public static FeedbackService getInstance() {
+        if (fsi == null) {
+            fsi = new FeedbackServiceImpl();
+        }
+        return fsi;
+    }
+
+    @Override
+    public void setFeedbackDao(FeedbackDao feedbackDao) {
         this.feedbackDao = feedbackDao;
+    }
+
+    @Override
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    @Override
+    public void setOrderDao(OrderDao orderDay) {
+        this.orderDao = orderDay;
     }
 
     /**
@@ -147,12 +172,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     public void changeFeedbackStatus(long id, boolean status) {
 
         Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+
         if (oFeedback.isPresent()) {
             Feedback feedback = oFeedback.get();
             feedback.setApproved(status);
-
             feedbackDao.update(feedback);
-
         } else {
             throw new NoSuchElementException();
         }
@@ -182,6 +206,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
 
         feedbackDao.update(feedback);
+
     }
 
     @Override
@@ -192,8 +217,9 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void delete(Long id) {
 
-        if (feedbackDao.findOne(id).isPresent()) {
-            feedbackDao.delete(feedbackDao.findOne(id).get());
+        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+        if (oFeedback.isPresent()) {
+            feedbackDao.delete(oFeedback.get());
         } else {
             throw new NoSuchElementException();
         }
@@ -230,30 +256,32 @@ public class FeedbackServiceImpl implements FeedbackService {
      *
      * the method searches in the DB the first and last name of the approved driver for the order with the id
      */
-    // RE-IMPLEMENT THIS BY USING DAO!
     public String getApprovedDriverName(Long orderId) {
-        /*EntityManager entityManager = Jpa.getEntityManager();
-        EntityTransaction tx = null;*/
-        String query = "select u.first_name, u.last_name from orders ord " +
-                "join offer of on " +
-                "ord.order_id=of.order_id " +
-                "join cars c on " +
-                "of.car_id=c.car_id " +
-                "join users u on " +
-                "c.driver_id=u.email " +
-                "where of.isApproved and ord.order_id=?1";
-       /* List<Object[]> approvedDriverName = new ArrayList<>();
-        try {
-            tx = entityManager.getTransaction();
-            tx.begin();
-            approvedDriverName  = entityManager.createNativeQuery(query)
-                    .setParameter(1, orderId)
-                    .getResultList();
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-        }*/
+        return feedbackDao.getApprovedDriverName(orderId);
+    }
 
-        return null;/*approvedDriverName.get(0)[0] + " " + approvedDriverName.get(0)[1];*/
+    @Override
+    public Long getId(String query) {
+        return feedbackDao.getId(query);
+    }
+
+    @Override
+    public User getUser(String email) {
+        Optional<User> oUser = userDao.findOne(email);
+        if (oUser.isPresent()) {
+            return oUser.get();
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
+    @Override
+    public Order getOrder(Long id) {
+        Optional<Order> oOrder = orderDao.findOne(id);
+        if (oOrder.isPresent()) {
+            return oOrder.get();
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 }

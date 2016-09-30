@@ -1,6 +1,11 @@
 package com.softserve.edu.delivery.service;
 
+import com.softserve.edu.delivery.dao.FeedbackDao;
+import com.softserve.edu.delivery.dao.OrderDao;
+import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 
 import java.util.List;
@@ -31,4 +36,16 @@ public interface FeedbackService {
     FeedbackDTO findOne(Long id);
 
     String getApprovedDriverName(Long orderId);
+
+    void setFeedbackDao(FeedbackDao feedbackDao);
+
+    void setUserDao(UserDao userDao);
+
+    void setOrderDao(OrderDao orderDao);
+
+    Long getId(String query);
+
+    User getUser(String email);
+
+    Order getOrder(Long id);
 }

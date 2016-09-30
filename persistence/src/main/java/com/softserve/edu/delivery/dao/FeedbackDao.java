@@ -7,4 +7,5 @@ import com.softserve.edu.delivery.domain.Feedback;
  */
 public interface FeedbackDao extends BaseDao<Feedback, Long> {
     Long getId(String query);
+    String getApprovedDriverName(Long id);
 }
