@@ -104,6 +104,15 @@ public class UserServiceImpl implements UserService {
                 .map(mail -> changeUserStatus(mail, map.get(mail)))
                 .collect(Collectors.toList());
     }
+    
+    @Override
+    public List<UserProfileDto> getAllUsers() {
+        return userDao
+                .findAll()
+                .stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+    }
 
     //<---------------------Private------------------------->
 

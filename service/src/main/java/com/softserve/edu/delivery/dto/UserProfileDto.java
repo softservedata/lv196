@@ -19,7 +19,7 @@ public class UserProfileDto {
 		userProfileDTO2.setEmail(user.getEmail());
 		userProfileDTO2.setFirstName(user.getFirstName());
 		userProfileDTO2.setLastName(user.getLastName());
-		userProfileDTO2.setRole(user.getUserRole().toString());
+		userProfileDTO2.setRole(user.getUserRole() == null ? null : user.getUserRole().toString());
 		return userProfileDTO2;
     	
     }
