@@ -5,6 +5,7 @@ import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
+import com.softserve.edu.delivery.repository.CityRepository;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,16 @@ public class OrderServiceImpl implements OrderService {
     private final CityDao cityDao;
     private final FeedbackDao feedbackDao;
     private final OfferDao offerDao;
+    private final CityRepository cityRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao) {
+    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao, CityRepository cityRepository) {
         this.orderDao = orderDao;
         this.userDao = userDao;
         this.cityDao = cityDao;
         this.feedbackDao = feedbackDao;
         this.offerDao = offerDao;
+        this.cityRepository = cityRepository;
     }
 
     @Override
@@ -71,11 +74,11 @@ public class OrderServiceImpl implements OrderService {
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
-        City from = cityDao.findOne(dto.getCityIdFrom())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdFrom()));
+        City from = cityRepository.findOneOpt(dto.getLocationFrom().getCityId())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationFrom().getCityId()));
 
-        City to = cityDao.findOne(dto.getCityIdTo())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
+        City to = cityRepository.findOneOpt(dto.getLocationTo().getCityId())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationTo().getCityId()));
 
         orderDao.save(new Order()
                 .setOrderStatus(OrderStatus.OPEN)
