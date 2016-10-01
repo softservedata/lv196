@@ -4,13 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * @author Petro Shtenovych
- * */
 @Entity
 @Table(name = "STATES")
-public class State implements Serializable, Comparable<State> {
+public class State implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +18,8 @@ public class State implements Serializable, Comparable<State> {
     @Column(name = "state_name")
     private String stateName;
 
-    @OneToMany
-    @JoinColumn(name = "region_id")
-    private List<Region> regions;
+    @OneToMany(mappedBy = "state")
+    private List<Region> regions = new ArrayList<>();
 
     public State(String stateName, List<Region> regions) {
         this.stateName = stateName;
@@ -34,55 +31,45 @@ public class State implements Serializable, Comparable<State> {
     }
 
     public State() {
-        this("");
     }
 
     public Long getStateId() {
         return stateId;
     }
 
-    public void setStateId(Long stateId) {
+    public State setStateId(Long stateId) {
         this.stateId = stateId;
+        return this;
     }
 
     public String getStateName() {
         return stateName;
     }
 
-    public void setStateName(String stateName) {
+    public State setStateName(String stateName) {
         this.stateName = stateName;
+        return this;
     }
 
     public List<Region> getRegions() {
         return regions;
     }
 
-    public void setRegions(List<Region> regions) {
+    public State setRegions(List<Region> regions) {
         this.regions = regions;
+        return this;
     }
 
-    public void addRegion(Region region) {
-        if (regions == null) {
-            regions = new ArrayList<>();
-        }
-        regions.add(region);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        State state = (State) o;
+        return Objects.equals(stateId, state.stateId);
     }
 
     @Override
     public int hashCode() {
-        return this.stateName.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this.getClass() != obj.getClass()) return false;
-        else {
-            return this.stateName.equalsIgnoreCase(((State)obj).getStateName());
-        }
-    }
-
-    @Override
-    public int compareTo(State that) {
-        return this.stateName.compareTo(that.getStateName());
+        return Objects.hash(stateId);
     }
 }
