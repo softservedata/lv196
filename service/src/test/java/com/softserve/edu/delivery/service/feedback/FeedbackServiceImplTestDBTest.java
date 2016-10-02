@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.service.feedback;
 
+import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
@@ -23,7 +24,7 @@ public class FeedbackServiceImplTestDBTest {
     private static final long REQUIRED_NUMBERS_OF_FEEDBACKS = 100;
     private static final int COUNT = 12;
 
-    private final FeedbackService fsi = new FeedbackServiceImpl();
+    private final FeedbackService fsi = new FeedbackServiceImpl(new FeedbackDaoImpl());
 
     @BeforeTest
     /**

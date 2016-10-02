@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="mvc" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <html lang="en">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -73,13 +74,19 @@
                     <li class="">
                         <a href="welcome">Home</a>
                     </li>
-                    <li class="">
-                        <a href="#">Sign up</a>
-                    </li>
-
-                    <li class="">
-                        <a href="#">Faq</a>
-                    </li>
+                    <security:authorize access="isAnonymous()">
+                        <li class="">
+                            <a href="registration">Sign up</a>
+                        </li>
+                    </security:authorize>
+                    <security:authorize access="isAuthenticated()">
+                        <li class="">
+                            <a href="">You are: ${userPrincipal}</a>
+                        </li>
+                        <li class="">
+                            <a href="logout">Sign out</a>
+                        </li>
+                    </security:authorize>
                 </ul>
             </div>
             <!--/Menu -->
@@ -103,16 +110,17 @@
 
                 <div class="col-md-4 col-md-offset-2 col-sm-5 col-sm-offset-1">
                     <div class="home-wrapper">
-                        <mvc:form modelAttribute="userAuthDto" id="register_form" action="profile" method="post">
+                        <mvc:form modelAttribute="userAuthDto" id="login_form" action="loginProcess" method="post">
                             <div class="form-topbar"><h3 class="text-center">Sign in</h3></div>
                             <div class="form-group">
-                                <mvc:input path="email" type="email" cssClass="form-control" placeholder="email" maxlength="255" required="required"/>
+                                <mvc:input path="email" name="email" type="email" cssClass="form-control" placeholder="email" maxlength="255" required="required"/>
                                 <mvc:errors path="email"/>
                             </div>
                             <div class="form-group">
-                                <mvc:input path="password" type="password" cssClass="form-control"  placeholder="password" pattern=".{8,20}" title="8 to 20 characters" required="required"/>
+                                <mvc:input path="password" name="password" type="password" cssClass="form-control"  placeholder="password" pattern=".{4,20}" title="4 to 20 characters" required="required"/>
                                 <mvc:errors path="password"/>
                             </div>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                             <div class="form-group text-center">
                                 <button type="submit" class="btn btn-secondary">Continue</button>
                             </div>

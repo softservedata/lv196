@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="mvc" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <html lang="en">
 <head>
@@ -70,16 +71,19 @@
             <!-- menu -->
             <div class="navbar-collapse collapse" id="data-scroll-menu">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="">
-                        <a href="login">Sign in</a>
-                    </li>
-                    <li class="">
-                        <a href="#">Sign up</a>
-                    </li>
-
-                    <li class="">
-                        <a href="#">Faq</a>
-                    </li>
+                    <security:authorize access="isAnonymous()">
+                        <li class="">
+                            <a href="login">Sign in</a>
+                        </li>
+                        <li class="">
+                            <a href="registration">Sign up</a>
+                        </li>
+                    </security:authorize>
+                    <security:authorize access="isAuthenticated()">
+                        <li class="">
+                            <a href="logout">Sign out</a>
+                        </li>
+                    </security:authorize>
                 </ul>
             </div>
             <!--/Menu -->

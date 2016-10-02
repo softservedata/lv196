@@ -1,17 +1,28 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserProfileFilterDto;
+import com.softserve.edu.delivery.dto.UserRegistrationDTO;
+import com.softserve.edu.delivery.exception.EmailExistsException;
 import com.softserve.edu.delivery.exception.UserNotFoundException;
 import com.softserve.edu.delivery.exception.WrongPasswordException;
 import com.softserve.edu.delivery.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,8 +34,33 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        if ( ! this.exists(email)) {
+            throw new UsernameNotFoundException("Email " + email + " is not registered");
+        }
+
+        User user = userDao.findOne(email).get();
+
+        boolean enabled = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNotExpired = true;
+        boolean accountNonLocked = true;
+        String role = user.getUserRole().getName();
+        List<GrantedAuthority> listUserRoles = new ArrayList<>();
+        listUserRoles.add(new SimpleGrantedAuthority(role));
+
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(), user.getPassword(), enabled, accountNonExpired,
+                credentialsNotExpired, accountNonLocked, listUserRoles);
     }
 
     @Override
@@ -33,16 +69,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
-        if (!userDao.exists(user.getEmail())) {
-            userDao.save(user);
+    public void register(UserRegistrationDTO userRegDTO) {
+        if (exists(userRegDTO.getEmail())) {
+            throw new EmailExistsException(userRegDTO.getEmail());
         } else {
-            throw new IllegalArgumentException("User with given email already exists.");
+            User newUser = new User();
+            newUser.setEmail(userRegDTO.getEmail());
+            newUser.setPassword(this.passwordEncoder.encode(userRegDTO.getPassword()));
+            newUser.setFirstName(userRegDTO.getFirstName());
+            newUser.setLastName(userRegDTO.getLastName());
+            newUser.setPhone(userRegDTO.getPhoneNumber());
+            newUser.setPassport(userRegDTO.getPassport());
+            newUser.setPhotoUrl(userRegDTO.getPhotoUrl());
+            newUser.setBlocked(false);
+            newUser.setUserRole(Role.CUSTOMER);
+
+            userDao.save(newUser);
         }
     }
 
 
-    public void register(User user, boolean withoutLambda) {
+    public void register(User user) {
         if (userDao.exists(user.getEmail())) {
             throw new IllegalArgumentException("User with given email already exists.");
         } else {

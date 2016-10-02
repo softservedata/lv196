@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.service.feedback;
 
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
 import com.softserve.edu.delivery.dao.impl.OrderDaoImpl;
 import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
 import com.softserve.edu.delivery.domain.Feedback;
@@ -35,7 +36,7 @@ final class FeedbackServiceImplTest {
 
     private static EntityManager entityManager;
     private static EntityTransaction tx;
-    private static FeedbackService fsi = new FeedbackServiceImpl();
+    private static FeedbackService fsi = new FeedbackServiceImpl(new FeedbackDaoImpl());
 
     public FeedbackServiceImplTest() {
     }

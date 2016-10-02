@@ -23,7 +23,7 @@
     <link rel="shortcut icon" href="${icon}">
 
     <!-- Title -->
-    <title>Delivery - 404</title>
+    <title>Delivery - Access Denied</title>
 
     <!-- Google fonts -->
     <link rel="stylesheet" href="${css}">
@@ -72,8 +72,8 @@
             <div class="navbar-collapse collapse" id="data-scroll-menu">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
-                    <a href="welcome">Home</a>
-                </li>
+                        <a href="welcome">Home</a>
+                    </li>
                     <security:authorize access="isAnonymous()">
                         <li class="">
                             <a href="login">Sign in</a>
@@ -104,8 +104,7 @@
             <div class="row">
                 <div class="col-sm-12 text-center">
                     <div class="home-wrapper">
-                        <h1 class="text-uppercase" style="color: white;">404! Oooppps!</h1>
-                        <h2 class="text-primary" style="color: white;">Page not found!</h2>
+                        <h1 class="text-uppercase" style="color: white;">Access Denied</h1>
                     </div>
                 </div>
             </div>

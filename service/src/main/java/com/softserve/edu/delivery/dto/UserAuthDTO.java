@@ -1,9 +1,9 @@
 package com.softserve.edu.delivery.dto;
 
-
-import org.hibernate.validator.constraints.Email;
+import com.softserve.edu.delivery.dto.valid.PatternConstraints;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -13,12 +13,12 @@ import javax.validation.constraints.Size;
  */
 public class UserAuthDTO {
 
-    @NotNull(message = "Email cannot be empty and should looks like example@domain.com")
-    @Email
+    @NotNull(message = PatternConstraints.EMAIL_NOT_VALID_MESSAGE)
+    @Pattern( regexp = PatternConstraints.EMAIL_REGEX)
     private String email;
 
-    @NotNull(message = "Password should be from 8 to 20 characters")
-    @Size(min = 8, max = 20)
+    @NotNull(message = PatternConstraints.PASS_NOT_VALID_MESSAGE)
+    @Size(min = PatternConstraints.PASS_MIN_LENGTH, max = PatternConstraints.PASS_MAX_LENGTH)
     private String password;
 
     public UserAuthDTO(String email, String password) {
