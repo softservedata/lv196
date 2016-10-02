@@ -1,7 +1,5 @@
 package com.softserve.edu.delivery.dto;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.softserve.edu.delivery.View;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 
@@ -10,7 +8,7 @@ import java.text.DateFormat;
 
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
- *
+ * <p>
  * serves as a transport object between persistence and service layers
  */
 
@@ -19,24 +17,16 @@ public class FeedbackDTO {
     public FeedbackDTO() {
     }
 
-    @JsonView (View.Feedback.class)
     private Long feedbackId;
     private Order order;
-    @JsonView (View.Feedback.class)
     private String text;
     private User user;
-    @JsonView (View.Feedback.class)
     private Integer rate;
-    @JsonView (View.Feedback.class)
     private Boolean approved;
-    @JsonView (View.Feedback.class)
     private Long orderId;
-    @JsonView (View.Feedback.class)
     private String userName;
-    @JsonView (View.Feedback.class)
     private String transporterName;
     private Timestamp createdOn;
-    @JsonView (View.Feedback.class)
     private String stringCreatedOn;
 
     public Long getFeedbackId() {

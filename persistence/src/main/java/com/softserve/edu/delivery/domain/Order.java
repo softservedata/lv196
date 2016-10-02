@@ -1,52 +1,26 @@
 package com.softserve.edu.delivery.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "ORDERS")
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
     private Long id;
-
-    @Column(name = "height")
     private BigDecimal height;
-
-    @Column(name = "width")
     private BigDecimal width;
-
-    @Column(name = "length")
     private BigDecimal length;
-
-    @Column(name = "weight")
     private BigDecimal weight;
-
-    @Column(name = "price")
     private BigDecimal price;
-
-    @Column(name = "registration_date")
     private Timestamp registrationDate;
-
-    @Column(name = "arrival_date")
     private Timestamp arrivalDate;
-
-    @Column(name = "description")
     private String description;
 
     @ManyToOne
@@ -54,19 +28,17 @@ public class Order {
     private User customer;
 
     @ManyToOne
-    @JoinColumn(name = "from_id", referencedColumnName = "city_id")
+    @JoinColumn(name = "city_from_id")
     private City cityFrom;
 
     @ManyToOne
-    @JoinColumn(name = "to_id", referencedColumnName = "city_id")
+    @JoinColumn(name = "city_to_id")
     private City cityTo;
 
-    @OneToMany
-    @JoinColumn(name = "offer_id")
-    private List<Offer> offers;
+    @OneToMany(mappedBy = "order")
+    private List<Offer> offers = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "order_status")
     private OrderStatus orderStatus;
 
     public Order() {

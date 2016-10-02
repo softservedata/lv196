@@ -51,7 +51,7 @@ public class OrderController {
 
     @RequestMapping(path = "change", method = RequestMethod.GET)
     void changeOfferStatus(@RequestBody Offer offer) {
-        orderService.changeStatus(offer.getOfferId(),offer.getApproved());
+        orderService.changeStatus(offer.getOfferId(),offer.isApproved());
     }
 
     /*--------------------IvanSynyshyn----------------------------*/

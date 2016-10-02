@@ -7,15 +7,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "STATES")
 public class State implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "state_id")
     private Long stateId;
-
-    @Column(name = "state_name")
     private String stateName;
 
     @OneToMany(mappedBy = "state")
