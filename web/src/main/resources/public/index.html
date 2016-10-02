@@ -14,7 +14,7 @@
     <script src="js/main.js"></script>
 
 </head>
-<body>
+<body ng-controller="pleaceController">
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -41,7 +41,7 @@
     </nav>
     <br/><br/><br/><br/><br/><br/><br/>
 
-        <div class="container" ng-controller="listOfPleacesCtrl">
+        <div class="container">
             <div class="col-md-6" style="left: 1050px">
                 <button type="button" class="btn" data-toggle="modal" data-target="#myModal">Add location</button>
             </div>
@@ -63,9 +63,9 @@
             </table>
 
         </div>
-    <div class="modal" id="myModal" ng-controller="StateListCtr">
-        <div class="modal-dialog" ng-controller="RegionListCtr">
-            <div class="modal-content"  ng-controller="CityListCtr">
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" type="button" data-dismiss="modal">
                         <i class="fa fa-close">x</i>
@@ -74,12 +74,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <select ng-model="selectedState" class="form-control" id="state" ng-options="state.name for state in stateList track by state.name">
+                        <select ng-model="selectedState" class="form-control" ng-change="sentState()" ng-click="getStateList()" ng-options="state.name for state in stateList track by state.name">
                             <option value="">Choose the state</option>
                         </select>
+
                     </div>
                     <div class="form-group">
-                        <select ng-model="selectedRegion" class="form-control" ng-disabled="!selectedState" ng-options="region.name for region in regionList track by region.name">
+                        <select ng-model="selectedRegion" class="form-control" ng-change="sentRegion()" ng-disabled="!selectedState" ng-options="region.name for region in regionList track by region.name">
                             <option value="">Choose the region</option>
                         </select>
                     </div>
@@ -89,7 +90,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" type="submit">Add</button>
+                    <button class="btn btn-danger" type="submit" ng-click="add()">Add</button>
                     <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
                 </div>
             </div>

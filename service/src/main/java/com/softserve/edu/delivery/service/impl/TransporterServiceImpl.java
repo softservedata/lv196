@@ -62,7 +62,7 @@ public class TransporterServiceImpl implements TransporterService {
     }
 
     public static City convertToEntity(CityDto cityDto) {
-        return new City(cityDto.getCityId(), cityDto.getName(), cityDto.getRegion());
+        return new City(/*cityDto.getCityId(), */cityDto.getName(), TransporterServiceImpl.convertToEntity(cityDto.getRegion()));
     }
 
     public static Region convertToEntity(RegionDto regionDto) {

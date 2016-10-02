@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.dao.OfferDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.dto.PleaceDto;
 import com.softserve.edu.delivery.dto.RouteDTO;
 import com.softserve.edu.delivery.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,5 +103,13 @@ public class RouteServiceImpl implements RouteService {
             result.add(tc.getCity());
         }
         return result;
+    }
+    @Override
+    public void savePleace(PleaceDto pleaceDto){
+        RouteCities routeCities = RouteServiceImpl.convertToEntity(pleaceDto);
+        routeCityDao.save(routeCities);
+    }
+    public static RouteCities convertToEntity(PleaceDto pleaceDto) {
+        return new RouteCities(TransporterServiceImpl.convertToEntity(pleaceDto.getCity()), pleaceDto.getDate());
     }
 }

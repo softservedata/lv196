@@ -62,6 +62,11 @@ public class City {
 		this.cityName = cityName;
 		this.region = region;
 	}
+	public City(String cityName, Region region) {
+		super();
+		this.cityName = cityName;
+		this.region = region;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

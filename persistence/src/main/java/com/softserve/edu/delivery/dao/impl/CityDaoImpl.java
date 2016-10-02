@@ -23,12 +23,13 @@ public class CityDaoImpl extends BaseDaoImpl<City, Long> implements CityDao {
     }
 
 
-    @Override
+   @Override
     public List<City> getCityByRegion(String region) {
         return getEntityManager()
                 .createQuery("select c from City c where c.region.regionName = :region", City.class)
                 .setParameter("region", region)
                 .getResultList();
-
     }
+    //public void savePlease(City)
+
 }

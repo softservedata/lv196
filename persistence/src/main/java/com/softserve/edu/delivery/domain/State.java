@@ -5,9 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Petro Shtenovych
- * */
 @Entity
 @Table(name = "STATES")
 public class State implements Serializable, Comparable<State> {
@@ -20,17 +17,8 @@ public class State implements Serializable, Comparable<State> {
     @Column(name = "state_name")
     private String stateName;
 
-    @OneToMany
-    @JoinColumn(name = "region_id")
-    private List<Region> regions;
-
-    public State(String stateName, List<Region> regions) {
+    public State(String stateName){
         this.stateName = stateName;
-        this.regions = regions;
-    }
-
-    public State(String stateName) {
-        this(stateName, new ArrayList<>());
     }
 
     public State() {
@@ -53,21 +41,6 @@ public class State implements Serializable, Comparable<State> {
         this.stateName = stateName;
     }
 
-    public List<Region> getRegions() {
-        return regions;
-    }
-
-    public void setRegions(List<Region> regions) {
-        this.regions = regions;
-    }
-
-    public void addRegion(Region region) {
-        if (regions == null) {
-            regions = new ArrayList<>();
-        }
-        regions.add(region);
-    }
-
     @Override
     public int hashCode() {
         return this.stateName.hashCode();
@@ -84,5 +57,13 @@ public class State implements Serializable, Comparable<State> {
     @Override
     public int compareTo(State that) {
         return this.stateName.compareTo(that.getStateName());
+    }
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "stateId=" + stateId +
+                ", stateName='" + stateName + '\'' +
+                '}';
     }
 }

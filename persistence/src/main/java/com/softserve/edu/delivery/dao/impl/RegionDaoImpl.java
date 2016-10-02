@@ -21,5 +21,5 @@ public class RegionDaoImpl extends BaseDaoImpl<Region, Long> implements RegionDa
                 .setParameter("state", state)
                 .getResultList();
     }
-
 }
+

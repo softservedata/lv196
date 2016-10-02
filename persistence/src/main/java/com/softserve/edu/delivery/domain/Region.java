@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author Ivan Rudnytskyi, 11.09.2016.
- */
+
 @Entity
 @Table(name = "REGIONS")
 public class Region {
@@ -24,9 +22,6 @@ public class Region {
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State state;
-    @OneToMany(mappedBy = "region",
-                    cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<City> cities;
 
     public Region(String regionName, State state) {
         this.regionName = regionName;
@@ -59,22 +54,6 @@ public class Region {
         this.state = state;
     }
 
-
-    public List<City> getCities() {
-        return cities;
-    }
-
-    public void setCities(List<City> cities) {
-        this.cities = cities;
-    }
-
-    public void addCity(City city) {
-        if (cities == null) {
-            cities = new ArrayList<>();
-        }
-        cities.add(city);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,5 +67,14 @@ public class Region {
     @Override
     public int hashCode() {
         return Objects.hashCode(this.getRegionName());
+    }
+
+    @Override
+    public String toString() {
+        return "Region{" +
+                "regionId=" + regionId +
+                ", regionName='" + regionName + '\'' +
+                ", state=" + state.toString() +
+                '}';
     }
 }

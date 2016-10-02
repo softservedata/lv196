@@ -8,25 +8,29 @@ import com.softserve.edu.delivery.domain.State;
  */
 
 public class RegionDto {
-    private Long regionId;
+/*    private Long regionId;*/
     private String name;
     private State state;
 
     public RegionDto(){}
 
-    public RegionDto(Long regionId, String name, State state) {
+ /*   public RegionDto(Long regionId, String name, State state) {
         this.regionId = regionId;
+        this.name = name;
+        this.state = state;
+    }*/
+    public RegionDto(String name, State state) {
         this.name = name;
         this.state = state;
     }
 
-    public Long getRegionId() {
+  /*  public Long getRegionId() {
         return regionId;
     }
 
     public void setRegionId(Long regionId) {
         this.regionId = regionId;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -45,6 +49,6 @@ public class RegionDto {
     }
 
     public static RegionDto convertEntity(Region region){
-        return new RegionDto(region.getRegionId(), region.getRegionName(), region.getState());
+        return new RegionDto(/*region.getRegionId(),*/ region.getRegionName(), region.getState());
     }
 }

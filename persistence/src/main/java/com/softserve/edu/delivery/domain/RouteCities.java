@@ -28,6 +28,10 @@ public class RouteCities {
     @Column(name = "visit_date")
     private Timestamp visitDate;
 
+    public RouteCities(City city, Timestamp visitDate) {
+        this.city = city;
+        this.visitDate = visitDate;
+    }
 
     public Long getRoute_city_id() {
         return route_city_id;
