@@ -2,13 +2,14 @@ package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements FeedbackDao {
+
     public FeedbackDaoImpl() {
         super(Feedback.class);
     }
@@ -27,12 +28,20 @@ public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements Feed
                 "of.car_id=c.car_id " +
                 "join users u on " +
                 "c.driver_id=u.email " +
-                "where of.isApproved and ord.order_id=?1";
-        List<Object[]> approvedDriverName = new ArrayList<>();
-        approvedDriverName = super.getEntityManager().createNativeQuery(query)
+                "where of.get_approved and ord.order_id=?1";
+        List<Object[]> approvedDriverName = super.getEntityManager().createNativeQuery(query)
                 .setParameter(1, id)
                 .getResultList();
 
         return approvedDriverName.get(0)[0] + " " + approvedDriverName.get(0)[1];
     }
+
+    @Override
+    public List<User> getUsersByRole(String userRole){
+        return super.getEntityManager().createQuery("select u from User u where u.userRole=:userRole")
+                .setParameter("userRole", userRole)
+                .getResultList();
+    }
+
+
 }

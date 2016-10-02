@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.Feedback;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -121,6 +122,19 @@ public class FilterFeedbackDTO {
 
     public static List<Feedback> filteredList (List<Feedback> inList, Predicate<Feedback> predicate){
         return inList.stream().filter(predicate).collect(Collectors.toList());
+    }
+
+    /*              created              */
+    public static Predicate<Feedback> createdBefore(Timestamp date){
+        return f -> f.getCreatedOn().before(date);
+    }
+
+    public static Predicate<Feedback>  createdAfter(Timestamp date){
+        return f -> f.getCreatedOn().after(date);
+    }
+
+    public static Predicate<Feedback>  createdOn(Timestamp date){
+        return f -> f.getCreatedOn().equals(date);
     }
 
 }

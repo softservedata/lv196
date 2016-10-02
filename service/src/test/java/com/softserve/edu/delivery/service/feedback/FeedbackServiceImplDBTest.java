@@ -1,42 +1,117 @@
 package com.softserve.edu.delivery.service.feedback;
 
-import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
-import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTest.*;
-
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
- *
+ * <p>
  * test the methods of FeedbackServiceImpl.class
  */
-public class FeedbackServiceImplTestDBTest {
 
-    private static final long REQUIRED_NUMBERS_OF_FEEDBACKS = 100;
+public class FeedbackServiceImplDBTest extends AbstractTestNGSpringContextTests {
+
+    private static final long REQUIRED_NUMBERS_OF_FEEDBACKS = 20;
+    private static final long REQUIRED_NUMBERS_OF_USERS = 10;
+    private static final long REQUIRED_NUMBERS_OF_CARS = 10;
+    private static final long REQUIRED_NUMBERS_OF_ORDERS = REQUIRED_NUMBERS_OF_FEEDBACKS;
+    private static final long REQUIRED_NUMBERS_OF_OFFERS = REQUIRED_NUMBERS_OF_ORDERS * 2;
     private static final int COUNT = 12;
 
-    private final FeedbackService fsi = FeedbackServiceImpl.getInstance();
+
+    private FeedbackService feedbackService;
+    private FeedbackServiceImplTest feedbackServiceImplTest;
+
+    public FeedbackServiceImplDBTest() {
+    }
+
+    @Autowired
+    public FeedbackServiceImplDBTest(FeedbackService feedbackService, FeedbackServiceImplTest feedbackServiceImplTest) {
+        this.feedbackService = feedbackService;
+        this.feedbackServiceImplTest = feedbackServiceImplTest;
+    }
+
+    @Override
+    @BeforeSuite
+    protected void springTestContextPrepareTestInstance() throws Exception {
+        super.springTestContextPrepareTestInstance();
+    }
 
     @BeforeTest
     /**
      * checks, if table Feedback has enough entries, if not - populates it with the required number of feedbacks
      */
     private void checkIfTableHasEntries() {
-
-        Long feedbackCount = getFeedbackCount();
-
-        if (feedbackCount < REQUIRED_NUMBERS_OF_FEEDBACKS)
-            for (int i = 0; i < (REQUIRED_NUMBERS_OF_FEEDBACKS - feedbackCount); i++)
-                fsi.save(createFeedbackDTOWithoutId());
+        addFeedbacksToDB();
+        addUsersToDB();
+        addCarsToDB();
+        addOrdersToDB();
+        addOffersToDB();
     }
+
+    private void addFeedbacksToDB() {
+        Long count = feedbackServiceImplTest.getEntriesCount(Feedback.class.getSimpleName());
+
+        if (count < REQUIRED_NUMBERS_OF_FEEDBACKS) {
+            for (int i = 0; i < (REQUIRED_NUMBERS_OF_FEEDBACKS - count); i++) {
+                feedbackService.save(feedbackServiceImplTest.createFeedbackDTOWithoutId());
+            }
+        }
+    }
+
+    private void addUsersToDB() {
+        Long count = feedbackServiceImplTest.getEntriesCount(User.class.getSimpleName());
+
+        if (count < REQUIRED_NUMBERS_OF_USERS) {
+            for (int i = 0; i < (REQUIRED_NUMBERS_OF_USERS - count); i++) {
+                feedbackService.saveUser(feedbackServiceImplTest.createUserForDB());
+            }
+        }
+
+        feedbackServiceImplTest.setDriverList(feedbackService.getUsersByRole(Role.DRIVER.getName()));
+        feedbackServiceImplTest.setCustomerList(feedbackService.getUsersByRole(Role.CUSTOMER.getName()));
+    }
+
+    private void addCarsToDB() {
+        Long count = feedbackServiceImplTest.getEntriesCount(Car.class.getSimpleName());
+
+        if (count < REQUIRED_NUMBERS_OF_CARS) {
+            for (int i = 0; i < (REQUIRED_NUMBERS_OF_CARS - count); i++) {
+                feedbackService.saveCar(feedbackServiceImplTest.createCarForDB());
+            }
+        }
+    }
+
+    private void addOrdersToDB() {
+        Long count = feedbackServiceImplTest.getEntriesCount(Order.class.getSimpleName());
+
+        if (count < REQUIRED_NUMBERS_OF_ORDERS) {
+            for (int i = 0; i < (REQUIRED_NUMBERS_OF_ORDERS - count); i++) {
+                feedbackService.saveOrder(feedbackServiceImplTest.createOrderForDB());
+            }
+        }
+    }
+
+    private void addOffersToDB() {
+        Long count = feedbackServiceImplTest.getEntriesCount(Offer.class.getSimpleName());
+
+        if (count < REQUIRED_NUMBERS_OF_OFFERS) {
+            for (int i = 0; i < (REQUIRED_NUMBERS_OF_OFFERS - count); i++) {
+                feedbackService.saveOffer(feedbackServiceImplTest.createOfferForDB());
+            }
+        }
+    }
+
 
     /*
         first group of tests - on a real test db, included in the group testDB
@@ -49,9 +124,9 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testCopyFeedbackToDTOTestDB() {
 
-        Feedback feedback = createFeedback();
+        Feedback feedback = feedbackServiceImplTest.createFeedback();
 
-        FeedbackDTO feedbackDTO = fsi.copyFeedbackToDTO(feedback);
+        FeedbackDTO feedbackDTO = feedbackService.copyFeedbackToDTO(feedback);
 
         Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
                 feedback.getOrder().equals(feedbackDTO.getOrder()) &&
@@ -69,9 +144,9 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testCopyDTOToFeedbackTestDB() {
 
-        FeedbackDTO feedbackDTO = createFeedbackDTO();
+        FeedbackDTO feedbackDTO = feedbackServiceImplTest.createFeedbackDTO();
 
-        Feedback feedback = fsi.copyDTOToFeedback(feedbackDTO);
+        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO);
 
         Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
                 feedback.getOrder().equals(feedbackDTO.getOrder()) &&
@@ -89,9 +164,9 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testGetAllFeedbacks0TestDB() {
 
-        long count = getFeedbackCount();
+        long count = feedbackServiceImplTest.getEntriesCount(Feedback.class.getSimpleName());
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacks();
+        List<FeedbackDTO> feedbackList = feedbackService.getAllFeedbacks();
 
         Assert.assertTrue(count == feedbackList.size());
 
@@ -105,7 +180,7 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testGetAllFeedbacks1TestDB() {
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacks();
+        List<FeedbackDTO> feedbackList = feedbackService.getAllFeedbacks();
 
         boolean passed = true;
 
@@ -126,9 +201,9 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testgetAllFeedbacksInRange0TestDB() {
 
-        Long startId = getStartFeedbackId();
+        Long startId = feedbackServiceImplTest.getStartFeedbackId();
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(startId, COUNT);
+        List<FeedbackDTO> feedbackList = feedbackService.getAllFeedbacksInRange(startId, COUNT);
 
         Assert.assertTrue(COUNT == feedbackList.size());
     }
@@ -141,9 +216,9 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testgetAllFeedbacksInRange1TestDB() {
 
-        Long startId = getStartFeedbackId();
+        Long startId = feedbackServiceImplTest.getStartFeedbackId();
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(startId, COUNT);
+        List<FeedbackDTO> feedbackList = feedbackService.getAllFeedbacksInRange(startId, COUNT);
 
         boolean passed = true;
 
@@ -164,9 +239,9 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testGetFeedbackByIdTestDB() {
 
-        long feedbackId = getRandomFeedbackId();
+        long feedbackId = feedbackServiceImplTest.getRandomFeedbackId();
 
-        FeedbackDTO feedbackDTO = fsi.getFeedbackById(feedbackId);
+        FeedbackDTO feedbackDTO = feedbackService.getFeedbackById(feedbackId);
 
         Assert.assertEquals(feedbackId, (long) feedbackDTO.getFeedbackId());
     }
@@ -177,17 +252,17 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testChangeFeedbackStatusTestDB() {
 
-        long feedbackId = getRandomFeedbackId();
+        long feedbackId = feedbackServiceImplTest.getRandomFeedbackId();
 
-        FeedbackDTO feedbackDTO = fsi.getFeedbackById(feedbackId);
+        FeedbackDTO feedbackDTO = feedbackService.getFeedbackById(feedbackId);
 
         boolean previousStatus = feedbackDTO.getApproved();
 
         feedbackDTO.setApproved(!previousStatus);
 
-        fsi.changeFeedbackStatus(feedbackDTO.getFeedbackId(), !previousStatus);
+        feedbackService.changeFeedbackStatus(feedbackDTO.getFeedbackId(), !previousStatus);
 
-        feedbackDTO = fsi.getFeedbackById(feedbackId);
+        feedbackDTO = feedbackService.getFeedbackById(feedbackId);
 
         Assert.assertFalse(previousStatus == feedbackDTO.getApproved());
     }
@@ -199,11 +274,11 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testSaveTestDB() {
 
-        FeedbackDTO feedbackDTO0 = createFeedbackDTOWithoutId();
+        FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createFeedbackDTOWithoutId();
 
-        fsi.save(feedbackDTO0);
+        feedbackService.save(feedbackDTO0);
 
-        FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(getLastFeedbackId());
+        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(feedbackServiceImplTest.getLastFeedbackId());
 
         //comparison of id is omitted - since in non-persistent object it is missing
         Assert.assertTrue(feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
@@ -220,15 +295,15 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testUpdateTestDB() {
 
-        long feedbackId = getRandomFeedbackId();
+        long feedbackId = feedbackServiceImplTest.getRandomFeedbackId();
 
-        FeedbackDTO feedbackDTO0 = fsi.getFeedbackById(feedbackId);
+        FeedbackDTO feedbackDTO0 = feedbackService.getFeedbackById(feedbackId);
 
-        changeData(feedbackDTO0);
+        feedbackServiceImplTest.changeData(feedbackDTO0);
 
-        fsi.update(feedbackDTO0);
+        feedbackService.update(feedbackDTO0);
 
-        FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(feedbackId);
+        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(feedbackId);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
@@ -245,13 +320,13 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testDeleteTestDB() {
 
-        long feedbackId = FeedbackServiceImplTest.getRandomFeedbackId();
+        long feedbackId = feedbackServiceImplTest.getRandomFeedbackId();
 
-        FeedbackDTO feedbackDTO = fsi.getFeedbackById(feedbackId);
+        FeedbackDTO feedbackDTO = feedbackService.getFeedbackById(feedbackId);
 
-        fsi.delete(feedbackDTO.getFeedbackId());
+        feedbackService.delete(feedbackDTO.getFeedbackId());
 
-        fsi.getFeedbackById(feedbackId);
+        feedbackService.getFeedbackById(feedbackId);
     }
 
     @Test(enabled = false, groups = {"testDB"})
@@ -261,9 +336,9 @@ public class FeedbackServiceImplTestDBTest {
      */
     public void testFindOneTestDB() {
 
-        long feedbackId = getRandomFeedbackId();
+        long feedbackId = feedbackServiceImplTest.getRandomFeedbackId();
 
-        Assert.assertNotNull(fsi.findOne(feedbackId));
+        Assert.assertNotNull(feedbackService.findOne(feedbackId));
     }
 }
 

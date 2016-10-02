@@ -1,12 +1,18 @@
 package com.softserve.edu.delivery.service.feedback;
 
+import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
+import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -14,56 +20,61 @@ import java.util.NoSuchElementException;
  *
  * The class provides service methods for different test classes
  */
-final class FeedbackServiceImplTest {
+@Component
+public class FeedbackServiceImplTest{
 
-    private static final Long MOCK_FEEDBACK_ID = 1L;
-    private static final int MOCK_RATE = 27;
-    private static final boolean MOCK_APPROVED = false;
-    private static final String MOCK_TEXT = "mock text";
-    private static final String MOCK_USER_EMAIL= "email0@gmail.com";
-    private static final Long MOCK_ORDER_ID = 2L;
-    private static final Long START_ORDER_ID = 2L;
-    private static final Long LAST_ORDER_ID = 9L;
-    private static final Long LAST_USER_ID = 10L;
-    private static final int MAX_FEEDBACK_RATE = 50;
-    private static final int MAX_RANDOM_TEXT = 50;
+    private  final Long MOCK_FEEDBACK_ID = 1L;
+    private  final int MOCK_RATE = 27;
+    private  final boolean MOCK_APPROVED = false;
+    private  final String MOCK_TEXT = "mock text";
+    private  final String MOCK_USER_EMAIL= "email0@gmail.com";
+    private  final String MOCK_CREATED_ON= "2016-10-02 04:15:06";
+    private  final Long MOCK_ORDER_ID = 2L;
+    private  final Long START_ORDER_ID = 2L;
+    private  final Long LAST_ORDER_ID = 9L;
+    private  final Long LAST_USER_ID = 10L;
+    private  final int MAX_FEEDBACK_RATE = 50;
+    private  final int MAX_RANDOM_TEXT = 50;
 
-    private static FeedbackService fsi = FeedbackServiceImpl.getInstance();
+    private FeedbackService feedbackService;
 
-    private  FeedbackServiceImplTest() {
+    private List<User> driverList;
+    private List<User> customerList;
+
+    public FeedbackServiceImplTest(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
     }
 
-    private static String getRandomText() {
+    public void setDriverList(List<User> driverList) {
+        this.driverList = driverList;
+    }
+
+    public void setCustomerList(List<User> customerList) {
+        this.customerList = customerList;
+    }
+
+    public List<User> getDriverList() {
+        return driverList;
+    }
+
+    public List<User> getCustomerList() {
+        return customerList;
+    }
+
+
+    private String getRandomText() {
         return "feedback text #" +  (int) (Math.random() * MAX_RANDOM_TEXT);
     }
 
-    private static String getRandomUserEmail(){
+    private  String getRandomUserEmail(){
         return "email" + (int)(Math.random() * LAST_USER_ID) + "@gmail.com";
-    }
-
-    /**
-     *
-     * @param email - id of a User
-     * @return user with the id
-     */
-    private static User getUser(String email) {
-        return fsi.getUser(email);
-    }
-
-    /**
-     *
-     * @param id of the Order
-     * @return Order with the id
-     */
-    private static Order getOrder(Long id) {
-        return fsi.getOrder(id);
     }
 
     /**
      *
      * @return random rate
      */
-    private static int getRandomRate(){
+    private  int getRandomRate(){
         return (int)(Math.random() * MAX_FEEDBACK_RATE);
     }
 
@@ -71,7 +82,7 @@ final class FeedbackServiceImplTest {
      *
      * @return random approved status
      */
-    private static boolean getRandomApproved(){
+    private  boolean getRandomApproved(){
         return (int) (Math.random() * 2) > 0;
     }
 
@@ -80,7 +91,7 @@ final class FeedbackServiceImplTest {
      * @return order ID
      */
 
-    private static long getRandomOrderId(){
+    private  long getRandomOrderId(){
         long orderId =(long)(Math.random() * LAST_ORDER_ID) + START_ORDER_ID;
         if (orderId == 5) {
             orderId++;
@@ -93,15 +104,119 @@ final class FeedbackServiceImplTest {
      *
      * creates an object of FeedbackDTO.class - for testing
      */
-    static FeedbackDTO createFeedbackDTO() {
+    FeedbackDTO createFeedbackDTO() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setFeedbackId(getRandomFeedbackId());
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setText(getRandomText());
-        feedbackDTO.setUser(getUser(getRandomUserEmail()));
-        feedbackDTO.setOrder(getOrder(getRandomOrderId()));
+        feedbackDTO.setUser(feedbackService.getUser(getRandomUserEmail()));
+        feedbackDTO.setOrder(feedbackService.getOrder(getRandomOrderId()));
         return feedbackDTO;
+    }
+
+    User createUserForDB() {
+        User user = new User();
+        user.setEmail(createUserEmail())
+                .setFirstName(createUserFirstName())
+                .setLastName(createUserLastName())
+                .setUserRole(createUserRole());
+        return user;
+    }
+
+    private  String createUserEmail(){
+        long lastUser = getEntriesCount(User.class.getSimpleName());
+        return "email" + lastUser + "@gmail.com";
+    }
+
+    private  String createUserFirstName(){
+        switch ((int)(Math.random() * 5)){
+            case 0:
+                return "John";
+            case 1:
+                return "Nancy";
+            case 2:
+                return "Theodory";
+            case 3:
+                return "Molly";
+            default:
+                return "Chris";
+        }
+    }
+
+    private  String createUserLastName(){
+        switch ((int)(Math.random() * 5)){
+            case 0:
+                return "Jenkins";
+            case 1:
+                return "Jhonson";
+            case 2:
+                return "Lincoln";
+            case 3:
+                return "Petersen";
+            default:
+                return "Brown";
+        }
+    }
+
+    private  Role createUserRole(){
+        switch ((int)(Math.random() * 5)){
+            case 0:
+                return Role.DRIVER;
+            default:
+                return Role.CUSTOMER;
+        }
+    }
+
+    Car createCarForDB() {
+        Car car = new Car();
+        car.setDriver(getDriver());
+        return car;
+    }
+
+    private  User getDriver(){
+        long count = driverList.size();
+        return driverList.get((int)(Math.random() * count));
+}
+
+    Order createOrderForDB(){
+        Order order = new Order();
+        order.setCustomer(getCustomer());
+        return order;
+
+    }
+
+    private  User getCustomer(){
+        long count = customerList.size();
+        return customerList.get((int)(Math.random() * count));
+    }
+
+    Offer createOfferForDB(){
+        Offer offer = new Offer();
+        offer.setApproved(getApproved())
+                .setCar(getCar())
+                .setOrder(getOrder());
+        return offer;
+
+    }
+
+    private  boolean getApproved(){
+        switch ((int)(Math.random() * 2)){
+            case 0:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private Car getCar(){
+        long startId = feedbackService.getId("select min(c) from Car c");
+        return feedbackService.getCar(startId);
+    }
+
+    private  Order getOrder(){
+        long startId = feedbackService.getId("select min(o) from Order o");
+        return feedbackService.getOrder(startId);
     }
 
     /**
@@ -109,7 +224,7 @@ final class FeedbackServiceImplTest {
      *
      * creates a mock object of FeedbackDTO.class - for testing
      */
-    static FeedbackDTO createMockFeedbackDTO() {
+    FeedbackDTO createMockFeedbackDTO() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setFeedbackId(MOCK_FEEDBACK_ID);
         feedbackDTO.setRate(MOCK_RATE);
@@ -117,6 +232,7 @@ final class FeedbackServiceImplTest {
         feedbackDTO.setText(MOCK_TEXT);
         feedbackDTO.setUser(new User().setEmail(MOCK_USER_EMAIL));
         feedbackDTO.setOrder(new Order().setId(MOCK_ORDER_ID));
+        feedbackDTO.setCreatedOn(Timestamp.valueOf(MOCK_CREATED_ON));
         return feedbackDTO;
     }
 
@@ -126,13 +242,13 @@ final class FeedbackServiceImplTest {
      * creates an object of FeedbackDTO.class - for testing. Id is not created, since in some tests
      * it must be missing (save to bd)
      */
-    static FeedbackDTO createFeedbackDTOWithoutId() {
+    FeedbackDTO createFeedbackDTOWithoutId() {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setText(getRandomText());
-        feedbackDTO.setOrder(getOrder(getRandomOrderId()));
-        feedbackDTO.setUser(getUser(getRandomUserEmail()));
+        feedbackDTO.setOrder(feedbackService.getOrder(getRandomOrderId()));
+        feedbackDTO.setUser(feedbackService.getUser(getRandomUserEmail()));
 
         return feedbackDTO;
     }
@@ -142,14 +258,14 @@ final class FeedbackServiceImplTest {
      *
      * creates an object of Feedback.class - for testing
      */
-    static Feedback createFeedback() {
+    Feedback createFeedback() {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(getRandomFeedbackId());
         feedback.setRate(getRandomRate());
         feedback.setApproved(getRandomApproved());
         feedback.setText(getRandomText());
-        feedback.setUser(getUser(getRandomUserEmail()));
-        feedback.setOrder(getOrder(getRandomOrderId()));
+        feedback.setUser(feedbackService.getUser(getRandomUserEmail()));
+        feedback.setOrder(feedbackService.getOrder(getRandomOrderId()));
         return feedback;
     }
 
@@ -159,7 +275,7 @@ final class FeedbackServiceImplTest {
      *
      * creates an object of Feedback.class - for testing
      */
-    static Feedback createMockFeedback() {
+    Feedback createMockFeedback() {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(MOCK_FEEDBACK_ID);
         feedback.setRate(MOCK_RATE);
@@ -167,6 +283,7 @@ final class FeedbackServiceImplTest {
         feedback.setText(MOCK_TEXT);
         feedback.setUser(new User().setEmail(MOCK_USER_EMAIL));
         feedback.setOrder(new Order().setId(MOCK_ORDER_ID));
+        feedback.setCreatedOn(Timestamp.valueOf(MOCK_CREATED_ON));
         return feedback;
     }
 
@@ -175,19 +292,18 @@ final class FeedbackServiceImplTest {
      *
      * creates an object of User.class - for testing
      */
-    static User createMockUser() {
+    User createMockUser() {
         User user = new User();
         user.setEmail(MOCK_USER_EMAIL);
         return user;
     }
-
 
     /**
      * @return object of of Order.class
      *
      * creates an object of Order.class - for testing
      */
-    static Order createMockOrder() {
+    Order createMockOrder() {
         Order order = new Order();
         order.setId(MOCK_ORDER_ID);
         return order;
@@ -198,8 +314,8 @@ final class FeedbackServiceImplTest {
      *
      * retrieves number of feedback from db
      */
-    static Long getFeedbackCount() {
-        return fsi.getId("select count(f) from Feedback f");
+    Long getEntriesCount(String entity) {
+        return feedbackService.getId("select count(x) from " +  entity + " x");
     }
 
     /**
@@ -207,8 +323,8 @@ final class FeedbackServiceImplTest {
      *
      * @return startId
      */
-    static Long getStartFeedbackId() {
-        return fsi.getId("select min(f.feedbackId) from Feedback f");
+    Long getStartFeedbackId() {
+        return feedbackService.getId("select min(f.feedbackId) from Feedback f");
     }
 
     /**
@@ -216,8 +332,8 @@ final class FeedbackServiceImplTest {
      *
      * @return endId
      */
-    static Long getLastFeedbackId() {
-        return fsi.getId("select max(f.feedbackId) from Feedback f");
+    Long getLastFeedbackId() {
+        return feedbackService.getId("select max(f.feedbackId) from Feedback f");
     }
 
     /**
@@ -226,12 +342,12 @@ final class FeedbackServiceImplTest {
      *
      * changes data of an object of FeedbackDTO.class and sends it back
      */
-    static void  changeData(FeedbackDTO feedbackDTO) {
+    void  changeData(FeedbackDTO feedbackDTO) {
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setText(getRandomText());
-        feedbackDTO.setUser(getUser(getRandomUserEmail()));
-        feedbackDTO.setOrder(getOrder(getRandomOrderId()));
+        feedbackDTO.setUser(feedbackService.getUser(getRandomUserEmail()));
+        feedbackDTO.setOrder(feedbackService.getOrder(getRandomOrderId()));
     }
 
     /**
@@ -239,21 +355,20 @@ final class FeedbackServiceImplTest {
      *
      * @return feedback id
      */
-    static long getRandomFeedbackId() {
+    long getRandomFeedbackId() {
 
         long feedbackId;
         boolean found = false;
         do {
             feedbackId = (long) (Math.random() * getLastFeedbackId());
             try {
-                fsi.getFeedbackById(feedbackId);
+                feedbackService.getFeedbackById(feedbackId);
                 found = true;
             } catch (NoSuchElementException e) {
             }
         } while (!found);
 
         return feedbackId;
-
     }
 
 }

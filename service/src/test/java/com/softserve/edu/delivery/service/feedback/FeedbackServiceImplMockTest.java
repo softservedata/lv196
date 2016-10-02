@@ -1,8 +1,6 @@
 package com.softserve.edu.delivery.service.feedback;
 
-import com.softserve.edu.delivery.dao.FeedbackDao;
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.dao.*;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
@@ -10,9 +8,13 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 
 import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -21,7 +23,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
-import static com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTest.*;
 
 
 /**
@@ -29,27 +30,40 @@ import static com.softserve.edu.delivery.service.feedback.FeedbackServiceImplTes
  *
  * the class tests service layer methods. Dao layer is mocked using Mockito.
  */
-public class FeedbackServiceImplMockTest {
+@Test
+public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTests {
 
     private final Long FEEDBACK_ID = 10L;
     private final Long START_ID = 10L;
-    private final Long COUNT = 5L;
+    private final Long COUNT = 1L;
     private final String APPROVED_DRIVER_NAME = "Approved Driver";
 
     private final FeedbackDao mockFeedbackDao = Mockito.mock(com.softserve.edu.delivery.dao.FeedbackDao.class);
     private final UserDao mockUserDao = Mockito.mock(com.softserve.edu.delivery.dao.UserDao.class);
+    private final CarDao mockCarDao = Mockito.mock(com.softserve.edu.delivery.dao.CarDao.class);
     private final OrderDao mockOrderDao = Mockito.mock(com.softserve.edu.delivery.dao.OrderDao.class);
-    private FeedbackService fsi = FeedbackServiceImpl.getInstance();
+    private final OfferDao mockOfferDao = Mockito.mock(com.softserve.edu.delivery.dao.OfferDao.class);
+
+
+
+    private FeedbackServiceImplTest feedbackServiceImplTest;
+    private FeedbackService feedbackService;
 
     /*
     second group of the tests - using mocks for DAO layer
      */
 
+    @Override
+    @BeforeSuite
+    protected void springTestContextPrepareTestInstance() throws Exception {
+        super.springTestContextPrepareTestInstance();
+    }
+
     @BeforeClass
     public void injectMockDAO() {
-        fsi.setFeedbackDao(mockFeedbackDao);
-        fsi.setUserDao(mockUserDao);
-        fsi.setOrderDao(mockOrderDao);
+        feedbackService = new FeedbackServiceImpl(mockFeedbackDao, mockUserDao, mockCarDao,
+                mockOrderDao, mockOfferDao);
+        feedbackServiceImplTest = new FeedbackServiceImplTest(feedbackService);
     }
 
     @Test(enabled = true, groups = {"mock"})
@@ -64,7 +78,7 @@ public class FeedbackServiceImplMockTest {
 
         when(mockFeedbackDao.findAll()).thenReturn(feedbackList);
 
-        Assert.assertNotNull(fsi.getAllFeedbacks());
+        Assert.assertNotNull(feedbackService.getAllFeedbacks());
     }
 
     @Test(enabled = true, groups = {"mock"})
@@ -77,12 +91,12 @@ public class FeedbackServiceImplMockTest {
 
         List<Feedback> feedbackList = new ArrayList<>();
 
-        feedbackList.add(createMockFeedback());
-        feedbackList.add(createMockFeedback());
+        feedbackList.add(feedbackServiceImplTest.createMockFeedback());
+        feedbackList.add(feedbackServiceImplTest.createMockFeedback());
 
         when(mockFeedbackDao.findAll()).thenReturn(feedbackList);
 
-        List<FeedbackDTO> feedbackDTOList = fsi.getAllFeedbacks();
+        List<FeedbackDTO> feedbackDTOList = feedbackService.getAllFeedbacks();
 
         boolean passed = true;
 
@@ -104,11 +118,12 @@ public class FeedbackServiceImplMockTest {
      */
     public void testGetAllFeedbacksInRange0Mock() {
 
-        Optional<Feedback> oFeedback = Optional.of(createMockFeedback());
+        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
 
         when(mockFeedbackDao.findOne(anyLong())).thenReturn(oFeedback);
+        when(mockFeedbackDao.getId(anyString())).thenReturn(COUNT);
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(START_ID.intValue(), COUNT.intValue());
+        List<FeedbackDTO> feedbackList = feedbackService.getAllFeedbacksInRange(START_ID.intValue(), COUNT.intValue());
 
         Assert.assertTrue(COUNT == feedbackList.size());
 
@@ -122,11 +137,11 @@ public class FeedbackServiceImplMockTest {
      */
     public void testGetAllFeedbacksInRange1Mock() {
         //creating stub object
-        Optional<Feedback> oFeedback = Optional.of(createMockFeedback());
+        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
 
         when(mockFeedbackDao.findOne(anyLong())).thenReturn(oFeedback);
 
-        List<FeedbackDTO> feedbackList = fsi.getAllFeedbacksInRange(START_ID.intValue(), COUNT.intValue());
+        List<FeedbackDTO> feedbackList = feedbackService.getAllFeedbacksInRange(START_ID.intValue(), COUNT.intValue());
 
         boolean passed = true;
 
@@ -145,17 +160,17 @@ public class FeedbackServiceImplMockTest {
      */
     public void testGetFeedbackById() {
 
-        FeedbackDTO feedbackDTO0 = createMockFeedbackDTO();
+        FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
 
         feedbackDTO0.setFeedbackId(FEEDBACK_ID);
 
-        Feedback feedback = fsi.copyDTOToFeedback(feedbackDTO0);
+        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO0);
 
         Optional<Feedback> oFeedback = Optional.of(feedback);
 
         when(mockFeedbackDao.findOne(anyLong())).thenReturn(oFeedback);
 
-        FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(FEEDBACK_ID);
+        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(FEEDBACK_ID);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
@@ -171,7 +186,7 @@ public class FeedbackServiceImplMockTest {
      */
     public void testChangeFeedbackStatus() {
 
-        FeedbackDTO feedbackDTO0 = createMockFeedbackDTO();
+        FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
 
         long feedbackId = feedbackDTO0.getFeedbackId();
 
@@ -179,13 +194,13 @@ public class FeedbackServiceImplMockTest {
 
         feedbackDTO0.setApproved(!previousStatus);
 
-        Optional<Feedback> oFeedback = Optional.of(fsi.copyDTOToFeedback(feedbackDTO0));
+        Optional<Feedback> oFeedback = Optional.of(feedbackService.copyDTOToFeedback(feedbackDTO0));
 
         when(mockFeedbackDao.findOne(anyLong())).thenReturn(oFeedback);
 
-        fsi.changeFeedbackStatus(feedbackDTO0.getFeedbackId(), feedbackDTO0.getApproved());
+        feedbackService.changeFeedbackStatus(feedbackDTO0.getFeedbackId(), feedbackDTO0.getApproved());
 
-        FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(feedbackId);
+        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(feedbackId);
 
         Assert.assertFalse(previousStatus == feedbackDTO1.getApproved());
     }
@@ -197,18 +212,18 @@ public class FeedbackServiceImplMockTest {
      */
     public void testSave() {
 
-        FeedbackDTO feedbackDTO0 = createMockFeedbackDTO();
+        FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
 
-        Optional<Feedback> oFeedback = Optional.of(createMockFeedback());
+        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
 
         doNothing().when(mockFeedbackDao).save(any(Feedback.class));
         when(mockFeedbackDao.findOne(anyLong())).thenReturn(oFeedback);
 
-        fsi.save(feedbackDTO0);
+        feedbackService.save(feedbackDTO0);
 
         long id = feedbackDTO0.getFeedbackId();
 
-        FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(id);
+        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(id);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
@@ -225,25 +240,25 @@ public class FeedbackServiceImplMockTest {
      */
     public void testUpdate() {
 
-        Optional<Feedback> oFeedback = Optional.of(createMockFeedback());
-        Optional<User> oUser = Optional.of(createMockUser());
-        Optional<Order> oOrder = Optional.of(createMockOrder());
+        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
+        Optional<User> oUser = Optional.of(feedbackServiceImplTest.createMockUser());
+        Optional<Order> oOrder = Optional.of(feedbackServiceImplTest.createMockOrder());
 
         when(mockFeedbackDao.findOne(anyLong())).thenReturn(oFeedback);
         when(mockUserDao.findOne(anyString())).thenReturn(oUser);
         when(mockOrderDao.findOne(anyLong())).thenReturn(oOrder);
 
-        FeedbackDTO feedbackDTO0 = fsi.getFeedbackById(FEEDBACK_ID);
+        FeedbackDTO feedbackDTO0 = feedbackService.getFeedbackById(FEEDBACK_ID);
 
-        when(mockFeedbackDao.update(any(Feedback.class))).thenReturn(createMockFeedback());
+        when(mockFeedbackDao.update(any(Feedback.class))).thenReturn(feedbackServiceImplTest.createMockFeedback());
 
         when(mockFeedbackDao.getApprovedDriverName(anyLong())).thenReturn(APPROVED_DRIVER_NAME);
 
-        changeData(feedbackDTO0);
+        feedbackServiceImplTest.changeData(feedbackDTO0);
 
-        fsi.update(feedbackDTO0);
+        feedbackService.update(feedbackDTO0);
 
-        FeedbackDTO feedbackDTO1 = fsi.getFeedbackById(FEEDBACK_ID);
+        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(FEEDBACK_ID);
 
         Assert.assertFalse(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
@@ -262,14 +277,14 @@ public class FeedbackServiceImplMockTest {
      */
     public void testDelete() {
 
-        Feedback feedback = createMockFeedback();
+        Feedback feedback = feedbackServiceImplTest.createMockFeedback();
 
         doNothing().when(mockFeedbackDao).delete(feedback);
         when(mockFeedbackDao.findOne(anyLong())).thenThrow(new NoSuchElementException());
 
-        fsi.delete(FEEDBACK_ID);
+        feedbackService.delete(FEEDBACK_ID);
 
-        fsi.getFeedbackById(FEEDBACK_ID);
+        feedbackService.getFeedbackById(FEEDBACK_ID);
     }
 
     @Test(enabled = true, groups = {"mock"})
@@ -278,10 +293,10 @@ public class FeedbackServiceImplMockTest {
      * with a given id
      */
     public void testFindOne() {
-        Optional<Feedback> oFeedback = Optional.of(createMockFeedback());
+        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
 
         when(mockFeedbackDao.findOne(anyLong())).thenReturn(oFeedback);
 
-        Assert.assertNotNull(fsi.findOne(FEEDBACK_ID));
+        Assert.assertNotNull(feedbackService.findOne(FEEDBACK_ID));
     }
 }

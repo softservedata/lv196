@@ -1,16 +1,20 @@
 package com.softserve.edu.delivery.service.impl;
 
+import com.softserve.edu.delivery.dao.CarDao;
 import com.softserve.edu.delivery.dao.FeedbackDao;
+import com.softserve.edu.delivery.dao.OfferDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
-import com.softserve.edu.delivery.dao.impl.FeedbackDaoImpl;
-import com.softserve.edu.delivery.dao.impl.OrderDaoImpl;
-import com.softserve.edu.delivery.dao.impl.UserDaoImpl;
+import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +25,26 @@ import java.util.Optional;
  * Created by Ivan Rudnytskyi on 15.09.2016.
  * implementation for business logic of the feedback part of the application
  */
+@Service
+@Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
-    private FeedbackDao feedbackDao = new FeedbackDaoImpl();
-    private UserDao userDao = new UserDaoImpl();
-    private OrderDao orderDao = new OrderDaoImpl();
+    private FeedbackDao feedbackDao;
+    private UserDao userDao;
+    private CarDao carDao;
+    private OrderDao orderDao;
+    private OfferDao offerDao;
 
-    private static FeedbackService fsi;
-
-    private FeedbackServiceImpl() {
+    public FeedbackServiceImpl() {
     }
 
-    public static FeedbackService getInstance() {
-        if (fsi == null) {
-            fsi = new FeedbackServiceImpl();
-        }
-        return fsi;
+    @Autowired
+    public FeedbackServiceImpl(FeedbackDao feedbackDao, UserDao userDao, CarDao carDao, OrderDao orderDao, OfferDao offerDao) {
+        this.feedbackDao = feedbackDao;
+        this.userDao = userDao;
+        this.carDao = carDao;
+        this.orderDao = orderDao;
+        this.offerDao = offerDao;
     }
 
     @Override
@@ -50,8 +58,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void setOrderDao(OrderDao orderDay) {
-        this.orderDao = orderDay;
+    public void setOrderDao(OrderDao orderDao) {
+        this.orderDao = orderDao;
     }
 
     /**
@@ -68,7 +76,8 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackDTO.setUser(feedback.getUser());
         feedbackDTO.setRate(feedback.getRate());
         feedbackDTO.setApproved(feedback.getApproved());
-
+        feedbackDTO.setTransporterName(feedbackDao.getApprovedDriverName(feedback.getOrder().getId()));
+        feedbackDTO.setCreatedOn(feedback.getCreatedOn());
         return feedbackDTO;
     }
 
@@ -86,17 +95,19 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setUser(feedbackDTO.getUser());
         feedback.setRate(feedbackDTO.getRate());
         feedback.setApproved(feedbackDTO.getApproved());
-
+        feedback.setCreatedOn(feedbackDTO.getCreatedOn());
         return feedback;
     }
 
-    @Override
+
     /**
      * @return List of FeedbackDTO.class
      *
      * looks for all feedbacks and returns list of found feedbacks
      *
      */
+    @Override
+    @Transactional
     public List<FeedbackDTO> getAllFeedbacks() {
         List<FeedbackDTO> listDTO = new ArrayList<>();
         List<Feedback> list = feedbackDao.findAll();
@@ -106,7 +117,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return listDTO;
     }
 
-    @Override
+
     /**
      * @param int idFrom, int number
      * @return List<FeedbackDTO>
@@ -114,6 +125,8 @@ public class FeedbackServiceImpl implements FeedbackService {
      * accepts start id of a feedback in the db and number of feedbacks. Forms list of FeedbackDTO object,
      * whose ids are within the range.
      */
+    @Override
+    @Transactional
     public List<FeedbackDTO> getAllFeedbacksInRange(long idFrom, long number) {
 
         List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
@@ -126,6 +139,20 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         long id = idFrom;
         int count = 0;
+        long entriesCount = feedbackDao.getId("select count(f) from Feedback f where f.id >=" + id);
+        long startId = feedbackDao.getId("select min(f.id) from Feedback f");
+
+        if (id < 0 || id < startId){
+            id = startId;
+        }
+
+        if (number < 0 ){
+            number = 1;
+        }
+
+        if (number > entriesCount){
+            number = entriesCount;
+        }
 
         while (count < number) {
             try {
@@ -142,6 +169,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     /**
      * @param long id - id of a feedback in db
      * @return object of FeedbackDTO.class
@@ -164,6 +192,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     /**
      * @param long id, boolean status
      *
@@ -183,19 +212,19 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     /**
      * @param feedbackDTO
      *
      * transforms the object of FeedbackDTO.class to Feedback.class, which is saved to the db.
      */
     public void save(FeedbackDTO feedbackDTO) {
-
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
-
         feedbackDao.save(feedback);
     }
 
     @Override
+    @Transactional
     /**
      * @param feedbackDTO
      *
@@ -210,6 +239,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     /**
      * @param feedbackDTO
      *
@@ -227,6 +257,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     /**
      * @param feedbackDTO
      * @return object of FeedbackDTO.class
@@ -250,6 +281,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     /**
      * @param Long orderId - id of the order
      * @return String approvedDriverName
@@ -261,11 +293,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     public Long getId(String query) {
         return feedbackDao.getId(query);
     }
 
     @Override
+    @Transactional
     public User getUser(String email) {
         Optional<User> oUser = userDao.findOne(email);
         if (oUser.isPresent()) {
@@ -276,6 +310,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
     public Order getOrder(Long id) {
         Optional<Order> oOrder = orderDao.findOne(id);
         if (oOrder.isPresent()) {
@@ -283,5 +318,46 @@ public class FeedbackServiceImpl implements FeedbackService {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    @Transactional
+    public Car getCar(Long id) {
+        Optional<Car> oCar = carDao.findOne(id);
+        if (oCar.isPresent()) {
+            return oCar.get();
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void saveUser(User user){
+        userDao.save(user);
+    }
+
+    @Override
+    @Transactional
+    public List<User> getUsersByRole(String role) {
+        return feedbackDao.getUsersByRole(role);
+    }
+
+    @Override
+    @Transactional
+    public void saveCar(Car car) {
+        carDao.save(car);
+    }
+
+    @Override
+    @Transactional
+    public void saveOrder(Order order) {
+        orderDao.save(order);
+    }
+
+    @Override
+    @Transactional
+    public void saveOffer(Offer offer) {
+        offerDao.save(offer);
     }
 }

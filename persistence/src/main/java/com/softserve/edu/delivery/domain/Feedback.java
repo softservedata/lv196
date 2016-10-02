@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * @author Ivan Rudnytskyi, 11.09.2016.
@@ -28,6 +29,8 @@ public class Feedback {
     private Integer rate;
     @Column(name = "approved")
     private Boolean approved;
+    @Column (name = "created_on")
+    private Timestamp createdOn;
 
     public Long getFeedbackId() {
         return feedbackId;
@@ -77,6 +80,14 @@ public class Feedback {
         this.approved = approved;
     }
 
+    public Timestamp getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Timestamp createdOn) {
+        this.createdOn = createdOn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,5 +102,12 @@ public class Feedback {
     @Override
     public int hashCode() {
         return feedbackId.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "feedbackId=" + feedbackId +
+                '}';
     }
 }

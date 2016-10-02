@@ -3,7 +3,9 @@ package com.softserve.edu.delivery.service;
 import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
@@ -48,4 +50,16 @@ public interface FeedbackService {
     User getUser(String email);
 
     Order getOrder(Long id);
+
+    Car getCar(Long id);
+
+    void saveUser(User user);
+
+    void saveCar(Car car);
+
+    void saveOrder(Order order);
+
+    void saveOffer(Offer offer);
+
+    List<User> getUsersByRole(String role);
 }
