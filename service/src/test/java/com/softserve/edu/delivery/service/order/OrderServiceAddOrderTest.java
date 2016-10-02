@@ -1,6 +1,5 @@
 package com.softserve.edu.delivery.service.order;
 
-import com.softserve.edu.delivery.dao.CityDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.City;
@@ -8,6 +7,7 @@ import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
+import com.softserve.edu.delivery.repository.CityRepository;
 import com.softserve.edu.delivery.service.impl.OrderServiceImpl;
 import org.mockito.*;
 import org.testng.Assert;
@@ -30,7 +30,7 @@ public class OrderServiceAddOrderTest {
     UserDao userDao;
 
     @Mock
-    CityDao cityDao;
+    CityRepository cityRepository;
 
     @InjectMocks
     OrderServiceImpl orderService;
@@ -53,9 +53,9 @@ public class OrderServiceAddOrderTest {
         when(userDao.findOne(any(String.class))).thenReturn(Optional.empty());
         when(userDao.findOne(dummyEmail)).thenReturn(Optional.of(new User().setEmail(dummyEmail)));
 
-        when(cityDao.findOne(any(Long.class))).thenReturn(Optional.empty());
-        when(cityDao.findOne(1L)).thenReturn(Optional.of(new City().setCityId(1L)));
-        when(cityDao.findOne(2L)).thenReturn(Optional.of(new City().setCityId(2L)));
+        when(cityRepository.findOneOpt(any(Long.class))).thenReturn(Optional.empty());
+        when(cityRepository.findOneOpt(1L)).thenReturn(Optional.of(new City().setCityId(1L)));
+        when(cityRepository.findOneOpt(2L)).thenReturn(Optional.of(new City().setCityId(2L)));
     }
 
     @Test
@@ -76,7 +76,6 @@ public class OrderServiceAddOrderTest {
         Assert.assertEquals(captured.getLength(), new BigDecimal(15));
         Assert.assertEquals(captured.getWeight(), new BigDecimal(45));
         Assert.assertEquals(captured.getWidth(), new BigDecimal(13));
-        Assert.assertEquals(captured.getPrice(), new BigDecimal(11));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
