@@ -111,8 +111,8 @@ public class OrderServiceImpl implements OrderService {
         feedbackDao.save(feedback);
     }
 
-    public void changeStatus(Long offerId, String offerStatus) {
-        Boolean newOfferStatus=!(Boolean.parseBoolean(offerStatus));
+    public void changeStatus(Long offerId, Boolean offerStatus) {
+        Boolean newOfferStatus=!offerStatus;
                     Offer offer = offerDao.findOne(offerId)
                             .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
                     offer.setApproved(newOfferStatus);

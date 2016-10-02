@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.domain.Offer;
+import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
@@ -42,6 +43,17 @@ public class OrderController {
     void addOrder(@RequestBody OrderForAddDto dto) {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
         orderService.addOrder(dto, email);
+    }
+
+    @RequestMapping(path = "feedback", method = RequestMethod.POST)
+    void addFeedback(@RequestBody FeedbackDTO dto) {
+        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+        orderService.addFeedback(dto, email);
+    }
+
+    @RequestMapping(path = "change", method = RequestMethod.GET)
+    void changeOfferStatus(@RequestBody Offer offer) {
+        orderService.changeStatus(offer.getOfferId(),offer.getApproved());
     }
 
     /*--------------------IvanSynyshyn----------------------------*/
