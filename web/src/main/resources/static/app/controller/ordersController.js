@@ -5,25 +5,28 @@ angular
             inProgress: [],
             open: []
         };
+
         $scope.retrieveInProgressOrders = () => {
-            $http.get('/order/in_progress').then(response => {
+            $http.get('/order/in-progress').then(response => {
                 $scope.orders.inProgress = response.data;
             })
         };
-        $scope.retrieveInProgressOrders();
 
         $scope.retrieveOpenOrders = () => {
             $http.get('/order/open').then(response => {
                 $scope.orders.open = response.data;
             })
         };
+
+
+        $scope.retrieveInProgressOrders();
         $scope.retrieveOpenOrders();
 
 
         $scope.showOrderCreation = () => {
             const modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: '/resources/app/views/order.creation.html',
+                templateUrl: '/app/views/order.creation.html',
                 controller: 'addOrderController'
             });
 
@@ -52,11 +55,15 @@ angular
                 }
             };
 
+            $scope.findLocations = val => {
+                return $http.get('location/?city=' + val).then(response => response.data);
+            };
+
             $scope.form = {
                 submit: () => {
-                    let data = {
-                        cityIdFrom: $scope.form.cityIdFrom,
-                        cityIdTo: $scope.form.cityIdTo,
+                    const data = {
+                        cityIdFrom: $scope.form.locationFrom.cityId,
+                        cityIdTo: $scope.form.locationTo.cityId,
                         arrivalDate: $scope.form.arrivalDate,
                         height: $scope.form.height,
                         width: $scope.form.width,

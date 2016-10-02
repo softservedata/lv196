@@ -16,13 +16,17 @@
         <div class="row">
             <div class="col-xs-6 form-group">
                 <label class="control-label label-lg" for="cityFromInput">From</label>
-                <input ng-model="form.cityIdFrom" ng-required="true" type="text" class="form-control input-lg"
-                       id="cityFromInput" name="cityFrom"/>
+                <input ng-model="form.locationFrom" ng-required="true"
+                       uib-typeahead="location as location.cityName for location in findLocations($viewValue)"
+                       typeahead-loading="loadingCityFrom" typeahead-no-results="noResultsCityFrom"
+                       type="text" class="form-control input-lg" id="cityFromInput" name="cityFrom"/>
             </div>
             <div class="col-xs-6 form-group">
                 <label class="control-label label-lg" for="cityArrivalInput">To</label>
-                <input ng-model="form.cityIdTo" ng-required="true" type="text" class="form-control input-lg"
-                       id="cityArrivalInput" name="cityTo"/>
+                <input ng-model="form.locationTo" ng-required="true"
+                       uib-typeahead="location as location.cityName for location in findLocations($viewValue)"
+                       typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"
+                       type="text" class="form-control input-lg" id="cityArrivalInput" name="cityTo"/>
             </div>
         </div>
         <h5 class="order-creation-details">Details:</h5>

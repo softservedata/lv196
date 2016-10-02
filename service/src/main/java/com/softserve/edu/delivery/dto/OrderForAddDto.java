@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 
 public class OrderForAddDto {
 
-    private LocationDto locationFrom;
-    private LocationDto locationTo;
+    private Long cityIdFrom;
+    private Long cityIdTo;
     private Timestamp arrivalDate;
     private BigDecimal height;
     private BigDecimal width;
@@ -16,21 +16,21 @@ public class OrderForAddDto {
 
     public OrderForAddDto() {}
 
-    public LocationDto getLocationFrom() {
-        return locationFrom;
+    public Long getCityIdFrom() {
+        return cityIdFrom;
     }
 
-    public OrderForAddDto setLocationFrom(LocationDto locationFrom) {
-        this.locationFrom = locationFrom;
+    public OrderForAddDto setCityIdFrom(Long cityIdFrom) {
+        this.cityIdFrom = cityIdFrom;
         return this;
     }
 
-    public LocationDto getLocationTo() {
-        return locationTo;
+    public Long getCityIdTo() {
+        return cityIdTo;
     }
 
-    public OrderForAddDto setLocationTo(LocationDto locationTo) {
-        this.locationTo = locationTo;
+    public OrderForAddDto setCityIdTo(Long cityIdTo) {
+        this.cityIdTo = cityIdTo;
         return this;
     }
 

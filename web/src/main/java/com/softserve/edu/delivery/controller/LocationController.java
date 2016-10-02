@@ -9,16 +9,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "location")
 public class LocationController {
-    @Autowired
+
     private LocationService locationService;
 
-    @RequestMapping(path = "locations", method = RequestMethod.GET)
-    List<LocationDto> locations(@RequestParam(value = "name", required = false) String name) {
-        return StringUtils.isEmpty(name) ? locationService.findAllCities() :
-                locationService.findCitiesByName(name);
+    @Autowired
+    public LocationController(LocationService locationService) {
+        this.locationService = locationService;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    List<LocationDto> locations(@RequestParam(value = "city") String city) {
+        return StringUtils.isEmpty(city) ? Collections.emptyList() :
+                locationService.findCitiesByName(city);
     }
 }

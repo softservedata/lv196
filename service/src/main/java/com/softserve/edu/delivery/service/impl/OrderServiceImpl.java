@@ -74,11 +74,11 @@ public class OrderServiceImpl implements OrderService {
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
-        City from = cityRepository.findOneOpt(dto.getLocationFrom().getCityId())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationFrom().getCityId()));
+        City from = cityRepository.findOneOpt(dto.getCityIdFrom())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
 
-        City to = cityRepository.findOneOpt(dto.getLocationTo().getCityId())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationTo().getCityId()));
+        City to = cityRepository.findOneOpt(dto.getCityIdTo())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
 
         orderDao.save(new Order()
                 .setOrderStatus(OrderStatus.OPEN)

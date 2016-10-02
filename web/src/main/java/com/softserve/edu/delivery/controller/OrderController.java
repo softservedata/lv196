@@ -16,8 +16,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import static org.aspectj.bridge.Version.getTime;
-
 @RestController
 @RequestMapping(path = "order")
 public class OrderController {
@@ -25,7 +23,7 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @RequestMapping(path = "in_progress", method = RequestMethod.GET)
+    @RequestMapping(path = "in-progress", method = RequestMethod.GET)
     List<OrderForListDto> inProgress() {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
 
