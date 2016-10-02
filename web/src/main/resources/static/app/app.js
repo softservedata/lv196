@@ -6,15 +6,15 @@ angular
         $stateProvider
             .state('profile', {
                 url: '/profile',
-                templateUrl: '/resources/app/views/profile.html'
+                templateUrl: '/app/views/profile.html'
             })
             .state('orders', {
                 url: '/orders',
-                templateUrl: '/resources/app/views/orders.html',
+                templateUrl: '/app/views/orders.html',
                 controller: 'ordersController'
             })
             .state('feedback', {
                 url: '/feedback',
-                templateUrl: '/resources/app/views/feedback.html'
+                templateUrl: '/app/views/feedback.html'
             });
     }]);
