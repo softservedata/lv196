@@ -97,6 +97,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addFeedback(FeedbackDTO dto, String email) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Feedback dto must not be null");}
+
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
         /*changed by Ivan Rudnytskyi - the structure of FeedbackDTO was changed - entities Order and User are removed.

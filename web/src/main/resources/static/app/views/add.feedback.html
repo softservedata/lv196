@@ -1,0 +1,26 @@
+<form name="newFeedback" autocomplete="off" class="feedback-creation">
+    <div class="modal-header">
+        <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+            New feedback
+        </h4>
+        <div class="feedback-rate">
+            <div class="col-xs-3 form-group">
+                <label class="control-label" for="rateItnput">Rate</label>
+                <input name="rate" ng-model="form.rate" type="text" class="form-control" id="rateItnput">
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label class="control-label" for="textInput">Description</label>
+                <textarea ng-model="form.text" class="form-control" rows="1" id="textInput"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="cancel()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button ng-click="form.submit()" type="button" class="btn btn-primary">Create</button>
+    </div>
+</form>

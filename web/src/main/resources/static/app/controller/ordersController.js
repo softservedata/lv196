@@ -47,7 +47,7 @@ angular
         $scope.addFeedback = () => {
             const modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: '/app/views/feedback.html',
+                templateUrl: '/app/views/add.feedback.html',
                 controller: 'addFeedbackController'
             });
 
@@ -115,7 +115,7 @@ angular
                         rate: $scope.form.rate,
                         text: $scope.form.text
                     };
-                    $http.post('/order', data).then(response => {
+                    $http.post('/addfeedback', data).then(response => {
                         $uibModalInstance.close(true)
                     }, response => {
                         alert('failed to add feedback')
