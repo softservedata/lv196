@@ -24,18 +24,11 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @RequestMapping(path = "in-progress", method = RequestMethod.GET)
-    List<OrderForListDto> inProgress() {
+    @RequestMapping(path = "active", method = RequestMethod.GET)
+    List<OrderForListDto> active() {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
 
-        return orderService.findAllInProgressOrders(email);
-    }
-
-    @RequestMapping(path = "open", method = RequestMethod.GET)
-    List<OrderForListDto> open() {
-        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
-
-        return orderService.findAllOpenOrders(email);
+        return orderService.findAllActiveOrders(email);
     }
 
     @RequestMapping(path = "closed", method = RequestMethod.GET)
@@ -88,7 +81,7 @@ public class OrderController {
         return orderService.getOrdersByArriwalDate(date);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(path = "submit", method = RequestMethod.POST)
     List<OfferDto> addOffer(@RequestBody OrderForListDto order) {
         return orderService.addOffer(order.getId());
     }

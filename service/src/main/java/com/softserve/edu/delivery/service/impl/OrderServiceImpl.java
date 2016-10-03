@@ -42,26 +42,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderForListDto> findAllOpenOrders(String email) {
+    public List<OrderForListDto> findAllActiveOrders(String email) {
         return orderDao
-                .findAllOrdersByStatus(email, OrderStatus.OPEN)
+                .findActiveOrders(email)
                 .stream()
-                .map(OrderForListDto::of)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<OrderForListDto> findAllInProgressOrders(String email) {
-        return orderDao
-                .findAllOrdersByStatus(email, OrderStatus.IN_PROGRESS)
-                .stream()
-                .map(OrderForListDto::of)
-                .map(dto -> {
-                    String name = orderDao
-                            .findDriverNameByOrderId(dto.getId())
-                            .orElse(null);
-                    return dto.setDriverName(name);
+                .map(order -> {
+                    OrderForListDto dto = OrderForListDto.of(order);
+                    if (order.getOrderStatus() == OrderStatus.IN_PROGRESS) {
+                        String name = orderDao
+                                .findDriverNameByOrderId(dto.getId())
+                                .orElse(null);
+                        dto.setDriverName(name);
+                    }
+                    return dto;
                 })
                 .collect(Collectors.toList());
     }
@@ -130,11 +123,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderForListDto> findAllClosedOrders(String email) {
-        return orderDao
+        return null;/*orderDao
                 .findAllOrdersByStatus(email, OrderStatus.CLOSED)
                 .stream()
                 .map(OrderForListDto::of)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
     }
 
 

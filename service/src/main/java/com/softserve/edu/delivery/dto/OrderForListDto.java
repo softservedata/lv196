@@ -9,6 +9,7 @@ import java.util.Objects;
 
 public class OrderForListDto {
     private Long id;
+    private String status;
     private Timestamp arrivalDate;
     private String description;
     private String customerName;
@@ -24,6 +25,7 @@ public class OrderForListDto {
     public static OrderForListDto of(Order order) {
         OrderForListDto dto = new OrderForListDto()
                 .setId(order.getId())
+                .setStatus(order.getOrderStatus().getName())
                 .setArrivalDate(order.getArrivalDate())
                 .setDescription(order.getDescription())
                 .setCityNameFrom(order.getCityFrom() == null ? null : order.getCityFrom().getCityName())
@@ -44,6 +46,15 @@ public class OrderForListDto {
 
     public OrderForListDto setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public OrderForListDto setStatus(String status) {
+        this.status = status;
         return this;
     }
 

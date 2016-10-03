@@ -27,7 +27,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
                         "join u.cars c " +
                         "join c.offers off " +
                         "join off.order ord " +
-                        "where ord.id = :id and off.isApproved = true", String.class)
+                        "where ord.id = :id and off.approved = true", String.class)
                 .setParameter("id", id)
                 .getResultList()
                 .stream()
@@ -35,25 +35,26 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
     @Override
-    public List<Order> findAllOrdersByStatus(String email, OrderStatus orderStatus) {
-        return buildFindAllOrdersByStatusQuery(email, orderStatus).getResultList();
+    public List<Order> findActiveOrders(String email) {
+        return getEntityManager()
+                .createQuery("select o from Order o where o.customer.email = :email " +
+                        "and o.orderStatus in ('OPEN', 'IN_PROGRESS')" +
+                        "order by o.registrationDate", Order.class)
+                .setParameter("email", email)
+                .getResultList();
     }
 
     @Override
     public List<Order> findAllOrdersByStatusPagination(String email, OrderStatus orderStatus, int page, int size) {
-        return buildFindAllOrdersByStatusQuery(email, orderStatus)
-                .setFirstResult((page - 1) * size)
-                .setMaxResults(size)
-                .getResultList();
-    }
-
-    private TypedQuery<Order> buildFindAllOrdersByStatusQuery(String email, OrderStatus orderStatus) {
         return getEntityManager()
                 .createQuery("select o from Order o where o.customer.email = :email " +
                         "and o.orderStatus = :orderStatus " +
                         "order by o.registrationDate", Order.class)
                 .setParameter("email", email)
-                .setParameter("orderStatus", orderStatus);
+                .setParameter("orderStatus", orderStatus)
+                .setFirstResult((page - 1) * size)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     /*--------------------IvanSynyshyn----------------------------*/

@@ -7,28 +7,27 @@ angular
             closed: []
         };
 
-        $scope.retrieveInProgressOrders = () => {
-            $http.get('/order/in-progress').then(response => {
-                $scope.orders.inProgress = response.data;
+        $scope.retrieveActiveOrders = () => {
+            $http.get('/order/active').then(response => {
+                $scope.orders.inProgress = [];
+                $scope.orders.open = [];
+                response.data.forEach(order => {
+                    if (order.status === "In progress") {
+                        $scope.orders.inProgress.push(order);
+                    } else {
+                        $scope.orders.open.push(order);
+                    }
+                })
             })
         };
-
-        $scope.retrieveOpenOrders = () => {
-            $http.get('/order/open').then(response => {
-                $scope.orders.open = response.data;
-            })
-        };
+        $scope.retrieveActiveOrders();
 
         $scope.retrieveClosedOrders = () => {
             $http.get('/order/closed').then(response => {
                 $scope.orders.closed = response.data;
             })
         };
-
-        $scope.retrieveInProgressOrders();
-        $scope.retrieveOpenOrders();
         $scope.retrieveClosedOrders();
-
 
         $scope.showOrderCreation = () => {
             const modalInstance = $uibModal.open({
@@ -39,7 +38,7 @@ angular
 
             modalInstance.result.then(function (added) {
                 if (added) {
-                    $scope.retrieveOpenOrders();
+                    $scope.retrieveActiveOrders();
                 }
             });
         }
@@ -127,4 +126,3 @@ angular
                 $uibModalInstance.dismiss('cancel');
             };
         }]);
-;

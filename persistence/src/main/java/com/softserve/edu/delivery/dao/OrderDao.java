@@ -20,13 +20,12 @@ public interface OrderDao extends BaseDao<Order, Long> {
     Optional<String> findDriverNameByOrderId(Long id);
 
     /**
-     * Finds orders by given parameters
+     * Finds all active orders by given email
      *
      * @param email - email of assigned customer
-     * @param orderStatus - status of order
      * @return list of orders for the relevant parameters
      */
-    List<Order> findAllOrdersByStatus(String email, OrderStatus orderStatus);
+    List<Order> findActiveOrders(String email);
 
     /**
      * Finds orders by given parameters with pagination
