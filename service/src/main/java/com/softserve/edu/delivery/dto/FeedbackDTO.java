@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.dto;
 
+import java.sql.Timestamp;
+
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
  * <p>
@@ -19,7 +21,7 @@ public class FeedbackDTO {
     private String userId;
     private String userName;
     private String transporterName;
-    private String createdOn;
+    private Timestamp createdOn;
 
     public Long getFeedbackId() {
         return feedbackId;
@@ -77,11 +79,11 @@ public class FeedbackDTO {
         this.transporterName = transporterName;
     }
 
-    public String getCreatedOn() {
+    public Timestamp getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(String stringCreatedOn) {
+    public void setCreatedOn(Timestamp stringCreatedOn) {
         this.createdOn = stringCreatedOn;
     }
 

@@ -28,9 +28,9 @@ public class FeedbackServiceImplTest{
     private  final boolean MOCK_APPROVED = false;
     private  final String MOCK_TEXT = "mock text";
     private  final String MOCK_USER_EMAIL= "email0@gmail.com";
-    private  final String MOCK_USER_FIRST_NAME= "email0@gmail.com";
-    private  final String MOCK_USER_LAST__NAME= "email0@gmail.com";
-    private  final String MOCK_CREATED_ON= "2016-10-02 04:15:06";
+    private  final String MOCK_USER_FIRST_NAME= "Firstname";
+    private  final String MOCK_USER_LAST__NAME= "Lastname";
+    private  final Timestamp MOCK_CREATED_ON= Timestamp.valueOf("2016-10-02 04:15:06");
     private  final Long MOCK_ORDER_ID = 2L;
     private  final Long START_ORDER_ID = 2L;
     private  final Long LAST_ORDER_ID = 9L;
@@ -233,6 +233,7 @@ public class FeedbackServiceImplTest{
         feedbackDTO.setRate(MOCK_RATE);
         feedbackDTO.setApproved(MOCK_APPROVED);
         feedbackDTO.setText(MOCK_TEXT);
+        feedbackDTO.setUserId(MOCK_USER_EMAIL);
         feedbackDTO.setUserName(MOCK_USER_FIRST_NAME + " " + MOCK_USER_LAST__NAME);
         feedbackDTO.setOrderId(MOCK_ORDER_ID);
         feedbackDTO.setCreatedOn(MOCK_CREATED_ON);
@@ -288,7 +289,7 @@ public class FeedbackServiceImplTest{
         feedback.setText(MOCK_TEXT);
         feedback.setUser(new User().setEmail(MOCK_USER_EMAIL));
         feedback.setOrder(new Order().setId(MOCK_ORDER_ID));
-        feedback.setCreatedOn(Timestamp.valueOf(MOCK_CREATED_ON));
+        feedback.setCreatedOn(MOCK_CREATED_ON);
         return feedback;
     }
 
@@ -298,8 +299,10 @@ public class FeedbackServiceImplTest{
      * creates an object of User.class - for testing
      */
     User createMockUser() {
-        User user = new User();
-        user.setEmail(MOCK_USER_EMAIL);
+        User user = new User()
+                .setEmail(MOCK_USER_EMAIL)
+                .setFirstName(MOCK_USER_FIRST_NAME)
+                .setLastName(MOCK_USER_LAST__NAME);
         return user;
     }
 
@@ -309,8 +312,8 @@ public class FeedbackServiceImplTest{
      * creates an object of Order.class - for testing
      */
     Order createMockOrder() {
-        Order order = new Order();
-        order.setId(MOCK_ORDER_ID);
+        Order order = new Order()
+                .setId(MOCK_ORDER_ID);
         return order;
     }
 

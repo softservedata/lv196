@@ -85,7 +85,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackDTO.setRate(feedback.getRate());
         feedbackDTO.setApproved(feedback.getApproved());
         feedbackDTO.setTransporterName(feedbackDao.getApprovedDriverName(feedback.getOrder().getId()));
-        feedbackDTO.setCreatedOn(convertTimeStamp(feedback.getCreatedOn()));
+        feedbackDTO.setCreatedOn(feedback.getCreatedOn());
         return feedbackDTO;
     }
 
@@ -98,9 +98,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
+        feedback.setUser(userDao.findOne(feedbackDTO.getUserId()).get());
+        feedback.setOrder(orderDao.findOne(feedbackDTO.getOrderId()).get());
         feedback.setText(feedbackDTO.getText());
         feedback.setRate(feedbackDTO.getRate());
         feedback.setApproved(feedbackDTO.getApproved());
+        feedback.setCreatedOn(feedbackDTO.getCreatedOn());
         return feedback;
     }
 

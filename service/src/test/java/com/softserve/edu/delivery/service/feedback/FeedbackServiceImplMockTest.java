@@ -33,7 +33,7 @@ import static org.mockito.Mockito.*;
 @Test
 public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTests {
 
-    private final Long FEEDBACK_ID = 10L;
+    private final Long FEEDBACK_ID = 1L;
     private final Long START_ID = 10L;
     private final Long COUNT = 1L;
     private final String APPROVED_DRIVER_NAME = "Approved Driver";
@@ -160,8 +160,14 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
     public void testGetFeedbackById() {
 
         FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
+        User mockUser = feedbackServiceImplTest.createMockUser();
+        Order mockOrder = feedbackServiceImplTest.createMockOrder();
 
-        feedbackDTO0.setFeedbackId(FEEDBACK_ID);
+        Optional<User> oUser = Optional.of(mockUser);
+        Optional<Order> oOrder = Optional.of(mockOrder);
+
+        when(mockUserDao.findOne(anyString())).thenReturn(oUser);
+        when(mockOrderDao.findOne(anyLong())).thenReturn(oOrder);
 
         Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO0);
 
@@ -190,6 +196,15 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
         boolean previousStatus = feedbackDTO0.getApproved();
 
         feedbackDTO0.setApproved(!previousStatus);
+
+        User mockUser = feedbackServiceImplTest.createMockUser();
+        Order mockOrder = feedbackServiceImplTest.createMockOrder();
+
+        Optional<User> oUser = Optional.of(mockUser);
+        Optional<Order> oOrder = Optional.of(mockOrder);
+
+        when(mockUserDao.findOne(anyString())).thenReturn(oUser);
+        when(mockOrderDao.findOne(anyLong())).thenReturn(oOrder);
 
         Optional<Feedback> oFeedback = Optional.of(feedbackService.copyDTOToFeedback(feedbackDTO0));
 
