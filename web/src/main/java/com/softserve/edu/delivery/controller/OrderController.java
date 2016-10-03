@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
@@ -49,9 +50,9 @@ public class OrderController {
         orderService.addFeedback(dto, email);
     }
 
-    @RequestMapping(path = "change", method = RequestMethod.GET)
-    void changeOfferStatus(@RequestBody Offer offer) {
-        orderService.changeStatus(offer.getOfferId(),offer.isApproved());
+    @RequestMapping(path = "change", method = RequestMethod.PUT)
+    void changeOfferStatus(@RequestBody OfferDto offerDto) {
+        orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved());
     }
 
     /*--------------------IvanSynyshyn----------------------------*/
