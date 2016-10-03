@@ -1,6 +1,5 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
