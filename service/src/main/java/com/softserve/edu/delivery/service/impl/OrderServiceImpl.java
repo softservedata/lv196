@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.dao.*;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.repository.CityRepository;
@@ -202,11 +203,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Offer> addOffer(Long orderId, Offer offer) {
+    public List<OfferDto> addOffer(Long orderId) {
+        List<OfferDto> result = new ArrayList<>();
         Order order = orderDao.findOne(orderId).get();
-        order.getOffers().add(offer);
-        Order updated = orderDao.update(order);
-        return updated.getOffers();
+        order.getOffers().add(new Offer());
+        Order updatedOrder = orderDao.update(order);
+        for (Offer off : updatedOrder.getOffers()) {
+            result.add(OfferDto.offerToOfferDto(off));
+        }
+        return result;
     }
 
 }

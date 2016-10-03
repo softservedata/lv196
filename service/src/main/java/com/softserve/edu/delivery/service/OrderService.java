@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 
@@ -57,6 +58,6 @@ public interface OrderService {
     List<OrderForListDto> getOrdersByArriwalDate(Timestamp arrivalDate);
 
     //As transporter I want to add Offer on order.
-    List<Offer> addOffer(Long orderId, Offer offer);
+    List<OfferDto> addOffer(Long orderId);
 
 }
