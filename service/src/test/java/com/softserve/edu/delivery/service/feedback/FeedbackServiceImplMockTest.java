@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Created by Ivan Rudnytskyi on 17.09.2016.
- *
+ * <p>
  * the class tests service layer methods. Dao layer is mocked using Mockito.
  */
 @Test
@@ -43,7 +43,6 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
     private final CarDao mockCarDao = Mockito.mock(com.softserve.edu.delivery.dao.CarDao.class);
     private final OrderDao mockOrderDao = Mockito.mock(com.softserve.edu.delivery.dao.OrderDao.class);
     private final OfferDao mockOfferDao = Mockito.mock(com.softserve.edu.delivery.dao.OfferDao.class);
-
 
 
     private FeedbackServiceImplTest feedbackServiceImplTest;
@@ -173,9 +172,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
         FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(FEEDBACK_ID);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
-                feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
-                feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
                 feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
                 feedbackDTO0.getApproved().equals(feedbackDTO1.getApproved()));
     }
@@ -226,9 +223,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
         FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(id);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
-                feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
-                feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
                 feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
                 feedbackDTO0.getApproved().equals(feedbackDTO1.getApproved()));
     }
@@ -261,9 +256,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
         FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(FEEDBACK_ID);
 
         Assert.assertFalse(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
-                feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
-                feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
                 feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
                 feedbackDTO0.getApproved().equals(feedbackDTO1.getApproved()));
     }

@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -62,6 +64,11 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.orderDao = orderDao;
     }
 
+    private String convertTimeStamp(Timestamp timestamp){
+        DateFormat df = DateFormat.getDateTimeInstance();
+        return df.format(timestamp);
+    }
+
     /**
      * @param feedback of Feedback class
      * @return object of FeedbackDTO.class
@@ -71,13 +78,14 @@ public class FeedbackServiceImpl implements FeedbackService {
     public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setFeedbackId(feedback.getFeedbackId());
-        feedbackDTO.setOrder(feedback.getOrder());
+        feedbackDTO.setOrderId(feedback.getOrder().getId());
         feedbackDTO.setText(feedback.getText());
-        feedbackDTO.setUser(feedback.getUser());
+        feedbackDTO.setUserName(feedback.getUser().getFirstName() + " " + feedback.getUser().getLastName());
+        feedbackDTO.setUserId(feedback.getUser().getEmail());
         feedbackDTO.setRate(feedback.getRate());
         feedbackDTO.setApproved(feedback.getApproved());
         feedbackDTO.setTransporterName(feedbackDao.getApprovedDriverName(feedback.getOrder().getId()));
-        feedbackDTO.setCreatedOn(feedback.getCreatedOn());
+        feedbackDTO.setCreatedOn(convertTimeStamp(feedback.getCreatedOn()));
         return feedbackDTO;
     }
 
@@ -90,12 +98,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
-        feedback.setOrder(feedbackDTO.getOrder());
         feedback.setText(feedbackDTO.getText());
-        feedback.setUser(feedbackDTO.getUser());
         feedback.setRate(feedbackDTO.getRate());
         feedback.setApproved(feedbackDTO.getApproved());
-        feedback.setCreatedOn(feedbackDTO.getCreatedOn());
         return feedback;
     }
 

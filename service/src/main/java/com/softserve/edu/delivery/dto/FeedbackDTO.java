@@ -1,11 +1,5 @@
 package com.softserve.edu.delivery.dto;
 
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.User;
-
-import java.sql.Timestamp;
-import java.text.DateFormat;
-
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
  * <p>
@@ -18,16 +12,14 @@ public class FeedbackDTO {
     }
 
     private Long feedbackId;
-    private Order order;
     private String text;
-    private User user;
     private Integer rate;
     private Boolean approved;
     private Long orderId;
+    private String userId;
     private String userName;
     private String transporterName;
-    private Timestamp createdOn;
-    private String stringCreatedOn;
+    private String createdOn;
 
     public Long getFeedbackId() {
         return feedbackId;
@@ -37,31 +29,12 @@ public class FeedbackDTO {
         this.feedbackId = feedbackId;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-        this.orderId = order.getId();
-    }
-
     public String getText() {
         return text;
     }
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-        this.userName = user.getFirstName() + " " + user.getLastName();
-
     }
 
     public Integer getRate() {
@@ -104,22 +77,20 @@ public class FeedbackDTO {
         this.transporterName = transporterName;
     }
 
-    public Timestamp getCreatedOn() {
+    public String getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Timestamp createdOn) {
-        this.createdOn = createdOn;
-        DateFormat df = DateFormat.getDateTimeInstance();
-        this.stringCreatedOn = df.format(createdOn);
+    public void setCreatedOn(String stringCreatedOn) {
+        this.createdOn = stringCreatedOn;
     }
 
-    public String getStringCreatedOn() {
-        return stringCreatedOn;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setStringCreatedOn(String stringCreatedOn) {
-        this.stringCreatedOn = stringCreatedOn;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

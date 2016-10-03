@@ -99,8 +99,11 @@ public class OrderServiceImpl implements OrderService {
     public void addFeedback(FeedbackDTO dto, String email) {
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-        Order order = orderDao.findOne(dto.getOrder().getId())
-                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrder().getId()));
+        /*changed by Ivan Rudnytskyi - the structure of FeedbackDTO was changed - entities Order and User are removed.
+        *to get User use feedbackDTO.getUserId(), Order - feedbackDTO.getOrderId()
+         */
+        Order order = orderDao.findOne(dto.getOrderId())
+               .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrderId()));
 
         Feedback feedback = new Feedback();
         feedback.setOrder(order);

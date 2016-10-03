@@ -129,9 +129,7 @@ public class FeedbackServiceImplDBTest extends AbstractTestNGSpringContextTests 
         FeedbackDTO feedbackDTO = feedbackService.copyFeedbackToDTO(feedback);
 
         Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
-                feedback.getOrder().equals(feedbackDTO.getOrder()) &&
                 feedback.getText().equals(feedbackDTO.getText()) &&
-                feedback.getUser().equals(feedbackDTO.getUser()) &&
                 feedback.getRate().equals(feedbackDTO.getRate()) &&
                 feedback.getApproved().equals(feedbackDTO.getApproved()));
 
@@ -149,9 +147,7 @@ public class FeedbackServiceImplDBTest extends AbstractTestNGSpringContextTests 
         Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO);
 
         Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
-                feedback.getOrder().equals(feedbackDTO.getOrder()) &&
                 feedback.getText().equals(feedbackDTO.getText()) &&
-                feedback.getUser().equals(feedbackDTO.getUser()) &&
                 feedback.getRate().equals(feedbackDTO.getRate()) &&
                 feedback.getApproved().equals(feedbackDTO.getApproved()));
     }
@@ -281,9 +277,7 @@ public class FeedbackServiceImplDBTest extends AbstractTestNGSpringContextTests 
         FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(feedbackServiceImplTest.getLastFeedbackId());
 
         //comparison of id is omitted - since in non-persistent object it is missing
-        Assert.assertTrue(feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
-                feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
-                feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
+        Assert.assertTrue(feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
                 feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
                 feedbackDTO0.getApproved().equals(feedbackDTO1.getApproved()));
     }
@@ -306,9 +300,7 @@ public class FeedbackServiceImplDBTest extends AbstractTestNGSpringContextTests 
         FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(feedbackId);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
-                feedbackDTO0.getOrder().equals(feedbackDTO1.getOrder()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
-                feedbackDTO0.getUser().equals(feedbackDTO1.getUser()) &&
                 feedbackDTO0.getRate().equals(feedbackDTO1.getRate()) &&
                 feedbackDTO0.getApproved().equals(feedbackDTO1.getApproved()));
     }

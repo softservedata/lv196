@@ -23,12 +23,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements Feed
     public String getApprovedDriverName(Long id){
         String query = "select u.first_name, u.last_name from orders ord " +
                 "join offer of on " +
-                "ord.order_id=of.order_id " +
-                "join cars c on " +
+                "ord.id=of.order_id " +
+                "join car c on " +
                 "of.car_id=c.car_id " +
-                "join users u on " +
+                "join user u on " +
                 "c.driver_id=u.email " +
-                "where of.get_approved and ord.order_id=?1";
+                "where of.approved and ord.id=?1";
         List<Object[]> approvedDriverName = super.getEntityManager().createNativeQuery(query)
                 .setParameter(1, id)
                 .getResultList();

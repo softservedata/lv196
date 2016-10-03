@@ -28,6 +28,8 @@ public class FeedbackServiceImplTest{
     private  final boolean MOCK_APPROVED = false;
     private  final String MOCK_TEXT = "mock text";
     private  final String MOCK_USER_EMAIL= "email0@gmail.com";
+    private  final String MOCK_USER_FIRST_NAME= "email0@gmail.com";
+    private  final String MOCK_USER_LAST__NAME= "email0@gmail.com";
     private  final String MOCK_CREATED_ON= "2016-10-02 04:15:06";
     private  final Long MOCK_ORDER_ID = 2L;
     private  final Long START_ORDER_ID = 2L;
@@ -110,8 +112,9 @@ public class FeedbackServiceImplTest{
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setText(getRandomText());
-        feedbackDTO.setUser(feedbackService.getUser(getRandomUserEmail()));
-        feedbackDTO.setOrder(feedbackService.getOrder(getRandomOrderId()));
+        feedbackDTO.setUserName(feedbackService.getUser(getRandomUserEmail()).getFirstName() + " " +
+                feedbackService.getUser(getRandomUserEmail()).getFirstName());
+        feedbackDTO.setOrderId(feedbackService.getOrder(getRandomOrderId()).getId());
         return feedbackDTO;
     }
 
@@ -230,9 +233,9 @@ public class FeedbackServiceImplTest{
         feedbackDTO.setRate(MOCK_RATE);
         feedbackDTO.setApproved(MOCK_APPROVED);
         feedbackDTO.setText(MOCK_TEXT);
-        feedbackDTO.setUser(new User().setEmail(MOCK_USER_EMAIL));
-        feedbackDTO.setOrder(new Order().setId(MOCK_ORDER_ID));
-        feedbackDTO.setCreatedOn(Timestamp.valueOf(MOCK_CREATED_ON));
+        feedbackDTO.setUserName(MOCK_USER_FIRST_NAME + " " + MOCK_USER_LAST__NAME);
+        feedbackDTO.setOrderId(MOCK_ORDER_ID);
+        feedbackDTO.setCreatedOn(MOCK_CREATED_ON);
         return feedbackDTO;
     }
 
@@ -243,12 +246,14 @@ public class FeedbackServiceImplTest{
      * it must be missing (save to bd)
      */
     FeedbackDTO createFeedbackDTOWithoutId() {
+        String randomUserEmail = getRandomUserEmail();
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setText(getRandomText());
-        feedbackDTO.setOrder(feedbackService.getOrder(getRandomOrderId()));
-        feedbackDTO.setUser(feedbackService.getUser(getRandomUserEmail()));
+        feedbackDTO.setOrderId(feedbackService.getOrder(getRandomOrderId()).getId());
+        feedbackDTO.setUserName(feedbackService.getUser(randomUserEmail).getFirstName() + " " +
+                feedbackService.getUser(randomUserEmail).getLastName());
 
         return feedbackDTO;
     }
@@ -343,11 +348,13 @@ public class FeedbackServiceImplTest{
      * changes data of an object of FeedbackDTO.class and sends it back
      */
     void  changeData(FeedbackDTO feedbackDTO) {
+        String randomUserEmail = getRandomUserEmail();
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setRate(getRandomRate());
         feedbackDTO.setText(getRandomText());
-        feedbackDTO.setUser(feedbackService.getUser(getRandomUserEmail()));
-        feedbackDTO.setOrder(feedbackService.getOrder(getRandomOrderId()));
+        feedbackDTO.setUserName(feedbackService.getUser(randomUserEmail).getFirstName() + " " +
+                feedbackService.getUser(randomUserEmail).getLastName());
+        feedbackDTO.setOrderId(feedbackService.getOrder(getRandomOrderId()).getId());
     }
 
     /**
