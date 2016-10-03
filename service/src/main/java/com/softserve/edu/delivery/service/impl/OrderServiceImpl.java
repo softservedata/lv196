@@ -123,6 +123,16 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderForListDto> findAllClosedOrders(String email) {
+        return orderDao
+                .findAllOrdersByStatus(email, OrderStatus.CLOSED)
+                .stream()
+                .map(OrderForListDto::of)
+                .collect(Collectors.toList());
+    }
+
 
 /*--------------------IvanSynyshyn----------------------------*/
     @Override

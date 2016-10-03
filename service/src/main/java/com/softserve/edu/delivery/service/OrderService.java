@@ -37,6 +37,7 @@ public interface OrderService {
      */
     void addOrder(OrderForAddDto dto, String email);
 
+
 /**
 * Author - Taras Kurdiukov
 */
@@ -45,6 +46,7 @@ public interface OrderService {
     //Method for user story - "As customer I want to change offer status."
     void changeStatus(Long order_id, Boolean offerStatus);
 
+    List<OrderForListDto> findAllClosedOrders(String email);
 /**
 * Author - Ivan Synyshyn
 */

@@ -38,15 +38,22 @@ public class OrderController {
         return orderService.findAllOpenOrders(email);
     }
 
+    @RequestMapping(path = "closed", method = RequestMethod.GET)
+    List<OrderForListDto> closed() {
+        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+        return orderService.findAllClosedOrders(email);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     void addOrder(@RequestBody OrderForAddDto dto) {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
         orderService.addOrder(dto, email);
     }
 
-    @RequestMapping(path = "feedback", method = RequestMethod.POST)
+    @RequestMapping(path = "feedback",method = RequestMethod.POST)
     void addFeedback(@RequestBody FeedbackDTO dto) {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+        dto.setOrderId(1l);
         orderService.addFeedback(dto, email);
     }
 

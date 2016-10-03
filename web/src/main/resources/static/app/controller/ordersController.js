@@ -3,7 +3,8 @@ angular
     .controller('ordersController', ['$scope', '$http', '$uibModal', function ($scope, $http, $uibModal) {
         $scope.orders = {
             inProgress: [],
-            open: []
+            open: [],
+            closed: []
         };
 
         $scope.retrieveInProgressOrders = () => {
@@ -18,9 +19,15 @@ angular
             })
         };
 
+        $scope.retrieveClosedOrders = () => {
+            $http.get('/order/closed').then(response => {
+                $scope.orders.closed = response.data;
+            })
+        };
 
         $scope.retrieveInProgressOrders();
         $scope.retrieveOpenOrders();
+        $scope.retrieveClosedOrders();
 
 
         $scope.showOrderCreation = () => {
@@ -33,6 +40,20 @@ angular
             modalInstance.result.then(function (added) {
                 if (added) {
                     $scope.retrieveOpenOrders();
+                }
+            });
+        }
+
+        $scope.addFeedback = () => {
+            const modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '/app/views/feedback.html',
+                controller: 'addFeedbackController'
+            });
+
+            modalInstance.result.then(function (added) {
+                if (added) {
+                    $scope.retrieveClosedOrders();
                 }
             });
         }
@@ -82,4 +103,28 @@ angular
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+
+
+        }]
+    )
+    .controller('addFeedbackController', ['$scope', '$http', '$uibModalInstance',
+        function ($scope, $http, $uibModalInstance) {
+            $scope.form = {
+                submit: () => {
+                    const data = {
+                        rate: $scope.form.rate,
+                        text: $scope.form.text
+                    };
+                    $http.post('/order', data).then(response => {
+                        $uibModalInstance.close(true)
+                    }, response => {
+                        alert('failed to add feedback')
+                    });
+                }
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
         }]);
+;
