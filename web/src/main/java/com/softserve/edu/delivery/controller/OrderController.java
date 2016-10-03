@@ -63,34 +63,34 @@ public class OrderController {
     }
 
     /*--------------------IvanSynyshyn----------------------------*/
-    @RequestMapping(path = "filtered_by_city_from", method = RequestMethod.GET)
+    @RequestMapping(path = "filtered-by-city-from", method = RequestMethod.GET)
     List<OrderForListDto> filteredByCityFrom() {
         String name = "Lviv";
         return orderService.getOrdersByCityFrom(name);
     }
 
-    @RequestMapping(path = "filtered_by_city_to", method = RequestMethod.GET)
+    @RequestMapping(path = "filtered-by-city-to", method = RequestMethod.GET)
     List<OrderForListDto> filteredByCityTo() {
         String name = "Dnipro";
         return orderService.getOrdersByCityTo(name);
     }
 
-    @RequestMapping(path = "filtered_by_weight", method = RequestMethod.GET)
+    @RequestMapping(path = "filtered-by-weight", method = RequestMethod.GET)
     List<OrderForListDto> filteredByWeight() {
         BigDecimal weight = BigDecimal.valueOf(1000.0);
         return orderService.getOrdersByWeight(weight);
     }
 
-    @RequestMapping(path = "filtered_by_arrival_date", method = RequestMethod.GET)
+    @RequestMapping(path = "filtered-by-arrival-date", method = RequestMethod.GET)
     List<OrderForListDto> filteredByArriwalDate() {
         Date milis = null;
         Timestamp date = new Timestamp(milis.getTime());
         return orderService.getOrdersByArriwalDate(date);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    List<Offer> addOffer(@RequestBody OrderForListDto order) {
-        return orderService.addOffer(order.getId(), new Offer());
+    @RequestMapping(method = RequestMethod.POST)
+    List<OfferDto> addOffer(@RequestBody OrderForListDto order) {
+        return orderService.addOffer(order.getId());
     }
 
 
