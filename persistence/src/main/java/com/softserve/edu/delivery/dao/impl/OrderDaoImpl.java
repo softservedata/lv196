@@ -45,6 +45,16 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     }
 
     @Override
+    public List<Order> findClosedOrders(String email) {
+        return getEntityManager()
+                .createQuery("select o from Order o where o.customer.email = :email " +
+                        "and o.orderStatus = 'CLOSED'" +
+                        "order by o.registrationDate", Order.class)
+                .setParameter("email", email)
+                .getResultList();
+    }
+
+    @Override
     public List<Order> findAllOrdersByStatusPagination(String email, OrderStatus orderStatus, int page, int size) {
         return getEntityManager()
                 .createQuery("select o from Order o where o.customer.email = :email " +

@@ -38,6 +38,8 @@ public interface OrderDao extends BaseDao<Order, Long> {
      */
     List<Order> findAllOrdersByStatusPagination(String email, OrderStatus orderStatus, int page, int size);
 
+    List<Order> findClosedOrders(String email);
+
     //	As transporter I want to choose orders by filter.
     List<Order> getOrderByCityFrom(Long id);
     List<Order> getOrderByCityTo(Long id);

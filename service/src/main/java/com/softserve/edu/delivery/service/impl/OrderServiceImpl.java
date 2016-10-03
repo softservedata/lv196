@@ -123,11 +123,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderForListDto> findAllClosedOrders(String email) {
-        return null;/*orderDao
-                .findAllOrdersByStatus(email, OrderStatus.CLOSED)
+        return orderDao
+                .findClosedOrders(email)
                 .stream()
                 .map(OrderForListDto::of)
-                .collect(Collectors.toList());*/
+                .collect(Collectors.toList());
     }
 
 
