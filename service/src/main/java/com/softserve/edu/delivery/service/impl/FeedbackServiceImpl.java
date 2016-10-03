@@ -1,13 +1,9 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.CarDao;
 import com.softserve.edu.delivery.dao.FeedbackDao;
-import com.softserve.edu.delivery.dao.OfferDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
-import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
@@ -17,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,46 +28,22 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private FeedbackDao feedbackDao;
     private UserDao userDao;
-    private CarDao carDao;
     private OrderDao orderDao;
-    private OfferDao offerDao;
 
     public FeedbackServiceImpl() {
     }
 
     @Autowired
-    public FeedbackServiceImpl(FeedbackDao feedbackDao, UserDao userDao, CarDao carDao, OrderDao orderDao, OfferDao offerDao) {
+    public FeedbackServiceImpl(FeedbackDao feedbackDao, UserDao userDao, OrderDao orderDao) {
         this.feedbackDao = feedbackDao;
         this.userDao = userDao;
-        this.carDao = carDao;
         this.orderDao = orderDao;
-        this.offerDao = offerDao;
-    }
-
-    @Override
-    public void setFeedbackDao(FeedbackDao feedbackDao) {
-        this.feedbackDao = feedbackDao;
-    }
-
-    @Override
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    @Override
-    public void setOrderDao(OrderDao orderDao) {
-        this.orderDao = orderDao;
-    }
-
-    private String convertTimeStamp(Timestamp timestamp){
-        DateFormat df = DateFormat.getDateTimeInstance();
-        return df.format(timestamp);
     }
 
     /**
      * @param feedback of Feedback class
      * @return object of FeedbackDTO.class
-     * <p>
+     *
      * copies all the fields of an object of Feedback.class to an object of FeedbackDTO.class
      */
     public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
@@ -81,10 +52,15 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackDTO.setOrderId(feedback.getOrder().getId());
         feedbackDTO.setText(feedback.getText());
         feedbackDTO.setUserName(feedback.getUser().getFirstName() + " " + feedback.getUser().getLastName());
-        feedbackDTO.setUserId(feedback.getUser().getEmail());
+        feedbackDTO.setUserEmail(feedback.getUser().getEmail());
         feedbackDTO.setRate(feedback.getRate());
         feedbackDTO.setApproved(feedback.getApproved());
-        feedbackDTO.setTransporterName(feedbackDao.getApprovedDriverName(feedback.getOrder().getId()));
+        Optional<String> oApprovedDriverName = feedbackDao.getApprovedDriverName(feedback.getOrder().getId());
+        if (oApprovedDriverName.isPresent()) {
+            feedbackDTO.setTransporterName(oApprovedDriverName.get());
+        } else {
+            throw new NoSuchElementException("Driver with id " + feedbackDTO.getOrderId() + " not found");
+        }
         feedbackDTO.setCreatedOn(feedback.getCreatedOn());
         return feedbackDTO;
     }
@@ -98,21 +74,30 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
-        feedback.setUser(userDao.findOne(feedbackDTO.getUserId()).get());
-        feedback.setOrder(orderDao.findOne(feedbackDTO.getOrderId()).get());
+        Optional<User> oUser = userDao.findOne(feedbackDTO.getUserEmail());
+        if (oUser.isPresent()) {
+            feedback.setUser(oUser.get());
+        } else {
+            throw new NoSuchElementException("User with id " + feedbackDTO.getUserEmail() + " not found");
+        }
+        Optional<Order> oOrder = orderDao.findOne(feedbackDTO.getOrderId());
+        if (oOrder.isPresent()) {
+            feedback.setOrder(oOrder.get());
+        } else {
+            throw new NoSuchElementException("Order with id " + feedbackDTO.getOrderId() + " not found");
+        }
         feedback.setText(feedbackDTO.getText());
         feedback.setRate(feedbackDTO.getRate());
         feedback.setApproved(feedbackDTO.getApproved());
-        feedback.setCreatedOn(feedbackDTO.getCreatedOn());
+        feedback.setCreatedOn(Timestamp.valueOf(feedbackDTO.getCreatedOn()));
         return feedback;
     }
 
 
     /**
      * @return List of FeedbackDTO.class
-     *
+     * <p>
      * looks for all feedbacks and returns list of found feedbacks
-     *
      */
     @Override
     @Transactional
@@ -120,57 +105,32 @@ public class FeedbackServiceImpl implements FeedbackService {
         List<FeedbackDTO> listDTO = new ArrayList<>();
         List<Feedback> list = feedbackDao.findAll();
 
-        list.forEach(f -> listDTO.add(copyFeedbackToDTO(f)));
+        list.forEach(f ->
+                listDTO.add(copyFeedbackToDTO(f))
+        );
 
         return listDTO;
     }
 
 
     /**
-     * @param int idFrom, int number
+     * @param  idFrom, number
      * @return List<FeedbackDTO>
-     *
+     * <p>
      * accepts start id of a feedback in the db and number of feedbacks. Forms list of FeedbackDTO object,
      * whose ids are within the range.
      */
     @Override
     @Transactional
-    public List<FeedbackDTO> getAllFeedbacksInRange(long idFrom, long number) {
+    public List<FeedbackDTO> getAllFeedbacksInRange(Long idFrom, int number) {
 
         List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
 
-        FeedbackDTO feedbackDTO;
+        List<Feedback> feedbacks = feedbackDao.findAllFeedbacksInRange(idFrom, number);
 
-        //increment of i is performed only in case, when a feedback with given id is found - since
-        //ids in feedback table will not be in perfect sequence - gaps will be present, caused by
-        //deleting feedbacks
-
-        long id = idFrom;
-        int count = 0;
-        long entriesCount = feedbackDao.getId("select count(f) from Feedback f where f.id >=" + id);
-        long startId = feedbackDao.getId("select min(f.id) from Feedback f");
-
-        if (id < 0 || id < startId){
-            id = startId;
-        }
-
-        if (number < 0 ){
-            number = 1;
-        }
-
-        if (number > entriesCount){
-            number = entriesCount;
-        }
-
-        while (count < number) {
-            try {
-                feedbackDTO = getFeedbackById(id);
-                feedbackDTOs.add(feedbackDTO);
-                count++;
-            } catch (NoSuchElementException e) {
-            }
-            id++;
-        }
+        feedbacks.forEach(f ->
+                feedbackDTOs.add(copyFeedbackToDTO(f))
+        );
 
         return feedbackDTOs;
 
@@ -183,7 +143,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      * @return object of FeedbackDTO.class
      * looks for a feedback with a given id
      */
-    public FeedbackDTO getFeedbackById(long id) {
+    public FeedbackDTO getFeedbackById(Long id) {
 
         FeedbackDTO feedbackDTO;
 
@@ -206,7 +166,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      *
      * sets a status of a feedback with the id equal to variable status
      */
-    public void changeFeedbackStatus(long id, boolean status) {
+    public void changeFeedbackStatus(Long id, boolean status) {
 
         Optional<Feedback> oFeedback = feedbackDao.findOne(id);
 
@@ -241,7 +201,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     public void update(FeedbackDTO feedbackDTO) {
 
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
-
         feedbackDao.update(feedback);
 
     }
@@ -290,24 +249,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    /**
-     * @param Long orderId - id of the order
-     * @return String approvedDriverName
-     *
-     * the method searches in the DB the first and last name of the approved driver for the order with the id
-     */
-    public String getApprovedDriverName(Long orderId) {
-        return feedbackDao.getApprovedDriverName(orderId);
-    }
-
-    @Override
-    @Transactional
-    public Long getId(String query) {
-        return feedbackDao.getId(query);
-    }
-
-    @Override
-    @Transactional
     public User getUser(String email) {
         Optional<User> oUser = userDao.findOne(email);
         if (oUser.isPresent()) {
@@ -326,46 +267,5 @@ public class FeedbackServiceImpl implements FeedbackService {
         } else {
             throw new NoSuchElementException();
         }
-    }
-
-    @Override
-    @Transactional
-    public Car getCar(Long id) {
-        Optional<Car> oCar = carDao.findOne(id);
-        if (oCar.isPresent()) {
-            return oCar.get();
-        } else {
-            throw new NoSuchElementException();
-        }
-    }
-
-    @Override
-    @Transactional
-    public void saveUser(User user){
-        userDao.save(user);
-    }
-
-    @Override
-    @Transactional
-    public List<User> getUsersByRole(String role) {
-        return feedbackDao.getUsersByRole(role);
-    }
-
-    @Override
-    @Transactional
-    public void saveCar(Car car) {
-        carDao.save(car);
-    }
-
-    @Override
-    @Transactional
-    public void saveOrder(Order order) {
-        orderDao.save(order);
-    }
-
-    @Override
-    @Transactional
-    public void saveOffer(Offer offer) {
-        offerDao.save(offer);
     }
 }

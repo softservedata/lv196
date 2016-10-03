@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
         *to get User use feedbackDTO.getUserId(), Order - feedbackDTO.getOrderId()
          */
         Order order = orderDao.findOne(dto.getOrderId())
-               .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrderId()));
+                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrderId()));
 
         Feedback feedback = new Feedback();
         feedback.setOrder(order);
@@ -116,10 +116,10 @@ public class OrderServiceImpl implements OrderService {
 
     public void changeStatus(Long offerId, Boolean offerStatus) {
         Boolean newOfferStatus=!offerStatus;
-                    Offer offer = offerDao.findOne(offerId)
-                            .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
-                    offer.setApproved(newOfferStatus);
-                    offerDao.save(offer);
+        Offer offer = offerDao.findOne(offerId)
+                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
+        offer.setApproved(newOfferStatus);
+        offerDao.save(offer);
 
     }
 
@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-/*--------------------IvanSynyshyn----------------------------*/
+    /*--------------------IvanSynyshyn----------------------------*/
     @Override
     public List<OrderForListDto> getOrdersByCityFrom(String name) {
         List<OrderForListDto> result = new ArrayList<>();

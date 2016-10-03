@@ -23,11 +23,11 @@ public interface FeedbackService {
 
     List<FeedbackDTO> getAllFeedbacks();
 
-    List<FeedbackDTO> getAllFeedbacksInRange(long from, long count);
+    List<FeedbackDTO> getAllFeedbacksInRange(Long from, int number);
 
-    FeedbackDTO getFeedbackById(long id);
+    FeedbackDTO getFeedbackById(Long id);
 
-    void changeFeedbackStatus(long id, boolean status);
+    void changeFeedbackStatus(Long id, boolean status);
 
     void save(FeedbackDTO feedbackDTO);
 
@@ -37,29 +37,7 @@ public interface FeedbackService {
 
     FeedbackDTO findOne(Long id);
 
-    String getApprovedDriverName(Long orderId);
-
-    void setFeedbackDao(FeedbackDao feedbackDao);
-
-    void setUserDao(UserDao userDao);
-
-    void setOrderDao(OrderDao orderDao);
-
-    Long getId(String query);
-
     User getUser(String email);
 
     Order getOrder(Long id);
-
-    Car getCar(Long id);
-
-    void saveUser(User user);
-
-    void saveCar(Car car);
-
-    void saveOrder(Order order);
-
-    void saveOffer(Offer offer);
-
-    List<User> getUsersByRole(String role);
 }

@@ -14,25 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "feedbacks")
 public class FeedbackController {
 
+    private final FeedbackService feedbackService;
+
     @Autowired
-    FeedbackService feedbackService;
+    public FeedbackController(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
+    }
 
     @RequestMapping(params = {"all"}, method = RequestMethod.GET)
     List<FeedbackDTO> getAllFeedbacks() {
-        List<FeedbackDTO> list = feedbackService.getAllFeedbacks();
-        return list;
+        return feedbackService.getAllFeedbacks();
     }
 
     @RequestMapping(params = {"idFrom", "number"}, method = RequestMethod.GET)
     List<FeedbackDTO> getAllFeedbacksInRange(@RequestParam("idFrom") long from,
-                                             @RequestParam("number") long number) {
-        List<FeedbackDTO> list = feedbackService.getAllFeedbacksInRange(from, number);
-        return list;
+                                             @RequestParam("number") int number) {
+        return feedbackService.getAllFeedbacksInRange(from, number);
     }
 
     @RequestMapping(params = {"id"}, method = RequestMethod.GET)
     FeedbackDTO getFeedbackById(@RequestParam("id") long feedbackId) {
-        FeedbackDTO feedbackDTO = feedbackService.findOne(feedbackId);
-        return feedbackDTO;
+        return feedbackService.findOne(feedbackId);
     }
 }

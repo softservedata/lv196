@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
- * <p>
+ *
  * serves as a transport object between persistence and service layers
  */
 
@@ -18,7 +18,7 @@ public class FeedbackDTO {
     private Integer rate;
     private Boolean approved;
     private Long orderId;
-    private String userId;
+    private String userEmail;
     private String userName;
     private String transporterName;
     private Timestamp createdOn;
@@ -79,20 +79,24 @@ public class FeedbackDTO {
         this.transporterName = transporterName;
     }
 
-    public Timestamp getCreatedOn() {
-        return createdOn;
+    public String getCreatedOn() {
+        return createdOn.toString();
     }
 
-    public void setCreatedOn(Timestamp stringCreatedOn) {
-        this.createdOn = stringCreatedOn;
+    public void setCreatedOn(Timestamp createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public String getUserId() {
-        return userId;
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = Timestamp.valueOf(createdOn);
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     @Override
