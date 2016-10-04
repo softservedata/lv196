@@ -27,7 +27,7 @@ public class OrderController {
     List<OrderForListDto> active() {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
 
-        return orderService.findAllActiveOrders(email);
+        return orderService.findActiveOrders(email);
     }
 
     @RequestMapping(path = "closed", method = RequestMethod.GET)

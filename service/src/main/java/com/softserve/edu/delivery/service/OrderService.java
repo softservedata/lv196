@@ -18,7 +18,7 @@ public interface OrderService {
      * @param email - email of assigned customer
      * @return list of open orders for the relevant parameters
      */
-    List<OrderForListDto> findAllActiveOrders(String email);
+    List<OrderForListDto> findActiveOrders(String email);
 
     /**
      * Creates new order based of given dto and assigns it to user with given email

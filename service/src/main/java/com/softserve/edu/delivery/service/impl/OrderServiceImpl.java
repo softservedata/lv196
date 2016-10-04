@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,15 +42,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderForListDto> findAllActiveOrders(String email) {
+    public List<OrderForListDto> findActiveOrders(String email) {
         return orderRepository
-                .findOrderByCustomerEmailAndOrderStatusIn(email,
-                        Arrays.asList(OrderStatus.OPEN, OrderStatus.IN_PROGRESS))
+                .findActiveOrdersByCustomerEmail(email)
                 .stream()
                 .map(order -> {
                     OrderForListDto dto = OrderForListDto.of(order);
                     if (order.getOrderStatus() == OrderStatus.IN_PROGRESS) {
-                        String name = orderDao
+                        String name = orderRepository
                                 .findDriverNameByOrderId(dto.getId())
                                 .orElse(null);
                         dto.setDriverName(name);
