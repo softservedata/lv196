@@ -12,10 +12,10 @@ import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,8 +46,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderForListDto> findAllActiveOrders(String email) {
-        return orderDao
-                .findActiveOrders(email)
+        return orderRepository
+                .findOrderByCustomerEmailAndOrderStatusIn(email,
+                        Arrays.asList(OrderStatus.OPEN, OrderStatus.IN_PROGRESS))
                 .stream()
                 .map(order -> {
                     OrderForListDto dto = OrderForListDto.of(order);
