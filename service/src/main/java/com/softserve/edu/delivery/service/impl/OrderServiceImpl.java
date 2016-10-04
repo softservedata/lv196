@@ -7,6 +7,7 @@ import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.repository.CityRepository;
+import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
+    private final OrderRepository orderRepository;
     private final OrderDao orderDao;
     private final UserDao userDao;
     private final CityDao cityDao;
@@ -31,7 +33,8 @@ public class OrderServiceImpl implements OrderService {
     private final CityRepository cityRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao, CityRepository cityRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao, CityRepository cityRepository) {
+        this.orderRepository = orderRepository;
         this.orderDao = orderDao;
         this.userDao = userDao;
         this.cityDao = cityDao;
@@ -74,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         City to = cityRepository.findOneOpt(dto.getCityIdTo())
                 .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
 
-        orderDao.save(new Order()
+        orderRepository.save(new Order()
                 .setOrderStatus(OrderStatus.OPEN)
                 .setCustomer(user)
                 .setCityFrom(from)
@@ -87,6 +90,11 @@ public class OrderServiceImpl implements OrderService {
                 .setWeight(dto.getWeight())
                 .setDescription(dto.getDescription())
         );
+    }
+
+    @Override
+    public void removeOrder(Long id) {
+        orderRepository.removeById(id);
     }
 
     @Override

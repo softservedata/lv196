@@ -30,6 +30,7 @@ public interface OrderService {
      */
     void addOrder(OrderForAddDto dto, String email);
 
+    void removeOrder(Long id);
 
 /**
 * Author - Taras Kurdiukov

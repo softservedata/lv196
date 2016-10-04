@@ -6,10 +6,7 @@ import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -19,8 +16,12 @@ import java.util.List;
 @RequestMapping(path = "order")
 public class OrderController {
 
+    private final OrderService orderService;
+
     @Autowired
-    OrderService orderService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @RequestMapping(path = "active", method = RequestMethod.GET)
     List<OrderForListDto> active() {
@@ -46,6 +47,11 @@ public class OrderController {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
         dto.setOrderId(1l);
         orderService.addFeedback(dto, email);
+    }
+
+    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
+    void removeOrder(@PathVariable Long id) {
+        orderService.removeOrder(id);
     }
 
     @RequestMapping(path = "change", method = RequestMethod.PUT)
@@ -79,7 +85,7 @@ public class OrderController {
         return orderService.getOrdersByArriwalDate(date);
     }
 
-    @RequestMapping(path = "submit", method = RequestMethod.POST)
+    @RequestMapping(path = "offer", method = RequestMethod.POST)
     List<OfferDto> addOffer(@RequestBody OrderForListDto order) {
         return orderService.addOffer(order.getId());
     }
