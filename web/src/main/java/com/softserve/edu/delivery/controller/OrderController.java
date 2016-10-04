@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -61,34 +63,36 @@ public class OrderController {
 
     /*--------------------IvanSynyshyn----------------------------*/
     @RequestMapping(path = "filtered-by-city-from", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByCityFrom() {
-        String name = "Lviv";
-        return orderService.getOrdersByCityFrom(name);
+    List<OrderForListDto> filteredByCityFrom(@RequestParam String city) {
+        return orderService.getOrdersByCityFrom(city);
     }
 
     @RequestMapping(path = "filtered-by-city-to", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByCityTo() {
-        String name = "Dnipro";
-        return orderService.getOrdersByCityTo(name);
+    List<OrderForListDto> filteredByCityTo(@RequestParam String city) {
+        return orderService.getOrdersByCityTo(city);
     }
 
     @RequestMapping(path = "filtered-by-weight", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByWeight() {
-        BigDecimal weight = BigDecimal.valueOf(1000.0);
-        return orderService.getOrdersByWeight(weight);
+    List<OrderForListDto> filteredByWeight(@RequestParam String weight) {
+        BigDecimal converted = BigDecimal.valueOf(Double.parseDouble(weight));
+        return orderService.getOrdersByWeight(converted);
     }
 
     @RequestMapping(path = "filtered-by-arrival-date", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByArriwalDate() {
-        Date milis = null;
-        Timestamp date = new Timestamp(milis.getTime());
-        return orderService.getOrdersByArriwalDate(date);
+    List<OrderForListDto> filteredByArriwalDate(@RequestParam String date) {
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");
+        Date parsed = null;
+        try {
+            parsed = formater.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Timestamp timestamp = new Timestamp(parsed.getTime());
+        return orderService.getOrdersByArriwalDate(timestamp);
     }
 
     @RequestMapping(path = "offer", method = RequestMethod.POST)
     List<OfferDto> addOffer(@RequestBody OrderForListDto order) {
         return orderService.addOffer(order.getId());
     }
-
-
 }
