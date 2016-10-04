@@ -1,0 +1,16 @@
+<div ng-repeat="order in orders.closed track by $index" class="panel panel-default order-closed">
+    <div class="panel-body">
+        <div class="order-city">
+            {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
+        </div>
+        <div class="order-subinfo">
+            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
+            <span class="order-sub"><i class="fa fa-map-marker" aria-hidden="true"></i>Ternopil</span>
+            <p class="navbar-btn">
+                <a ng-click="addFeedback()" class="btn btn-default">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Feedback
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
