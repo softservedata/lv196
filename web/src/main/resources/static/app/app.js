@@ -16,5 +16,10 @@ angular
             .state('feedback', {
                 url: '/feedback',
                 templateUrl: '/app/views/feedback.html'
+            })
+            .state('users', {
+                url: '/users',
+                templateUrl: '/app/views/users.html',
+                controller: 'userController'
             });
     }]);

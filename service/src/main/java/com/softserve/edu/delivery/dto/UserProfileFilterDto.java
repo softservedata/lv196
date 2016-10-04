@@ -31,7 +31,7 @@ public class UserProfileFilterDto implements Predicate<User> {
 	}
 
 	private boolean checkRole(User user) {
-		return Objects.equals(user.getUserRole(), delegate.getRole());
+		return Objects.equals(user.getUserRole().getName(), delegate.getRole());
 	}
 	
 	private boolean checkFirstName(User user) {

@@ -13,6 +13,7 @@
     <link href="./css/main.css" rel="stylesheet">
     <link href="./css/sidebar.css" rel="stylesheet">
     <link href="./css/orders.css" rel="stylesheet">
+    <link href="./css/users.css" rel="stylesheet">
 </head>
 <body>
 
@@ -46,6 +47,10 @@
                     <i class="fa fa-comment" aria-hidden="true"></i>
                     Feedback
                 </a>
+                <a ui-sref="users" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    User profiles
+                </a>
                 <hr/>
                 <a href="#" class="sidebar-menu-item">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -74,5 +79,6 @@
 <script src="./bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="./app/app.js"></script>
 <script src="./app/controller/ordersController.js"></script>
+<script src="./app/controller/userController.js"></script>
 </body>
 </html>

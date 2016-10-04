@@ -14,13 +14,13 @@ public class UserProfileDto {
 	}
 	
     public static UserProfileDto create(User user) {
-    	UserProfileDto userProfileDTO2 = new UserProfileDto();
-		userProfileDTO2.setBlocked(user.getBlocked());
-		userProfileDTO2.setEmail(user.getEmail());
-		userProfileDTO2.setFirstName(user.getFirstName());
-		userProfileDTO2.setLastName(user.getLastName());
-		userProfileDTO2.setRole(user.getUserRole() == null ? null : user.getUserRole().toString());
-		return userProfileDTO2;
+    	UserProfileDto userProfileDto = new UserProfileDto();
+    	userProfileDto.setBlocked(user.getBlocked());
+    	userProfileDto.setEmail(user.getEmail());
+    	userProfileDto.setFirstName(user.getFirstName());
+    	userProfileDto.setLastName(user.getLastName());
+    	userProfileDto.setRole(user.getUserRole() == null ? null : user.getUserRole().getName());
+		return userProfileDto;
     	
     }
 

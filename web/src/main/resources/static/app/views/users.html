@@ -1,0 +1,49 @@
+
+ <div class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand">User profiles</span>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+            </ul>
+            
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <p class="navbar-btn">
+                        <a ng-click="filter()" class="btn btn-default">
+                            <i class="fa fa-filter" aria-hidden="true"></i> Users 
+                        </a>
+                    </p>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="site-content">
+    <h5 class="user-header">All users</h5>
+    <div ng-repeat="user in users.allProfiles track by $index" class="panel panel-default order-in-progress">
+        <div class="panel-body">
+            <div class="user-profiles">
+                {{user.firstName}} {{user.lastName}}
+            </div>
+            <div class="user-info">
+            	 <span class="user-sub"><i class="fa fa-user" aria-hidden="true"> {{user.role}}</i></span>
+                <span class="user-sub"><i class="fa fa-ban" aria-hidden="true"></i> Block status: {{user.blocked}}</span>
+                <span class="user-sub"><i class="fa fa-envelope" aria-hidden="true"></i> {{user.email}}</span>
+            </div>
+        </div>
+    </div>
+</div>
