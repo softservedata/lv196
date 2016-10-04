@@ -13,12 +13,20 @@ import java.util.List;
 public interface OrderService {
 
     /**
-     * Finds the list of active (open and in progress) orders by customer with given email
+     * Finds the list of in progress orders by customer with given email
      *
      * @param email - email of assigned customer
      * @return list of open orders for the relevant parameters
      */
-    List<OrderForListDto> findActiveOrders(String email);
+    List<OrderForListDto> findInProgressOrders(String email);
+
+    /**
+     * Finds the list of open orders by customer with given email
+     *
+     * @param email - email of assigned customer
+     * @return list of open orders for the relevant parameters
+     */
+    List<OrderForListDto> findOpenOrders(String email);
 
     /**
      * Creates new order based of given dto and assigns it to user with given email

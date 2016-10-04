@@ -13,13 +13,7 @@ import java.util.Optional;
 
 public interface OrderRepository extends BaseRepository<Order, Long>, JpaRepository<Order, Long> {
 
-    List<Order> findOrderByCustomerEmailAndOrderStatusIn(String email, List<OrderStatus> status);
-
-    default List<Order> findActiveOrdersByCustomerEmail(String email) {
-        return findOrderByCustomerEmailAndOrderStatusIn(email,
-                Arrays.asList(OrderStatus.OPEN, OrderStatus.IN_PROGRESS));
-    }
-
+    List<Order> findOrderByCustomerEmailAndOrderStatus(String email, OrderStatus os);
     Long removeById(Long id);
 
     @Query("select concat(off.car.driver.firstName, ' ', off.car.driver.lastName) " +

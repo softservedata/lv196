@@ -16,23 +16,19 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <p class="navbar-btn">
-                        <a ng-click="showOrderCreation()" class="btn btn-default">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Order
-                        </a>
-                    </p>
                 </li>
             </ul>
         </div>
         <div class="navbar-sub">
             <ul class="nav nav-tabs">
-                <li ui-sref-active="active"><a ui-sref="orders.active" data-toggle="tab" aria-expanded="true">ACTIVE</a></li>
+                <li ui-sref-active="active"><a ui-sref="orders.inProgress" data-toggle="tab" aria-expanded="true">IN PROGRESS</a></li>
+                <li ui-sref-active="active"><a ui-sref="orders.open" data-toggle="tab" aria-expanded="false">OPEN</a></li>
                 <li ui-sref-active="active"><a ui-sref="orders.closed" data-toggle="tab" aria-expanded="false">CLOSED</a></li>
             </ul>
         </div>
     </div>
 </div>
-<div class="site-content">
+<div class="site-content orders">
     <!-- Fix it -->
     <!--<div class="input-group pull-right">
         <div class="row col-md-4">

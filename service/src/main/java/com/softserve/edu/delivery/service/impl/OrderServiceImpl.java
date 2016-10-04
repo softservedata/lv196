@@ -12,6 +12,7 @@ import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
@@ -42,20 +43,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderForListDto> findActiveOrders(String email) {
+    public List<OrderForListDto> findInProgressOrders(String email) {
         return orderRepository
-                .findActiveOrdersByCustomerEmail(email)
+                .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.IN_PROGRESS)
                 .stream()
                 .map(order -> {
                     OrderForListDto dto = OrderForListDto.of(order);
-                    if (order.getOrderStatus() == OrderStatus.IN_PROGRESS) {
-                        String name = orderRepository
-                                .findDriverNameByOrderId(dto.getId())
-                                .orElse(null);
-                        dto.setDriverName(name);
-                    }
-                    return dto;
+                    String name = orderRepository
+                            .findDriverNameByOrderId(dto.getId())
+                            .orElse(null);
+                    return dto.setDriverName(name);
                 })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderForListDto> findOpenOrders(String email) {
+        return orderRepository
+                .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.OPEN)
+                .stream()
+                .map(OrderForListDto::of)
                 .collect(Collectors.toList());
     }
 
@@ -97,7 +105,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void addFeedback(FeedbackDTO dto, String email) {
         if (dto == null) {
-            throw new IllegalArgumentException("Feedback dto must not be null");}
+            throw new IllegalArgumentException("Feedback dto must not be null");
+        }
 
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
@@ -117,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void changeStatus(Long offerId, Boolean offerStatus) {
-        Boolean newOfferStatus=!offerStatus;
+        Boolean newOfferStatus = !offerStatus;
         Offer offer = offerDao.findOne(offerId)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
         offer.setApproved(newOfferStatus);
@@ -155,6 +164,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return result;
     }
+
     @Override
     public List<OrderForListDto> getOrdersByCityTo(String name) {
         List<OrderForListDto> result = new ArrayList<>();

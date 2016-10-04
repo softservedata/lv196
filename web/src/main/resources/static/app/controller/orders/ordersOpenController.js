@@ -1,37 +1,28 @@
 angular
     .module('delivery')
-    .controller('ordersActiveController', ['$scope', '$http', '$uibModal',
+    .controller('ordersOpenController', ['$scope', '$http', '$uibModal',
         function ($scope, $http, $uibModal) {
             $scope.orders = {
-                inProgress: [],
                 open: []
             };
 
-            $scope.retrieveActiveOrders = () => {
-                $http.get('/order/active').then(response => {
-                    $scope.orders.inProgress = [];
-                    $scope.orders.open = [];
-                    response.data.forEach(order => {
-                        if (order.status === "In progress") {
-                            $scope.orders.inProgress.push(order);
-                        } else {
-                            $scope.orders.open.push(order);
-                        }
-                    })
+            $scope.retrieveOpenOrders = () => {
+                $http.get('/order/open').then(response => {
+                    $scope.orders.open = response.data;
                 })
             };
-            $scope.retrieveActiveOrders();
+            $scope.retrieveOpenOrders();
 
             $scope.showOrderCreation = () => {
                 const modalInstance = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/views/order.creation.html',
+                    templateUrl: '/app/views/orders/order.creation.html',
                     controller: 'addOrderController'
                 });
 
                 modalInstance.result.then(function (added) {
                     if (added) {
-                        $scope.retrieveActiveOrders();
+                        $scope.retrieveOpenOrders();
                     }
                 });
             };

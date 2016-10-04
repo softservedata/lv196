@@ -25,11 +25,18 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @RequestMapping(path = "active", method = RequestMethod.GET)
-    List<OrderForListDto> active() {
+    @RequestMapping(path = "in-progress", method = RequestMethod.GET)
+    List<OrderForListDto> inProgress() {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
 
-        return orderService.findActiveOrders(email);
+        return orderService.findInProgressOrders(email);
+    }
+
+    @RequestMapping(path = "open", method = RequestMethod.GET)
+    List<OrderForListDto> open() {
+        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+
+        return orderService.findOpenOrders(email);
     }
 
     @RequestMapping(path = "closed", method = RequestMethod.GET)

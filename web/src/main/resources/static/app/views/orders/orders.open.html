@@ -1,0 +1,17 @@
+<a ng-click="showOrderCreation()" class="btn btn-default btn-add-order">
+    <i class="fa fa-plus" aria-hidden="true"></i> Order
+</a>
+<div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
+    <div class="panel-body">
+        <div class="order-actions">
+            <i class="fa fa-car" aria-hidden="true"></i>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </div>
+        <div class="order-city">
+            {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
+        </div>
+        <div class="order-subinfo">
+            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
+        </div>
+    </div>
+</div>

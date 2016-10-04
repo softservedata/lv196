@@ -1,11 +1,3 @@
-.order-header {
-    margin-left: 15px;
-}
-
-.order-header:first-child {
-    margin-top: 55px;
-}
-
 .order-in-progress, .order-open, .order-closed {
     margin-left: 15px;
     margin-right: 15px;
@@ -13,8 +5,8 @@
     color: #555555;
 }
 
-.order-closed {
-    margin-top: 55px;
+.orders {
+    padding-top: 120px;
 }
 
 .order-in-progress .panel-body, .order-open .panel-body {
@@ -95,12 +87,11 @@
 }
 
 .navbar-sub .nav-tabs > li {
-    width: 50%;
+    width: 33%;
+    text-align: center;
 }
 
 .navbar-sub .nav-tabs > li > a, .navbar-sub .nav-tabs > li > a:focus {
-    padding-left: 45%;
-    padding-right: 45%;
     font-size: 14px;
     color: #B3E5FC;
     -webkit-box-shadow: none;
@@ -116,5 +107,11 @@
     color: #fff;
     -webkit-box-shadow: inset 0 -2px 0 #FF4081;
     box-shadow: inset 0 -2px 0 #FF4081;
+}
+
+.btn-add-order {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
 }
 
