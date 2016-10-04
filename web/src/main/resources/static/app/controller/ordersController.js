@@ -50,11 +50,6 @@ angular
                 controller: 'addFeedbackController'
             });
 
-            modalInstance.result.then(function (added) {
-                if (added) {
-                    $scope.retrieveClosedOrders();
-                }
-            });
         }
     }])
     .controller('addOrderController', ['$scope', '$http', '$uibModalInstance',
@@ -114,7 +109,7 @@ angular
                         rate: $scope.form.rate,
                         text: $scope.form.text
                     };
-                    $http.post('/addfeedback', data).then(response => {
+                    $http.post('/order/addfeedback', data).then(response => {
                         $uibModalInstance.close(true)
                     }, response => {
                         alert('failed to add feedback')
