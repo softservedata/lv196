@@ -10,17 +10,17 @@ angular
             })
             .state('orders', {
                 url: '/orders',
-                templateUrl: '/app/views/orders/orders.html',
+                templateUrl: '/app/orders/views/orders.html',
                 controller: 'ordersController'
             })
             .state('orders.inProgress', {
                 url: '/in-progress',
-                templateUrl: '/app/views/orders/orders.in-progress.html',
+                templateUrl: '/app/orders/views/orders.in-progress.html',
                 controller: 'ordersInProgressController'
             })
             .state('orders.open', {
                 url: '/open',
-                templateUrl: '/app/views/orders/orders.open.html',
+                templateUrl: '/app/orders/views/orders.open.html',
                 controller: 'ordersOpenController'
             })
             .state('orders.closed', {

@@ -16,7 +16,7 @@ angular
             $scope.showOrderCreation = () => {
                 const modalInstance = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/views/orders/order.creation.html',
+                    templateUrl: '/app/orders/views/order.creation.html',
                     controller: 'addOrderController'
                 });
 
