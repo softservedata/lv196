@@ -1,13 +1,15 @@
 package com.softserve.edu.delivery.dao.impl;
 
 import com.softserve.edu.delivery.dao.BaseDao;
+import com.softserve.edu.delivery.utils.Jpa;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
-
 
 public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
 
@@ -45,7 +47,12 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
         return em.createQuery("From " + clazz.getSimpleName(), clazz).getResultList();
     }
 
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return em;
+    }
+
+    //Don't remove this method!!! It's need for some testing
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
     }
 }

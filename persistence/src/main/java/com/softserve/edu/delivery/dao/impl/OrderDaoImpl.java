@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Repository("orderDao")
 public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
 
     public OrderDaoImpl() {

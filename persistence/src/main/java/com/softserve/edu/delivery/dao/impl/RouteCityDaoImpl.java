@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 
-@Repository
+@Repository("routeCityDao")
 public class RouteCityDaoImpl extends BaseDaoImpl<RouteCities, Long> implements RouteCityDao {
     public RouteCityDaoImpl() {
         super(RouteCities.class);
@@ -32,10 +32,28 @@ public class RouteCityDaoImpl extends BaseDaoImpl<RouteCities, Long> implements 
      * Method returns RouteCities when transporter last visited
      * */
     @Override
+    @SuppressWarnings("unchecked")
     public RouteCities getRouteCityWhenLastVisitedByOrder(Order order) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select max(x.visitDate) from RouteCities x where x.route.id = :id");
+        // Query query = em.createQuery("select max(x.visitDate) from RouteCities x where x.route.id = :id");
+        Query query = em.createQuery("select x from RouteCities x where x.route.id = :id");
         query.setParameter("id", order.getId());
-        return (RouteCities) query.getSingleResult();
+        List<RouteCities> allRoutesCities = (List<RouteCities>) query.getResultList();
+        return calculateLastVisited(allRoutesCities);
+    }
+
+    //<--------------------------------Private------------------------------------------->
+
+    private static RouteCities calculateLastVisited(List<RouteCities> allRoutesCities) {
+        RouteCities result = null;
+        if ( ! allRoutesCities.isEmpty()) {
+            result = allRoutesCities.get(0);
+            for (RouteCities rc : allRoutesCities) {
+                if (rc.getVisitDate().after(result.getVisitDate())) {
+                    result = rc;
+                }
+            }
+        }
+        return result;
     }
 }

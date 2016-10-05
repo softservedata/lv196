@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("regionDao")
 public class RegionDaoImpl extends BaseDaoImpl<Region, Long> implements RegionDao {
     public RegionDaoImpl() {
         super(Region.class);

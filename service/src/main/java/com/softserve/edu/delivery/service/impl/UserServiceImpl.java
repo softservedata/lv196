@@ -1,28 +1,66 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserProfileFilterDto;
+import com.softserve.edu.delivery.dto.UserRegistrationDTO;
+import com.softserve.edu.delivery.exception.EmailExistsException;
+import com.softserve.edu.delivery.exception.UserNotFoundException;
+import com.softserve.edu.delivery.exception.WrongPasswordException;
 import com.softserve.edu.delivery.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-
-@Service
+@Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
+
     private final UserDao userDao;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        if ( ! this.exists(email)) {
+            throw new UsernameNotFoundException("Email " + email + " is not registered");
+        }
+
+        User user = userDao.findOne(email).get();
+
+        boolean enabled = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNotExpired = true;
+        boolean accountNonLocked = true;
+        String role = user.getUserRole().getName();
+        List<GrantedAuthority> listUserRoles = new ArrayList<>();
+        listUserRoles.add(new SimpleGrantedAuthority(role));
+
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(), user.getPassword(), enabled, accountNonExpired,
+                credentialsNotExpired, accountNonLocked, listUserRoles);
     }
 
     @Override
@@ -31,100 +69,91 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
-        if (!userDao.exists(user.getEmail())) {
-            userDao.save(user);
+    public void register(UserRegistrationDTO userRegDTO) {
+        if (exists(userRegDTO.getEmail())) {
+            throw new EmailExistsException(userRegDTO.getEmail());
         } else {
-            throw new IllegalArgumentException("User with given email already exists.");
+            User newUser = new User();
+            newUser.setEmail(userRegDTO.getEmail());
+            newUser.setPassword(this.passwordEncoder.encode(userRegDTO.getPassword()));
+            newUser.setFirstName(userRegDTO.getFirstName());
+            newUser.setLastName(userRegDTO.getLastName());
+            newUser.setPhone(userRegDTO.getPhoneNumber());
+            newUser.setPassport(userRegDTO.getPassport());
+            newUser.setPhotoUrl(userRegDTO.getPhotoUrl());
+            newUser.setBlocked(false);
+            newUser.setUserRole(Role.CUSTOMER);
+
+            userDao.save(newUser);
         }
     }
 
-    /***
-     * This method verifies user credentials(login page)
+
+    public void register(User user) {
+        if (userDao.exists(user.getEmail())) {
+            throw new IllegalArgumentException("User with given email already exists.");
+        } else {
+            userDao.save(user);
+        }
+    }
+
+    /*** This method verifies user credentials(login page)
      * author Petro Shtenovych
-     *
-     * @param user with credentials email and password
-     * @return true if user verification was success
+     * @param userAuthDTO with credentials email and password
      * @throws IllegalArgumentException if param ref null
-     * @throws RuntimeException         if database errors occur
+     * @throws UserNotFoundException if user isn't registered
+     * @throws WrongPasswordException if user typed wrong password
+     * @return UserProfileDto instance which has user profile information
      */
     @Override
-    public boolean verificationLogin(UserAuthDTO user) {
-        if (user == null) {
+    public UserProfileDto verificationLogin(UserAuthDTO userAuthDTO) {
+        if (userAuthDTO == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-        EntityTransaction tx = null;
-        try {
-            EntityManager entityManager = /*Jpa.getEntityManager(); Entity manager in service? */ null;
-            tx = entityManager.getTransaction();
-            tx.begin();
-            if (!this.userDao.exists(user.getEmail())) {
-                tx.commit();
-                return false;
-            } else {
-                User dbUser = this.userDao.findOne(user.getEmail()).get();
-                tx.commit();
-                System.out.println(dbUser);
-                if (!checkPassword(user, dbUser)) {
-                    return false;
-                }
+        if (this.userDao.exists(userAuthDTO.getEmail())) {
+            User dbUser = this.userDao.findOne(userAuthDTO.getEmail()).get();
+            if ( ! checkPassword(userAuthDTO, dbUser)) {
+                throw new WrongPasswordException();
             }
-        } catch (RuntimeException ex) {
-            if (tx != null) {
-                tx.rollback();
-                throw ex;
-            }
+            return UserProfileDto.create(dbUser);
+        }else {
+            throw new UserNotFoundException(userAuthDTO.getEmail());
         }
-        return true;
     }
+    
+	@Override
+	public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
+		return userDao
+						.getAllUsersInRange(page, size)
+						.stream()
+						.filter(filter)
+						.map(UserProfileDto::create)
+						.collect(Collectors.toList());
+	}
 
-    @Override
-    public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
-        return userDao
-                .getAllUsersInRange(page, size)
-                .stream()
-                .filter(filter)
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public UserProfileDto changeUserStatus(String mail, boolean blocked) {
-        return userDao
+	@Override
+	public UserProfileDto changeUserStatus(String mail, boolean blocked) throws IllegalStateException{
+		return userDao
                 .findOne(mail)
-                .map(user -> userDao.update(user.setBlocked(!blocked)))
+				.map(user -> userDao.update(user.setBlocked(blocked)))
                 .map(UserProfileDto::create)
                 .<IllegalStateException>orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"));
-    }
+	}
 
-    @Override
-    public List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map) {
-        return map
-                .keySet().stream()
-                .map(mail -> changeUserStatus(mail, map.get(mail)))
-                .collect(Collectors.toList());
-    }
-    
-    @Override
-    public List<UserProfileDto> getAllUsers() {
-        return userDao
-                .findAll()
-                .stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
-    
+	@Override
+	public List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map) {
+		return 	map
+			.keySet().stream()
+			.map(mail -> changeUserStatus(mail, map.get(mail)))
+			.collect(Collectors.toList());
+	}
 
-    //<---------------------Private------------------------->
+	//<---------------------Private------------------------->
 
     private static boolean checkPassword(UserAuthDTO user, User dbUser) {
-        if (!user.getPassword().equals(dbUser.getPassword())) {
+        if( ! user.getPassword().equals(dbUser.getPassword())) {
             return false;
         }
         return true;
     }
-
-
-
-
 }

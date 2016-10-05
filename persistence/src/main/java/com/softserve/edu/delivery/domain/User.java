@@ -7,14 +7,23 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "USERS")
 public class User implements Serializable {
 
     @Id
     @Column(name = "email", unique = true)
     private String email;
+
+    @Column(name = "password", length = 60)
     private String password;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "phone")
     private String phone;
 
     @OneToMany(mappedBy = "driver")
@@ -27,14 +36,24 @@ public class User implements Serializable {
     private List<Feedback> feedbacks = new ArrayList<>();
 
     /* 10 is 1 star, 40 is 4 stars and so on */
+    @Column(name = "rate")
     private Integer rate;
+
+    @Column(name = "photo_url")
     private String photoUrl;
-    private String passport;
-    private Boolean approved;
-    private Boolean blocked;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
     private Role userRole;
+
+    @Column(name = "passport")
+    private String passport;
+
+    @Column(name = "approved")
+    private Boolean approved;
+
+    @Column(name = "blocked")
+    private Boolean blocked;
 
     public User() {
     }

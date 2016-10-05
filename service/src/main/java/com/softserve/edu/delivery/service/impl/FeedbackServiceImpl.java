@@ -22,7 +22,7 @@ import java.util.Optional;
  * Created by Ivan Rudnytskyi on 15.09.2016.
  * implementation for business logic of the feedback part of the application
  */
-@Service
+@Service("feedbackService")
 @Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
@@ -148,15 +148,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         FeedbackDTO feedbackDTO;
 
         Optional<Feedback> oFeedback = feedbackDao.findOne(id);
-
         if (oFeedback.isPresent()) {
             feedbackDTO = copyFeedbackToDTO(oFeedback.get());
         } else {
             throw new NoSuchElementException();
         }
-
         return feedbackDTO;
-
     }
 
     @Override
@@ -199,8 +196,8 @@ public class FeedbackServiceImpl implements FeedbackService {
      * transforms the object of FeedbackDTO.class to Feedback.class, which is updated in the db.
      */
     public void update(FeedbackDTO feedbackDTO) {
-
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
+        feedbackDao.update(feedback);
         feedbackDao.update(feedback);
 
     }

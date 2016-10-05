@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("stateDao")
 public class StateDaoImpl extends BaseDaoImpl<State, Long> implements StateDao {
     public StateDaoImpl() {
         super(State.class);

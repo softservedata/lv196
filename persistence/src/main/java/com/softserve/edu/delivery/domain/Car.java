@@ -7,24 +7,48 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "CARS")
 public class Car {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carId;
-    private String vehicleName;
-    private String vehicleNumber;
-    private String vehicleVIN;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "car_id")
+	private Long carId;
+	
+	//vehicle brand name
+	@Column(name = "vehicleName")
+	private String vehicleName;
+	
+	//vehicle license plate
+	@Column(name = "vehicleNumber")
+	private String vehicleNumber;
+	
+	//vehicle registration card
+	@Column(name = "vehicleVIN")
+	private String vehicleVIN;
+	
+	//String type variable to store the URL to vehicle photos
+	@Column(name = "vehicleFrontPhotoURL")
     private String vehicleFrontPhotoURL;
+    @Column(name = "vehicleBackPhotoURL")
     private String vehicleBackPhotoURL;
+    
+    //Maximum carrying capacity of the vehicle
+    @Column(name = "vehicleWeight")
     private BigDecimal vehicleWeight;
+    
+    //Vehicle maximum volume L W H
+    @Column(name = "vehicleLength")
     private BigDecimal vehicleLength;
-    private BigDecimal vehicleWidth;
-    private BigDecimal vehicleHeight;
-
-    @ManyToOne
-    @JoinColumn(name = "driver_id")
-    private User driver;
+	@Column(name = "vehicleWidth")
+	private BigDecimal vehicleWidth;
+	@Column(name = "vehicleHeight")
+	private BigDecimal vehicleHeight;
+	
+	//Class Car has one to many relationship to class User
+	@ManyToOne
+	@JoinColumn(name = "driver_id", referencedColumnName = "email")
+	private User driver;
 
     @OneToMany(mappedBy = "car")
     private List<Offer> offers = new ArrayList<>();
