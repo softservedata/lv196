@@ -28,6 +28,11 @@ angular
                 templateUrl: '/app/views/orders/orders.closed.html',
                 controller: 'ordersClosedController'
             })
+            .state('all-orders', {
+                url: '/all-orders',
+                templateUrl: '/app/views/orders/all.orders.html',
+                controller: 'allOrdersController'
+            })
             .state('feedback', {
                 url: '/feedback',
                 templateUrl: '/app/views/feedback.html'

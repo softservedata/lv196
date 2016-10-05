@@ -1,0 +1,45 @@
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand">All active orders</span>
+        </div>
+        <div class="site-content all-orders">
+            <div class="input-group pull-right">
+                <div class="row col-md-4">
+                    <b >Filter by:</b>
+                    <select id="filter" class="form-control">
+                        <option value="city_from">City from</option>
+                        <option value="city_to">City to</option>
+                        <option value="weight">Weight</option>
+                        <option value="arrival_date">Arrival date</option>
+                    </select>
+                    <input class="form-control " type="text" id="filter_value" value="">
+                    <input class="btn btn-submit " ng-click="filter()" type="submit" name="filter_submit" value="Filter">
+                </div>
+            </div>
+            <ui-view></ui-view>
+        </div>
+    </div>
+    <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
+        <div class="panel-body">
+            <div class="order-actions">
+                <i class="fa fa-car" aria-hidden="true"></i>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </div>
+            <div class="order-city">
+                {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
+            </div>
+            <div class="order-subinfo">
+                <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
