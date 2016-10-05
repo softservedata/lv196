@@ -110,8 +110,36 @@
 }
 
 .btn-add-order {
+    color: #ffffff;
+    background-color: #FF4081;
+    border-radius: 100%;
+    width: 4em;
+    height: 4em;
+    line-height: 4em;
+    font-size: 1.2em;
+    padding: 0;
+    cursor: pointer;
     position: absolute;
     bottom: 25px;
     right: 25px;
+}
+.btn-add-order:hover {
+    color: #ffffff;
+    background-color: #b52962;
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.btn-add-order:active:hover {
+    color: #ffffff;
+    background-color: #b52962;
+}
+.btn-add-order:active {
+    color: #ffffff;
+    background-image: radial-gradient(circle, #cf5792 10%, #b52962 11%);
+}
+.add {
+    font-weight:lighter;
+    font-size: 1.8em;
+    font-style: normal;
 }
 
