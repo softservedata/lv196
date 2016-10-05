@@ -24,16 +24,15 @@
         }
         }]
     )
-    .controller('addFeedbackController' ['$scope', '$http', '$uibModalInstance',
-        function ($scope, $http, $uibModalInstance, orderService) {   //визиваю мій Сервіс
-            $scope.idForFeedback = orderService.getId();              //витягую з Сервісу та призначаю Id змінній
+    .controller('addFeedbackController', function ($scope,orderService, $http, $uibModalInstance) {
+            $scope.idForFeedback = orderService.getId();
 
             $scope.form = {
                 submit: () => {
                     const data = {
                         rate: $scope.form.rate,
                         text: $scope.form.text,
-                        orderId: $scope.idForFeedback      //призначаю orderId відгуку
+                        orderId: $scope.idForFeedback
                     };
                     $http.post('/order/addfeedback', data).then(response => {
                         $uibModalInstance.close(true)
@@ -46,17 +45,6 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
-        }]
-    )
-    .service('orderService', function () {
-        var _id = 3;                         //Захардкодив orderId для перевірки
-        return {
-            setId: function (id) {
-                _id = id;
-            },
-            getId: function () {
-                return _id;
-            }
         }
-    });
+    );
 

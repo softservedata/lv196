@@ -54,7 +54,6 @@ public class OrderController {
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
     void addFeedback(@RequestBody FeedbackDTO dto) {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
-        dto.setOrderId(1l);
         orderService.addFeedback(dto, email);
     }
 
