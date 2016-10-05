@@ -31,6 +31,11 @@
     background-color: #f5f5f5;
 }
 
+.sidebar-menu .active-list-item, .sidebar-menu .active-list-item:focus,
+.sidebar-menu .active-list-item:hover, .sidebar-menu .active-list-item:focus:hover  {
+    background-color: #eaeaea;
+}
+
 .sidebar-menu .sidebar-menu-item .fa {
     padding-right: 8px;
 }

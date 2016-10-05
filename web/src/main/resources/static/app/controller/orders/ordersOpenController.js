@@ -1,13 +1,13 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope', '$http', '$uibModal',
-        function ($scope, $http, $uibModal) {
+    .controller('ordersOpenController', ['$scope', '$http', '$uibModal', '$orders',
+        function ($scope, $http, $uibModal, $orders) {
             $scope.orders = {
                 open: []
             };
 
             $scope.retrieveOpenOrders = () => {
-                $http.get('/order/open').then(response => {
+                $orders.findOpen().then(response => {
                     $scope.orders.open = response.data;
                 })
             };
@@ -27,8 +27,8 @@ angular
                 });
             };
         }])
-    .controller('addOrderController', ['$scope', '$http', '$uibModalInstance',
-        function ($scope, $http, $uibModalInstance) {
+    .controller('addOrderController', ['$scope', '$http', '$uibModalInstance', '$orders', '$locations',
+        function ($scope, $http, $uibModalInstance, $orders, $locations) {
             $scope.datePicker = {
                 format: 'yyyy/MM/dd',
                 options: {
@@ -46,7 +46,7 @@ angular
             };
 
             $scope.findLocations = val => {
-                return $http.get('location/?city=' + val).then(response => response.data);
+                return $locations.find(val).then(response => response.data);
             };
 
             $scope.form = {
@@ -61,7 +61,7 @@ angular
                         weight: $scope.form.weight,
                         description: $scope.form.description
                     };
-                    $http.post('/order', data).then(response => {
+                    $orders.add(data).then(response => {
                         $uibModalInstance.close(true)
                     }, response => {
                         alert('failed to add order')

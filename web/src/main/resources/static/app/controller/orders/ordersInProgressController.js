@@ -1,13 +1,13 @@
 angular
     .module('delivery')
-    .controller('ordersInProgressController', ['$scope', '$http',
-        function ($scope, $http) {
+    .controller('ordersInProgressController', ['$scope', '$orders',
+        function ($scope, $orders) {
             $scope.orders = {
                 inProgress: []
             };
 
             $scope.retrieveInProgressOrders = () => {
-                $http.get('/order/in-progress').then(response => {
+                $orders.findInProgress().then(response => {
                     $scope.orders.inProgress = response.data;
                 })
             };
