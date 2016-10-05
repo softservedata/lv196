@@ -89,7 +89,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setText(feedbackDTO.getText());
         feedback.setRate(feedbackDTO.getRate());
         feedback.setApproved(feedbackDTO.getApproved());
-        feedback.setCreatedOn(Timestamp.valueOf(feedbackDTO.getCreatedOn()));
+        feedback.setCreatedOn(feedbackDTO.getCreatedOn());
         return feedback;
     }
 

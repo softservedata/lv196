@@ -36,5 +36,10 @@ angular
                 url: '/users',
                 templateUrl: '/app/views/users.html',
                 controller: 'userController'
+            })
+            .state('feedbacks', {
+                url: '/feedbacks',
+                templateUrl: '/app/views/feedbacks/feedbacks.html',
+                controller: 'feedbacksController'
             });
     }]);

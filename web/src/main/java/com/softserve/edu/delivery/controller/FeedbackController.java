@@ -5,10 +5,7 @@ import java.util.List;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "feedbacks")
@@ -35,5 +32,10 @@ public class FeedbackController {
     @RequestMapping(params = {"id"}, method = RequestMethod.GET)
     FeedbackDTO getFeedbackById(@RequestParam("id") long feedbackId) {
         return feedbackService.findOne(feedbackId);
+    }
+
+    @RequestMapping(path = {"changeFeedbackStatus"}, method = RequestMethod.PUT)
+    void changeFeedbackStatus(@RequestBody FeedbackDTO feedbackDTO){
+        feedbackService.update(feedbackDTO);
     }
 }

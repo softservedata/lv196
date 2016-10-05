@@ -79,16 +79,12 @@ public class FeedbackDTO {
         this.transporterName = transporterName;
     }
 
-    public String getCreatedOn() {
-        return createdOn.toString();
+    public Timestamp getCreatedOn() {
+        return createdOn;
     }
 
     public void setCreatedOn(Timestamp createdOn) {
         this.createdOn = createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = Timestamp.valueOf(createdOn);
     }
 
     public String getUserEmail() {
