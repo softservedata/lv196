@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -148,7 +149,17 @@ public class UserServiceImpl implements UserService {
 			.collect(Collectors.toList());
 	}
 
-	//<---------------------Private------------------------->
+    @Override
+    public List<UserProfileDto> getAllUsers() {
+        List<UserProfileDto> result = new LinkedList<>();
+        List<User> allUsers = userDao.findAll();
+        for (User user : allUsers) {
+            result.add(UserProfileDto.create(user));
+        }
+        return result;
+    }
+
+    //<---------------------Private------------------------->
 
     private static boolean checkPassword(UserAuthDTO user, User dbUser) {
         if( ! user.getPassword().equals(dbUser.getPassword())) {
