@@ -23,7 +23,7 @@ public class HomeController {
         return this;
     }
 
-    @RequestMapping(value = {"/", "/welcome", "/home"})
+    @RequestMapping(value = {"/welcome"})
     public ModelAndView welcome() {
         ModelAndView mv = new ModelAndView();
         mv.addObject("orderIdDto", new OrderIdDto());
