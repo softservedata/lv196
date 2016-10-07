@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.config;
 
+import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,10 +36,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("customer@delivery.com").password("customer").roles("Customer");
-        auth.inMemoryAuthentication().withUser("driver@delivery.com").password("driver").roles("Driver");
-        auth.inMemoryAuthentication().withUser("admin@delivery.com").password("admin").roles("Admin");
-        auth.inMemoryAuthentication().withUser("moderator@delivery.com").password("moderator").roles("Moderator");
+        auth.inMemoryAuthentication().withUser("customer@delivery.com").password("customer").roles(Role.CUSTOMER.getName());
+        auth.inMemoryAuthentication().withUser("driver@delivery.com").password("driver").roles(Role.DRIVER.getName());
+        auth.inMemoryAuthentication().withUser("admin@delivery.com").password("admin").roles(Role.ADMIN.getName());
+        auth.inMemoryAuthentication().withUser("moderator@delivery.com").password("moderator").roles(Role.MODERATOR.getName());
 
         auth.userDetailsService(this.userDetailsService);
         auth.authenticationProvider(authProvider());
@@ -51,8 +52,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/", "/home", "/welcome").permitAll()
                 .antMatchers("/login*").anonymous()
                 .antMatchers("/registration*").anonymous()
-                .antMatchers("/admin", "/admin/**").hasRole("Admin")
-                .antMatchers("/moderator", "/moderator/**").hasRole("Moderator")
+                .antMatchers("/admin", "/admin/**").hasRole(Role.ADMIN.getName())
+                .antMatchers("/moderator", "/moderator/**").hasRole(Role.MODERATOR.getName())
                 .and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/loginProcess")
                 .usernameParameter("email")
@@ -62,6 +63,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .and().logout().logoutSuccessUrl("/welcome")
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().accessDeniedPage("/accessDenied");
-
     }
 }

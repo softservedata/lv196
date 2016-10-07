@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNotExpired = true;
-        boolean accountNonLocked = true;
+        boolean accountNonLocked = ! user.getBlocked();
         String role = user.getUserRole().getName();
         List<GrantedAuthority> listUserRoles = new ArrayList<>();
         listUserRoles.add(new SimpleGrantedAuthority(role));
