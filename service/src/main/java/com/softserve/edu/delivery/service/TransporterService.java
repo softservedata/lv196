@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.dto.CityDto;
+import com.softserve.edu.delivery.dto.PleaceDto;
 import com.softserve.edu.delivery.dto.RegionDto;
 import com.softserve.edu.delivery.dto.StateDto;
 
@@ -34,6 +35,6 @@ public interface TransporterService {
      * Finds all pleaces wfrom tracking
      * @return map of visit time and city
      */
-  /*  Map<Date, City> getAllPleaces();*/
+    List<PleaceDto> getAllPleaces();
 
  }

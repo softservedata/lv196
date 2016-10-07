@@ -63,3 +63,29 @@ Pseudo ::after element
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+#popDialog-bg {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+#popDialog {
+    position: fixed;
+    width: 250px;
+    left: 50%;
+    margin-left: -125px;
+    margin-top: 5%;
+    padding: 15px;
+    border-radius: 5px;
+    background: white;
+}
+#popDialog .content {
+    margin-bottom: 15px;
+    text-align: center;
+}
+#popDialog .buttons-container {
+    width: 80%;
+    margin: 0 auto;
+}

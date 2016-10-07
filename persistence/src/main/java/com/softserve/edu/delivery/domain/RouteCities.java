@@ -64,4 +64,14 @@ public class RouteCities {
     public void setVisitDate(Timestamp visitDate) {
         this.visitDate = visitDate;
     }
+
+    @Override
+    public String toString() {
+        return "RouteCities{" +
+                "route_city_id=" + route_city_id +
+                ", route=" + route +
+                ", city=" + city +
+                ", visitDate=" + visitDate +
+                '}';
+    }
 }

@@ -1,30 +1,33 @@
 
-var Appl = angular.module("myAppl", []);
-var model = [
-    {name: "Lviv", region: "Lviv region", state: "Lviv state", date: "2016/09/24, 15:30"},
-    {name: "Brodu", region: "Brodu region", state: "Lviv state",date: "2016/09/24, 17:00"},
-    {name: "Rivne", region: "Rivne region", state: "Rivne state",date: "2016/09/24, 19:35"},
-    {name: "Kiev", region: "Kiev region", state: "Kiev state",date: "2016/09/25, 05:00"},
-];
+var App = angular.module("myAppl", ['ui.bootstrap']);
+    App.controller("pleaceController",["$scope", "$http", "$uibModal", function ($scope, $http, $uibModal){
+    $scope.sortType     = 'city.cityName';
+    $scope.sortReverse  = false;
+    $scope.searchFish   = '';
 
-Appl.controller("pleaceController",function ($scope, $http) {
-    $scope.listOfPleaces = model;
+    $scope.updateTable = function () {
+        $http.get('http://localhost:8080/tracking/track').success(function (result) {
+            $scope.listOfPleaces = result;
+        })
+    }
+    $scope.updateTable();
 
-    $scope.getStateList = function () {
-        $http.get('http://localhost:8080/tracking/state').success(function (inf) {
-            $scope.stateList = inf;
-        });
+    $scope.addLocation = function () {
+         const modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '/dialog.html',
+         });
 
     }
     $scope.sentState = function () {
-        var data = $scope.selectedState.name;
-        $http.post('http://localhost:8080/tracking/region', data)
-            .then(response = function (inf) {
-                $scope.regionList = inf.data;
-            }, response = function () {
-                alert('failed');
-            })
-    }
+          var data = $scope.selectedState.name;
+                $http.post('http://localhost:8080/tracking/region', data)
+                    .then(response = function (inf) {
+                        $scope.regionList = inf.data;
+                    }, response = function () {
+                        alert('failed');
+                    })
+            }
 
     $scope.sentRegion = function() {
         var d = $scope.selectedRegion.name;
@@ -35,25 +38,35 @@ Appl.controller("pleaceController",function ($scope, $http) {
                 alert('failed');
             })
     }
-    $scope.add = function () {
-        if($scope.selectedCity.value != "") {
-            var city = {
-                name: $scope.selectedCity.name,
-                region: {regionName: $scope.selectedRegion.name,
-                state: {stateName: $scope.selectedState.name}}};
-            $http.post('http://localhost:8080/tracking/add', city)
-                .then(response = function (inf) {
-                    alert('I am OK');
-                }, response = function () {
-                    alert('I am bad');
-                })
-            console.log(city);
-        }
-        else{
-            alert("You must select city!!!")
-        }
+    $scope.getStateList = function () {
+        $http.get('http://localhost:8080/tracking/state').success(function (inf) {
+            $scope.stateList = inf;
+        });
+
     }
+    $scope.add = function () {
+        var city = {
+            name: $scope.selectedCity.name,
+            cityId: $scope.selectedCity.cityId,
+            region: {
+                regionId: $scope.selectedRegion.regionId,
+                regionName: $scope.selectedRegion.name,
+                state: {
+                    stateId:$scope.selectedState.stateId,
+                    stateName: $scope.selectedState.name}}};
+        $http.post('http://localhost:8080/tracking/add', city) .then(response = function (inf) {
+            $scope.$dismiss();
+            $scope.updateTable();
+
+        }, response = function () {
+            alert('failed');
+        })
+    }
+    }]
+    )
 
 
-});
+
+
+
 

@@ -107,9 +107,10 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public void savePleace(PleaceDto pleaceDto){
         RouteCities routeCities = RouteServiceImpl.convertToEntity(pleaceDto);
+        System.out.println("routeCities : "+routeCities.toString());
         routeCityDao.save(routeCities);
     }
     public static RouteCities convertToEntity(PleaceDto pleaceDto) {
-        return new RouteCities(TransporterServiceImpl.convertToEntity(pleaceDto.getCity()), pleaceDto.getDate());
+        return new RouteCities(pleaceDto.getCity(), Timestamp.valueOf(pleaceDto.getDate()));
     }
 }

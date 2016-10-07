@@ -15,4 +15,6 @@ public interface RouteCityDao extends BaseDao<RouteCities, Long> {
     //Petro Shtenovych
     RouteCities getRouteCityWhenLastVisitedByOrder(Order order);
 
+    /*void savePleace(RouteCities routeCities);*/
+
 }
