@@ -1,8 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDto;
-import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
