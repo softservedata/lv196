@@ -66,39 +66,4 @@ public class OrderController {
     void changeOfferStatus(@RequestBody OfferDto offerDto) {
         orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved());
     }
-
-    /*--------------------IvanSynyshyn----------------------------*/
-    @RequestMapping(path = "filtered-by-city-from", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByCityFrom(@RequestParam String city) {
-        return orderService.getOrdersByCityFrom(city);
-    }
-
-    @RequestMapping(path = "filtered-by-city-to", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByCityTo(@RequestParam String city) {
-        return orderService.getOrdersByCityTo(city);
-    }
-
-    @RequestMapping(path = "filtered-by-weight", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByWeight(@RequestParam String weight) {
-        BigDecimal converted = BigDecimal.valueOf(Double.parseDouble(weight));
-        return orderService.getOrdersByWeight(converted);
-    }
-
-    @RequestMapping(path = "filtered-by-arrival-date", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByArriwalDate(@RequestParam String date) {
-        SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");
-        Date parsed = null;
-        try {
-            parsed = formater.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Timestamp timestamp = new Timestamp(parsed.getTime());
-        return orderService.getOrdersByArriwalDate(timestamp);
-    }
-
-    @RequestMapping(path = "offer", method = RequestMethod.POST)
-    List<OfferDto> addOffer(@RequestBody OrderForListDto order) {
-        return orderService.addOffer(order.getId());
-    }
 }

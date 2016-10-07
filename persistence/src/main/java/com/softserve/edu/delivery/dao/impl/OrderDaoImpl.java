@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -66,11 +67,11 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
                 .getResultList();
     }
 
-    /*--------------------IvanSynyshyn----------------------------*/
     @Override
     public List<Order> getOrderByCityFrom(Long id) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select o from Order o where o.cityFrom.cityId = :cityId");
+        TypedQuery<Order> query = em.createQuery("select o from Order o where o.cityFrom.cityId = :cityId " +
+                "and o.orderStatus = 'OPEN'", Order.class);
         query.setParameter("cityId", id);
         return query.getResultList();
     }
@@ -78,7 +79,8 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByCityTo(Long id) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select o from Order o where o.cityTo.cityId = :cityId");
+        TypedQuery<Order> query = em.createQuery("select o from Order o where o.cityTo.cityId = :cityId " +
+                "and o.orderStatus = 'OPEN'", Order.class);
         query.setParameter("cityId", id);
         return query.getResultList();
     }
@@ -86,7 +88,8 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByWeight(BigDecimal weight) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select o from Order o where o.weight <= :weight");
+        TypedQuery<Order> query = em.createQuery("select o from Order o where o.weight <= :weight " +
+                "and o.orderStatus = 'OPEN'", Order.class);
         query.setParameter("weight", weight);
         return query.getResultList();
     }
@@ -94,7 +97,8 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
     @Override
     public List<Order> getOrderByArrivalDate(Timestamp arrivalDate) {
         EntityManager em = super.getEntityManager();
-        Query query = em.createQuery("select o from Order o where o.arrivalDate >= :arrivalDate");
+        TypedQuery<Order> query = em.createQuery("select o from Order o where o.arrivalDate >= :arrivalDate " +
+                "and o.orderStatus = 'OPEN'", Order.class);
         query.setParameter("arrivalDate", arrivalDate);
         return query.getResultList();
     }
