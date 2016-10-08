@@ -64,7 +64,8 @@ public class AllOrderController {
     }
 
     @RequestMapping(path = "offer", method = RequestMethod.POST)
-    List<OfferDto> addOffer(@RequestBody OrderForListDto order) {
-        return orderService.addOffer(order.getId());
+    List<OfferDto> addOffer(@RequestBody String id) {
+        Long orderId = Long.getLong(id);
+        return orderService.addOffer(orderId);
     }
 }

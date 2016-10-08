@@ -28,4 +28,14 @@ angular
                 $scope.orders.open = response.data
             })
         };
+
+        $scope.addOffer = () => {
+            function addOffer() {
+                var id = document.getElementById('order.getId()').value
+            }
+            $http.get('/all-orders/offer?id='+id).then(response => {
+                console.log(response.data)
+                $scope.numbers = response.data
+            })
+        }
    }]);
