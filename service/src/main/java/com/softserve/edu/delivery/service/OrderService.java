@@ -61,6 +61,7 @@ public interface OrderService {
     List<OrderForListDto> getOrdersByCityTo(String name);
     List<OrderForListDto> getOrdersByWeight(BigDecimal weight);
     List<OrderForListDto> getOrdersByArriwalDate(Timestamp arrivalDate);
+    List<OrderForListDto> getAllOpenOrder();
 
     //As transporter I want to add Offer on order.
     List<OfferDto> addOffer(Long orderId);

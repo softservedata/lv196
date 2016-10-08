@@ -29,9 +29,7 @@ public class AllOrderController {
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderForListDto> open() {
-        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
-
-        return orderService.findOpenOrders(email);
+        return orderService.getAllOpenOrder();
     }
 
     @RequestMapping(path = "filtered-by-city-from", method = RequestMethod.GET)

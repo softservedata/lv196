@@ -102,4 +102,11 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, Long> implements OrderDao {
         query.setParameter("arrivalDate", arrivalDate);
         return query.getResultList();
     }
+
+    @Override
+    public List<Order> getAllOpenOrder() {
+        EntityManager em = super.getEntityManager();
+        TypedQuery<Order> query = em.createQuery("select o from Order o where o.orderStatus = 'OPEN'", Order.class);
+        return query.getResultList();
+    }
 }

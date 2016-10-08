@@ -36,6 +36,7 @@
                 {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
             </div>
             <div class="order-subinfo">
+                <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>Customer {{order.customerName}}</span>
                 <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
                 <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>Weight {{order.weight | number}}</span>
             </div>

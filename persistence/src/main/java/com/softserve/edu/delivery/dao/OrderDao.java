@@ -45,6 +45,8 @@ public interface OrderDao extends BaseDao<Order, Long> {
     List<Order> getOrderByCityTo(Long id);
     List<Order> getOrderByWeight(BigDecimal weight);
     List<Order> getOrderByArrivalDate(Timestamp arrivalDate);
+    List<Order> getAllOpenOrder();
+
 
 
 

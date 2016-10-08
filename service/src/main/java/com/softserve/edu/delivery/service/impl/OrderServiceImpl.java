@@ -165,7 +165,6 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    /*--------------------IvanSynyshyn----------------------------*/
     @Override
     public List<OrderForListDto> getOrdersByCityFrom(String name) {
         List<OrderForListDto> result = new ArrayList<>();
@@ -225,6 +224,15 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Wrong date format");
         }
         for (Order ord : orderDao.getOrderByArrivalDate(arrivalDate)) {
+            result.add(OrderForListDto.of(ord));
+        }
+        return result;
+    }
+
+    @Override
+    public List<OrderForListDto> getAllOpenOrder() {
+        List<OrderForListDto> result = new ArrayList<>();
+        for (Order ord : orderDao.getAllOpenOrder()) {
             result.add(OrderForListDto.of(ord));
         }
         return result;
