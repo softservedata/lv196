@@ -17,7 +17,7 @@ public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements Feed
     @Override
     public List<Feedback> findAllFeedbacksInRange(Long idFrom, int number) {
         return getEntityManager()
-                .createQuery("select f from Feedback f where f.id >=:idFrom")
+                .createQuery("select f from Feedback f where f.feedbackId >=:idFrom")
                 .setParameter("idFrom", idFrom)
                 .setMaxResults(number)
                 .getResultList();

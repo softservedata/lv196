@@ -33,18 +33,14 @@ angular
                 templateUrl: '/app/views/orders/all.orders.html',
                 controller: 'allOrdersController'
             })
-            .state('feedback', {
-                url: '/feedback',
-                templateUrl: '/app/views/feedback.html'
+            .state('feedbacks', {
+                url: '/feedbacks',
+                templateUrl: '/app/views/feedbacks/feedbacks.html',
+                controller: 'feedbacksController'
             })
             .state('users', {
                 url: '/users',
                 templateUrl: '/app/views/users.html',
                 controller: 'userController'
-            })
-            .state('feedbacks', {
-                url: '/feedbacks',
-                templateUrl: '/app/views/feedbacks/feedbacks.html',
-                controller: 'feedbacksController'
             });
     }]);

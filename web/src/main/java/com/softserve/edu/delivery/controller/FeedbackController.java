@@ -5,18 +5,18 @@ import java.util.List;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "feedbacks")
 public class FeedbackController {
 
-    private final FeedbackService feedbackService;
-
     @Autowired
-    public FeedbackController(FeedbackService feedbackService) {
-        this.feedbackService = feedbackService;
-    }
+    private FeedbackService feedbackService;
 
     @RequestMapping(params = {"all"}, method = RequestMethod.GET)
     List<FeedbackDTO> getAllFeedbacks() {
