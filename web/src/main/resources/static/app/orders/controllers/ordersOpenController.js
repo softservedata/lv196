@@ -13,16 +13,6 @@ angular
             };
             $scope.retrieveOpenOrders();
 
-            orderService.setId(1);
-
-            $scope.retrieveNumberOfOffers = () => {
-                $http.get('/order/count/'+orderService.getId()).then(response => {
-                    $scope.numbers = response.data;
-                    // console.log($scope.numbers);
-                })
-            };
-            $scope.retrieveNumberOfOffers();
-
             $scope.showOrderCreation = () => {
                 const modalInstance = $uibModal.open({
                     animation: true,
@@ -37,12 +27,19 @@ angular
                 });
             };
 
-            $scope.showOffers = () => {
+            $scope.showOffers = (order) => {
+                orderService.setId(order.id);
                 $uibModal.open({
                     animation: true,
                     templateUrl: '/app/orders/views/show.offers.html',
                     controller: 'showOffersController'
                 });
+                $scope.retrieveNumberOfOffers = () => {
+                    $http.get('/order/count/'+orderService.getId()).then(response => {
+                        $scope.numbers = response.data;
+                    })
+                };
+                $scope.retrieveNumberOfOffers();
             };
         }])
     .controller('addOrderController', ['$scope', '$http', '$uibModalInstance', '$orders', '$locations',
@@ -100,6 +97,13 @@ angular
             $http.get('/order/offers/'+orderService.getId()).then(response => {
                 $scope.offers = response.data;
             })
+        };
+        $scope.retrieveOffers();
+
+        $scope.changeStatus = (offer) => {
+            $http.put('/order/change/',offer).then(response => {
+                    $scope.offers = response.data;
+                });
         };
         $scope.retrieveOffers();
     });

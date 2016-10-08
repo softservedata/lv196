@@ -1,11 +1,11 @@
 <a ng-click="showOrderCreation()" class="btn btn-default btn-add-order">
     <i class="add">+</i>
 </a>
-<div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
+<div data-ng-repeat="order in orders.open track by order.id" class="panel panel-default order-open">
     <div class="panel-body">
         <div class="order-actions">
-            <a ng-click="showOffers()">
-                <i class="fa fa-car" ng-onclick data-notifications="{{numbers}}" aria-hidden="true"></i>
+            <a data-ng-click="showOffers(order)">
+                <i class="fa fa-car"  data-notifications="{{numbers}}" aria-hidden="true"></i>
             </a>
             <i class="fa fa-trash" aria-hidden="true"></i>
         </div>

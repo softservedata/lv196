@@ -1,4 +1,4 @@
-<div ng-repeat="order in orders.closed track by order.id" class="panel panel-default order-closed">
+<div data-ng-repeat="order in orders.closed track by order.id" class="panel panel-default order-closed">
     <div class="panel-body">
         <div class="order-city">
             {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
@@ -8,7 +8,7 @@
             <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
             <span class="order-sub"><i class="fa fa-map-marker" aria-hidden="true"></i>Ternopil</span>
             <p class="navbar-btn">
-                <a ng-click="addFeedback()" class="btn btn-primary  btn-xs">
+                <a data-ng-click="addFeedback(order)" class="btn btn-primary  btn-xs">
                     <i class="fa fa-plus" aria-hidden="true"></i> Feedback
                 </a>
             </p>

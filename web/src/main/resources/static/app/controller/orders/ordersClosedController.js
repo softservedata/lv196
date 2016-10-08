@@ -2,8 +2,6 @@
     .module('delivery')
     .controller('ordersClosedController',
         function ($scope, orderService, $http, $uibModal) {
-        // orderService.setId($scope.order.id);                   //didn't work
-        orderService.setId(1);
 
         $scope.orders = {
             closed: []
@@ -16,7 +14,8 @@
         };
         $scope.retrieveClosedOrders();
 
-        $scope.addFeedback = function () {
+        $scope.addFeedback = function (order) {
+            orderService.setId(order.id);
             const modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '/app/views/add.feedback.html',
@@ -28,7 +27,6 @@
     )
     .controller('addFeedbackController', function ($scope, orderService, $http, $uibModalInstance) {
             $scope.idForFeedback = orderService.getId();
-
             $scope.form = {
                 submit: () => {
                     const data = {

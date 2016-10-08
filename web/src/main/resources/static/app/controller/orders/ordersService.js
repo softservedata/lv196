@@ -9,5 +9,5 @@ angular
         getId: function () {
             return _id;
         }
-    }
+    };
 });
