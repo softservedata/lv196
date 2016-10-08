@@ -36,6 +36,14 @@ angular
                     }
                 });
             };
+
+            $scope.showOffers = () => {
+                $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/orders/views/show.offers.html',
+                    controller: 'showOffersController'
+                });
+            };
         }])
     .controller('addOrderController', ['$scope', '$http', '$uibModalInstance', '$orders', '$locations',
         function ($scope, $http, $uibModalInstance, $orders, $locations) {
@@ -83,4 +91,15 @@ angular
                 $uibModalInstance.dismiss('cancel');
             };
         }]
-    );
+    )
+    .controller('showOffersController',function ($scope, orderService, $http) {
+        $scope.offers = {
+            offers: []
+        };
+        $scope.retrieveOffers = () => {
+            $http.get('/order/offers/'+orderService.getId()).then(response => {
+                $scope.offers = response.data;
+            })
+        };
+        $scope.retrieveOffers();
+    });

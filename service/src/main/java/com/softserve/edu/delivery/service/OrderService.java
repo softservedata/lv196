@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.domain.Offer;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
@@ -41,6 +41,8 @@ public interface OrderService {
     void removeOrder(Long id);
 
     Integer countOffers(Long orderId);
+
+    List<OfferDtoForList> getOffersByOrderId(Long id);
 
 /**
 * Author - Taras Kurdiukov

@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.dao.*;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
@@ -153,6 +154,16 @@ public class OrderServiceImpl implements OrderService {
                 .size();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<OfferDtoForList> getOffersByOrderId(Long orderId) {
+        Order order=orderDao.findOne(orderId).orElseThrow(() -> new IllegalArgumentException("No such user with email: " + orderId));
+        return offerDao
+                .getAllOffersByOrder(order)
+                .stream()
+                .map(OfferDtoForList::offerToOfferDto)
+                .collect(Collectors.toList());
+    }
 
     /*--------------------IvanSynyshyn----------------------------*/
     @Override

@@ -2,16 +2,12 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDto;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -70,5 +66,10 @@ public class OrderController {
     @RequestMapping(path = "change", method = RequestMethod.PUT)
     void changeOfferStatus(@RequestBody OfferDto offerDto) {
         orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved());
+    }
+
+    @RequestMapping(path = "offers/{id}", method = RequestMethod.GET)
+    List<OfferDtoForList> getOffersByOrderId(@PathVariable Long id) {
+        return orderService.getOffersByOrderId(id);
     }
 }

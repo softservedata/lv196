@@ -2,7 +2,7 @@
     .module('delivery')
     .controller('ordersClosedController',
         function ($scope, orderService, $http, $uibModal) {
-        // orderService.setId($scope.orders.id);                   //didn't work
+        // orderService.setId($scope.order.id);                   //didn't work
         orderService.setId(1);
 
         $scope.orders = {
