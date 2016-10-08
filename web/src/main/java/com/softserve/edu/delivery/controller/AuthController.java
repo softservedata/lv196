@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 @Controller
 public class AuthController {
@@ -105,8 +106,12 @@ public class AuthController {
 
     private String getPrincipal() {
         String userName;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        Object principal;
+        try {
+            principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (NullPointerException ex) {
+            return "";
+        }
         if (principal instanceof UserDetails) {
             userName = ((UserDetails) principal).getUsername();
         }else {
