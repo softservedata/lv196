@@ -45,6 +45,11 @@ public class OrderController {
         return orderService.findAllClosedOrders(email);
     }
 
+    @RequestMapping(path="count/{id}", method = RequestMethod.GET)
+    Integer countOffers(@PathVariable Long id) {
+       return orderService.countOffers(id);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     void addOrder(@RequestBody OrderForAddDto dto) {
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later

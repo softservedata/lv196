@@ -144,6 +144,15 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Integer countOffers(Long orderId) {
+        Order order=orderDao.findOne(orderId).orElseThrow(() -> new IllegalArgumentException("No such user with email: " + orderId));
+        return offerDao
+                .getAllOffersByOrder(order)
+                .size();
+    }
+
 
     /*--------------------IvanSynyshyn----------------------------*/
     @Override

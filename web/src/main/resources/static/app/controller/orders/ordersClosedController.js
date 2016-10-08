@@ -1,8 +1,10 @@
     angular
     .module('delivery')
     .controller('ordersClosedController',
-        ['$scope', '$http', '$uibModal',
-        function ($scope, $http, $uibModal) {
+        function ($scope, orderService, $http, $uibModal) {
+        // orderService.setId($scope.orders.id);                   //didn't work
+        orderService.setId(1);
+
         $scope.orders = {
             closed: []
         };
@@ -21,10 +23,10 @@
                 controller: 'addFeedbackController'
             });
 
+        };
         }
-        }]
     )
-    .controller('addFeedbackController', function ($scope,orderService, $http, $uibModalInstance) {
+    .controller('addFeedbackController', function ($scope, orderService, $http, $uibModalInstance) {
             $scope.idForFeedback = orderService.getId();
 
             $scope.form = {

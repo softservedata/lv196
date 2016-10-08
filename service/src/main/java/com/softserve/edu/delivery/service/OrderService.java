@@ -40,6 +40,8 @@ public interface OrderService {
 
     void removeOrder(Long id);
 
+    Integer countOffers(Long orderId);
+
 /**
 * Author - Taras Kurdiukov
 */

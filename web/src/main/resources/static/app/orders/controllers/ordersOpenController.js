@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope', '$http', '$uibModal', '$orders',
-        function ($scope, $http, $uibModal, $orders) {
+    .controller('ordersOpenController', ['$scope','orderService', '$http', '$uibModal', '$orders',
+        function ($scope,orderService, $http, $uibModal, $orders) {
             $scope.orders = {
                 open: []
             };
@@ -12,6 +12,16 @@ angular
                 })
             };
             $scope.retrieveOpenOrders();
+
+            orderService.setId(1);
+
+            $scope.retrieveNumberOfOffers = () => {
+                $http.get('/order/count/'+orderService.getId()).then(response => {
+                    $scope.numbers = response.data;
+                    // console.log($scope.numbers);
+                })
+            };
+            $scope.retrieveNumberOfOffers();
 
             $scope.showOrderCreation = () => {
                 const modalInstance = $uibModal.open({
