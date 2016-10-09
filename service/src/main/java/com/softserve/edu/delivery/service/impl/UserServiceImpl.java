@@ -10,6 +10,7 @@ import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.exception.EmailExistsException;
 import com.softserve.edu.delivery.exception.UserNotFoundException;
 import com.softserve.edu.delivery.exception.WrongPasswordException;
+import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -33,13 +34,15 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, UserRepository userRepository) {
         this.userDao = userDao;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -121,18 +124,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
 		return userDao
-						.getAllUsersInRange(page, size)
-						.stream()
-						.filter(filter)
-						.map(UserProfileDto::create)
-						.collect(Collectors.toList());
+				.getAllUsersInRange(page, size)
+				.stream()
+				.filter(filter)
+				.map(UserProfileDto::create)
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public UserProfileDto changeUserStatus(String mail, boolean blocked) throws IllegalStateException{
-		return userDao
-                .findOne(mail)
-				.map(user -> userDao.update(user.setBlocked(blocked)))
+	public UserProfileDto changeUserStatus(String mail, boolean blocked){
+		return userRepository
+                .findOneOpt(mail)
+				.map(user -> userRepository.save(user.setBlocked(blocked)))
                 .map(UserProfileDto::create)
                 .<IllegalStateException>orElseThrow(() -> new IllegalStateException("User: " + mail + " not found!"));
 	}
@@ -140,19 +143,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map) {
 		return 	map
-			.keySet().stream()
-			.map(mail -> changeUserStatus(mail, map.get(mail)))
-			.collect(Collectors.toList());
+				.keySet().stream()
+				.map(mail -> changeUserStatus(mail, map.get(mail)))
+				.collect(Collectors.toList());
 	}
 
     @Override
     public List<UserProfileDto> getAllUsers() {
-        List<UserProfileDto> result = new LinkedList<>();
-        List<User> allUsers = userDao.findAll();
-        for (User user : allUsers) {
-            result.add(UserProfileDto.create(user));
-        }
-        return result;
+        return userRepository
+                .findAll()
+                .stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
     }
 
     //<---------------------Private------------------------->
