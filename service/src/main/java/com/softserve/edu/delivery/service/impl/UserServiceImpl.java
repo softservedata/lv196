@@ -103,7 +103,6 @@ public class UserServiceImpl implements UserService {
      * @param userAuthDTO with credentials email and password
      * @throws IllegalArgumentException if param ref null
      * @throws UserNotFoundException if user isn't registered
-     * @throws WrongPasswordException if user typed wrong password
      * @return UserProfileDto instance which has user profile information
      */
     @Override
@@ -113,9 +112,6 @@ public class UserServiceImpl implements UserService {
         }
         if (this.userDao.exists(userAuthDTO.getEmail())) {
             User dbUser = this.userDao.findOne(userAuthDTO.getEmail()).get();
-            if ( ! checkPassword(userAuthDTO, dbUser)) {
-                throw new WrongPasswordException();
-            }
             return UserProfileDto.create(dbUser);
         }else {
             throw new UserNotFoundException(userAuthDTO.getEmail());

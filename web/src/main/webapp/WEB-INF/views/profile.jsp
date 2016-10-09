@@ -39,17 +39,17 @@
 					<p>Last name</p>
 					<input id="lastName" type="text" value="${userProfile.lastName}" disabled/>
 					
-					<p>Phone number</p>
+					<%--<p>Phone number</p>
 					<input id="phoneNum" name="phoneNum" type="text" value="${userProfile.phoneNumber}" disabled/>
 
 					<p>Passport</p>
-					<input id="passport" name="passport" type="text" value="${userProfile.passport}" disabled/>
+					<input id="passport" name="passport" type="text" value="${userProfile.passport}" disabled/>--%>
 
 					<p>Role</p>
 					<input id="role" name="role" type="text" value="${userProfile.role}" disabled/>
 
-					<p>Approved</p>
-					<input id="approved" name="approved" type="text" value="${userProfile.approved}"/>
+					<p>Blocked</p>
+					<input id="approved" name="approved" type="text" value="${userProfile.blocked}"/>
 
 				</fieldset>
 

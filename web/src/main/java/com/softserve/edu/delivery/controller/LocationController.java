@@ -2,6 +2,8 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.service.LocationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,8 @@ public class LocationController {
 
     private LocationService locationService;
 
+    Logger logger = LoggerFactory.getLogger(LocationController.class.getName());
+
     @Autowired
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
@@ -25,6 +29,7 @@ public class LocationController {
 
     @RequestMapping(method = RequestMethod.GET)
     List<LocationDto> locations(@RequestParam(value = "city") String city) {
+        logger.info("Method LocationController.locations()");
         return StringUtils.isEmpty(city) ? Collections.emptyList() :
                 locationService.findCitiesByName(city);
     }

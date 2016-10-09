@@ -48,7 +48,7 @@ public class DataConfiguration {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(this.dataSource);
         em.setPackagesToScan(env.getProperty("persistence.packagesToScan"));
-        em.setPersistenceUnitName("persistence.unitName");
+        em.setPersistenceUnitName(env.getProperty("persistence.unitName"));
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Map<String, String> properties = new HashMap<>();
