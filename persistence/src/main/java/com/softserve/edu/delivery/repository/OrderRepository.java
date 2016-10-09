@@ -19,4 +19,8 @@ public interface OrderRepository extends BaseRepository<Order, Long>, JpaReposit
     @Query("select concat(off.car.driver.firstName, ' ', off.car.driver.lastName) " +
             "from Offer off where off.order.id = :id and off.approved = true")
     Optional<String> findDriverNameByOrderId(@Param("id") Long id);
+
+    @Query("select count(off.offerId)" +
+            "from Offer off where off.order.id = :id")
+    Long countOffers(@Param("id") Long id);
 }

@@ -64,9 +64,15 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository
                 .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.OPEN)
                 .stream()
-                .map(OrderForListDto::of)
+                .map(order -> {
+                    OrderForListDto dto = OrderForListDto.of(order);
+                    Long numberOfOffers = orderRepository.countOffers(dto.getId());
+                    return dto.setNumberOfOffers(numberOfOffers);
+                })
                 .collect(Collectors.toList());
     }
+
+
 
     @Override
     public void addOrder(OrderForAddDto dto, String email) {
@@ -145,14 +151,6 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Integer countOffers(Long orderId) {
-        Order order=orderDao.findOne(orderId).orElseThrow(() -> new IllegalArgumentException("No such user with email: " + orderId));
-        return offerDao
-                .getAllOffersByOrder(order)
-                .size();
-    }
 
     @Override
     @Transactional(readOnly = true)

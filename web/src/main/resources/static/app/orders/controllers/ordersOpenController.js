@@ -34,12 +34,6 @@ angular
                     templateUrl: '/app/orders/views/show.offers.html',
                     controller: 'showOffersController'
                 });
-                $scope.retrieveNumberOfOffers = () => {
-                    $http.get('/order/count/'+orderService.getId()).then(response => {
-                        $scope.numbers = response.data;
-                    })
-                };
-                $scope.retrieveNumberOfOffers();
             };
         }])
     .controller('addOrderController', ['$scope', '$http', '$uibModalInstance', '$orders', '$locations',

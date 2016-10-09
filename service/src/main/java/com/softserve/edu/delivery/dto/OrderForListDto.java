@@ -18,6 +18,7 @@ public class OrderForListDto {
     private String orderStatus;
     private String driverName;
     private BigDecimal weight;
+    private Long numberOfOffers;
 
     public OrderForListDto() {
     }
@@ -30,7 +31,8 @@ public class OrderForListDto {
                 .setDescription(order.getDescription())
                 .setCityNameFrom(order.getCityFrom() == null ? null : order.getCityFrom().getCityName())
                 .setCityNameTo(order.getCityTo() == null ? null : order.getCityTo().getCityName())
-                .setWeight(order.getWeight());
+                .setWeight(order.getWeight())
+                .setNumberOfOffers(null);
 
         User customer = order.getCustomer();
         if (customer != null) {
@@ -127,6 +129,15 @@ public class OrderForListDto {
 
     public OrderForListDto setWeight(BigDecimal weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public Long getNumberOfOffers() {
+        return numberOfOffers;
+    }
+
+    public OrderForListDto setNumberOfOffers(Long numberOfOffers) {
+        this.numberOfOffers = numberOfOffers;
         return this;
     }
 
