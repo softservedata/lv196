@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -304,5 +305,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Transactional
     public List <FeedbackDTO> findByTransporterFirstNameOrLastName(String transporterName){
         return copyFeedbackListToDTOList(feedbackRepository.findByTransporterFirstNameOrLastName(transporterName));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByApproved(Boolean approved){
+        return copyFeedbackListToDTOList(feedbackRepository.findByApproved(approved));
+    }
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByCreatedOn(Timestamp createdOn){
+        return copyFeedbackListToDTOList(feedbackRepository.findByCreatedOnAfter(createdOn));
     }
 }

@@ -1,12 +1,11 @@
 angular
     .module('delivery')
     .controller('feedbacksController', ['$scope', '$http', '$state', function ($scope, $http, $state) {
-        // $http.get("/feedbacks/all")
-        //     .then(function (response) {
-        //         $scope.feedbacks = response.data;
-        //     });
 
         $scope.feedbacks = [];
+        $scope.feedbackFilter = [];
+
+        getAllFeedbacks();
 
         $scope.btnApprovedStyle = function (approved) {
             if (approved) {
@@ -17,83 +16,149 @@ angular
             ;
         };
 
-        $scope.getAllFeedbacks = function () {
-            $http.get("/feedbacks/all")
-                .then(function (response) {
-                    $scope.feedbacks = response.data;
-                });
+        function getAllFeedbacks() {
+            var allFiltersEmpty = true;
+            for (var i = 0; i < $scope.feedbackFilter.length; i++) {
+                if ($scope.feedbackFilter[i] != null && $scope.feedbackFilter[i] != '') {
+                    allFiltersEmpty = false;
+                    break;
+                }
+                ;
+            }
+            ;
+            if (allFiltersEmpty) {
+                $http.get("/feedbacks/all")
+                    .then(function (response) {
+                        $scope.feedbacks = response.data;
+                    });
+            }
+            ;
         };
 
         $scope.getFeedbackById = function () {
-            if ($scope.feedbackId.indexOf("+") !== -1 && $scope.feedbackId.length > 1) {
+            if ($scope.feedbackFilter[0].length > 0) {
+                if ($scope.feedbackFilter[0].indexOf("+") !== -1 && $scope.feedbackFilter[0].length > 1) {
 
-                $http.get("/feedbacks/id/greater-than?id=" + $scope.feedbackId)
-                    .then(function (response) {
-                        $scope.feedbacks = response.data;
-                    });
-            } else if ($scope.feedbackId.indexOf("-")  !== -1  && $scope.feedbackId.length > 1) {
+                    $http.get("/feedbacks/id/greater-than?id=" + $scope.feedbackFilter[0])
+                        .then(function (response) {
+                            $scope.feedbacks = response.data;
+                        });
+                } else if ($scope.feedbackFilter[0].indexOf("-") !== -1 && $scope.feedbackFilter[0].length > 1) {
 
-                $http.get("/feedbacks/id/less-than?id=" + $scope.feedbackId)
-                    .then(function (response) {
-                        $scope.feedbacks = response.data;
-                    });
+                    $http.get("/feedbacks/id/less-than?id=" + $scope.feedbackFilter[0])
+                        .then(function (response) {
+                            $scope.feedbacks = response.data;
+                        });
+                } else {
+
+                    $http.get("/feedbacks/id?id=" + $scope.feedbackFilter[0])
+                        .then(function (response) {
+                            $scope.feedbacks.length = 0;
+                            $scope.feedbacks.push(response.data);
+                        });
+                }
+                ;
             } else {
-
-                $http.get("/feedbacks/id?id=" + $scope.feedbackId)
-                    .then(function (response) {
-                        $scope.feedbacks.length = 0;
-                        $scope.feedbacks.push(response.data);
-                    });
-            };
+                getAllFeedbacks();
+            }
+            ;
         };
 
         $scope.getFeedbacksByText = function () {
-            if ($scope.feedbackText.length > 3) {
-                $http.get("/feedbacks/text?text=" + $scope.feedbackText)
+            if ($scope.feedbackFilter[1].length > 3) {
+                $http.get("/feedbacks/text?text=" + $scope.feedbackFilter[1])
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
-            };
+            } else if ($scope.feedbackFilter[1].length == 0) {
+                getAllFeedbacks();
+            }
+            ;
         };
 
         $scope.getFeedbacksByRate = function () {
-            if ($scope.feedbackRate.indexOf("+") !== -1 && $scope.feedbackRate.length > 1) {
+            if ($scope.feedbackFilter[2].length > 0) {
+                if ($scope.feedbackFilter[2].indexOf("+") !== -1 && $scope.feedbackFilter[2].length > 1) {
 
-                $http.get("/feedbacks/rate/greater-than?rate=" + $scope.feedbackRate)
-                    .then(function (response) {
-                        $scope.feedbacks = response.data;
-                    });
-            } else if ($scope.feedbackRate.indexOf("-")  !== -1  && $scope.feedbackRate.length > 1) {
+                    $http.get("/feedbacks/rate/greater-than?rate=" + $scope.feedbackFilter[2])
+                        .then(function (response) {
+                            $scope.feedbacks = response.data;
+                        });
+                } else if ($scope.feedbackFilter[2].indexOf("-") !== -1 && $scope.feedbackFilter[2].length > 1) {
 
-                $http.get("/feedbacks/rate/less-than?rate=" + $scope.feedbackRate)
-                    .then(function (response) {
-                        $scope.feedbacks = response.data;
-                    });
+                    $http.get("/feedbacks/rate/less-than?rate=" + $scope.feedbackFilter[2])
+                        .then(function (response) {
+                            $scope.feedbacks = response.data;
+                        });
+                } else {
+
+                    $http.get("/feedbacks/rate?rate=" + $scope.feedbackFilter[2])
+                        .then(function (response) {
+                            $scope.feedbacks = response.data;
+                        });
+                }
+                ;
             } else {
-
-                $http.get("/feedbacks/rate?rate=" + $scope.feedbackRate)
-                    .then(function (response) {
-                        $scope.feedbacks = response.data;
-                    });
-            };
+                getAllFeedbacks();
+            }
+            ;
         };
 
         $scope.getFeedbacksByUserName = function () {
-            if ($scope.feedbackUser.length > 3) {
-                $http.get("/feedbacks/userName?userName=" + $scope.feedbackUser)
+            if ($scope.feedbackFilter[3].length > 3) {
+                $http.get("/feedbacks/userName?userName=" + $scope.feedbackFilter[3])
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
-            };
+            } else if ($scope.feedbackFilter[3].length == 0) {
+                getAllFeedbacks();
+            }
+            ;
         };
 
         $scope.getFeedbacksByTransporterName = function () {
-            if ($scope.feedbackTransporter.length > 3) {
-                $http.get("/feedbacks/transporterName?transporterName=" + $scope.feedbackTransporter)
+            if ($scope.feedbackFilter[4].length > 3) {
+                $http.get("/feedbacks/transporterName?transporterName=" + $scope.feedbackFilter[4])
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
-            };
+            } else if ($scope.feedbackFilter[4].length == 0) {
+                getAllFeedbacks();
+            }
+            ;
+        };
+
+        $scope.getFeedbacksByDate = function () {
+            if ($scope.feedbackFilter[5] == null) {
+                getAllFeedbacks();
+            } else {
+                $http.get("/feedbacks/feedbackDate?feedbackDate=" + Date.parse($scope.feedbackFilter[5]))
+                    .then(function (response) {
+                        $scope.feedbacks = response.data;
+                    });
+            }
+            ;
+        };
+
+        $scope.getFeedbacksByApproved = function () {
+            if ($scope.feedbackFilter[6].length > 2) {
+                var approved;
+                if ("true".includes($scope.feedbackFilter[6])) {
+                    approved = "true";
+                } else if ("false".includes($scope.feedbackFilter[6])) {
+                    approved = "false";
+                }
+                if (approved !== undefined) {
+                    $http.get("/feedbacks/approved?approved=" + approved)
+                        .then(function (response) {
+                            $scope.feedbacks = response.data;
+                        });
+                }
+                ;
+            } else if ($scope.feedbackFilter[6].length == 0) {
+                getAllFeedbacks();
+            }
+            ;
         };
 
         $scope.changeFeedbackStatus = function (feedbackDTO) {

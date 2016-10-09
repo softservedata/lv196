@@ -10,6 +10,7 @@ import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -56,4 +57,8 @@ public interface FeedbackService {
     List <FeedbackDTO> findByUserFirstNameOrLastName(String userName);
 
     List <FeedbackDTO> findByTransporterFirstNameOrLastName(String transporterName);
+
+    List<FeedbackDTO> findByApproved(Boolean approved);
+
+    List<FeedbackDTO> findByCreatedOn(Timestamp createdOn);
 }

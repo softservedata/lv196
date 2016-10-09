@@ -1,6 +1,6 @@
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Id" ng-model="feedbackId"
+        <input type="text" class="form-control" placeholder="Id" ng-model="feedbackFilter[0]"
                ng-change="getFeedbackById()"/>
         <span class="input-group-addon">
             <i class="fa fa-search"></i>
@@ -9,7 +9,7 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Text" ng-model="feedbackText"
+        <input type="text" class="form-control" placeholder="Text" ng-model="feedbackFilter[1]"
                ng-change="getFeedbacksByText()"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
@@ -18,7 +18,7 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Rate"
+        <input type="text" class="form-control" placeholder="Rate" ng-model="feedbackFilter[2]"
                ng-model="feedbackRate" ng-change="getFeedbacksByRate()"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
@@ -27,7 +27,7 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="User" ng-model="feedbackUser"
+        <input type="text" class="form-control" placeholder="User" ng-model="feedbackFilter[3]"
                ng-change="getFeedbacksByUserName()"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
@@ -36,7 +36,7 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Transporter" ng-model="feedbackTransporter"
+        <input type="text" class="form-control" placeholder="Transporter" ng-model="feedbackFilter[4]"
                ng-change="getFeedbacksByTransporterName()"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
@@ -45,14 +45,14 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="date" class="form-control" placeholder="Date" ng-model="feedbackDate"
+        <input type="date" class="form-control" placeholder="Date" ng-model="feedbackFilter[5]"
                ng-change="getFeedbacksByDate()"/>
     </div>
 </td>
 <td>
     <div class=" input-group">
-        <input type="text" class="form-control" placeholder="Appr." ng-model="feedbackStatus"
-               ng-change="getFeedbacksByStatus()"/>
+        <input type="text" class="form-control" placeholder="Appr." ng-model="feedbackFilter[6]"
+               ng-change="getFeedbacksByApproved()"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
         </span>

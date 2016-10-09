@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,23 +33,29 @@ public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaR
 
     List<Feedback> findByFeedbackIdLessThan(Long id);
 
-    List<Feedback> findByRate (Integer rate);
+    List<Feedback> findByRate(Integer rate);
 
-    List <Feedback> findByRateGreaterThan (Integer rate);
+    List<Feedback> findByRateGreaterThan(Integer rate);
 
-    List <Feedback> findByRateLessThan (Integer rate);
+    List<Feedback> findByRateLessThan(Integer rate);
 
     @Query("select f from Feedback f where f.user.email in " +
             "(select u.email from User u " +
             "where first_name like %?1% or last_name like %?1%)")
-    List <Feedback> findByUserFirstNameOrLastName(String name);
+    List<Feedback> findByUserFirstNameOrLastName(String name);
 
-    @Query("select f from Feedback f")// where f.order.id in " +
-//            "(select ord.id from Order ord " +
-//            "join ord.offers off " +
-//            "join off.cars c " +
-//            "join c.users u " +
-//            "where off.approved and (u.first_name like %?1% or u.last_name like %?1%))")
-    List <Feedback> findByTransporterFirstNameOrLastName(String name);
+    @Query(value = "select * from feedbacks f " +
+            "join orders ord on ord.id = f.order_id " +
+            "join offers off on off.order_id=ord.id and off.approved " +
+            "join cars c on off.car_id=c.car_id " +
+            "join users u on c.driver_id=u.email " +
+            "where u.first_name like %?1% or u.last_name like %?1%", nativeQuery = true)
+            List<Feedback>findByTransporterFirstNameOrLastName(String name);
+
+    @Query
+    List<Feedback> findByApproved(Boolean approved);
+
+    @Query
+    List<Feedback> findByCreatedOnAfter(Timestamp createdOn);
 
 }
