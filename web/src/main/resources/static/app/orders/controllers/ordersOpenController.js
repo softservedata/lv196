@@ -96,8 +96,9 @@ angular
 
         $scope.changeStatus = (offer) => {
             $http.put('/order/change/',offer).then(response => {
-                    $scope.offers = response.data;
+                $scope.retrieveOffers();
                 });
+
         };
-        $scope.retrieveOffers();
+
     });

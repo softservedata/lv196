@@ -32,7 +32,7 @@ public class OrderForListDto {
                 .setCityNameFrom(order.getCityFrom() == null ? null : order.getCityFrom().getCityName())
                 .setCityNameTo(order.getCityTo() == null ? null : order.getCityTo().getCityName())
                 .setWeight(order.getWeight())
-                .setNumberOfOffers(null);
+                .setNumberOfOffers(0L);
 
         User customer = order.getCustomer();
         if (customer != null) {
