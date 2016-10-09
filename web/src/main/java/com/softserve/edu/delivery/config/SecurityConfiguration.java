@@ -48,8 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/", "/home", "/welcome").permitAll()
+        http.authorizeRequests().anyRequest().permitAll();
+                /*.antMatchers("/", "/home", "/welcome").permitAll()
                 .antMatchers("/login*").anonymous()
                 .antMatchers("/registration*").anonymous()
                 .antMatchers("/admin", "/admin/**").hasRole(Role.ADMIN.getName())
@@ -62,6 +62,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .failureUrl("/login?error=true")
                 .and().logout().logoutSuccessUrl("/welcome")
                 .invalidateHttpSession(true)
-                .and().exceptionHandling().accessDeniedPage("/accessDenied");
+                .and().exceptionHandling().accessDeniedPage("/accessDenied");*/
     }
 }
