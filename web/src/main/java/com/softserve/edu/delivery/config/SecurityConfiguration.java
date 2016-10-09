@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     @Qualifier("userService")
@@ -48,7 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll();
+        http.csrf().disable()
+                .authorizeRequests().anyRequest().permitAll();
                 /*.antMatchers("/", "/home", "/welcome").permitAll()
                 .antMatchers("/login*").anonymous()
                 .antMatchers("/registration*").anonymous()

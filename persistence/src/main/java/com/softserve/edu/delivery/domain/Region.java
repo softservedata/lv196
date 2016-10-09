@@ -13,7 +13,7 @@ public class Region {
     private Long regionId;
     private String regionName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private State state;
 
