@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
+@Table(name = "route_city")
 public class RouteCities {
 
     @Id

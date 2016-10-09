@@ -1,137 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.softserve.edu</groupId>
-		<artifactId>delivery</artifactId>
-		<version>0.1</version>
-	</parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.softserve.edu</groupId>
+        <artifactId>delivery</artifactId>
+        <version>0.1</version>
+    </parent>
 
-	<artifactId>service</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>service</artifactId>
+    <packaging>jar</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.softserve.edu</groupId>
-			<artifactId>persistence</artifactId>
-			<version>0.1</version>
-		</dependency>
-		<!-- - - - - - Tests - - - - - -->
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${org.testng.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- - - - Mock Object - - - -->
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${org.mockito.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency>
+    <dependencies>
         <dependency>
             <groupId>com.softserve.edu</groupId>
             <artifactId>persistence</artifactId>
             <version>0.1</version>
         </dependency>
-        <!-- - - - - - Tests - - - - - -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${org.testng.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- - - - Mock Object - - - -->
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${org.mockito.version}</version>
-        </dependency>
-        <!-- - - - Logging - - - -->
-        <!--<dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${org.slf4j.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${org.slf4j.version}</version>
-            <scope>runtime</scope>
-        </dependency>-->
-        <!-- - - - Validation- - - -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
     </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven.surefire.plugin.version}</version>
-				<configuration>
-					<argLine>-Xms512m -Xmx1024m</argLine>
-					<skipTests>false</skipTests>
-					<!-- <argLine>${surefireArgLine}</argLine> -->
-					<systemPropertyVariables>
-						<surefire.reports.directory>
-							${testng.reports.directory}
-						</surefire.reports.directory>
-					</systemPropertyVariables>
-					<suiteXmlFiles>
-						<!-- <suiteXmlFile>testng.xml</suiteXmlFile> -->
-						<file>testng.xml</file>
-						<!-- <file>testng1.xml</file> -->
-					</suiteXmlFiles>
-					<reportsDirectory>${testng.reports.directory}</reportsDirectory>
-				</configuration>
-			</plugin>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <argLine>-Xms512m -Xmx1024m</argLine>
+                    <skipTests>false</skipTests>
+                    <!-- <argLine>${surefireArgLine}</argLine> -->
+                    <systemPropertyVariables>
+                        <surefire.reports.directory>
+                            ${testng.reports.directory}
+                        </surefire.reports.directory>
+                    </systemPropertyVariables>
+                    <suiteXmlFiles>
+                        <!-- <suiteXmlFile>testng.xml</suiteXmlFile> -->
+                        <file>testng.xml</file>
+                        <!-- <file>testng1.xml</file> -->
+                    </suiteXmlFiles>
+                    <reportsDirectory>${testng.reports.directory}</reportsDirectory>
+                </configuration>
+            </plugin>
 
-			<!-- - - - Jacoco plugin - - - -->
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.4.201502262128</version>
-				<executions>
-					<execution>
-                            <id>pre-unit-test</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-                                <propertyName>surefireArgLine</propertyName>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>post-unit-test</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-                            </configuration>
-                        </execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+            <!-- - - - Jacoco plugin - - - -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.4.201502262128</version>
+                <executions>
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

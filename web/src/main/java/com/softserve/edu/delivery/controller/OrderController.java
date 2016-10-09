@@ -9,11 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
 @RestController
@@ -31,21 +27,18 @@ public class OrderController {
 
     @RequestMapping(path = "in-progress", method = RequestMethod.GET)
     List<OrderForListDto> inProgress() {
-        logger.info("Method OrderController.inProgress()");
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
         return orderService.findInProgressOrders(email);
     }
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderForListDto> open() {
-        logger.info("Method OrderController.open()");
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
         return orderService.findOpenOrders(email);
     }
 
     @RequestMapping(path = "closed", method = RequestMethod.GET)
     List<OrderForListDto> closed() {
-        logger.info("Method OrderController.closed()");
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
         return orderService.findAllClosedOrders(email);
     }
@@ -53,7 +46,6 @@ public class OrderController {
 
     @RequestMapping(method = RequestMethod.POST)
     void addOrder(@RequestBody OrderForAddDto dto) {
-        logger.info("Method OrderController.addOrder()");
         String email = "martin@gmail.com"; // will be retrieved via Spring Security later
         orderService.addOrder(dto, email);
     }
@@ -67,7 +59,6 @@ public class OrderController {
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
     void removeOrder(@PathVariable Long id) {
-        logger.info("Method OrderController.removeOrder()");
         orderService.removeOrder(id);
     }
 
