@@ -28,18 +28,82 @@ public class FeedbackController {
         return feedbackService.getAllFeedbacks();
     }
 
-    @RequestMapping(params = {"idFrom", "number"}, method = RequestMethod.GET)
-    List<FeedbackDTO> getAllFeedbacksInRange(@RequestParam("idFrom") long from,
-                                             @RequestParam("number") int number) {
-        logger.info("Method FeedbackController.getAllFeedbacks()");
-        return feedbackService.getAllFeedbacksInRange(from, number);
+    @RequestMapping(params = {"id"}, method = RequestMethod.GET)
+    FeedbackDTO getFeedbackById(@RequestParam("id") String feedbackIdString) {
+        logger.info("Method FeedbackController.getFeedbackById()");
+        Long feedbackId = 0L;
+        try{
+            feedbackId = Long.parseLong(feedbackIdString.replaceAll("\\D+",""));
+        }catch (IllegalArgumentException e){e.printStackTrace();}
+
+        return feedbackService.getFeedbackById(feedbackId);
     }
 
-    @RequestMapping(params = {"id"}, method = RequestMethod.GET)
-    FeedbackDTO getFeedbackById(@RequestParam("id") long feedbackId) {
-        logger.info("Method FeedbackController.getFeedbackById()");
-        return feedbackService.findOne(feedbackId);
+    @RequestMapping(path = "id/greater-than", method = RequestMethod.GET)
+    List<FeedbackDTO> findByFeedbackIdGreaterThan(@RequestParam("id") String feedbackIdString) {
+        Long feedbackId = 0L;
+        try{
+            feedbackId = Long.parseLong(feedbackIdString.replaceAll("\\D+",""));
+        }catch (IllegalArgumentException e){e.printStackTrace();}
+
+        return feedbackService.findByFeedbackIdGreaterThan(feedbackId);
     }
+
+    @RequestMapping(path = "id/less-than", method = RequestMethod.GET)
+    List<FeedbackDTO> findByFeedbackIdLessThan(@RequestParam("id") String feedbackIdString) {
+        Long feedbackId = 0L;
+        try{
+            feedbackId = Long.parseLong(feedbackIdString.replaceAll("\\D+",""));
+        }catch (IllegalArgumentException e){e.printStackTrace();}
+
+        return feedbackService.findByFeedbackIdLessThan(feedbackId);
+    }
+
+    @RequestMapping(path = "text", method = RequestMethod.GET)
+    List<FeedbackDTO> getFeedbackByText(@RequestParam("text") String feedbackText) {
+        return feedbackService.findByTextContaining(feedbackText);
+    }
+
+    @RequestMapping(path = "rate", method = RequestMethod.GET)
+    List<FeedbackDTO> findByRate(@RequestParam("rate") String rateString) {
+        Integer rate = 0;
+        try{
+            rate = Integer.parseInt(rateString.replaceAll("\\D+",""));
+        }catch (IllegalArgumentException e){e.printStackTrace();}
+
+        return feedbackService.findByRate(rate);
+    }
+
+    @RequestMapping(path = "rate/greater-than", method = RequestMethod.GET)
+    List<FeedbackDTO> findByRateGreaterThan(@RequestParam("rate") String rateString) {
+        Integer rate = 0;
+        try{
+            rate = Integer.parseInt(rateString.replaceAll("\\D+",""));
+        }catch (IllegalArgumentException e){e.printStackTrace();}
+
+        return feedbackService.findByRateGreaterThan(rate);
+    }
+
+    @RequestMapping(path = "rate/less-than", method = RequestMethod.GET)
+    List<FeedbackDTO> findByRateLessThan(@RequestParam("rate") String rateString) {
+        Integer rate = 0;
+        try{
+            rate = Integer.parseInt(rateString.replaceAll("\\D+",""));
+        }catch (IllegalArgumentException e){e.printStackTrace();}
+
+        return feedbackService.findByRateLessThan(rate);
+    }
+
+    @RequestMapping(path = "userName", method = RequestMethod.GET)
+    List<FeedbackDTO> getFeedbackByUserName(@RequestParam("userName") String userName) {
+        return feedbackService.findByUserFirstNameOrLastName(userName);
+    }
+
+    @RequestMapping(path = "transporterName", method = RequestMethod.GET)
+    List<FeedbackDTO> getFeedbackByTransporterName(@RequestParam("transporterName") String transporterName) {
+        return feedbackService.findByTransporterFirstNameOrLastName(transporterName);
+    }
+
 
     @RequestMapping(path = {"changeFeedbackStatus"}, method = RequestMethod.PUT)
     void changeFeedbackStatus(@RequestBody FeedbackDTO feedbackDTO){

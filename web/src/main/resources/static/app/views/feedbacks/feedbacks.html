@@ -1,45 +1,48 @@
-<div class="navbar navbar-inverse navbar-default.navbar-static-top" ng-app="delivery" ng-controller="feedbacksController"
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <span class="navbar-brand">Feedback</span>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                </li>
-            </ul>
-        </div>
+<div class="navbar navbar-inverse navbar-default.navbar-static-top">
+<div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-2">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span class="navbar-brand">Feedback</span>
     </div>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+            </li>
+        </ul>
+    </div>
+</div>
 </div>
 <div class="main" ng-app="delivery" ng-controller="feedbacksController">
     <div class="container col-xs-12">
         <table class="table table-striped table-bordered table-hover table-responsive" width="100%">
             <thead>
             <tr>
-                <th class="col-xs-1">Id</th>
-                <th class="col-xs-3">Text</th>
-                <th class="col-xs-1">Rate</th>
-                <th class="col-xs-2">User name</th>
-                <th  class="col-xs-2">Transporter name</th>
-                <th class="col-xs-2">Date</th>
+                <th class="col-xs-2">Id</th>
+                <th class="col-xs-2">Text</th>
+                <th class="col-xs-2">Rate</th>
+                <th class="col-xs-2">User</th>
+                <th class="col-xs-2">Transporter</th>
+                <th class="col-xs-1">Date</th>
                 <th class="col-xs-1">Approved</th>
             </tr>
             </thead>
             <tbody>
+            <tr search-form></tr>
             <tr ng-repeat="f in feedbacks"> <!--ng-click="showUser(f.userEmail)-->
                 <td>{{f.feedbackId}}</td>
                 <td>{{f.text}}</td>
                 <td>{{f.rate}}</td>
-                <td>{{f.userName}}</td>
+                <td uib-popover="{{f.userName}}" popover-trigger="'mouseenter'" popover-popup-delay="1000"
+                    popover-append-to-body=true>{{f.userName}}
+                </td>
                 <td>{{f.transporterName}}</td>
                 <td>{{f.createdOn | date:'medium'}}</td>
                 <td><a class="{{btnApprovedStyle(f.approved)}}" role="button"

@@ -21,6 +21,7 @@ public class FeedbackDTO {
     private String userEmail;
     private String userName;
     private String transporterName;
+    private String transporterEmail;
     private Timestamp createdOn;
 
     public Long getFeedbackId() {
@@ -93,6 +94,14 @@ public class FeedbackDTO {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public String getTransporterEmail() {
+        return transporterEmail;
+    }
+
+    public void setTransporterEmail(String transporterEmail) {
+        this.transporterEmail = transporterEmail;
     }
 
     @Override

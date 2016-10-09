@@ -25,8 +25,6 @@ public interface FeedbackService {
 
     List<FeedbackDTO> getAllFeedbacksInRange(Long from, int number);
 
-    FeedbackDTO getFeedbackById(Long id);
-
     void changeFeedbackStatus(Long id, boolean status);
 
     void save(FeedbackDTO feedbackDTO);
@@ -40,4 +38,22 @@ public interface FeedbackService {
     User getUser(String email);
 
     Order getOrder(Long id);
+
+    FeedbackDTO getFeedbackById(Long id);
+
+    List <FeedbackDTO> findByTextContaining (String text);
+
+    List <FeedbackDTO> findByFeedbackIdGreaterThan(Long id);
+
+    List <FeedbackDTO> findByFeedbackIdLessThan(Long id);
+
+    List<FeedbackDTO> findByRate(Integer rate);
+
+    List <FeedbackDTO> findByRateGreaterThan (Integer rate);
+
+    List <FeedbackDTO> findByRateLessThan (Integer rate);
+
+    List <FeedbackDTO> findByUserFirstNameOrLastName(String userName);
+
+    List <FeedbackDTO> findByTransporterFirstNameOrLastName(String transporterName);
 }

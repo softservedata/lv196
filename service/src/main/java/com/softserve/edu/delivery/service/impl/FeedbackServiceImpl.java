@@ -1,18 +1,17 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.FeedbackDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,24 +25,27 @@ import java.util.Optional;
 @Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
-    private FeedbackDao feedbackDao;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+    @Autowired
     private UserDao userDao;
+    @Autowired
     private OrderDao orderDao;
 
     public FeedbackServiceImpl() {
     }
 
-    @Autowired
-    public FeedbackServiceImpl(FeedbackDao feedbackDao, UserDao userDao, OrderDao orderDao) {
-        this.feedbackDao = feedbackDao;
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, UserDao userDao, OrderDao orderDao) {
+        this.feedbackRepository = feedbackRepository;
         this.userDao = userDao;
         this.orderDao = orderDao;
     }
 
+
     /**
      * @param feedback of Feedback class
      * @return object of FeedbackDTO.class
-     *
+     * <p>
      * copies all the fields of an object of Feedback.class to an object of FeedbackDTO.class
      */
     public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
@@ -55,14 +57,28 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackDTO.setUserEmail(feedback.getUser().getEmail());
         feedbackDTO.setRate(feedback.getRate());
         feedbackDTO.setApproved(feedback.getApproved());
-        Optional<String> oApprovedDriverName = feedbackDao.getApprovedDriverName(feedback.getOrder().getId());
+        Optional<String> oApprovedDriverName = feedbackRepository.getApprovedDriverName(feedback.getOrder().getId());
         if (oApprovedDriverName.isPresent()) {
             feedbackDTO.setTransporterName(oApprovedDriverName.get());
         } else {
-            throw new NoSuchElementException("Driver with id " + feedbackDTO.getOrderId() + " not found");
+            throw new NoSuchElementException("Driver name for order with id " + feedbackDTO.getOrderId() + " not found");
+        }
+        Optional<String> oApprovedDriverEmail = feedbackRepository.getApprovedDriverEmail(feedback.getOrder().getId());
+        if (oApprovedDriverEmail.isPresent()) {
+            feedbackDTO.setTransporterEmail(oApprovedDriverEmail.get());
+        } else {
+            throw new NoSuchElementException("Driver email for order with id " + feedbackDTO.getOrderId() + " not found");
         }
         feedbackDTO.setCreatedOn(feedback.getCreatedOn());
         return feedbackDTO;
+    }
+
+    private List<FeedbackDTO> copyFeedbackListToDTOList(List<Feedback> feedbackList) {
+        List<FeedbackDTO> listFeedbackDTO = new ArrayList<>();
+        feedbackList.forEach(f ->
+                listFeedbackDTO.add(copyFeedbackToDTO(f))
+        );
+        return listFeedbackDTO;
     }
 
     /**
@@ -102,19 +118,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     @Transactional
     public List<FeedbackDTO> getAllFeedbacks() {
-        List<FeedbackDTO> listDTO = new ArrayList<>();
-        List<Feedback> list = feedbackDao.findAll();
-
-        list.forEach(f ->
-                listDTO.add(copyFeedbackToDTO(f))
-        );
-
-        return listDTO;
+        return copyFeedbackListToDTOList(feedbackRepository.findAll());
     }
 
 
     /**
-     * @param  idFrom, number
+     * @param idFrom, number
      * @return List<FeedbackDTO>
      * <p>
      * accepts start id of a feedback in the db and number of feedbacks. Forms list of FeedbackDTO object,
@@ -125,12 +134,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<FeedbackDTO> getAllFeedbacksInRange(Long idFrom, int number) {
 
         List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
-
-        List<Feedback> feedbacks = feedbackDao.findAllFeedbacksInRange(idFrom, number);
-
-        feedbacks.forEach(f ->
-                feedbackDTOs.add(copyFeedbackToDTO(f))
-        );
 
         return feedbackDTOs;
 
@@ -144,16 +147,37 @@ public class FeedbackServiceImpl implements FeedbackService {
      * looks for a feedback with a given id
      */
     public FeedbackDTO getFeedbackById(Long id) {
+        return copyFeedbackToDTO(feedbackRepository.findByFeedbackId(id));
+    }
 
-        FeedbackDTO feedbackDTO;
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByFeedbackIdGreaterThan(Long id) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdGreaterThan(id));
+    }
 
-        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
-        if (oFeedback.isPresent()) {
-            feedbackDTO = copyFeedbackToDTO(oFeedback.get());
-        } else {
-            throw new NoSuchElementException();
-        }
-        return feedbackDTO;
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByFeedbackIdLessThan(Long id) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdLessThan(id));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByRate(Integer rate) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByRate(rate));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByRateGreaterThan(Integer rate) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByRateGreaterThan(rate));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByRateLessThan(Integer rate) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByRateLessThan(rate));
     }
 
     @Override
@@ -165,12 +189,12 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void changeFeedbackStatus(Long id, boolean status) {
 
-        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+        Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
 
         if (oFeedback.isPresent()) {
             Feedback feedback = oFeedback.get();
             feedback.setApproved(status);
-            feedbackDao.update(feedback);
+            feedbackRepository.save(feedback);
         } else {
             throw new NoSuchElementException();
         }
@@ -185,7 +209,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void save(FeedbackDTO feedbackDTO) {
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
-        feedbackDao.save(feedback);
+        feedbackRepository.save(feedback);
     }
 
     @Override
@@ -197,9 +221,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void update(FeedbackDTO feedbackDTO) {
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
-        feedbackDao.update(feedback);
-        feedbackDao.update(feedback);
-
+        feedbackRepository.save(feedback);
     }
 
     @Override
@@ -211,9 +233,9 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public void delete(Long id) {
 
-        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+        Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
         if (oFeedback.isPresent()) {
-            feedbackDao.delete(oFeedback.get());
+            feedbackRepository.delete(oFeedback.get());
         } else {
             throw new NoSuchElementException();
         }
@@ -233,7 +255,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         Feedback feedback;
 
-        Optional<Feedback> oFeedback = feedbackDao.findOne(id);
+        Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
 
         if (oFeedback.isPresent()) {
             feedback = oFeedback.get();
@@ -264,5 +286,23 @@ public class FeedbackServiceImpl implements FeedbackService {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByTextContaining(String text) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByTextContaining(text));
+    }
+
+    @Override
+    @Transactional
+    public List <FeedbackDTO> findByUserFirstNameOrLastName(String userName){
+        return copyFeedbackListToDTOList(feedbackRepository.findByUserFirstNameOrLastName(userName));
+    }
+
+    @Override
+    @Transactional
+    public List <FeedbackDTO> findByTransporterFirstNameOrLastName(String transporterName){
+        return copyFeedbackListToDTOList(feedbackRepository.findByTransporterFirstNameOrLastName(transporterName));
     }
 }

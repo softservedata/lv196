@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface FeedbackDao extends BaseDao<Feedback, Long> {
     List<Feedback> findAllFeedbacksInRange(Long idFrom, int number);
     Optional<String> getApprovedDriverName(Long id);
+    Optional<String> getApprovedDriverEmail(Long id);
 }

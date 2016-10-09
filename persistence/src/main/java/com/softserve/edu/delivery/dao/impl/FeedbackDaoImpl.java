@@ -36,4 +36,18 @@ public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements Feed
                 .stream()
                 .findFirst();
     }
+
+    @Override
+    public Optional<String> getApprovedDriverEmail(Long id){
+        return getEntityManager()
+                .createQuery("select u.email from User u " +
+                        "join u.cars c " +
+                        "join c.offers off " +
+                        "join off.order ord " +
+                        "where ord.id = :id and off.approved = true", String.class)
+                .setParameter("id", id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
 }
