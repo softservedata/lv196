@@ -4,19 +4,23 @@ angular
 
         $scope.feedbacks = [];
         $scope.feedbackFilter = [];
+        $scope.feedbackSortIcons = [];
+        $scope.sortFeedbacksOrderDesc = [true, true, true, true, true, true, true, true];
 
-        getAllFeedbacks();
+        var lastUsedFilterIndex;
+        var columnPos = 0;
 
-        $scope.btnApprovedStyle = function (approved) {
-            if (approved) {
-                return "btn btn-success";
-            } else {
-                return "btn btn-danger";
+        function init(){
+            for (var i = 0; i < $scope.sortFeedbacksOrderDesc.length; i++){
+                $scope.sortFeedbacksOrderDesc[i] = true;
             }
-            ;
-        };
 
-        function getAllFeedbacks() {
+            for (var i = 0; i < $scope.feedbackSortIcons.length; i++){
+                $scope.feedbackSortIcons[i] = "fa fa-sort-desc";
+            }
+        }
+
+        function getAllFeedbacks(sortOrderDesc) {
             var allFiltersEmpty = true;
             for (var i = 0; i < $scope.feedbackFilter.length; i++) {
                 if ($scope.feedbackFilter[i] != null && $scope.feedbackFilter[i] != '') {
@@ -27,7 +31,9 @@ angular
             }
             ;
             if (allFiltersEmpty) {
-                $http.get("/feedbacks/all")
+                columnPos = 0;
+                lastUsedFilterIndex = 0;
+                $http.get("/feedbacks/all?sortDesc=" + sortOrderDesc)
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
@@ -35,69 +41,93 @@ angular
             ;
         };
 
-        $scope.getFeedbackById = function () {
-            if ($scope.feedbackFilter[0].length > 0) {
-                if ($scope.feedbackFilter[0].indexOf("+") !== -1 && $scope.feedbackFilter[0].length > 1) {
+        init();
 
-                    $http.get("/feedbacks/id/greater-than?id=" + $scope.feedbackFilter[0])
+        getAllFeedbacks($scope.sortFeedbacksOrderDesc[0]);
+
+        $scope.feedbackSorting = function (columnIndex) {
+            $scope.sortFeedbacksOrderDesc[columnIndex] = !$scope.sortFeedbacksOrderDesc[columnIndex];
+            if ($scope.sortFeedbacksOrderDesc[columnIndex]){
+                $scope.feedbackSortIcons[columnIndex] = "fa fa-sort-desc";
+            } else {
+                $scope.feedbackSortIcons[columnIndex] = "fa fa-sort-asc";
+            }
+            switch(columnIndex){
+                case 1:
+                    $scope.getFeedbackById($scope.sortFeedbacksOrderDesc[columnIndex]);
+                    break;
+            }
+        }
+
+        $scope.getFeedbackById = function (sortOrderDesc) {
+            columnPos = 1;
+            if ($scope.feedbackFilter[columnPos] != null && $scope.feedbackFilter[columnPos].length > 0) {
+                if ($scope.feedbackFilter[columnPos].indexOf("+") !== -1 && $scope.feedbackFilter[columnPos].length > 1) {
+
+                    $http.get("/feedbacks/id/greater-than?id=" + $scope.feedbackFilter[columnPos] + "&sortDesc=" + sortOrderDesc)
                         .then(function (response) {
                             $scope.feedbacks = response.data;
                         });
-                } else if ($scope.feedbackFilter[0].indexOf("-") !== -1 && $scope.feedbackFilter[0].length > 1) {
+                } else if ($scope.feedbackFilter[columnPos].indexOf("-") !== -1 && $scope.feedbackFilter[columnPos].length > 1) {
 
-                    $http.get("/feedbacks/id/less-than?id=" + $scope.feedbackFilter[0])
+                    $http.get("/feedbacks/id/less-than?id=" + $scope.feedbackFilter[columnPos] + "&sortDesc=" +sortOrderDesc)
                         .then(function (response) {
                             $scope.feedbacks = response.data;
                         });
                 } else {
 
-                    $http.get("/feedbacks/id?id=" + $scope.feedbackFilter[0])
+                    $http.get("/feedbacks/id?id=" + $scope.feedbackFilter[columnPos])
                         .then(function (response) {
                             $scope.feedbacks.length = 0;
                             $scope.feedbacks.push(response.data);
                         });
                 }
                 ;
+                lastUsedFilterIndex = 1;
             } else {
-                getAllFeedbacks();
+                getAllFeedbacks(sortOrderDesc);
             }
             ;
         };
 
         $scope.getFeedbacksByText = function () {
-            if ($scope.feedbackFilter[1].length > 3) {
-                $http.get("/feedbacks/text?text=" + $scope.feedbackFilter[1])
+            columnPos = 2;
+            if ($scope.feedbackFilter[columnPos].length > 3) {
+                $http.get("/feedbacks/text?text=" + $scope.feedbackFilter[columnPos])
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
-            } else if ($scope.feedbackFilter[1].length == 0) {
+                lastUsedFilterIndex = 2;
+            } else if ($scope.feedbackFilter[columnPos].length == 0) {
                 getAllFeedbacks();
             }
             ;
         };
 
         $scope.getFeedbacksByRate = function () {
-            if ($scope.feedbackFilter[2].length > 0) {
-                if ($scope.feedbackFilter[2].indexOf("+") !== -1 && $scope.feedbackFilter[2].length > 1) {
+            columnPos = 3;
+            if ($scope.feedbackFilter[columnPos].length > 0) {
+                if ($scope.feedbackFilter[columnPos].indexOf("+") !== -1 && $scope.feedbackFilter[columnPos].length > 1) {
 
-                    $http.get("/feedbacks/rate/greater-than?rate=" + $scope.feedbackFilter[2])
+                    $http.get("/feedbacks/rate/greater-than?rate=" + $scope.feedbackFilter[columnPos])
                         .then(function (response) {
                             $scope.feedbacks = response.data;
                         });
-                } else if ($scope.feedbackFilter[2].indexOf("-") !== -1 && $scope.feedbackFilter[2].length > 1) {
+                } else if ($scope.feedbackFilter[columnPos].indexOf("-") !== -1 && $scope.feedbackFilter[columnPos].length > 1) {
 
-                    $http.get("/feedbacks/rate/less-than?rate=" + $scope.feedbackFilter[2])
+                    $http.get("/feedbacks/rate/less-than?rate=" + $scope.feedbackFilter[columnPos])
                         .then(function (response) {
                             $scope.feedbacks = response.data;
                         });
                 } else {
 
-                    $http.get("/feedbacks/rate?rate=" + $scope.feedbackFilter[2])
+                    $http.get("/feedbacks/rate?rate=" + $scope.feedbackFilter[columnPos])
                         .then(function (response) {
                             $scope.feedbacks = response.data;
                         });
                 }
                 ;
+                lastUsedFilterIndex = 3;
             } else {
                 getAllFeedbacks();
             }
@@ -105,47 +135,54 @@ angular
         };
 
         $scope.getFeedbacksByUserName = function () {
-            if ($scope.feedbackFilter[3].length > 3) {
-                $http.get("/feedbacks/userName?userName=" + $scope.feedbackFilter[3])
+            columnPos = 4;
+            if ($scope.feedbackFilter[columnPos].length > 3) {
+                $http.get("/feedbacks/userName?userName=" + $scope.feedbackFilter[columnPos])
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
-            } else if ($scope.feedbackFilter[3].length == 0) {
+                lastUsedFilterIndex = 4;
+            } else if ($scope.feedbackFilter[columnPos].length == 0) {
                 getAllFeedbacks();
             }
             ;
         };
 
         $scope.getFeedbacksByTransporterName = function () {
-            if ($scope.feedbackFilter[4].length > 3) {
-                $http.get("/feedbacks/transporterName?transporterName=" + $scope.feedbackFilter[4])
+            columnPos = 5;
+            if ($scope.feedbackFilter[columnPos].length > 3) {
+                $http.get("/feedbacks/transporterName?transporterName=" + $scope.feedbackFilter[columnPos])
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
-            } else if ($scope.feedbackFilter[4].length == 0) {
+                lastUsedFilterIndex = 5;
+            } else if ($scope.feedbackFilter[columnPos].length == 0) {
                 getAllFeedbacks();
             }
             ;
         };
 
         $scope.getFeedbacksByDate = function () {
-            if ($scope.feedbackFilter[5] == null) {
+            columnPos = 6;
+            if ($scope.feedbackFilter[columnPos] == null) {
                 getAllFeedbacks();
             } else {
-                $http.get("/feedbacks/feedbackDate?feedbackDate=" + Date.parse($scope.feedbackFilter[5]))
+                $http.get("/feedbacks/feedbackDate?feedbackDate=" + Date.parse($scope.feedbackFilter[columnPos]))
                     .then(function (response) {
                         $scope.feedbacks = response.data;
                     });
+                lastUsedFilterIndex = 6;
             }
             ;
         };
 
         $scope.getFeedbacksByApproved = function () {
-            if ($scope.feedbackFilter[6].length > 2) {
+            columnPos = 7;
+            if ($scope.feedbackFilter[columnPos].length > 2) {
                 var approved;
-                if ("true".includes($scope.feedbackFilter[6])) {
+                if ("true".includes($scope.feedbackFilter[columnPos])) {
                     approved = "true";
-                } else if ("false".includes($scope.feedbackFilter[6])) {
+                } else if ("false".includes($scope.feedbackFilter[columnPos])) {
                     approved = "false";
                 }
                 if (approved !== undefined) {
@@ -155,7 +192,8 @@ angular
                         });
                 }
                 ;
-            } else if ($scope.feedbackFilter[6].length == 0) {
+                lastUsedFilterIndex = 7;
+            } else if ($scope.feedbackFilter[columnPos].length == 0) {
                 getAllFeedbacks();
             }
             ;
@@ -165,8 +203,17 @@ angular
             feedbackDTO.approved = !feedbackDTO.approved;
             $http.put("/feedbacks/changeFeedbackStatus", feedbackDTO)
                 .then(function (response) {
-                    $state.reload();
+                    //$state.reload();
                 });
+        };
+
+        $scope.btnApprovedStyle = function (approved) {
+            if (approved) {
+                return "btn btn-success";
+            } else {
+                return "btn btn-danger";
+            }
+            ;
         };
 
     }])

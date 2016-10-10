@@ -22,7 +22,7 @@ public interface FeedbackService {
 
     Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO);
 
-    List<FeedbackDTO> getAllFeedbacks();
+    List<FeedbackDTO> findAll();
 
     List<FeedbackDTO> getAllFeedbacksInRange(Long from, int number);
 
@@ -40,13 +40,25 @@ public interface FeedbackService {
 
     Order getOrder(Long id);
 
-    FeedbackDTO getFeedbackById(Long id);
+    /*------------- Find all feedbacks -----------------------*/
 
-    List <FeedbackDTO> findByTextContaining (String text);
+    List<FeedbackDTO> findByOrderByFeedbackIdDesc();
+
+    /*------------- Find feedbacks by id -----------------------*/
+
+    FeedbackDTO findByFeedbackId(Long id);
 
     List <FeedbackDTO> findByFeedbackIdGreaterThan(Long id);
 
+    List <FeedbackDTO> findByFeedbackIdGreaterThanOrderByFeedbackIdDesc(Long id);
+
     List <FeedbackDTO> findByFeedbackIdLessThan(Long id);
+
+    List <FeedbackDTO> findByFeedbackIdLessThanOrderByFeedbackIdDesc(Long id);
+
+    /*------------- Find feedbacks by text -----------------------*/
+
+    List <FeedbackDTO> findByTextContaining (String text);
 
     List<FeedbackDTO> findByRate(Integer rate);
 

@@ -133,7 +133,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         when(mockFeedbackRepo.findAll()).thenReturn(feedbackList);
 
-        List<FeedbackDTO> feedbackDTOList = feedbackService.getAllFeedbacks();
+        List<FeedbackDTO> feedbackDTOList = feedbackService.findAll();
 
         boolean passed = true;
 
@@ -193,7 +193,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(Optional.of(feedback));
 
-        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(FEEDBACK_ID);
+        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
@@ -221,7 +221,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         feedbackService.changeFeedbackStatus(feedbackDTO0.getFeedbackId(), feedbackDTO0.getApproved());
 
-        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(feedbackId);
+        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(feedbackId);
 
         Assert.assertFalse(previousStatus.equals(feedbackDTO1.getApproved()));
     }
@@ -243,7 +243,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         long id = feedbackDTO0.getFeedbackId();
 
-        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(id);
+        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(id);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
@@ -262,7 +262,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(oFeedback);
 
-        FeedbackDTO feedbackDTO0 = feedbackService.getFeedbackById(FEEDBACK_ID);
+        FeedbackDTO feedbackDTO0 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
         when(mockFeedbackRepo.save(any(Feedback.class))).thenReturn(feedbackServiceImplTest.createMockFeedback());
 
@@ -270,7 +270,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         feedbackService.update(feedbackDTO0);
 
-        FeedbackDTO feedbackDTO1 = feedbackService.getFeedbackById(FEEDBACK_ID);
+        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
         Assert.assertFalse(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
@@ -294,7 +294,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         feedbackService.delete(FEEDBACK_ID);
 
-        feedbackService.getFeedbackById(FEEDBACK_ID);
+        feedbackService.findByFeedbackId(FEEDBACK_ID);
     }
 
     @Test(enabled = false, groups = {"mock"})

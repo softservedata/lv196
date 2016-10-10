@@ -26,6 +26,8 @@ import java.util.Optional;
 @Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
+
+
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
@@ -110,19 +112,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedback;
     }
 
-
-    /**
-     * @return List of FeedbackDTO.class
-     * <p>
-     * looks for all feedbacks and returns list of found feedbacks
-     */
-    @Override
-    @Transactional
-    public List<FeedbackDTO> getAllFeedbacks() {
-        return copyFeedbackListToDTOList(feedbackRepository.findAll());
-    }
-
-
     /**
      * @param idFrom, number
      * @return List<FeedbackDTO>
@@ -138,47 +127,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         return feedbackDTOs;
 
-    }
-
-    @Override
-    @Transactional
-    /**
-     * @param long id - id of a feedback in db
-     * @return object of FeedbackDTO.class
-     * looks for a feedback with a given id
-     */
-    public FeedbackDTO getFeedbackById(Long id) {
-        return copyFeedbackToDTO(feedbackRepository.findByFeedbackId(id));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByFeedbackIdGreaterThan(Long id) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdGreaterThan(id));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByFeedbackIdLessThan(Long id) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdLessThan(id));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByRate(Integer rate) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByRate(rate));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByRateGreaterThan(Integer rate) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByRateGreaterThan(rate));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByRateLessThan(Integer rate) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByRateLessThan(rate));
     }
 
     @Override
@@ -289,6 +237,77 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
     }
 
+    /**
+     * @return List of FeedbackDTO.class
+     * <p>
+     * looks for all feedbacks and returns list of found feedbacks
+     */
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findAll() {
+        return copyFeedbackListToDTOList(feedbackRepository.findAll());
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByOrderByFeedbackIdDesc() {
+        return copyFeedbackListToDTOList(feedbackRepository.findByOrderByFeedbackIdDesc());
+    }
+
+    @Override
+    @Transactional
+    /**
+     * @param long id - id of a feedback in db
+     * @return object of FeedbackDTO.class
+     * looks for a feedback with a given id
+     */
+    public FeedbackDTO findByFeedbackId(Long id) {
+        return copyFeedbackToDTO(feedbackRepository.findByFeedbackId(id));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByFeedbackIdGreaterThan(Long id) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdGreaterThan(id));
+    }
+
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByFeedbackIdGreaterThanOrderByFeedbackIdDesc(Long id){
+        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdGreaterThanOrderByFeedbackIdDesc(id));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByFeedbackIdLessThan(Long id) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdLessThan(id));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByFeedbackIdLessThanOrderByFeedbackIdDesc(Long id){
+        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdLessThanOrderByFeedbackIdDesc(id));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByRate(Integer rate) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByRate(rate));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByRateGreaterThan(Integer rate) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByRateGreaterThan(rate));
+    }
+
+    @Override
+    @Transactional
+    public List<FeedbackDTO> findByRateLessThan(Integer rate) {
+        return copyFeedbackListToDTOList(feedbackRepository.findByRateLessThan(rate));
+    }
+
     @Override
     @Transactional
     public List<FeedbackDTO> findByTextContaining(String text) {
@@ -312,9 +331,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<FeedbackDTO> findByApproved(Boolean approved){
         return copyFeedbackListToDTOList(feedbackRepository.findByApproved(approved));
     }
+
     @Override
     @Transactional
     public List<FeedbackDTO> findByCreatedOn(Timestamp createdOn){
         return copyFeedbackListToDTOList(feedbackRepository.findByCreatedOnAfter(createdOn));
     }
+
 }
