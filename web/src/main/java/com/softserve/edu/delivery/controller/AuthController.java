@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.controller;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
+import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +27,14 @@ import javax.validation.constraints.Null;
 @Controller
 public class AuthController {
 
-    private final UserService service;
+    @Autowired
+    private UserService service;
+
+    @Autowired
+    private UserAuthenticationDetails authenticationDetails;
 
     private final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
 
-    @Autowired
-    public AuthController(UserService service) {
-        this.service = service;
-    }
 
     @RequestMapping(value = "/login")
     public ModelAndView signIn() {
@@ -41,7 +42,7 @@ public class AuthController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("userAuthDto", new UserAuthDTO());
-        mv.addObject("userPrincipal", getPrincipal());
+        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("login");
 
         logger.info("Out of method AuthController.signIn()");
@@ -98,7 +99,7 @@ public class AuthController {
     public ModelAndView adminPage() {
         logger.info("In method AuthController.adminPage()");
         ModelAndView mv = new ModelAndView();
-        mv.addObject("userPrincipal", getPrincipal());
+        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("admin");
         logger.info("Out of method AuthController.adminPage()");
         return mv;
@@ -108,7 +109,7 @@ public class AuthController {
     public ModelAndView moderatorPage() {
         logger.info("In method AuthController.moderatorPage()");
         ModelAndView mv = new ModelAndView();
-        mv.addObject("userPrincipal", getPrincipal());
+        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("moderator");
         logger.info("Out of method AuthController.moderatoPage()");
         return mv;
@@ -118,24 +119,8 @@ public class AuthController {
     public ModelAndView accessDenied() {
         logger.error("Access Denied. Role isn't allow to get this resource. Method AuthController.accessDenied()");
         ModelAndView mv = new ModelAndView();
-        mv.addObject("userPrincipal", getPrincipal());
+        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("accessDenied");
         return mv;
-    }
-
-    private String getPrincipal() {
-        String userName;
-        Object principal;
-        try {
-            principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        } catch (NullPointerException ex) {
-            return "";
-        }
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
-        }else {
-            userName = principal.toString();
-        }
-        return userName;
     }
 }
