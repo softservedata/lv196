@@ -31,5 +31,7 @@ public interface UserService extends UserDetailsService {
 	List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map);
 	
 	List<UserProfileDto> getAllUsers();
+	
+	UserProfileDto getUser(String email);
 
 }

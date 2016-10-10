@@ -11,3 +11,38 @@
     font-size: 16px;
 }
 
+.row {
+	background-color: #fff;
+	margin-left: 2px;
+	margin-top: 50px;
+}
+
+
+
+.fa-angle-down{
+  color: rgb(2,119,189);
+}
+
+.status-btn {
+	color: #a8040499;
+}
+
+hr {
+  border-color: transparent;
+}
+
+.name {
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.user-info {
+	font-weight: bold;
+}
+
+.photo {
+	margin-left: 30px;
+}
+
+
+

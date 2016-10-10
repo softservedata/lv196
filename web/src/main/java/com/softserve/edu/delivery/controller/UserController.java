@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.delivery.dto.UserProfileDto;
@@ -26,5 +27,11 @@ public class UserController {
 	    List<UserProfileDto> allUsers() {
 			logger.info("Method UserController.users()");
 	        return userService.getAllUsers();
+	    }
+	    
+	    @RequestMapping(path = "email", method = RequestMethod.GET)
+	    UserProfileDto getUser(@RequestParam("email") String email) {
+			logger.info("Method UserController.getUser()");
+	        return userService.getUser(email);
 	    }
 }
