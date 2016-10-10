@@ -5,6 +5,11 @@
     color: #555555;
 }
 
+.map-appearence {
+    height: 100%;
+    position: static !important;
+}
+
 .orders {
     padding-top: 120px;
     margin-right: 90px;
@@ -31,6 +36,10 @@
     padding-left: 5px;
     padding-right: 5px;
     cursor: pointer;
+}
+
+.order-actions .fa-car {
+    color: rgba(68, 68, 68, 0.83);
 }
 
 .order-subinfo {
@@ -151,13 +160,14 @@
 [data-notifications]:after {
     content: attr(data-notifications);
     position: absolute;
+    font-size: 13px;
+    text-align: center;
     background: red;
-    border-radius: 50%;
-    display: inline-block;
-    padding: 0.1em 0.1em 0.1em 6px;
+    border-radius: 100%;
     color: #f2f2f2;
-    right: -7px;
-    top: -9px;
-    width:24px;
+    right: -1px;
+    top: -6px;
+    width: 15px;
+    height: 15px;
 }
 

@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.repository;
 
 import com.softserve.edu.delivery.domain.Feedback;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -9,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaRepository<Feedback, Long> {
+public interface FeedbackRepository extends BaseRepository<Feedback, Long> {
 
     @Query("select concat(u.firstName, ' ', u.lastName) from User u " +
             "join u.cars c " +

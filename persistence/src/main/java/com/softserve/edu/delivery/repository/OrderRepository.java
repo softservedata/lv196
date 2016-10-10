@@ -3,15 +3,13 @@ package com.softserve.edu.delivery.repository;
 
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.OrderStatus;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepository extends BaseRepository<Order, Long>, JpaRepository<Order, Long> {
+public interface OrderRepository extends BaseRepository<Order, Long> {
 
     List<Order> findOrderByCustomerEmailAndOrderStatus(String email, OrderStatus os);
     Long removeById(Long id);

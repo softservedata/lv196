@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.State;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class LocationDto {
@@ -15,12 +16,15 @@ public class LocationDto {
     public LocationDto() {}
 
     public static LocationDto of(City city) {
+        Objects.requireNonNull(city);
         Optional<Region> regionOptional = Optional.ofNullable(city.getRegion());
 
         String regionName = regionOptional.map(Region::getRegionName).orElse(null);
 
-        String stateName = regionOptional.flatMap(r -> Optional.ofNullable(r.getState()))
-                .map(State::getStateName).orElse(null);
+        String stateName = regionOptional
+                .map(Region::getState)
+                .map(State::getStateName)
+                .orElse(null);
 
         return new LocationDto()
                 .setCityId(city.getCityId())

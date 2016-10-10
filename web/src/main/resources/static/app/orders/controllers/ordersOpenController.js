@@ -81,6 +81,34 @@ angular
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+
+            $scope.initMap = function ($item, $model, $label) {
+                $scope.$item = $item;
+                $scope.$model = $model;
+                $scope.$label = $label;
+                const directionsService = new google.maps.DirectionsService;
+                const directionsDisplay = new google.maps.DirectionsRenderer;
+                const map = new google.maps.Map(document.getElementById('google.map'), {
+                    center: {lat: 48.6641287, lng: 31.0318093},
+                    zoom: 5
+                });
+                directionsDisplay.setMap(map);
+
+                $scope.calculateAndDisplayRoute = (directionsService, directionsDisplay) => {
+                    directionsService.route({
+                        origin: $scope.form.locationFrom.cityName,
+                        destination: $scope.form.locationTo.cityName,
+                        travelMode: google.maps.TravelMode.DRIVING
+                    }, (response, status) => {
+                        if (status === google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setDirections(response);
+                        } else {
+                            window.alert('Directions request failed due to ' + status);
+                        }
+                    });
+                }
+                $scope.calculateAndDisplayRoute(directionsService, directionsDisplay);
+            };
         }]
     )
     .controller('showOffersController',function ($scope, orderService, $http) {

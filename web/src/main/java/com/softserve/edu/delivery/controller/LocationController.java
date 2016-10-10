@@ -29,7 +29,6 @@ public class LocationController {
 
     @RequestMapping(method = RequestMethod.GET)
     List<LocationDto> locations(@RequestParam(value = "city") String city) {
-        logger.info("Method LocationController.locations()");
         return StringUtils.isEmpty(city) ? Collections.emptyList() :
                 locationService.findCitiesByName(city);
     }

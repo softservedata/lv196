@@ -2,9 +2,9 @@ package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.RouteCities;
+import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.PleaceDto;
 import com.softserve.edu.delivery.repository.CityRepository;
-import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDto> findCitiesByName(String name) {
         return cityRepository
-                .findByCityNameContainingIgnoreCase(name)
+                .findTop10ByCityNameStartingWithIgnoreCaseOrderByCityName(name)
                 .stream()
                 .map(LocationDto::of)
                 .collect(Collectors.toList());
