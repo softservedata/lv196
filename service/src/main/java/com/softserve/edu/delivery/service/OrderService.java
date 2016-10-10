@@ -40,8 +40,6 @@ public interface OrderService {
 
     void removeOrder(Long id);
 
-//    Integer countOffers(Long orderId);
-
     List<OfferDtoForList> getOffersByOrderId(Long id);
 
 /**

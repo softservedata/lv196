@@ -5,6 +5,7 @@ import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.service.OrderService;
+import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,44 +17,44 @@ import java.util.List;
 @RequestMapping(path = "order")
 public class OrderController {
 
-    private final OrderService orderService;
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private UserAuthenticationDetails authenticationDetails;
 
     Logger logger = LoggerFactory.getLogger(OrderController.class.getName());
 
-    @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
     @RequestMapping(path = "in-progress", method = RequestMethod.GET)
     List<OrderForListDto> inProgress() {
-        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+        String email = authenticationDetails.getAuthenticatedUserEmail(); // will be retrieved via Spring Security later
         return orderService.findInProgressOrders(email);
     }
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderForListDto> open() {
-        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         return orderService.findOpenOrders(email);
     }
 
     @RequestMapping(path = "closed", method = RequestMethod.GET)
     List<OrderForListDto> closed() {
-        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         return orderService.findAllClosedOrders(email);
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
     void addOrder(@RequestBody OrderForAddDto dto) {
-        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         orderService.addOrder(dto, email);
     }
 
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
     void addFeedback(@RequestBody FeedbackDTO dto) {
         logger.info("Method OrderController.addFeedback()");
-        String email = "martin@gmail.com"; // will be retrieved via Spring Security later
+
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         orderService.addFeedback(dto, email);
     }
 
