@@ -55,9 +55,8 @@ public class AuthController {
             logger.error("Has some binding error, method AuthController.loginProcess()");
             return new ModelAndView("login");
         }
-        service.verificationLogin(user);
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("welcome");
+        mv.setViewName("redirect:/welcome");
         logger.info("Out of method AuthController.loginProcess()");
         return mv;
     }
