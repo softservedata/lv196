@@ -23,8 +23,6 @@ public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 
     void register(UserRegistrationDTO userRegDTO);
-
-    UserProfileDto verificationLogin(UserAuthDTO user);
     
     List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter);
 	

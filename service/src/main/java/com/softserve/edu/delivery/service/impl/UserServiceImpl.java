@@ -100,26 +100,6 @@ public class UserServiceImpl implements UserService {
             userDao.save(user);
         }
     }
-
-    /*** This method verifies user credentials(login page)
-     * author Petro Shtenovych
-     * @param userAuthDTO with credentials email and password
-     * @throws IllegalArgumentException if param ref null
-     * @throws UserNotFoundException if user isn't registered
-     * @return UserProfileDto instance which has user profile information
-     */
-    @Override
-    public UserProfileDto verificationLogin(UserAuthDTO userAuthDTO) {
-        if (userAuthDTO == null) {
-            throw new IllegalArgumentException("User cannot be null");
-        }
-        if (this.userDao.exists(userAuthDTO.getEmail())) {
-            User dbUser = this.userDao.findOne(userAuthDTO.getEmail()).get();
-            return UserProfileDto.create(dbUser);
-        }else {
-            throw new UserNotFoundException(userAuthDTO.getEmail());
-        }
-    }
     
 	@Override
 	public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
