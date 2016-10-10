@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(path ="/tracking")
+@RequestMapping
 public class PleacesController {
     @Autowired
     private TransporterService teTransporterService;
@@ -48,15 +47,11 @@ public class PleacesController {
     @RequestMapping(path ="/track", method = RequestMethod.GET)
     public List<PleaceDto> getTracking() {
         List<PleaceDto> list = teTransporterService.getAllPleaces();
-        for(PleaceDto p : list){
-            Timestamp timestamp = Timestamp.valueOf(p.getDate());
-            p.setDate(new SimpleDateFormat("MM/dd/yyyy hh:mm").format(timestamp));
-        }
         return list;
     }
 
     @RequestMapping(path ="/add",  method = RequestMethod.POST)
-    public List<PleaceDto> addPleace(@RequestBody String city) {
+    public void addPleace(@RequestBody String city) {
         ObjectMapper objectMapper = new ObjectMapper();
         CityDto cityDto = new CityDto();
         try {
@@ -67,8 +62,6 @@ public class PleacesController {
         Timestamp timestamp = new Timestamp(new Date().getTime());
         PleaceDto pleaceDto = new PleaceDto(TransporterServiceImpl.convertToEntity(cityDto), timestamp.toString());
         routeService.savePleace(pleaceDto);
-
-        return getTracking();
     }
 
 

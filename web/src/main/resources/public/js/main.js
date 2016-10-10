@@ -1,13 +1,19 @@
 
 var App = angular.module("myAppl", ['ui.bootstrap']);
+
     App.controller("pleaceController",["$scope", "$http", "$uibModal", function ($scope, $http, $uibModal){
     $scope.sortType     = 'city.cityName';
     $scope.sortReverse  = false;
-    $scope.searchFish   = '';
+    $scope.search   = '';
+
+
+        $scope.listOfPleaces ={
+            list: []
+        }
 
     $scope.updateTable = function () {
-        $http.get('http://localhost:8080/tracking/track').success(function (result) {
-            $scope.listOfPleaces = result;
+        $http.get('/track').success(function (result) {
+            $scope.listOfPleaces.list= result;
         })
     }
     $scope.updateTable();
@@ -18,10 +24,16 @@ var App = angular.module("myAppl", ['ui.bootstrap']);
             templateUrl: '/dialog.html',
          });
 
-    }
+        /*modalInstance.result.then(function (added) {
+            if (added) {
+                $scope.updateTable();
+            }
+        });*/
+    };
+
     $scope.sentState = function () {
           var data = $scope.selectedState.name;
-                $http.post('http://localhost:8080/tracking/region', data)
+                $http.post('/region', data)
                     .then(response = function (inf) {
                         $scope.regionList = inf.data;
                     }, response = function () {
@@ -31,7 +43,7 @@ var App = angular.module("myAppl", ['ui.bootstrap']);
 
     $scope.sentRegion = function() {
         var d = $scope.selectedRegion.name;
-        $http.post('http://localhost:8080/tracking/city', d)
+        $http.post('/city', d)
             .then(response = function (inf) {
                 $scope.cityList = inf.data;
             }, response = function () {
@@ -39,7 +51,7 @@ var App = angular.module("myAppl", ['ui.bootstrap']);
             })
     }
     $scope.getStateList = function () {
-        $http.get('http://localhost:8080/tracking/state').success(function (inf) {
+        $http.get('/state').success(function (inf) {
             $scope.stateList = inf;
         });
 
@@ -54,14 +66,16 @@ var App = angular.module("myAppl", ['ui.bootstrap']);
                 state: {
                     stateId:$scope.selectedState.stateId,
                     stateName: $scope.selectedState.name}}};
-        $http.post('http://localhost:8080/tracking/add', city) .then(response = function (inf) {
+        $http.post('/add', city).then(response = function (inf) {
             $scope.$dismiss();
-            $scope.updateTable();
+           $scope.updateTable();
 
         }, response = function () {
             alert('failed');
         })
     }
+
+
     }]
     )
 

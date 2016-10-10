@@ -6,7 +6,7 @@
     </div>
     <div class="modal-body" id="modal-body">
         <div class="form-group">
-            <select ng-model="selectedState" class="form-control" ng-change="sentState()" ng-click="getStateList()" ng-options="state.name for state in stateList track by state.name">
+            <select ng-model="selectedState" class="form-control" ng-click="getStateList()" ng-change="sentState()" ng-options="state.name for state in stateList track by state.name">
                 <option value="">Choose the state</option>
             </select>
 

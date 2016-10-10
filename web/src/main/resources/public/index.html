@@ -86,7 +86,7 @@
                         </a>
                     </th>
                 </tr>
-                <tr  ng-model="listOfPleaces" ng-repeat="pleace in listOfPleaces | orderBy:sortType:sortReverse | filter:search">
+                <tr  ng-model="listOfPleaces" ng-repeat="pleace in listOfPleaces.list | orderBy:sortType:sortReverse | filter:search">
                     <td>{{pleace.city.cityName}}</td>
                     <td>{{pleace.city.region.regionName}}</td>
                     <td>{{pleace.city.region.state.stateName}}</td>
