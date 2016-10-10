@@ -94,6 +94,14 @@ angular
         };
         $scope.retrieveOffers();
 
+        $scope.btnApprovedStyle = function (approved) {
+            if (approved) {
+                return "btn btn-primary btn-xs";
+            } else {
+                return "btn btn-danger btn-xs";
+            }
+        };
+
         $scope.changeStatus = (offer) => {
             $http.put('/order/change/',offer).then(response => {
                 $scope.retrieveOffers();
