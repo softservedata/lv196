@@ -1,10 +1,14 @@
 package com.softserve.edu.delivery.service.impl;
 
+import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
+import com.softserve.edu.delivery.domain.RouteCities;
 import com.softserve.edu.delivery.domain.State;
+import com.softserve.edu.delivery.dto.PleaceDto;
 import com.softserve.edu.delivery.service.TransporterService;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +28,14 @@ public class TransporterServiceImpl implements TransporterService {
     private final CityDao cityDao;
     private final RegionDao regionDao;
     private final StateDao stateDao;
+    private final RouteCityDao routeCityDao;
 
     @Autowired
-    public TransporterServiceImpl(CityDao cityDao, RegionDao regionDao, StateDao stateDao) {
+    public TransporterServiceImpl(CityDao cityDao, RegionDao regionDao, StateDao stateDao, RouteCityDao routeCityDao) {
         this.cityDao = cityDao;
         this.regionDao = regionDao;
         this.stateDao = stateDao;
+        this.routeCityDao = routeCityDao;
     }
 
     public List<StateDto> getAllState() {
@@ -53,16 +59,25 @@ public class TransporterServiceImpl implements TransporterService {
                 .map(entity -> CityDto.convertEntity(entity))
                 .collect(Collectors.toList());
     }
+    public List<PleaceDto> getAllPleaces(){
+        return routeCityDao.findAll()
+                .stream()
+                .map(entity -> PleaceDto.convertEntity(entity))
+                .collect(Collectors.toList());
+    }
 
-    public State convertToEntity(StateDto stateDto) {
+    public static State convertToEntity(StateDto stateDto) {
         return new State(stateDto.getName());
     }
 
-    public City convertToEntity(CityDto cityDto) {
+    public static City convertToEntity(CityDto cityDto) {
         return new City(cityDto.getCityId(), cityDto.getName(), cityDto.getRegion());
     }
 
-    public Region convertToEntity(RegionDto regionDto) {
+    public static Region convertToEntity(RegionDto regionDto) {
         return new Region(regionDto.getName(), regionDto.getState());
+    }
+    public static RouteCities convertToEntity(PleaceDto pleaceDto) {
+        return new RouteCities(pleaceDto.getCity(), Timestamp.valueOf(pleaceDto.getDate()));
     }
 }

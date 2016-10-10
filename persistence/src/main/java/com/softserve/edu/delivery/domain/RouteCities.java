@@ -27,6 +27,10 @@ public class RouteCities {
     public Long getRouteCityId() {
         return routeCityId;
     }
+    public RouteCities(City city, Timestamp visitDate) {
+        this.city = city;
+        this.visitDate = visitDate;
+    }
 
     public RouteCities setRouteCityId(Long routeCityId) {
         this.routeCityId = routeCityId;
