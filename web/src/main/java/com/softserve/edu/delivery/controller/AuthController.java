@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.dto.OrderIdDto;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
@@ -34,6 +35,17 @@ public class AuthController {
     private UserAuthenticationDetails authenticationDetails;
 
     private final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
+
+    @RequestMapping(value = {"/welcome"})
+    public ModelAndView welcome() {
+        logger.info("In method AuthController.welcome()");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("orderIdDto", new OrderIdDto());
+        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
+        mv.setViewName("welcome");
+        logger.info("Out of method AuthController.welcome()");
+        return mv;
+    }
 
 
     @RequestMapping(value = "/login")
@@ -93,26 +105,6 @@ public class AuthController {
         }
         logger.info("Out of method AuthController.logout()");
         return "redirect:/login";
-    }
-
-    @RequestMapping(value = "/admin")
-    public ModelAndView adminPage() {
-        logger.info("In method AuthController.adminPage()");
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
-        mv.setViewName("admin");
-        logger.info("Out of method AuthController.adminPage()");
-        return mv;
-    }
-
-    @RequestMapping(value = "/moderator")
-    public ModelAndView moderatorPage() {
-        logger.info("In method AuthController.moderatorPage()");
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
-        mv.setViewName("moderator");
-        logger.info("Out of method AuthController.moderatoPage()");
-        return mv;
     }
 
     @RequestMapping(value = "/accessDenied")

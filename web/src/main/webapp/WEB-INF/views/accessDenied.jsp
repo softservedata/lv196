@@ -12,12 +12,10 @@
     <meta name="description" content="">
 
     <spring:url value="/resources/img/Delivery-icon.ico" var="icon"/>
-    <spring:url value="/resources/css/bootstrap.min.css" var="bootstrap_css"/>
-    <spring:url value="/resources/css/css" var="css"/>
-    <spring:url value="/resources/css/css(1)" var="css1"/>
+    <spring:url value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" var="bootstrap_css"/>
     <spring:url value="/resources/css/magnific-popup.css" var="magnific_popup_css"/>
     <spring:url value="/resources/css/materialdesignicons.min.css" var="materialDesign"/>
-    <spring:url value="/resources/css/style.css" var="style"/>
+    <spring:url value="/resources/css/login.css" var="style"/>
 
     <!-- Icon -->
     <link rel="shortcut icon" href="${icon}">
@@ -25,9 +23,6 @@
     <!-- Title -->
     <title>Delivery - Access Denied</title>
 
-    <!-- Google fonts -->
-    <link rel="stylesheet" href="${css}">
-    <link rel="stylesheet" href="${css1}">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="${bootstrap_css}" >
