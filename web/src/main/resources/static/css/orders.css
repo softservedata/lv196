@@ -5,9 +5,15 @@
     color: #555555;
 }
 
-.map-appearence {
-    height: 100%;
-    position: static !important;
+.modal-body .map-appearence {
+    height: 200px;
+}
+
+.modal-body .panel {
+    box-shadow: none !important;
+}
+.modal-body .panel-body {
+    padding: 0;
 }
 
 .orders {

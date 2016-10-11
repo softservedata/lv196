@@ -24,8 +24,8 @@
             </div>
             <div class="col-xs-6 form-group">
                 <label class="control-label label-lg" for="cityArrivalInput">To</label>
-                <input ng-model="form.locationTo" typeahead-on-select="initMap($item, $model, $label)"
-                       ng-required="true"
+                <input ng-model="form.locationTo" typeahead-on-select="initMapFrom($item, $model, $label)"
+                       ng-required="true" ng-click="status.open = !status.open"
                        uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
                        for location in findLocations($viewValue)"
                        typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"
@@ -57,7 +57,11 @@
                 <textarea ng-model="form.description" class="form-control" rows="1" id="descriptionInput"></textarea>
             </div>
         </div>
-        <div id="google.map" class="map-appearence"></div>
+        <uib-accordion>
+            <div uib-accordion-group is-open="status.open">
+                <div id="mapid" class="map-appearence"></div>
+            </div>
+        </uib-accordion>
     </div>
     </div>
     <div class="modal-footer">

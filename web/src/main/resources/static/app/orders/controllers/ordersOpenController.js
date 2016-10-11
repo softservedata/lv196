@@ -97,32 +97,24 @@ angular
                 $uibModalInstance.dismiss('cancel');
             };
 
-            $scope.initMap = function ($item, $model, $label) {
+            $scope.initMapFrom = function ($item, $model, $label) {
                 $scope.$item = $item;
                 $scope.$model = $model;
                 $scope.$label = $label;
-                const directionsService = new google.maps.DirectionsService;
-                const directionsDisplay = new google.maps.DirectionsRenderer;
-                const map = new google.maps.Map(document.getElementById('google.map'), {
-                    center: {lat: 48.6641287, lng: 31.0318093},
-                    zoom: 5
-                });
-                directionsDisplay.setMap(map);
 
-                $scope.calculateAndDisplayRoute = (directionsService, directionsDisplay) => {
-                    directionsService.route({
-                        origin: $scope.form.locationFrom.cityName,
-                        destination: $scope.form.locationTo.cityName,
-                        travelMode: google.maps.TravelMode.DRIVING
-                    }, (response, status) => {
-                        if (status === google.maps.DirectionsStatus.OK) {
-                            directionsDisplay.setDirections(response);
-                        } else {
-                            window.alert('Directions request failed due to ' + status);
-                        }
-                    });
-                }
-                $scope.calculateAndDisplayRoute(directionsService, directionsDisplay);
+                const map = L.map('mapid').setView([49.7, 28.3], 5);
+
+                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                    id: 'mapbox.streets',
+                    accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw'
+                }).addTo(map);
+
+                L.marker([49.8326678, 23.942024]).addTo(map);
+                L.marker([50.4016974, 30.2518212]).addTo(map);
             };
         }]
     )
