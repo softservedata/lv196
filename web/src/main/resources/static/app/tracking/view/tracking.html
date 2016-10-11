@@ -1,4 +1,5 @@
-<div class="container">
+<div class="container" ng-controller="pleaceController" ng-init="updateTable()">
+    <br/>
     <div class="col-md-6">
         <button type="button" class="btn btn-default" ng-click="addLocation()">Add location</button>
     </div>
@@ -44,9 +45,9 @@
             </th>
         </tr>
         <tr  ng-model="listOfPleaces" ng-repeat="pleace in listOfPleaces.list | orderBy:sortType:sortReverse | filter:search">
-            <td>{{pleace.city.cityName}}</td>
-            <td>{{pleace.city.region.regionName}}</td>
-            <td>{{pleace.city.region.state.stateName}}</td>
+            <td>{{pleace.city.name}}</td>
+            <td>{{pleace.city.region.name}}</td>
+            <td>{{pleace.city.region.state.name}}</td>
             <td>{{pleace.date| date:'yyyy-MM-dd hh:mm'}}</td>
         </tr>
     </table>

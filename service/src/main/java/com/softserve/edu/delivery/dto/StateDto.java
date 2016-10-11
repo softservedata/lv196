@@ -12,6 +12,10 @@ public class StateDto {
         this.stateId = stateId;
         this.name = name;
     }
+    public StateDto(String name) {
+
+        this.name = name;
+    }
 
     public StateDto(){}
 
@@ -33,5 +37,8 @@ public class StateDto {
 
     public static StateDto convertEntity(State state){
         return new StateDto(state.getStateId(), state.getStateName());
+    }
+    public String toString(){
+        return "name = "+name;
     }
 }

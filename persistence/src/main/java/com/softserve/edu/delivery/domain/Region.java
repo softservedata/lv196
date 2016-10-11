@@ -76,4 +76,12 @@ public class Region {
     public int hashCode() {
         return Objects.hash(regionId);
     }
+    @Override
+    public String toString() {
+        return "Region{" +
+                "regionId=" + regionId +
+                ", regionName='" + regionName + '\'' +
+                ", state=" + state.toString() +
+                '}';
+    }
 }

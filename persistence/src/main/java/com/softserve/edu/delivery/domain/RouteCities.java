@@ -24,6 +24,7 @@ public class RouteCities {
     private Timestamp visitDate;
 
 
+    public RouteCities(){}
     public Long getRouteCityId() {
         return routeCityId;
     }

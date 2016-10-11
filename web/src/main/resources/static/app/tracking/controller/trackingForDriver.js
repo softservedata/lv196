@@ -5,22 +5,27 @@ angular
     $scope.sortType     = 'city.cityName';
     $scope.sortReverse  = false;
     $scope.search   = '';
-            $scope.listOfPleaces ={
-            list: []
-        }
+    $scope.listOfPleaces ={
+        list: []
+     }
 
     $scope.updateTable = function () {
         $http.get('/track').success(function (result) {
             $scope.listOfPleaces.list= result;
+            console.log($scope.listOfPleaces.list)
         })
     }
-    $scope.updateTable();
 
     $scope.addLocation = function () {
          const modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: '/dialog.html',
+            templateUrl: '/app/tracking/view/dialog.html',
          });
+        modalInstance.result.then(function (add) {
+            if(add){
+                $scope.updateTable();
+            }
+        })
     };
 
     $scope.sentState = function () {
@@ -54,13 +59,14 @@ angular
             cityId: $scope.selectedCity.cityId,
             region: {
                 regionId: $scope.selectedRegion.regionId,
-                regionName: $scope.selectedRegion.name,
+                name: $scope.selectedRegion.name,
                 state: {
                     stateId:$scope.selectedState.stateId,
-                    stateName: $scope.selectedState.name}}};
+                    name: $scope.selectedState.name}}};
         $http.post('/add', city).then(response = function (inf) {
+
             $scope.$dismiss();
-           $scope.updateTable();
+
 
         }, response = function () {
             alert('failed');

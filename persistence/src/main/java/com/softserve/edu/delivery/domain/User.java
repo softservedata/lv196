@@ -23,8 +23,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "driver")
     private List<Car> cars = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer")
-    private List<Order> orders = new ArrayList<>();
+    /*@OneToMany(mappedBy = "customer")
+    private List<Order> orders = new ArrayList<>();*/
 
     @OneToMany(mappedBy = "user")
     private List<Feedback> feedbacks = new ArrayList<>();
@@ -87,6 +87,7 @@ public class User implements Serializable {
         return this;
     }
 
+
     public List<Car> getCars() {
         return cars;
     }
@@ -96,14 +97,14 @@ public class User implements Serializable {
         return this;
     }
 
-    public List<Order> getOrders() {
+/*    public List<Order> getOrders() {
         return orders;
     }
 
     public User setOrders(List<Order> orders) {
         this.orders = orders;
         return this;
-    }
+    }*/
 
     public List<Feedback> getFeedbacks() {
         return feedbacks;

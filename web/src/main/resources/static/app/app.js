@@ -40,7 +40,17 @@ angular
             })
             .state('users', {
                 url: '/users',
-                templateUrl: '/app/users/views/users.html',
-                controller: 'usersController'
+                templateUrl: '/app/views/users.html',
+                controller: 'userController'
+            })
+            .state('tracking', {
+            url: '/tracking',
+            templateUrl: '/app/tracking/views/tracking.html',
+            controller: 'pleaseController'
+            })
+            .state('dialog', {
+                url: '/dialog',
+                templateUrl: '/app/tracking/views/dialog.html',
+                controller: 'pleaseController'
             });
     }]);

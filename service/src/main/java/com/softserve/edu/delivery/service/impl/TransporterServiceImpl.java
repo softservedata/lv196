@@ -1,10 +1,7 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.dao.RouteCityDao;
-import com.softserve.edu.delivery.domain.City;
-import com.softserve.edu.delivery.domain.Region;
-import com.softserve.edu.delivery.domain.RouteCities;
-import com.softserve.edu.delivery.domain.State;
+import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.PleaceDto;
 import com.softserve.edu.delivery.service.TransporterService;
 
@@ -66,18 +63,12 @@ public class TransporterServiceImpl implements TransporterService {
                 .collect(Collectors.toList());
     }
 
-    public static State convertToEntity(StateDto stateDto) {
-        return new State(stateDto.getName());
-    }
 
-    public static City convertToEntity(CityDto cityDto) {
-        return new City(cityDto.getCityId(), cityDto.getName(), cityDto.getRegion());
-    }
 
-    public static Region convertToEntity(RegionDto regionDto) {
-        return new Region(regionDto.getName(), regionDto.getState());
-    }
-    public static RouteCities convertToEntity(PleaceDto pleaceDto) {
+
+
+
+  /*  public static RouteCities convertToEntity(PleaceDto pleaceDto) {
         return new RouteCities(pleaceDto.getCity(), Timestamp.valueOf(pleaceDto.getDate()));
-    }
+    }*/
 }

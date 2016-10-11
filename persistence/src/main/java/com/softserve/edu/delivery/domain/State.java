@@ -47,7 +47,6 @@ public class State implements Serializable {
         this.stateName = stateName;
         return this;
     }
-
     public List<Region> getRegions() {
         return regions;
     }
@@ -68,5 +67,12 @@ public class State implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(stateId);
+    }
+    @Override
+    public String toString() {
+        return "State{" +
+                "stateId=" + stateId +
+                ", stateName='" + stateName + '\'' +
+                '}';
     }
 }

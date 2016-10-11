@@ -69,4 +69,8 @@ public class City {
     public int hashCode() {
         return Objects.hash(cityId);
     }
+    @Override
+    public String toString() {
+        return "City [id = " + cityId + ", City = " + cityName + ", Region = " + region + "]";
+    }
 }

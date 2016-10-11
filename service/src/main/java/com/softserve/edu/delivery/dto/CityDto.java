@@ -10,11 +10,11 @@ import com.softserve.edu.delivery.domain.City;
 public class CityDto {
     private Long cityId;
     private String name;
-    private Region region;
+    private RegionDto region;
 
     public CityDto(){}
 
-    public CityDto(Long cityId, String name, Region region) {
+    public CityDto(Long cityId, String name, RegionDto region) {
         this.cityId = cityId;
         this.name = name;
         this.region = region;
@@ -36,15 +36,18 @@ public class CityDto {
         this.name = name;
     }
 
-    public Region getRegion() {
+    public RegionDto getRegion() {
         return region;
     }
 
-    public void setRegion(Region region) {
+    public void setRegion(RegionDto region) {
         this.region = region;
     }
 
     public static CityDto convertEntity(City city){
-        return new CityDto(city.getCityId(), city.getCityName(), city.getRegion());
+        return new CityDto(city.getCityId(), city.getCityName(), RegionDto.convertEntity(city.getRegion()));
+    }
+    public String toString() {
+        return "name = " + name + " region = " + region;
     }
 }
