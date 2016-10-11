@@ -66,7 +66,7 @@ public class OrderController {
     @RequestMapping(path = "change", method = RequestMethod.PUT)
     void changeOfferStatus(@RequestBody OfferDtoForList offerDto) {
         logger.info("Method OrderController.changeOfferStatus()");
-        orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved());
+        orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved(),offerDto.getOrderId());
     }
 
     @RequestMapping(path = "offers/{id}", method = RequestMethod.GET)
