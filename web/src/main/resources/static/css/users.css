@@ -23,6 +23,8 @@
 
 .status-btn {
     color: #a8040499;
+    cursor: pointer;
+    margin-left: 20px;
 }
 
 hr {
@@ -36,11 +38,11 @@ hr {
 
 .user-info {
     font-weight: bold;
+    margin-right: 10px;
 }
 
 .photo {
     margin-left: 30px;
 }
-
 
 

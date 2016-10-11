@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.delivery.dto.UserProfileDto;
+import com.softserve.edu.delivery.dto.UserProfileFilterDto;
 import com.softserve.edu.delivery.service.UserService;
 
 @RestController
@@ -33,5 +34,23 @@ public class UserController {
 	    UserProfileDto getUser(@RequestParam("email") String email) {
 			logger.info("Method UserController.getUser()");
 	        return userService.getUser(email);
+	    }
+	    
+	    @RequestMapping(path = "change-status", method = RequestMethod.PUT)
+	    UserProfileDto changeUserStatus(@RequestParam("email") String email, @RequestParam("status") String value) {
+			logger.info("Method UserController.changeUserStatus()");
+			Boolean status = null;
+			try{
+				status = Boolean.parseBoolean(value);
+			} catch(IllegalArgumentException e) {
+	            e.printStackTrace();
+			}
+	        return userService.changeUserStatus(email, status);
+	    }
+	    
+	    @RequestMapping(path = "filter", method = RequestMethod.GET)
+	    List<UserProfileDto> filterAllUsers(@RequestBody UserProfileFilterDto filter ) {
+			logger.info("Method UserController.filterAllUsers()");
+			return userService.filterAllUsers(filter);
 	    }
 }

@@ -24,6 +24,14 @@ angular
         	 $scope.userInfo = false;
         }
         
-        
+        $scope.changeUserStatus = (user, index) => {
+        	var email = user.email;
+        	var status = user.blocked;
+            $http.put('/users/change-status?email=' + email + '&status=' + status).then(response => {
+            	if(response.status == 200){
+            		$scope.users.allProfiles[index].blocked = response.data.blocked;   
+            	}
+            }).catch(error => console.log())
+        };
 
         }]);

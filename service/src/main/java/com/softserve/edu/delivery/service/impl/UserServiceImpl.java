@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 	public UserProfileDto changeUserStatus(String email, boolean blocked){
 		return userRepository
                 .findOneOpt(email)
-				.map(user -> userRepository.save(user.setBlocked(blocked)))
+				.map(user -> userRepository.save(user.setBlocked(!blocked)))
                 .map(UserProfileDto::create)
                 .<IllegalStateException>orElseThrow(() -> new IllegalStateException("User: " + email + " not found!"));
 	}
@@ -141,6 +141,16 @@ public class UserServiceImpl implements UserService {
     public UserProfileDto getUser(String email) {
         return UserProfileDto.create(userRepository.findOne(email));
     }
+    
+	@Override
+	public List<UserProfileDto> filterAllUsers(UserProfileFilterDto filter) {
+		return userRepository
+				.findAll()
+				.stream()
+				.filter(filter)
+				.map(UserProfileDto::create)
+				.collect(Collectors.toList());
+	}
 
     //<---------------------Private------------------------->
 

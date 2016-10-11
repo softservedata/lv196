@@ -34,4 +34,6 @@ public interface UserService extends UserDetailsService {
 	
 	UserProfileDto getUser(String email);
 
+	List<UserProfileDto> filterAllUsers(UserProfileFilterDto filter);
+
 }
