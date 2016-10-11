@@ -40,8 +40,8 @@ angular
             })
             .state('users', {
                 url: '/users',
-                templateUrl: '/app/views/users.html',
-                controller: 'userController'
+                templateUrl: '/app/users/views/users.html',
+                controller: 'usersController'
             })
             .state('tracking', {
             url: '/tracking',
