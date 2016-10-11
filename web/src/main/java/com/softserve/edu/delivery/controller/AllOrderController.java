@@ -2,10 +2,13 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
+import com.softserve.edu.delivery.service.OfferService;
 import com.softserve.edu.delivery.service.OrderService;
+import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -22,14 +25,17 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "all-orders")
 public class AllOrderController {
-    private final OrderService orderService;
-
-    private final Logger logger = LoggerFactory.getLogger(AllOrderController.class.getName());
 
     @Autowired
-    public AllOrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+    private OrderService orderService;
+
+    @Autowired
+    private OfferService offerService;
+
+    @Autowired
+    private UserAuthenticationDetails authenticationDetails;
+
+    private final Logger logger = LoggerFactory.getLogger(AllOrderController.class.getName());
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderForListDto> open() {
@@ -72,10 +78,11 @@ public class AllOrderController {
         return orderService.getOrdersByArriwalDate(timestamp);
     }
 
-    @RequestMapping(path = "offer", method = RequestMethod.POST)
-    List<OfferDto> addOffer(@RequestBody String id) {
+    @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)
+    void addOffer(@PathVariable Long id) {
         logger.info("Method AllOrderController.addOffer()");
-        Long orderId = Long.getLong(id);
-        return orderService.addOffer(orderId);
+        String email = "email2@gmail.com";                                  //will delete it later!!!
+        //String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
+        offerService.addOffer(id, email);
     }
 }

@@ -30,7 +30,7 @@
     <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
         <div class="panel-body">
             <div class="order-actions">
-                <button type="button" id="order.getId()"onclick="addOffer()">Add offer</button>
+                <button type="button" ng-click="addOffer(order.id)">Add offer</button>
             </div>
             <div class="order-city">
                 {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}

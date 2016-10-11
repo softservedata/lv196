@@ -4,7 +4,6 @@ import com.softserve.edu.delivery.dao.*;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
-import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.repository.CityRepository;
@@ -151,7 +150,6 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<OfferDtoForList> getOffersByOrderId(Long orderId) {
@@ -189,7 +187,6 @@ public class OrderServiceImpl implements OrderService {
         if (name == null) {
             throw new IllegalArgumentException("Write name of city");
         }
-
         for (City city : cityDao.getCityByName(name)) {
             cityId = city.getCityId();
             if (cityId == 0) {
@@ -235,17 +232,4 @@ public class OrderServiceImpl implements OrderService {
         }
         return result;
     }
-
-    @Override
-    public List<OfferDto> addOffer(Long orderId) {
-        List<OfferDto> result = new ArrayList<>();
-        Order order = orderDao.findOne(orderId).get();
-        order.getOffers().add(new Offer());
-        Order updatedOrder = orderDao.update(order);
-        for (Offer off : updatedOrder.getOffers()) {
-            result.add(OfferDto.offerToOfferDto(off));
-        }
-        return result;
-    }
-
 }

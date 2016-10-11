@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('allOrdersController', ['$scope', '$http',
-    function ($scope, $http) {
+    .controller('allOrdersController', ['$scope', 'orderService', '$http',
+    function ($scope, orderService, $http) {
         $scope.orders = {
             open: []
         };
@@ -24,18 +24,15 @@ angular
                 'arrival_date': '/all-orders/filtered-by-arrival-date/?date='
             };
             $http.get(url[filter_by] + filter_value).then(response => {
-                console.log(response.data)
+                console.log(response.data),
                 $scope.orders.open = response.data
             })
         };
 
-        $scope.addOffer = () => {
-            function addOffer() {
-                var id = document.getElementById('order.getId()').value
-            }
-            $http.get('/all-orders/offer?id='+id).then(response => {
-                console.log(response.data)
-                $scope.numbers = response.data
+        $scope.addOffer = (id) => {
+            orderService.setId(id);
+            $http.post('/all-orders/offer/' + orderService.getId()).then(response => {
+                console.log("addOffer");
             })
         }
    }]);
