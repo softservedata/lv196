@@ -48,7 +48,7 @@ public interface OrderService {
     //Method for user story - "As customer I want to write transporter feedback."
     void addFeedback (FeedbackDTO dto, String email);
     //Method for user story - "As customer I want to change offer status."
-    void changeStatus(Long offerId, Boolean offerStatus);
+    void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
 
     List<OrderForListDto> findAllClosedOrders(String email);
 /**

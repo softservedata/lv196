@@ -7,6 +7,7 @@ import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
 import com.softserve.edu.delivery.repository.CityRepository;
+import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,10 @@ public class OrderServiceImpl implements OrderService {
     private final FeedbackDao feedbackDao;
     private final OfferDao offerDao;
     private final CityRepository cityRepository;
+    private final OfferRepository offerRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao, CityRepository cityRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao, CityRepository cityRepository, OfferRepository offerRepository) {
         this.orderRepository = orderRepository;
         this.orderDao = orderDao;
         this.userDao = userDao;
@@ -39,6 +41,8 @@ public class OrderServiceImpl implements OrderService {
         this.feedbackDao = feedbackDao;
         this.offerDao = offerDao;
         this.cityRepository = cityRepository;
+        this.offerRepository = offerRepository;
+
     }
 
     @Override
@@ -128,10 +132,12 @@ public class OrderServiceImpl implements OrderService {
         feedback.setRate(dto.getRate());
         feedback.setText(dto.getText());
         feedback.setApproved(false);
+        feedback.setCreatedOn(new Timestamp(new Date().getTime()));
         feedbackDao.save(feedback);
     }
 
-    public void changeStatus(Long offerId, Boolean offerStatus) {
+    public void changeStatus(Long offerId, Boolean offerStatus, Long orderId) {
+        offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
         Boolean newOfferStatus = !offerStatus;
         Offer offer = offerDao.findOne(offerId)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
