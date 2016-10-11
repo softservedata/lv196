@@ -45,12 +45,12 @@ angular
             })
             .state('tracking', {
             url: '/tracking',
-            templateUrl: '/app/tracking/views/tracking.html',
-            controller: 'pleaseController'
+            templateUrl: '/app/tracking/view/tracking.html',
+            controller: 'pleaceController'
             })
             .state('dialog', {
                 url: '/dialog',
-                templateUrl: '/app/tracking/views/dialog.html',
-                controller: 'pleaseController'
+                templateUrl: '/app/tracking/view/dialog.html',
+                controller: 'pleaceController'
             });
     }]);

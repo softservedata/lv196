@@ -5,13 +5,10 @@ import com.softserve.edu.delivery.dao.RouteCityDao;
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.RouteCities;
-<<<<<<< Updated upstream
 import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.PleaceDto;
-=======
 import com.softserve.edu.delivery.domain.State;
 import com.softserve.edu.delivery.dto.*;
->>>>>>> Stashed changes
 import com.softserve.edu.delivery.repository.CityRepository;
 import com.softserve.edu.delivery.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
