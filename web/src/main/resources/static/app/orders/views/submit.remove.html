@@ -1,0 +1,17 @@
+<form name="newOrder" autocomplete="off" class="order-creation">
+    <div class="modal-header">
+        <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label class="control-label label-lg">Please, to delete your order click the button below.</label>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="cancel()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button ng-click="form.submit(order.id)" type="button" class="btn btn-danger">Remove</button>
+    </div>
+</form>

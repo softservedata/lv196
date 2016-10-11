@@ -1,6 +1,6 @@
 angular
     .module('delivery')
-    .service('orderService', function () {
+    .service('$orderProperty', function () {
     var _id = null;
     return {
         setId: function (id) {

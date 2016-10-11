@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope','orderService', '$http', '$uibModal', '$orders',
-        function ($scope,orderService, $http, $uibModal, $orders) {
+    .controller('ordersOpenController', ['$scope','$orderProperty', '$uibModal', '$orders',
+        function ($scope, $orderProperty, $uibModal, $orders) {
             $scope.orders = {
                 open: []
             };
@@ -27,8 +27,23 @@ angular
                 });
             };
 
+            $scope.showOrderTrash = (id) => {
+                $orderProperty.setId(id);
+                const modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/orders/views/submit.remove.html',
+                    controller: 'removeOrderController'
+                });
+
+                modalInstance.result.then(function (del) {
+                    if (del) {
+                        $scope.retrieveOpenOrders();
+                    }
+                });
+            };
+
             $scope.showOffers = (order) => {
-                orderService.setId(order.id);
+                $orderProperty.setId(order.id);
                 $uibModal.open({
                     animation: true,
                     templateUrl: '/app/orders/views/show.offers.html',
@@ -36,8 +51,8 @@ angular
                 });
             };
         }])
-    .controller('addOrderController', ['$scope', '$http', '$uibModalInstance', '$orders', '$locations',
-        function ($scope, $http, $uibModalInstance, $orders, $locations) {
+    .controller('addOrderController', ['$scope', '$uibModalInstance', '$orders', '$locations',
+        function ($scope, $uibModalInstance, $orders, $locations) {
             $scope.datePicker = {
                 format: 'yyyy/MM/dd',
                 options: {
@@ -111,12 +126,28 @@ angular
             };
         }]
     )
-    .controller('showOffersController',function ($scope, orderService, $http) {
+    .controller('removeOrderController', ['$scope', '$orderProperty', '$uibModalInstance', '$orders',
+        function ($scope, $orderProperty, $uibModalInstance, $orders) {
+            $scope.form = {
+                submit: () => {
+                    $orders.remove($orderProperty.getId()).then(response => {
+                        $uibModalInstance.close(true)
+                    }, response => {
+                        alert('failed to remove order')
+                    });
+                }
+            };
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }]
+    )
+    .controller('showOffersController',function ($scope, $orderProperty, $http) {
         $scope.offers = {
             offers: []
         };
         $scope.retrieveOffers = () => {
-            $http.get('/order/offers/'+orderService.getId()).then(response => {
+            $http.get('/order/offers/'+$orderProperty.getId()).then(response => {
                 $scope.offers = response.data;
             })
         };
@@ -134,7 +165,5 @@ angular
             $http.put('/order/change/',offer).then(response => {
                 $scope.retrieveOffers();
                 });
-
         };
-
     });
