@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userDao.findOne(email).get();
 
-        boolean enabled = true;
+        boolean enabled = true; // TODO: change to user.getApproved() after realize email verification
         boolean accountNonExpired = true;
         boolean credentialsNotExpired = true;
         boolean accountNonLocked = ! user.getBlocked();
@@ -89,15 +89,6 @@ public class UserServiceImpl implements UserService {
             newUser.setUserRole(Role.CUSTOMER);
 
             userDao.save(newUser);
-        }
-    }
-
-
-    public void register(User user) {
-        if (userDao.exists(user.getEmail())) {
-            throw new IllegalArgumentException("User with given email already exists.");
-        } else {
-            userDao.save(user);
         }
     }
     
