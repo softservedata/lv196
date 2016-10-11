@@ -21,4 +21,7 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     @Query("select count(off.offerId)" +
             "from Offer off where off.order.id = :id")
     Long countOffers(@Param("id") Long id);
+
+    @Query("select o from Order o where o.orderStatus = 'OPEN'")
+    List<Order> getAllOpenOrder();
 }

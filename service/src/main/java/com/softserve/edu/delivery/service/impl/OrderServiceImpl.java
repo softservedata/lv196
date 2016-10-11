@@ -6,9 +6,7 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderForAddDto;
 import com.softserve.edu.delivery.dto.OrderForListDto;
-import com.softserve.edu.delivery.repository.CityRepository;
-import com.softserve.edu.delivery.repository.OfferRepository;
-import com.softserve.edu.delivery.repository.OrderRepository;
+import com.softserve.edu.delivery.repository.*;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,23 +23,22 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderDao orderDao;
-    private final UserDao userDao;
     private final CityDao cityDao;
-    private final FeedbackDao feedbackDao;
-    private final OfferDao offerDao;
     private final CityRepository cityRepository;
     private final OfferRepository offerRepository;
+    private final UserRepository userRepository;
+    private final FeedbackRepository feedbackRepository;
+
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDao orderDao, UserDao userDao, CityDao cityDao, FeedbackDao feedbackDao, OfferDao offerDao, CityRepository cityRepository, OfferRepository offerRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDao orderDao, CityDao cityDao, CityRepository cityRepository, OfferRepository offerRepository, UserRepository userRepository, FeedbackRepository feedbackRepository) {
         this.orderRepository = orderRepository;
         this.orderDao = orderDao;
-        this.userDao = userDao;
         this.cityDao = cityDao;
-        this.feedbackDao = feedbackDao;
-        this.offerDao = offerDao;
         this.cityRepository = cityRepository;
         this.offerRepository = offerRepository;
+        this.userRepository = userRepository;
+        this.feedbackRepository = feedbackRepository;
 
     }
 
@@ -83,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Order dto must not be null");
         }
 
-        User user = userDao.findOne(email)
+        User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
         City from = cityRepository.findOneOpt(dto.getCityIdFrom())
@@ -118,12 +115,12 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Feedback dto must not be null");
         }
 
-        User user = userDao.findOne(email)
+        User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
         /*changed by Ivan Rudnytskyi - the structure of FeedbackDTO was changed - entities Order and User are removed.
         *to get User use feedbackDTO.getUserId(), Order - feedbackDTO.getOrderId()
          */
-        Order order = orderDao.findOne(dto.getOrderId())
+        Order order = orderRepository.findOneOpt(dto.getOrderId())
                 .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrderId()));
 
         Feedback feedback = new Feedback();
@@ -133,16 +130,16 @@ public class OrderServiceImpl implements OrderService {
         feedback.setText(dto.getText());
         feedback.setApproved(false);
         feedback.setCreatedOn(new Timestamp(new Date().getTime()));
-        feedbackDao.save(feedback);
+        feedbackRepository.save(feedback);
     }
 
     public void changeStatus(Long offerId, Boolean offerStatus, Long orderId) {
         offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
         Boolean newOfferStatus = !offerStatus;
-        Offer offer = offerDao.findOne(offerId)
+        Offer offer = offerRepository.findOneOpt(offerId)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
         offer.setApproved(newOfferStatus);
-        offerDao.save(offer);
+        offerRepository.save(offer);
 
     }
 
@@ -159,9 +156,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OfferDtoForList> getOffersByOrderId(Long orderId) {
-        Order order=orderDao.findOne(orderId).orElseThrow(() -> new IllegalArgumentException("No such user with email: " + orderId));
-        return offerDao
-                .getAllOffersByOrder(order)
+        return offerRepository
+                .getAllOffersByOrderId(orderId)
                 .stream()
                 .map(OfferDtoForList::offerToOfferDto)
                 .collect(Collectors.toList());
@@ -232,10 +228,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderForListDto> getAllOpenOrder() {
-        List<OrderForListDto> result = new ArrayList<>();
-        for (Order ord : orderDao.getAllOpenOrder()) {
-            result.add(OrderForListDto.of(ord));
-        }
-        return result;
+        return orderRepository
+                .getAllOpenOrder()
+                .stream()
+                .map(OrderForListDto::of)
+                .collect(Collectors.toList());
     }
 }
