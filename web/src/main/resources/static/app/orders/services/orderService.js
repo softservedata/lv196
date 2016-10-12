@@ -4,7 +4,7 @@ angular
         return {
             findOpen: () => $http.get('/order/open'),
             findInProgress: () => $http.get('/order/in-progress'),
-            add: order => $http.post('/order', order),
+            save: order => order.id ? $http.put('/order', order) : $http.post('/order', order),
             remove: id => $http.delete('/order/' + id)
         }
     }]);

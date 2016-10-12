@@ -1,10 +1,8 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
-import com.softserve.edu.delivery.dto.OfferDto;
-import com.softserve.edu.delivery.dto.OrderForAddDto;
-import com.softserve.edu.delivery.dto.OrderForListDto;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
+import com.softserve.edu.delivery.dto.OrderDto;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -18,7 +16,7 @@ public interface OrderService {
      * @param email - email of assigned customer
      * @return list of open orders for the relevant parameters
      */
-    List<OrderForListDto> findInProgressOrders(String email);
+    List<OrderDto> findInProgressOrders(String email);
 
     /**
      * Finds the list of open orders by customer with given email
@@ -26,7 +24,7 @@ public interface OrderService {
      * @param email - email of assigned customer
      * @return list of open orders for the relevant parameters
      */
-    List<OrderForListDto> findOpenOrders(String email);
+    List<OrderDto> findOpenOrders(String email);
 
     /**
      * Creates new order based of given dto and assigns it to user with given email
@@ -36,7 +34,17 @@ public interface OrderService {
      * @throws IllegalArgumentException if dto is null or no such user with given email
      * or city from/to could not be found
      */
-    void addOrder(OrderForAddDto dto, String email);
+    void addOrder(OrderDto dto, String email);
+
+    /**
+     * Updates existing order
+     *
+     * @param dto - order dto
+     * @param email - of assigned user
+     * @throws IllegalArgumentException if dto is null or no such user with given email
+     * or city from/to could not be found
+     */
+    void updateOrder(OrderDto dto, String email);
 
     void removeOrder(Long id);
 
@@ -50,14 +58,14 @@ public interface OrderService {
     //Method for user story - "As customer I want to change offer status."
     void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
 
-    List<OrderForListDto> findAllClosedOrders(String email);
+    List<OrderDto> findAllClosedOrders(String email);
 /**
 * Author - Ivan Synyshyn
 */
     //As transporter I want to choose orders by filter
-    List<OrderForListDto> getOrdersByCityFrom(String name);
-    List<OrderForListDto> getOrdersByCityTo(String name);
-    List<OrderForListDto> getOrdersByWeight(BigDecimal weight);
-    List<OrderForListDto> getOrdersByArriwalDate(Timestamp arrivalDate);
-    List<OrderForListDto> getAllOpenOrder();
+    List<OrderDto> getOrdersByCityFrom(String name);
+    List<OrderDto> getOrdersByCityTo(String name);
+    List<OrderDto> getOrdersByWeight(BigDecimal weight);
+    List<OrderDto> getOrdersByArriwalDate(Timestamp arrivalDate);
+    List<OrderDto> getAllOpenOrder();
 }

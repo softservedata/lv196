@@ -6,7 +6,8 @@ import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.OrderForAddDto;
+import com.softserve.edu.delivery.dto.LocationDto;
+import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.repository.CityRepository;
 import com.softserve.edu.delivery.service.impl.OrderServiceImpl;
 import org.mockito.*;
@@ -90,18 +91,19 @@ public class OrderServiceAddOrderTest {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void addOrderNoCityTo() {
-        orderService.addOrder(dummyDto().setCityIdTo(33L), dummyEmail);
+        orderService.addOrder(dummyDto().setLocationFrom(new LocationDto().setCityId(33L)), dummyEmail);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void addOrderNoCityFrom() {
-        orderService.addOrder(dummyDto().setCityIdFrom(33L), dummyEmail);
+        orderService.addOrder(dummyDto().setLocationTo(new LocationDto().setCityId(33L)), dummyEmail);
     }
 
-    private OrderForAddDto dummyDto() {
-        return new OrderForAddDto()
+    private OrderDto dummyDto() {
+        return new OrderDto()
                 .setArrivalDate(dummyTimestamp)
-                .setCityIdFrom(1L).setCityIdTo(2L)
+                .setLocationFrom(new LocationDto().setCityId(1L))
+                .setLocationTo(new LocationDto().setCityId(2L))
                 .setHeight(new BigDecimal(23)).setLength(new BigDecimal(15))
                 .setWeight(new BigDecimal(45)).setWidth(new BigDecimal(13))
                 .setDescription("dummy desc");

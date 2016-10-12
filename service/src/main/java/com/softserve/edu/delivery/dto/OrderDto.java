@@ -7,31 +7,34 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class OrderForListDto {
+public class OrderDto {
     private Long id;
-    private String status;
     private Timestamp arrivalDate;
-    private String description;
     private String customerName;
-    private String cityNameFrom;
-    private String cityNameTo;
-    private String orderStatus;
+    private LocationDto locationFrom;
+    private LocationDto locationTo;
     private String driverName;
+    private BigDecimal height;
+    private BigDecimal width;
+    private BigDecimal length;
     private BigDecimal weight;
+    private String description;
     private Long numberOfOffers;
 
-    public OrderForListDto() {
+    public OrderDto() {
     }
 
-    public static OrderForListDto of(Order order) {
-        OrderForListDto dto = new OrderForListDto()
+    public static OrderDto of(Order order) {
+        OrderDto dto = new OrderDto()
                 .setId(order.getId())
-                .setStatus(order.getOrderStatus().getName())
                 .setArrivalDate(order.getArrivalDate())
-                .setDescription(order.getDescription())
-                .setCityNameFrom(order.getCityFrom() == null ? null : order.getCityFrom().getCityName())
-                .setCityNameTo(order.getCityTo() == null ? null : order.getCityTo().getCityName())
+                .setLocationFrom(order.getCityFrom() == null ? null : LocationDto.of(order.getCityFrom()))
+                .setLocationTo(order.getCityTo() == null ? null : LocationDto.of(order.getCityTo()))
                 .setWeight(order.getWeight())
+                .setHeight(order.getHeight())
+                .setWidth(order.getWidth())
+                .setLength(order.getLength())
+                .setDescription(order.getDescription())
                 .setNumberOfOffers(0L);
 
         User customer = order.getCustomer();
@@ -46,17 +49,8 @@ public class OrderForListDto {
         return id;
     }
 
-    public OrderForListDto setId(Long id) {
+    public OrderDto setId(Long id) {
         this.id = id;
-        return this;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public OrderForListDto setStatus(String status) {
-        this.status = status;
         return this;
     }
 
@@ -64,7 +58,7 @@ public class OrderForListDto {
         return arrivalDate;
     }
 
-    public OrderForListDto setArrivalDate(Timestamp arrivalDate) {
+    public OrderDto setArrivalDate(Timestamp arrivalDate) {
         this.arrivalDate = arrivalDate;
         return this;
     }
@@ -73,7 +67,7 @@ public class OrderForListDto {
         return description;
     }
 
-    public OrderForListDto setDescription(String description) {
+    public OrderDto setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -82,35 +76,26 @@ public class OrderForListDto {
         return customerName;
     }
 
-    public OrderForListDto setCustomerName(String customerName) {
+    public OrderDto setCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
     }
 
-    public String getCityNameFrom() {
-        return cityNameFrom;
+    public LocationDto getLocationFrom() {
+        return locationFrom;
     }
 
-    public OrderForListDto setCityNameFrom(String cityNameFrom) {
-        this.cityNameFrom = cityNameFrom;
+    public OrderDto setLocationFrom(LocationDto locationFrom) {
+        this.locationFrom = locationFrom;
         return this;
     }
 
-    public String getCityNameTo() {
-        return cityNameTo;
+    public LocationDto getLocationTo() {
+        return locationTo;
     }
 
-    public OrderForListDto setCityNameTo(String cityNameTo) {
-        this.cityNameTo = cityNameTo;
-        return this;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public OrderForListDto setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public OrderDto setLocationTo(LocationDto locationTo) {
+        this.locationTo = locationTo;
         return this;
     }
 
@@ -118,7 +103,7 @@ public class OrderForListDto {
         return driverName;
     }
 
-    public OrderForListDto setDriverName(String driverName) {
+    public OrderDto setDriverName(String driverName) {
         this.driverName = driverName;
         return this;
     }
@@ -127,8 +112,35 @@ public class OrderForListDto {
         return weight;
     }
 
-    public OrderForListDto setWeight(BigDecimal weight) {
+    public OrderDto setWeight(BigDecimal weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public BigDecimal getHeight() {
+        return height;
+    }
+
+    public OrderDto setHeight(BigDecimal height) {
+        this.height = height;
+        return this;
+    }
+
+    public BigDecimal getWidth() {
+        return width;
+    }
+
+    public OrderDto setWidth(BigDecimal width) {
+        this.width = width;
+        return this;
+    }
+
+    public BigDecimal getLength() {
+        return length;
+    }
+
+    public OrderDto setLength(BigDecimal length) {
+        this.length = length;
         return this;
     }
 
@@ -136,7 +148,7 @@ public class OrderForListDto {
         return numberOfOffers;
     }
 
-    public OrderForListDto setNumberOfOffers(Long numberOfOffers) {
+    public OrderDto setNumberOfOffers(Long numberOfOffers) {
         this.numberOfOffers = numberOfOffers;
         return this;
     }
@@ -145,8 +157,8 @@ public class OrderForListDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderForListDto orderForListDto = (OrderForListDto) o;
-        return Objects.equals(id, orderForListDto.id);
+        OrderDto orderDto = (OrderDto) o;
+        return Objects.equals(id, orderDto.id);
     }
 
     @Override
@@ -161,9 +173,6 @@ public class OrderForListDto {
                 ", arrivalDate=" + arrivalDate +
                 ", description='" + description + '\'' +
                 ", customerName='" + customerName + '\'' +
-                ", cityNameFrom='" + cityNameFrom + '\'' +
-                ", cityNameTo='" + cityNameTo + '\'' +
-                ", orderStatus='" + orderStatus + '\'' +
                 ", driverName='" + driverName + '\'' +
                 '}';
     }

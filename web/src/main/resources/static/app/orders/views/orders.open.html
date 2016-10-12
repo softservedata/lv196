@@ -4,13 +4,43 @@
 <div data-ng-repeat="order in orders.open track by order.id" class="panel panel-default order-open">
     <div class="panel-body">
         <div class="order-actions">
-            <a data-ng-click="showOffers(order)">
-                <i class="fa fa-car"  data-notifications="{{order.numberOfOffers}}" aria-hidden="true"></i>
-            </a>
+            <i class="fa fa-pencil" ng-click="showOrderCreation(order)" aria-hidden="true"></i>
+            <i class="fa fa-car" ng-click="showOffers(order)" data-notifications="{{order.numberOfOffers}}"
+               aria-hidden="true"></i>
             <i class="fa fa-trash" ng-click="showOrderTrash(order.id)" aria-hidden="true"></i>
         </div>
-        <div class="order-city">
-            {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
+        <div class="order-city" ng-click="status.open = !status.open">
+            {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
+        </div>
+        <div class="order-details">
+            <uib-accordion close-others="true">
+                <div uib-accordion-group is-open="status.open">
+                    <div class="row">
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">Weight</label>
+                            <input value="{{order.weight}}" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">Height</label>
+                            <input value="{{order.height}}" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">Width</label>
+                            <input value="{{order.width}}" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">Length</label>
+                            <input value="{{order.length}}" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 form-group">
+                            <label class="control-label">Description</label>
+                            <input value="{{order.description}}" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                </div>
+            </uib-accordion>
         </div>
         <div class="order-subinfo">
             <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>

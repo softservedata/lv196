@@ -1,6 +1,6 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope','$orderProperty', '$uibModal', '$orders',
+    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders',
         function ($scope, $orderProperty, $uibModal, $orders) {
             $scope.orders = {
                 open: []
@@ -8,20 +8,19 @@ angular
 
             $scope.retrieveOpenOrders = () => {
                 $orders.findOpen().then(response => {
-                    if (response.data.length==0){
-                        alert('Now you have no open orders. To create an order, click "+" button in the right corner.');
-                    }
-                    else{
-                    $scope.orders.open = response.data;}
+                    $scope.orders.open = response.data;
                 })
             };
             $scope.retrieveOpenOrders();
 
-            $scope.showOrderCreation = () => {
+            $scope.showOrderCreation = (orderForEdit) => {
                 const modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: '/app/orders/views/order.creation.html',
-                    controller: 'addOrderController'
+                    controller: 'addOrderController',
+                    resolve: {
+                        order: () => orderForEdit
+                    }
                 });
 
                 modalInstance.result.then(function (added) {
@@ -36,7 +35,8 @@ angular
                 const modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: '/app/orders/views/submit.remove.html',
-                    controller: 'removeOrderController'
+                    controller: 'removeOrderController',
+                    size: 'sm'
                 });
 
                 modalInstance.result.then(function (del) {
@@ -47,21 +47,21 @@ angular
             };
 
             $scope.showOffers = (order) => {
-                if (order.numberOfOffers==0){
+                if (order.numberOfOffers == 0) {
                     alert('Looks like you do not have any Offers');
                 }
                 else {
-                $orderProperty.setId(order.id);
-                $uibModal.open({
-                    animation: true,
-                    templateUrl: '/app/orders/views/show.offers.html',
-                    controller: 'showOffersController'
-                });
+                    $orderProperty.setId(order.id);
+                    $uibModal.open({
+                        animation: true,
+                        templateUrl: '/app/orders/views/show.offers.html',
+                        controller: 'showOffersController'
+                    });
                 }
             };
         }])
-    .controller('addOrderController', ['$scope', '$uibModalInstance', '$orders', '$locations',
-        function ($scope, $uibModalInstance, $orders, $locations) {
+    .controller('addOrderController', ['$scope', '$uibModalInstance', '$orders', '$locations', 'order',
+        function ($scope, $uibModalInstance, $orders, $locations, order) {
             $scope.datePicker = {
                 format: 'yyyy/MM/dd',
                 options: {
@@ -85,8 +85,9 @@ angular
             $scope.form = {
                 submit: () => {
                     const data = {
-                        cityIdFrom: $scope.form.locationFrom.cityId,
-                        cityIdTo: $scope.form.locationTo.cityId,
+                        id: $scope.form.id,
+                        locationFrom: $scope.form.locationFrom,
+                        locationTo: $scope.form.locationTo,
                         arrivalDate: $scope.form.arrivalDate,
                         height: $scope.form.height,
                         width: $scope.form.width,
@@ -94,7 +95,7 @@ angular
                         weight: $scope.form.weight,
                         description: $scope.form.description
                     };
-                    $orders.add(data).then(response => {
+                    $orders.save(data).then(response => {
                         $uibModalInstance.close(true)
                     }, response => {
                         alert('failed to add order')
@@ -102,11 +103,24 @@ angular
                 }
             };
 
+            if (order) {
+                $scope.form.id = order.id;
+                $scope.form.locationFrom = order.locationFrom;
+                $scope.form.locationTo = order.locationTo;
+                $scope.form.arrivalDate = order.arrivalDate;
+                $scope.form.height = order.height;
+                $scope.form.width = order.width;
+                $scope.form.length = order.length;
+                $scope.form.weight = order.weight;
+                $scope.form.description = order.description;
+            }
+
+
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
 
-            $scope.initMapFrom = function ($item, $model, $label) {
+            $scope.initMap = function ($item, $model, $label) {
                 $scope.$item = $item;
                 $scope.$model = $model;
                 $scope.$label = $label;
@@ -125,8 +139,8 @@ angular
                 L.marker([49.8326678, 23.942024]).addTo(map);
                 L.marker([50.4016974, 30.2518212]).addTo(map);
             };
-        }]
-    )
+        }
+    ])
     .controller('removeOrderController', ['$scope', '$orderProperty', '$uibModalInstance', '$orders',
         function ($scope, $orderProperty, $uibModalInstance, $orders) {
             $scope.form = {
@@ -143,13 +157,13 @@ angular
             };
         }]
     )
-    .controller('showOffersController',function ($scope, $orderProperty, $http) {
+    .controller('showOffersController', function ($scope, $orderProperty, $http) {
         $scope.offers = {
             offers: []
         };
 
         $scope.retrieveOffers = () => {
-            $http.get('/order/offers/'+$orderProperty.getId()).then(response => {
+            $http.get('/order/offers/' + $orderProperty.getId()).then(response => {
                 $scope.offers = response.data;
             })
         };
@@ -164,8 +178,8 @@ angular
         };
 
         $scope.changeStatus = (offer) => {
-            $http.put('/order/change/',offer).then(response => {
+            $http.put('/order/change/', offer).then(response => {
                 $scope.retrieveOffers();
-                });
+            });
         };
     });

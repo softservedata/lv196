@@ -2,6 +2,7 @@ angular
     .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate'])
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
+        $urlRouterProvider.when('/orders', '/orders/in-progress');
 
         $stateProvider
             .state('profile', {

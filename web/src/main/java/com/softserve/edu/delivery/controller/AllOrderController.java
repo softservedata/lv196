@@ -1,14 +1,12 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.OfferDto;
-import com.softserve.edu.delivery.dto.OrderForListDto;
+import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.service.OfferService;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -38,32 +36,32 @@ public class AllOrderController {
     private final Logger logger = LoggerFactory.getLogger(AllOrderController.class.getName());
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
-    List<OrderForListDto> open() {
+    List<OrderDto> open() {
         logger.info("Method AllOrderController.open()");
         return orderService.getAllOpenOrder();
     }
 
     @RequestMapping(path = "filtered-by-city-from", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByCityFrom(@RequestParam String city) {
+    List<OrderDto> filteredByCityFrom(@RequestParam String city) {
         logger.info("Method AllOrderController.filteredByCityFrom()");
         return orderService.getOrdersByCityFrom(city);
     }
 
     @RequestMapping(path = "filtered-by-city-to", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByCityTo(@RequestParam String city) {
+    List<OrderDto> filteredByCityTo(@RequestParam String city) {
         logger.info("Method AllOrderController.filteredByCityTo()");
         return orderService.getOrdersByCityTo(city);
     }
 
     @RequestMapping(path = "filtered-by-weight", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByWeight(@RequestParam String weight) {
+    List<OrderDto> filteredByWeight(@RequestParam String weight) {
         logger.info("Method AllOrderController.filteredByWeight()");
         BigDecimal converted = BigDecimal.valueOf(Double.parseDouble(weight));
         return orderService.getOrdersByWeight(converted);
     }
 
     @RequestMapping(path = "filtered-by-arrival-date", method = RequestMethod.GET)
-    List<OrderForListDto> filteredByArriwalDate(@RequestParam String date) {
+    List<OrderDto> filteredByArriwalDate(@RequestParam String date) {
         logger.info("In method AllOrderController.filteredByArriwalDate()");
         SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");
         Date parsed = null;

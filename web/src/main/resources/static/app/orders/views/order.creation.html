@@ -20,16 +20,16 @@
                        uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
                        for location in findLocations($viewValue)"
                        typeahead-loading="loadingCityFrom" typeahead-no-results="noResultsCityFrom"
-                       type="text" class="form-control input-lg" id="cityFromInput" name="cityFrom"/>
+                       type="text" class="form-control input-lg" id="cityFromInput" name="locationFrom"/>
             </div>
             <div class="col-xs-6 form-group">
                 <label class="control-label label-lg" for="cityArrivalInput">To</label>
-                <input ng-model="form.locationTo" typeahead-on-select="initMapFrom($item, $model, $label)"
+                <input ng-model="form.locationTo" typeahead-on-select="initMap($item, $model, $label)"
                        ng-required="true" ng-click="status.open = !status.open"
                        uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
                        for location in findLocations($viewValue)"
                        typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"
-                       type="text" class="form-control input-lg" id="cityArrivalInput" name="cityTo"/>
+                       type="text" class="form-control input-lg" id="cityArrivalInput" name="locationTo"/>
             </div>
         </div>
         <h5 class="order-creation-details">Details:</h5>
@@ -66,6 +66,6 @@
     </div>
     <div class="modal-footer">
         <button ng-click="cancel()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button ng-click="form.submit()" type="button" class="btn btn-primary">Create</button>
+        <button ng-click="form.submit()" type="button" class="btn btn-primary">Save</button>
     </div>
 </form>

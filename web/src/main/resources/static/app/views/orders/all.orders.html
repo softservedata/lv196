@@ -31,7 +31,7 @@
                 <button type="button" class="btn btn-default btn-sm" ng-click="addOffer(order.id)">Add offer</button>
             </div>
             <div class="order-city">
-                {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
+                {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
             </div>
             <div class="order-subinfo">
                 <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>

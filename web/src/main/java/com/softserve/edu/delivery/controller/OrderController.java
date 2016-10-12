@@ -2,8 +2,7 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
-import com.softserve.edu.delivery.dto.OrderForAddDto;
-import com.softserve.edu.delivery.dto.OrderForListDto;
+import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
@@ -26,28 +25,34 @@ public class OrderController {
     Logger logger = LoggerFactory.getLogger(OrderController.class.getName());
 
     @RequestMapping(path = "in-progress", method = RequestMethod.GET)
-    List<OrderForListDto> inProgress() {
-        String email = authenticationDetails.getAuthenticatedUserEmail(); // will be retrieved via Spring Security later
+    List<OrderDto> inProgress() {
+        String email = "martin@gmail.com";
         return orderService.findInProgressOrders(email);
     }
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
-    List<OrderForListDto> open() {
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+    List<OrderDto> open() {
+        String email = "martin@gmail.com";
         return orderService.findOpenOrders(email);
     }
 
     @RequestMapping(path = "closed", method = RequestMethod.GET)
-    List<OrderForListDto> closed() {
+    List<OrderDto> closed() {
         String email = authenticationDetails.getAuthenticatedUserEmail();
         return orderService.findAllClosedOrders(email);
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
-    void addOrder(@RequestBody OrderForAddDto dto) {
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+    void addOrder(@RequestBody OrderDto dto) {
+        String email = "martin@gmail.com";
         orderService.addOrder(dto, email);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    void updateOrder(@RequestBody OrderDto dto) {
+        String email = "martin@gmail.com";
+        orderService.updateOrder(dto, email);
     }
 
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)

@@ -1,7 +1,7 @@
 <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
     <div class="panel-body">
         <div class="order-city">
-            {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
+            {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
         </div>
         <div class="order-subinfo">
             <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>

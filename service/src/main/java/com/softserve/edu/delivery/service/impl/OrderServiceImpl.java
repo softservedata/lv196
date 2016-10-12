@@ -1,11 +1,11 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.*;
+import com.softserve.edu.delivery.dao.CityDao;
+import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
-import com.softserve.edu.delivery.dto.OrderForAddDto;
-import com.softserve.edu.delivery.dto.OrderForListDto;
+import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.repository.*;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,12 +46,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderForListDto> findInProgressOrders(String email) {
+    public List<OrderDto> findInProgressOrders(String email) {
         return orderRepository
                 .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.IN_PROGRESS)
                 .stream()
                 .map(order -> {
-                    OrderForListDto dto = OrderForListDto.of(order);
+                    OrderDto dto = OrderDto.of(order);
                     String name = orderRepository
                             .findDriverNameByOrderId(dto.getId())
                             .orElse(null);
@@ -60,48 +62,58 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderForListDto> findOpenOrders(String email) {
+    public List<OrderDto> findOpenOrders(String email) {
         return orderRepository
                 .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.OPEN)
                 .stream()
-                .map(order -> {
-                    OrderForListDto dto = OrderForListDto.of(order);
-                    Long numberOfOffers = orderRepository.countOffers(dto.getId());
-                    return dto.setNumberOfOffers(numberOfOffers);
-                })
+                .map(order -> OrderDto.of(order)
+                        .setNumberOfOffers(offerRepository.countByOrderId(order.getId()))
+                )
                 .collect(Collectors.toList());
     }
 
 
-
     @Override
-    public void addOrder(OrderForAddDto dto, String email) {
-        if (dto == null) {
-            throw new IllegalArgumentException("Order dto must not be null");
-        }
-
-        User user = userRepository.findOneOpt(email)
+    public void addOrder(OrderDto dto, String email) {
+        User customer = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
-        City from = cityRepository.findOneOpt(dto.getCityIdFrom())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
-
-        City to = cityRepository.findOneOpt(dto.getCityIdTo())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getCityIdTo()));
-
-        orderRepository.save(new Order()
+        Order order = new Order()
+                .setCustomer(customer)
                 .setOrderStatus(OrderStatus.OPEN)
-                .setCustomer(user)
+                .setRegistrationDate(new Timestamp(new Date().getTime()));
+
+        saveOrder(order, dto);
+    }
+
+    @Override
+    public void updateOrder(OrderDto dto, String email) {
+        Order order = orderRepository.findOneOpt(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getId()));
+
+        if (!order.getCustomer().getEmail().equals(email)) {
+            throw new IllegalArgumentException("User with email: " + email + " cannot edit order with id: " + dto.getId());
+        }
+
+        saveOrder(order, dto);
+    }
+
+    private void saveOrder(Order order, OrderDto dto) {
+        City from = cityRepository.findOneOpt(dto.getLocationFrom().getCityId())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationFrom().getCityId()));
+
+        City to = cityRepository.findOneOpt(dto.getLocationFrom().getCityId())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationFrom().getCityId()));
+
+        orderRepository.save(order
                 .setCityFrom(from)
                 .setCityTo(to)
-                .setRegistrationDate(new Timestamp(new Date().getTime()))
                 .setArrivalDate(dto.getArrivalDate())
                 .setHeight(dto.getHeight())
                 .setWidth(dto.getWidth())
                 .setLength(dto.getLength())
                 .setWeight(dto.getWeight())
-                .setDescription(dto.getDescription())
-        );
+                .setDescription(dto.getDescription()));
     }
 
     @Override
@@ -145,11 +157,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderForListDto> findAllClosedOrders(String email) {
+    public List<OrderDto> findAllClosedOrders(String email) {
         return orderDao
                 .findClosedOrders(email)
                 .stream()
-                .map(OrderForListDto::of)
+                .map(OrderDto::of)
                 .collect(Collectors.toList());
     }
 
@@ -164,8 +176,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderForListDto> getOrdersByCityFrom(String name) {
-        List<OrderForListDto> result = new ArrayList<>();
+    public List<OrderDto> getOrdersByCityFrom(String name) {
+        List<OrderDto> result = new ArrayList<>();
         Long cityId = 0L;
         if (name == null) {
             throw new IllegalArgumentException("Write name of city");
@@ -177,14 +189,14 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         for (Order ord : orderDao.getOrderByCityFrom(cityId)) {
-            result.add(OrderForListDto.of(ord));
+            result.add(OrderDto.of(ord));
         }
         return result;
     }
 
     @Override
-    public List<OrderForListDto> getOrdersByCityTo(String name) {
-        List<OrderForListDto> result = new ArrayList<>();
+    public List<OrderDto> getOrdersByCityTo(String name) {
+        List<OrderDto> result = new ArrayList<>();
         Long cityId = 0L;
         if (name == null) {
             throw new IllegalArgumentException("Write name of city");
@@ -196,42 +208,42 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         for (Order ord : orderDao.getOrderByCityTo(cityId)) {
-            result.add(OrderForListDto.of(ord));
+            result.add(OrderDto.of(ord));
         }
         return result;
     }
 
     @Override
-    public List<OrderForListDto> getOrdersByWeight(BigDecimal weight) {
-        List<OrderForListDto> result = new ArrayList<>();
+    public List<OrderDto> getOrdersByWeight(BigDecimal weight) {
+        List<OrderDto> result = new ArrayList<>();
         if (weight.doubleValue() <= 0.0) {
             throw new IllegalArgumentException("Incorect weight");
         }
         for (Order ord : orderDao.getOrderByWeight(weight)) {
-            result.add(OrderForListDto.of(ord));
+            result.add(OrderDto.of(ord));
         }
         return result;
     }
 
     @Override
-    public List<OrderForListDto> getOrdersByArriwalDate(Timestamp arrivalDate) {
-        List<OrderForListDto> result = new ArrayList<>();
+    public List<OrderDto> getOrdersByArriwalDate(Timestamp arrivalDate) {
+        List<OrderDto> result = new ArrayList<>();
         Date date = new Date();
         if (arrivalDate.getTime() < date.getTime()) {
             throw new IllegalArgumentException("Wrong date format");
         }
         for (Order ord : orderDao.getOrderByArrivalDate(arrivalDate)) {
-            result.add(OrderForListDto.of(ord));
+            result.add(OrderDto.of(ord));
         }
         return result;
     }
 
     @Override
-    public List<OrderForListDto> getAllOpenOrder() {
+    public List<OrderDto> getAllOpenOrder() {
         return orderRepository
                 .getAllOpenOrder()
                 .stream()
-                .map(OrderForListDto::of)
+                .map(OrderDto::of)
                 .collect(Collectors.toList());
     }
 }

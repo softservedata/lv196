@@ -15,6 +15,28 @@
 .modal-body .panel-body {
     padding: 0;
 }
+.modal-body .panel-group {
+    margin-bottom: 0;
+}
+
+.order-details .panel {
+    box-shadow: none !important;
+}
+.order-details .panel-body {
+    padding: 0;
+    border: none  !important;
+}
+.order-details .panel-group {
+    margin-bottom: 0;
+}
+.order-details .panel-heading {
+    padding: 0;
+}
+
+.order-details div.col-sm-2.form-group {
+    width: 90px;
+    margin-bottom: 0 !important;
+}
 
 .orders {
     padding-top: 120px;
@@ -29,7 +51,13 @@
 
 .order-in-progress .order-city, .order-open .order-city {
     font-size: 16px;
+    cursor: pointer;
 }
+
+.order-in-progress .order-city:hover, .order-open .order-city:hover {
+    color: rgba(85, 85, 85, 0.74);
+}
+
 
 .order-actions {
     float: right;
