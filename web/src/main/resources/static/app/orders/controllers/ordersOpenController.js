@@ -8,7 +8,11 @@ angular
 
             $scope.retrieveOpenOrders = () => {
                 $orders.findOpen().then(response => {
-                    $scope.orders.open = response.data;
+                    if (response.data.length==0){
+                        alert('Now you have no open orders. To create an order, click "+" button in the right corner.');
+                    }
+                    else{
+                    $scope.orders.open = response.data;}
                 })
             };
             $scope.retrieveOpenOrders();
@@ -43,12 +47,17 @@ angular
             };
 
             $scope.showOffers = (order) => {
+                if (order.numberOfOffers==0){
+                    alert('Looks like you do not have any Offers');
+                }
+                else {
                 $orderProperty.setId(order.id);
                 $uibModal.open({
                     animation: true,
                     templateUrl: '/app/orders/views/show.offers.html',
                     controller: 'showOffersController'
                 });
+                }
             };
         }])
     .controller('addOrderController', ['$scope', '$uibModalInstance', '$orders', '$locations',
@@ -138,6 +147,7 @@ angular
         $scope.offers = {
             offers: []
         };
+
         $scope.retrieveOffers = () => {
             $http.get('/order/offers/'+$orderProperty.getId()).then(response => {
                 $scope.offers = response.data;
