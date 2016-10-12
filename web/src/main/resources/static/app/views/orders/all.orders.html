@@ -1,42 +1,40 @@
-<div class="navbar navbar-inverse navbar-static-top">
+<div class="navbar navbar-inverse navbar-static-top" style="height: 37.5mm"
+     xmlns:margin-top="http://www.w3.org/1999/xhtml"
+     xmlns:margin-top="http://www.w3.org/1999/xhtml">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <span class="navbar-brand">All active orders</span>
         </div>
-        <div class="site-content all-orders">
+        <div class="site-content all-orders" style="margin-top: -16mm">
             <div class="input-group pull-right">
                 <div class="row col-md-4">
-                    <b >Filter by:</b>
+                    <b>Filter by:</b>
                     <select id="filter" class="form-control">
                         <option value="city_from">City from</option>
                         <option value="city_to">City to</option>
                         <option value="weight">Weight</option>
                         <option value="arrival_date">Arrival date</option>
                     </select>
-                    <input class="form-control " type="text" id="filter_value" value="">
-                    <input class="btn btn-submit " ng-click="filter()" type="submit" name="filter_submit" value="Filter">
+                    <input class="form-control" type="text" id="filter_value" value="" style="color: white">
+                    <input class="btn btn-default btn-sm" ng-click="filter()" type="submit" name="filter_submit"
+                           style="margin-top: 1mm" value="Filter">
                 </div>
             </div>
             <ui-view></ui-view>
         </div>
     </div>
+</div>
+<div class="main" style="margin-top: 40mm">
     <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
         <div class="panel-body">
             <div class="order-actions">
-                <button type="button" ng-click="addOffer(order.id)">Add offer</button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="addOffer(order.id)">Add offer</button>
             </div>
             <div class="order-city">
                 {{order.cityNameFrom}} &mdash; {{order.cityNameTo}}
             </div>
             <div class="order-subinfo">
-                <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>Customer {{order.customerName}}</span>
+                <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
                 <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
                 <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>Weight {{order.weight | number}}</span>
             </div>
