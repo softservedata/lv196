@@ -26,9 +26,6 @@ public class OfferServiceImpl implements OfferService{
     private UserDao userDao;
 
     @Autowired
-    private OfferDao offerDao;
-
-    @Autowired
     private OrderDao orderDao;
 
     @Autowired
@@ -39,9 +36,14 @@ public class OfferServiceImpl implements OfferService{
 
     @Override
     public void addOffer(Long orderId, String email) {
+
         Order order = orderDao.findOne(orderId).get();
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("no user found"));
+
+        if(offerRepository.getOfferByOrderIdAndCarId(orderId, user.getCars().get(0).getCarId()).size() > 0) {
+            throw new IllegalArgumentException("You can't create more than one offer");
+        }
         Car car = user.getCars().get(0);
         Offer offer = new Offer();
         offer.setApproved(false);

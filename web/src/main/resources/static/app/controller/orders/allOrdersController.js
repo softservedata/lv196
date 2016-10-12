@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('allOrdersController', ['$scope', 'orderService', '$http',
-    function ($scope, orderService, $http) {
+    .controller('allOrdersController', ['$scope', '$orderProperty', '$http',
+    function ($scope, $orderProperty, $http) {
         $scope.orders = {
             open: []
         };
@@ -30,8 +30,8 @@ angular
         };
 
         $scope.addOffer = (id) => {
-            orderService.setId(id);
-            $http.post('/all-orders/offer/' + orderService.getId()).then(response => {
+            $orderProperty.setId(id);
+            $http.post('/all-orders/offer/' + $orderProperty.getId()).then(response => {
                 console.log("addOffer");
             })
         }

@@ -82,7 +82,7 @@ public class AllOrderController {
     void addOffer(@PathVariable Long id) {
         logger.info("Method AllOrderController.addOffer()");
         String email = "email2@gmail.com";                                  //will delete it later!!!
-        //String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
+//        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
         offerService.addOffer(id, email);
     }
 }
