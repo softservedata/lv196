@@ -1,4 +1,4 @@
-<div class="navbar navbar-inverse navbar-default.navbar-static-top" style="background-color: green">
+<div class="navbar navbar-inverse navbar-default navbar-static-top" style="background-color: green">
 <div class="container-fluid">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -20,31 +20,28 @@
     </div>
 </div>
 </div>
-<div class="main" ng-app="delivery" ng-controller="feedbacksController">
+<div class="main" ng-app="delivery" ng-controller="feedbacksController" style="padding-top: 70px;">
     <div class="container col-xs-12">
-        <table class="table table-striped table-bordered table-hover table-responsive" width="100%">
+        <table class="table table-striped table-hover table-responsive header-fixed" width="100%">
             <thead>
             <tr>
-                <th class="col-xs-2" ng-click="feedbackSorting(1)">Id<span style="float:right;">
+                <th class="col-xs-3" ng-click="feedbackSorting(1)">Text<span style="float:right;">
                     <i class={{feedbackSortIcons[1]}} aria-hidden="true"></i></span></th>
-                <th class="col-xs-2">Text<span style="float:right;">
-                    <i class="fa fa-sort" aria-hidden="true"></i></span></th>
-                <th class="col-xs-2">Rate<span style="float:right;">
-                    <i class="fa fa-sort" aria-hidden="true"></i></span></th>
-                <th class="col-xs-2">User<span style="float:right;">
-                    <i class="fa fa-sort" aria-hidden="true"></i></span></th>
-                <th class="col-xs-2">Transporter<span style="float:right;">
-                    <i class="fa fa-sort" aria-hidden="true"></i></span></th>
-                <th class="col-xs-1">Date<span style="float:right;">
-                    <i class="fa fa-sort" aria-hidden="true"></i></span></th>
-                <th class="col-xs-1">Approved<span style="float:right;">
-                    <i class="fa fa-sort" aria-hidden="true"></i></span></th>
+                <th class="col-xs-2" ng-click="feedbackSorting(2)">Rate<span style="float:right;">
+                    <i class={{feedbackSortIcons[2]}} aria-hidden="true"></i></span></th>
+                <th class="col-xs-2" ng-click="feedbackSorting(3)">User<span style="float:right;">
+                    <i class={{feedbackSortIcons[3]}} aria-hidden="true"></i></span></th>
+                <th class="col-xs-2" ng-click="feedbackSorting(4)">Transporter<span style="float:right;">
+                    <i class={{feedbackSortIcons[4]}} aria-hidden="true"></i></span></th>
+                <th class="col-xs-2" ng-click="feedbackSorting(5)">Date<span style="float:right;">
+                    <i class={{feedbackSortIcons[5]}} aria-hidden="true"></i></span></th>
+                <th class="col-xs-1" ng-click="feedbackSorting(6)">Status<span style="float:right;">
+                    <i class={{feedbackSortIcons[6]}} aria-hidden="true"></i></span></th>
             </tr>
             </thead>
             <tbody>
             <tr search-form></tr>
             <tr ng-repeat="f in feedbacks"> <!--ng-click="showUser(f.userEmail)-->
-                <td>{{f.feedbackId}}</td>
                 <td>{{f.text}}</td>
                 <td>{{f.rate}}</td>
                 <td uib-popover="{{f.userName}}" popover-trigger="'mouseenter'" popover-popup-delay="1000"
@@ -52,8 +49,8 @@
                 </td>
                 <td>{{f.transporterName}}</td>
                 <td>{{f.createdOn | date:'medium'}}</td>
-                <td><a class="{{btnApprovedStyle(f.approved)}}" role="button"
-                       ng-click="changeFeedbackStatus(f)">{{f.approved}}</a></td>
+                <td><a class="{{toggleApproved(f.approved)}}" style="{{toggleStyle(f.approved)}}"
+                       ng-click="changeFeedbackStatus(f)"></a></td>
             </tr>
             </tbody>
         </table>

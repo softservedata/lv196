@@ -9,10 +9,12 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,13 +29,111 @@ import java.util.Optional;
 public class FeedbackServiceImpl implements FeedbackService {
 
 
-
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
     private UserDao userDao;
     @Autowired
     private OrderDao orderDao;
+
+    private String processRequestText(String text){
+        if (text.equals("undefined")){
+            text = "%";
+        } else {
+            text = "%" + text + "%";
+        }
+        return text;
+    }
+
+    private Integer processRequestRate(String rate){
+        try {
+            return Integer.parseInt(rate.replaceAll("\\D+", ""));
+        } catch (IllegalArgumentException e) {
+            return 0;
+        }
+    }
+
+    private Timestamp processRequestCreatedOn(String createdOn){
+        try {
+            return new Timestamp(Long.parseLong(createdOn));
+        } catch (IllegalArgumentException e) {
+            return Timestamp.valueOf(LocalDateTime.MIN);
+        }
+    }
+
+    private Boolean processRequestApproved(String approved){
+        if (approved.toLowerCase().contains("tru")){
+            return true;
+        } else if (approved.toLowerCase().contains("fal")){
+            return false;
+        }
+        return null;
+    }
+
+    private String processRequestSortOrder(String sortOrder){
+        if (sortOrder.toLowerCase().contains("tru")) {
+            return "desc";
+        }
+        return "asc";
+    }
+
+    private List<FeedbackDTO> filteredNotByUserAndTransporter(String text, Integer rate, String userName, String transporterName,
+                                                 Timestamp createdOn, Boolean approved, String sortBy, String sort){
+
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(sort), sortBy);
+
+        if (approved == null) {
+            return copyFeedbackListToDTOList(feedbackRepository.findFilteredStatusUndefined(text, rate, userName,
+                    transporterName, createdOn, true, false, new Sort(sortOrder)));
+        }
+        return copyFeedbackListToDTOList(feedbackRepository.findFilteredStatusDefined(text, rate, userName,
+                transporterName, createdOn, approved, new Sort(sortOrder)));
+
+    }
+
+    private List<FeedbackDTO> filteredByUser(String text, Integer rate, String userName, String transporterName,
+                                                              Timestamp createdOn, Boolean approved, String sort) {
+        if (approved == null) {
+            if (sort.equals("desc")) {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusUndefinedDesc(text,
+                        rate, userName, transporterName, createdOn, true, false));
+            } else {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusUndefined(text,
+                        rate, userName, transporterName, createdOn, true, false));
+            }
+        } else {
+            if (sort.equals("desc")) {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusDefinedDesc(text,
+                        rate, userName, transporterName, createdOn, approved));
+            } else {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusDefined(text,
+                        rate, userName, transporterName, createdOn, approved));
+
+            }
+        }
+    }
+
+    private List<FeedbackDTO> filteredByTransporter(String text, Integer rate, String userName, String transporterName,
+                                             Timestamp createdOn, Boolean approved, String sort) {
+        if (approved == null) {
+            if (sort.equals("desc")) {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusUndefinedDesc(text,
+                        rate, userName, transporterName, createdOn, true, false));
+            } else {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusUndefined(text,
+                        rate, userName, transporterName, createdOn, true, false));
+            }
+        } else {
+            if (sort.equals("desc")) {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusDefinedDesc(text,
+                        rate, userName, transporterName, createdOn, approved));
+            } else {
+                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusDefined(text,
+                        rate, userName, transporterName, createdOn, approved));
+            }
+        }
+
+    }
 
     public FeedbackServiceImpl() {
     }
@@ -44,13 +144,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.orderDao = orderDao;
     }
 
-
-    /**
-     * @param feedback of Feedback class
-     * @return object of FeedbackDTO.class
-     * <p>
-     * copies all the fields of an object of Feedback.class to an object of FeedbackDTO.class
-     */
     public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setFeedbackId(feedback.getFeedbackId());
@@ -84,12 +177,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         return listFeedbackDTO;
     }
 
-    /**
-     * @param feedbackDTO of Feedback class
-     * @return object of Feedback.class
-     * <p>
-     * copies all the fields of an object of FeedbackDTO.class to an object of Feedback.class
-     */
     public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
@@ -112,13 +199,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedback;
     }
 
-    /**
-     * @param idFrom, number
-     * @return List<FeedbackDTO>
-     * <p>
-     * accepts start id of a feedback in the db and number of feedbacks. Forms list of FeedbackDTO object,
-     * whose ids are within the range.
-     */
     @Override
     @Transactional
     public List<FeedbackDTO> getAllFeedbacksInRange(Long idFrom, int number) {
@@ -131,11 +211,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    /**
-     * @param long id, boolean status
-     *
-     * sets a status of a feedback with the id equal to variable status
-     */
     public void changeFeedbackStatus(Long id, boolean status) {
 
         Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
@@ -151,11 +226,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    /**
-     * @param feedbackDTO
-     *
-     * transforms the object of FeedbackDTO.class to Feedback.class, which is saved to the db.
-     */
     public void save(FeedbackDTO feedbackDTO) {
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
         feedbackRepository.save(feedback);
@@ -163,11 +233,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    /**
-     * @param feedbackDTO
-     *
-     * transforms the object of FeedbackDTO.class to Feedback.class, which is updated in the db.
-     */
     public void update(FeedbackDTO feedbackDTO) {
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
         feedbackRepository.save(feedback);
@@ -175,11 +240,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    /**
-     * @param feedbackDTO
-     *
-     * transforms the object of FeedbackDTO.class to Feedback.class, which is deleted from the db.
-     */
     public void delete(Long id) {
 
         Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
@@ -193,13 +253,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    /**
-     * @param feedbackDTO
-     * @return object of FeedbackDTO.class
-     *
-     * looks for a feedback with the id of feedbackDTO object and return object of Feedback.class with the id.
-     * If it is not found - throws NoSuchElementException
-     */
     public FeedbackDTO findOne(Long id) {
 
         Feedback feedback;
@@ -237,11 +290,17 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
     }
 
-    /**
-     * @return List of FeedbackDTO.class
-     * <p>
-     * looks for all feedbacks and returns list of found feedbacks
-     */
+    @Override
+    @Transactional
+    public FeedbackDTO findByFeedbackId(Long id){
+        Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
+        if (oFeedback.isPresent()) {
+            return copyFeedbackToDTO(oFeedback.get());
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
     @Override
     @Transactional
     public List<FeedbackDTO> findAll() {
@@ -250,92 +309,23 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public List<FeedbackDTO> findByOrderByFeedbackIdDesc() {
-        return copyFeedbackListToDTOList(feedbackRepository.findByOrderByFeedbackIdDesc());
+    public List<FeedbackDTO> findFiltered(String text, String rateString, String userName, String transporterName,
+                                          String createdOnString, String approvedString, String sortBy, String sortOrder) {
+
+        text = processRequestText(text);
+        Integer rate = processRequestRate(rateString);
+        userName = processRequestText(userName);
+        transporterName = processRequestText(transporterName);
+        Timestamp createdOn = processRequestCreatedOn(createdOnString);
+        Boolean approved = processRequestApproved(approvedString);
+        sortOrder = processRequestSortOrder(sortOrder);
+
+        if (!sortBy.equals("userName") && !sortBy.equals("transporterName")) {
+            return filteredNotByUserAndTransporter(text, rate, userName,transporterName, createdOn, approved, sortBy, sortOrder);
+        } else if (sortBy.equals("userName")) {
+            return filteredByUser(text, rate, userName,transporterName, createdOn, approved, sortOrder);
+        } else {
+            return filteredByTransporter(text, rate, userName,transporterName, createdOn, approved, sortOrder);
+        }
     }
-
-    @Override
-    @Transactional
-    /**
-     * @param long id - id of a feedback in db
-     * @return object of FeedbackDTO.class
-     * looks for a feedback with a given id
-     */
-    public FeedbackDTO findByFeedbackId(Long id) {
-        return copyFeedbackToDTO(feedbackRepository.findByFeedbackId(id));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByFeedbackIdGreaterThan(Long id) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdGreaterThan(id));
-    }
-
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByFeedbackIdGreaterThanOrderByFeedbackIdDesc(Long id){
-        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdGreaterThanOrderByFeedbackIdDesc(id));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByFeedbackIdLessThan(Long id) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdLessThan(id));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByFeedbackIdLessThanOrderByFeedbackIdDesc(Long id){
-        return copyFeedbackListToDTOList(feedbackRepository.findByFeedbackIdLessThanOrderByFeedbackIdDesc(id));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByRate(Integer rate) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByRate(rate));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByRateGreaterThan(Integer rate) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByRateGreaterThan(rate));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByRateLessThan(Integer rate) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByRateLessThan(rate));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByTextContaining(String text) {
-        return copyFeedbackListToDTOList(feedbackRepository.findByTextContaining(text));
-    }
-
-    @Override
-    @Transactional
-    public List <FeedbackDTO> findByUserFirstNameOrLastName(String userName){
-        return copyFeedbackListToDTOList(feedbackRepository.findByUserFirstNameOrLastName(userName));
-    }
-
-    @Override
-    @Transactional
-    public List <FeedbackDTO> findByTransporterFirstNameOrLastName(String transporterName){
-        return copyFeedbackListToDTOList(feedbackRepository.findByTransporterFirstNameOrLastName(transporterName));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByApproved(Boolean approved){
-        return copyFeedbackListToDTOList(feedbackRepository.findByApproved(approved));
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDTO> findByCreatedOn(Timestamp createdOn){
-        return copyFeedbackListToDTOList(feedbackRepository.findByCreatedOnAfter(createdOn));
-    }
-
 }

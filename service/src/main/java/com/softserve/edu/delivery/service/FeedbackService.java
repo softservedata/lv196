@@ -1,14 +1,10 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.dao.FeedbackDao;
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.dao.UserDao;
-import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
+import org.springframework.data.domain.Sort;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -42,35 +38,11 @@ public interface FeedbackService {
 
     /*------------- Find all feedbacks -----------------------*/
 
-    List<FeedbackDTO> findByOrderByFeedbackIdDesc();
+    List<FeedbackDTO> findFiltered(String text, String rateString, String userName, String transporterName,
+                                   String createdOnString, String approvedString, String sortBy, String sort);
 
     /*------------- Find feedbacks by id -----------------------*/
 
     FeedbackDTO findByFeedbackId(Long id);
 
-    List <FeedbackDTO> findByFeedbackIdGreaterThan(Long id);
-
-    List <FeedbackDTO> findByFeedbackIdGreaterThanOrderByFeedbackIdDesc(Long id);
-
-    List <FeedbackDTO> findByFeedbackIdLessThan(Long id);
-
-    List <FeedbackDTO> findByFeedbackIdLessThanOrderByFeedbackIdDesc(Long id);
-
-    /*------------- Find feedbacks by text -----------------------*/
-
-    List <FeedbackDTO> findByTextContaining (String text);
-
-    List<FeedbackDTO> findByRate(Integer rate);
-
-    List <FeedbackDTO> findByRateGreaterThan (Integer rate);
-
-    List <FeedbackDTO> findByRateLessThan (Integer rate);
-
-    List <FeedbackDTO> findByUserFirstNameOrLastName(String userName);
-
-    List <FeedbackDTO> findByTransporterFirstNameOrLastName(String transporterName);
-
-    List<FeedbackDTO> findByApproved(Boolean approved);
-
-    List<FeedbackDTO> findByCreatedOn(Timestamp createdOn);
 }

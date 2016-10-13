@@ -1,6 +1,8 @@
 package com.softserve.edu.delivery.repository;
 
 import com.softserve.edu.delivery.domain.Feedback;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -8,7 +10,32 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-public interface FeedbackRepository extends BaseRepository<Feedback, Long> {
+public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaRepository<Feedback, Long> {
+
+    String FIND_BY =
+            "select f from Feedback f " +
+                    "join f.order ord " +
+                    "join ord.offers off  " +
+                    "join off.car c " +
+                    "join c.driver u " +
+                    "where off.approved = true and f.text like ?1 and f.rate >= ?2 and f.user.email in " +
+                    "(select u.email from User u where concat(u.firstName, ' ', u.lastName) like ?3) " +
+                    "and concat(u.firstName, ' ', u.lastName) like ?4 " +
+                    "and f.createdOn >= ?5 and ";
+
+    String APPROVED_UNDEFINED =
+            "(f.approved = ?6 or f.approved = ?7) ";
+
+    String APPROVED_DEFINED =
+            "f.approved = ?6 ";
+
+    String ORDER_BY_USERNAME =
+            "order by concat(f.user.firstName, ' ', f.user.lastName) ";
+
+    String ORDER_BY_TRANSPORTER_NAME =
+            "order by concat(u.firstName, ' ', u.lastName) ";
+
+    String DESC = " desc ";
 
     @Query("select concat(u.firstName, ' ', u.lastName) from User u " +
             "join u.cars c " +
@@ -26,45 +53,43 @@ public interface FeedbackRepository extends BaseRepository<Feedback, Long> {
 
     /*------------- Find all feedbacks -----------------------*/
 
-    List<Feedback> findByOrderByFeedbackIdDesc();
+    @Query(FIND_BY + APPROVED_UNDEFINED)
+    List<Feedback> findFilteredStatusUndefined(String text, Integer rate, String userName, String transporterName,
+                                                        Timestamp createdOn, Boolean approved0, Boolean approved1, Sort sort);
 
-    /*------------- Find feedbacks by id -----------------------*/
+    @Query(FIND_BY + APPROVED_DEFINED)
+    List<Feedback> findFilteredStatusDefined(String text, Integer rate, String userName, String transporterName,
+                                               Timestamp createdOn, Boolean approved, Sort sort);
 
-    Feedback findByFeedbackId(Long id);
+    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_USERNAME)
+    List<Feedback> findFilteredOrderByUserNameStatusUndefined(String text, Integer rate, String userName, String transporterName,
+                                                              Timestamp createdOn, Boolean approved0, Boolean approved1);
 
-    List<Feedback> findByFeedbackIdGreaterThan(Long id);
+    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_USERNAME)
+    List<Feedback> findFilteredOrderByUserNameStatusDefined(String text, Integer rate, String userName, String transporterName,
+                                                              Timestamp createdOn, Boolean approved0);
 
-    List<Feedback> findByFeedbackIdGreaterThanOrderByFeedbackIdDesc(Long id);
+    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_USERNAME + DESC)
+    List<Feedback> findFilteredOrderByUserNameStatusUndefinedDesc(String text, Integer rate, String userName, String transporterName,
+                                                              Timestamp createdOn, Boolean approved0, Boolean approved1);
 
-    List<Feedback> findByFeedbackIdLessThan(Long id);
+    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_USERNAME + DESC)
+    List<Feedback> findFilteredOrderByUserNameStatusDefinedDesc(String text, Integer rate, String userName, String transporterName,
+                                                            Timestamp createdOn, Boolean approved0);
 
-    List<Feedback> findByFeedbackIdLessThanOrderByFeedbackIdDesc(Long id);
+    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_TRANSPORTER_NAME)
+    List<Feedback> findFilteredOrderByTransporterNameStatusUndefined(String text, Integer rate, String userName, String transporterName,
+                                                              Timestamp createdOn, Boolean approved0, Boolean approved1);
 
-    /*------------- Find feedbacks by text -----------------------*/
+    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_TRANSPORTER_NAME)
+    List<Feedback> findFilteredOrderByTransporterNameStatusDefined(String text, Integer rate, String userName, String transporterName,
+                                                            Timestamp createdOn, Boolean approved0);
 
-    List<Feedback> findByTextContaining(String text);
+    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_TRANSPORTER_NAME + DESC)
+    List<Feedback> findFilteredOrderByTransporterNameStatusUndefinedDesc(String text, Integer rate, String userName, String transporterName,
+                                                                  Timestamp createdOn, Boolean approved0, Boolean approved1);
 
-    List<Feedback> findByRate(Integer rate);
-
-    List<Feedback> findByRateGreaterThan(Integer rate);
-
-    List<Feedback> findByRateLessThan(Integer rate);
-
-    @Query("select f from Feedback f where f.user.email in " +
-            "(select u.email from User u " +
-            "where first_name like %?1% or last_name like %?1%)")
-    List<Feedback> findByUserFirstNameOrLastName(String name);
-
-    @Query(value = "select * from feedbacks f " +
-            "join orders ord on ord.id = f.order_id " +
-            "join offers off on off.order_id=ord.id and off.approved " +
-            "join cars c on off.car_id=c.car_id " +
-            "join users u on c.driver_id=u.email " +
-            "where u.first_name like %?1% or u.last_name like %?1%", nativeQuery = true)
-    List<Feedback> findByTransporterFirstNameOrLastName(String name);
-
-    List<Feedback> findByApproved(Boolean approved);
-
-    List<Feedback> findByCreatedOnAfter(Timestamp createdOn);
-
+    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_TRANSPORTER_NAME + DESC)
+    List<Feedback> findFilteredOrderByTransporterNameStatusDefinedDesc(String text, Integer rate, String userName, String transporterName,
+                                                                Timestamp createdOn, Boolean approved0);
 }
