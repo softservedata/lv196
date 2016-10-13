@@ -37,10 +37,10 @@ public class OfferServiceImpl implements OfferService{
     @Override
     public void addOffer(Long orderId, String email) {
 
-        Order order = orderDao.findOne(orderId).get();
+        Order order = orderDao.findOne(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("no order found"));
         User user = userDao.findOne(email)
                 .orElseThrow(() -> new IllegalArgumentException("no user found"));
-
         if(offerRepository.getOfferByOrderIdAndCarId(orderId, user.getCars().get(0).getCarId()).size() > 0) {
             throw new IllegalArgumentException("You can't create more than one offer");
         }
