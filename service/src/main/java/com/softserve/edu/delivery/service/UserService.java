@@ -36,7 +36,15 @@ public interface UserService extends UserDetailsService {
 	List<UserProfileDto> getAllUsers();
 	
 	UserProfileDto getUser(String email);
-
-	List<UserProfileDto> filterAllUsers(UserProfileFilterDto filter);
+	
+	List<UserProfileDto> findUsersByBanStatus(Boolean status);
+	
+	List<UserProfileDto> findUsersByEmail(String value);
+	
+	List<UserProfileDto> findUsersByFirstName(String value);
+	
+	List<UserProfileDto> findUsersByLastName(String value);
+	
+	List<UserProfileDto> findUsersByRole(String value);
 
 }

@@ -148,13 +148,48 @@ public class UserServiceImpl implements UserService {
     }
     
 	@Override
-	public List<UserProfileDto> filterAllUsers(UserProfileFilterDto filter) {
+	public List<UserProfileDto> findUsersByBanStatus(Boolean status) {
 		return userRepository
-				.findAll()
+				.findByBlockedOrderByLastNameAsc(status)
 				.stream()
-				.filter(filter)
-				.map(UserProfileDto::create)
-				.collect(Collectors.toList());
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<UserProfileDto> findUsersByEmail(String value) {
+		return userRepository
+				.findByEmailStartsWithOrderByLastNameAsc(value)
+				.stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<UserProfileDto> findUsersByFirstName(String value) {
+		return userRepository
+				.findByFirstNameStartsWithOrderByLastNameAsc(value)
+				.stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<UserProfileDto> findUsersByLastName(String value) {
+		return userRepository
+				.findByLastNameStartsWithOrderByLastNameAsc(value)
+				.stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<UserProfileDto> findUsersByRole(String value) {
+		return userRepository
+				.findByUserRoleOrderByLastNameAsc(Role.valueOf(value))
+				.stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
 	}
 
 	private static String generateRandomUUID() {

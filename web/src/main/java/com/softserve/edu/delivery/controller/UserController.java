@@ -48,9 +48,39 @@ public class UserController {
 	        return userService.changeUserStatus(email, status);
 	    }
 	    
-	    @RequestMapping(path = "filter", method = RequestMethod.GET)
-	    List<UserProfileDto> filterAllUsers(@RequestBody UserProfileFilterDto filter ) {
-			logger.info("Method UserController.filterAllUsers()");
-			return userService.filterAllUsers(filter);
+	    @RequestMapping(path = "find-by-ban", method = RequestMethod.GET)
+	    List<UserProfileDto> findUsersByBanStatus(@RequestParam("status") String value) {
+	    	logger.info("Method UserController.findUsersByBanStatus()");
+	        Boolean status = null;
+	        try {
+	        	status = Boolean.parseBoolean(value);
+	        } catch (IllegalArgumentException e) {
+	            e.printStackTrace();
+	        }
+	        return userService.findUsersByBanStatus(status);
+	    }
+	    
+	    @RequestMapping(path = "find-by-fname", method = RequestMethod.GET)
+	    List<UserProfileDto> findUsersByFirstName(@RequestParam("fname") String value) {
+	    	logger.info("Method UserController.findUsersByFirstName()");
+	        return userService.findUsersByFirstName(value);
+	    }
+	    
+	    @RequestMapping(path = "find-by-lname", method = RequestMethod.GET)
+	    List<UserProfileDto> findUsersByLastName(@RequestParam("lname") String value) {
+	    	logger.info("Method UserController.findUsersByLastName()");
+	        return userService.findUsersByLastName(value);
+	    }
+	    
+	    @RequestMapping(path = "find-by-email", method = RequestMethod.GET)
+	    List<UserProfileDto> findUsersByEmail(@RequestParam("email") String value) {
+	    	logger.info("Method UserController.findUsersByEmail()");
+	        return userService.findUsersByEmail(value);
+	    }
+	    
+	    @RequestMapping(path = "find-by-role", method = RequestMethod.GET)
+	    List<UserProfileDto> findUsersByRole(@RequestParam("role") String value) {
+	    	logger.info("Method UserController.findUsersByRole()");
+	        return userService.findUsersByRole(value);
 	    }
 }
