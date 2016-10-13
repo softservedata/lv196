@@ -46,5 +46,7 @@ hs_err_pid*
 *.docx
 *.pdf
 
+/node_modules/
+
 # bower
 bower_components

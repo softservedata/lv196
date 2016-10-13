@@ -159,4 +159,9 @@ angular
         return {
             templateUrl: '/app/views/feedbacks/searchFeedbackTemplate.html'
         };
+    })
+    .directive('pagination', function () {
+        return {
+            templateUrl: '/app/views/feedbacks/feedbacksPagination.html'
+        };
     });
