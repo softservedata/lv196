@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders',
-        function ($scope, $orderProperty, $uibModal, $orders) {
+    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders','Notification',
+        function ($scope, $orderProperty, $uibModal, $orders, Notification) {
             $scope.orders = {
                 open: []
             };
@@ -47,8 +47,11 @@ angular
             };
 
             $scope.showOffers = (order) => {
-                if (order.numberOfOffers == 0) {
-                    alert('Looks like you do not have any Offers');
+                if (order.amountOfOffers == 0) {
+                    $scope.primary = function() {
+                        Notification('Info : Sorry there are no offers for your Order at this time');
+                    };
+                    $scope.primary();
                 }
                 else {
                     $orderProperty.setId(order.id);
@@ -157,7 +160,7 @@ angular
             };
         }]
     )
-    .controller('showOffersController', function ($scope, $orderProperty, $http) {
+    .controller('showOffersController', function ($scope, $orderProperty, $http, Notification) {
         $scope.offers = {
             offers: []
         };
@@ -181,5 +184,9 @@ angular
             $http.put('/order/change/', offer).then(response => {
                 $scope.retrieveOffers();
             });
+            $scope.info = function() {
+                Notification.info('Info : Succesful change Offer status');
+            };
+            $scope.info();
         };
     });

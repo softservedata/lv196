@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
                 .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.OPEN)
                 .stream()
                 .map(order -> OrderDto.of(order)
-                        .setNumberOfOffers(offerRepository.countByOrderId(order.getId()))
+                        .setAmountOfOffers(offerRepository.countByOrderIdAndCarDriverBlocked(order.getId(),false))
                 )
                 .collect(Collectors.toList());
     }
@@ -145,6 +145,11 @@ public class OrderServiceImpl implements OrderService {
         feedbackRepository.save(feedback);
     }
 
+    @Transactional(readOnly = true)
+    public Integer checkFeedback (Long orderId){
+        return feedbackRepository.countFeedbacks(orderId);
+    }
+
     public void changeStatus(Long offerId, Boolean offerStatus, Long orderId) {
         offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
         Boolean newOfferStatus = !offerStatus;
@@ -152,7 +157,6 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
         offer.setApproved(newOfferStatus);
         offerRepository.save(offer);
-
     }
 
     @Override
@@ -161,7 +165,18 @@ public class OrderServiceImpl implements OrderService {
         return orderDao
                 .findClosedOrders(email)
                 .stream()
-                .map(OrderDto::of)
+                .map(order -> {
+                    OrderDto dto = OrderDto.of(order);
+                    String name = orderRepository
+                            .findDriverNameByOrderId(dto.getId())
+                            .orElse(null);
+                    String carPhoto = orderRepository
+                            .findCarPhotoByOrderId(dto.getId())
+                            .orElse(null);
+                    dto.setDriverName(name);
+                    dto.setCarPhoto(carPhoto);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -171,7 +186,22 @@ public class OrderServiceImpl implements OrderService {
         return offerRepository
                 .getAllOffersByOrderId(orderId)
                 .stream()
-                .map(OfferDtoForList::offerToOfferDto)
+                .map(offer -> {
+                    OfferDtoForList dto = OfferDtoForList.offerToOfferDto(offer);
+                    String name = orderRepository
+                            .findDriverNameByOrderId(dto.getOrderId())
+                            .orElse(null);
+                    String carPhoto = orderRepository
+                            .findCarPhotoByOrderId(dto.getOrderId())
+                            .orElse(null);
+                    Integer rate = orderRepository
+                            .findRateByOfferId(dto.getOfferId())
+                            .orElse(null);
+                    dto.setDriverName(name);
+                    dto.setCarPhoto(carPhoto);
+                    dto.setRate(rate);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

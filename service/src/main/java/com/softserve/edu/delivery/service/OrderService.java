@@ -58,6 +58,8 @@ public interface OrderService {
     //Method for user story - "As customer I want to change offer status."
     void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
 
+    Integer checkFeedback (Long orderId);
+
     List<OrderDto> findAllClosedOrders(String email);
 /**
 * Author - Ivan Synyshyn

@@ -10,6 +10,9 @@ public class OfferDtoForList {
     private Long carId;
     private Long orderId;
     private boolean approved;
+    private String driverName;
+    private String carPhoto;
+    private Integer rate;
 
     public OfferDtoForList(){}
 
@@ -55,6 +58,33 @@ public class OfferDtoForList {
 
     public OfferDtoForList setApproved(boolean approved) {
         this.approved = approved;
+        return this;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public OfferDtoForList setDriverName(String driverName) {
+        this.driverName = driverName;
+        return this;
+    }
+
+    public String getCarPhoto() {
+        return carPhoto;
+    }
+
+    public OfferDtoForList setCarPhoto(String carPhoto) {
+        this.carPhoto = carPhoto;
+        return this;
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
+
+    public OfferDtoForList setRate(Integer rate) {
+        this.rate = rate;
         return this;
     }
 

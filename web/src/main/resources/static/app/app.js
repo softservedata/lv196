@@ -1,5 +1,5 @@
 angular
-    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate'])
+    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification'])
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
         $urlRouterProvider.when('/orders', '/orders/in-progress');
@@ -26,7 +26,7 @@ angular
             })
             .state('orders.closed', {
                 url: '/closed',
-                templateUrl: '/app/views/orders/orders.closed.html',
+                templateUrl: '/app/orders/views/orders.closed.html',
                 controller: 'ordersClosedController'
             })
             .state('all-orders', {

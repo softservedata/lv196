@@ -38,10 +38,10 @@ public class OrderController {
 
     @RequestMapping(path = "closed", method = RequestMethod.GET)
     List<OrderDto> closed() {
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+//        String email = authenticationDetails.getAuthenticatedUserEmail();
+        String email = "martin@gmail.com";
         return orderService.findAllClosedOrders(email);
     }
-
 
     @RequestMapping(method = RequestMethod.POST)
     void addOrder(@RequestBody OrderDto dto) {
@@ -58,9 +58,16 @@ public class OrderController {
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
     void addFeedback(@RequestBody FeedbackDTO dto) {
         logger.info("Method OrderController.addFeedback()");
-
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+//        String email = authenticationDetails.getAuthenticatedUserEmail();
+        String email = "martin@gmail.com";
         orderService.addFeedback(dto, email);
+    }
+
+    @RequestMapping(path = "checkfeedback/{id}", method = RequestMethod.GET)
+    String checkFeedback(@PathVariable Long id) {
+        logger.info("Method OrderController.checkFeedback()");
+        Integer answer = orderService.checkFeedback(id);
+        return "{ \"Amount\" : \""+answer+"\" }";
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)

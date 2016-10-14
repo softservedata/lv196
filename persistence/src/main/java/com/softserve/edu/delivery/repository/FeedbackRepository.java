@@ -51,6 +51,10 @@ public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaR
             "where ord.id = :id and off.approved = true")
     Optional<String> getApprovedDriverEmail(@Param("id") Long id);
 
+    @Query("select count(f.feedbackId)" +
+            "from Feedback f where f.order.id = :id")
+    Integer countFeedbacks(@Param("id") Long id);
+
     /*------------- Find all feedbacks -----------------------*/
 
     @Query(FIND_BY + APPROVED_UNDEFINED)

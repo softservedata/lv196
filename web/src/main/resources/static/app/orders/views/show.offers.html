@@ -1,12 +1,17 @@
 <div data-ng-repeat="offer in offers track by offer.offerId"  class="panel panel-default">
     <div class="panel-body">
-         <h4>Offer Id = {{offer.offerId}}</h4>
-        Some another info
-        <p>
-            <div class="modal-footer">
-        <a class="{{btnApprovedStyle(offer.approved)}}" role="button"
-           data-ng-click="changeStatus(offer)">Change (Now {{offer.approved}})</a>
-
- </div>
- </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <img width="220px" ng-src="{{offer.carPhoto}}">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label class="control-label">Driver's rate: </label> {{offer.rate}}
+            </div>
+            <div class="col-sm-4 form-group">
+                <label class="control-label">Driver: {{offer.driverName}} </label>
+            </div>
+            <a class="{{btnApprovedStyle(offer.approved)}}" role="button"
+               data-ng-click="changeStatus(offer)">Change (Now {{offer.approved}})</a>
+        </div>
+    </div>
 </div>

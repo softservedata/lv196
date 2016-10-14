@@ -19,7 +19,8 @@ public class OrderDto {
     private BigDecimal length;
     private BigDecimal weight;
     private String description;
-    private Long numberOfOffers;
+    private Long amountOfOffers;
+    private String carPhoto;
 
     public OrderDto() {
     }
@@ -35,7 +36,7 @@ public class OrderDto {
                 .setWidth(order.getWidth())
                 .setLength(order.getLength())
                 .setDescription(order.getDescription())
-                .setNumberOfOffers(0L);
+                .setAmountOfOffers(0L);
 
         User customer = order.getCustomer();
         if (customer != null) {
@@ -144,12 +145,21 @@ public class OrderDto {
         return this;
     }
 
-    public Long getNumberOfOffers() {
-        return numberOfOffers;
+    public Long getAmountOfOffers() {
+        return amountOfOffers;
     }
 
-    public OrderDto setNumberOfOffers(Long numberOfOffers) {
-        this.numberOfOffers = numberOfOffers;
+    public OrderDto setAmountOfOffers(Long amountOfOffers) {
+        this.amountOfOffers = amountOfOffers;
+        return this;
+    }
+
+    public String getCarPhoto() {
+        return carPhoto;
+    }
+
+    public OrderDto setCarPhoto(String carPhoto) {
+        this.carPhoto = carPhoto;
         return this;
     }
 
