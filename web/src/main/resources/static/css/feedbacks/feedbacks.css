@@ -1,32 +1,32 @@
-.navbar {
+.feedbacks.navbar {
     background-color: green;
 }
 
-select.form-control {
+.feedbacks select.form-control {
     width: 50px;
     color: white;
     background-color: green;
 }
 
-.main {
-    padding-top: 50px;
+.feedbacks.main {
+    padding-top: 100px;
 }
 
 .tableSort {
     float: right;
 }
 
-.btn-round.down {
+.feedbacks .btn-round.down {
     top: 65px;
     right: 20px;
 }
 
-.btn-round.up {
+.feedbacks .btn-round.up {
     bottom: 0;
     right: 20px;
 }
 
-.btn-round.btn-sm {
+.feedbacks .btn-round.btn-sm {
     position: fixed;
     border-radius: 50%;
     width: 40px;
@@ -34,38 +34,38 @@ select.form-control {
     opacity: 0.2;
 }
 
-.btn-round.btn-sm:hover {
+.feedbacks .btn-round.btn-sm:hover {
     opacity: 1;
 }
 
-.fa-angle-double-up {
+.feedbacks .fa-angle-double-up {
     color: white;
 }
 
-.fa-angle-double-down {
+.feedbacks .fa-angle-double-down {
     color: white;
 }
 
-.del, .clear {
+.feedbacks .del, .feedbacks .clear {
     text-align: center;
 }
 
-.action {
+.feedbacks .action {
     color: gray;
 }
 
-.action:hover {
+.feedbacks .action:hover {
     color: red;
     transform: scale(2);
 }
 
-.deleteWarning {
+.feedbacks .deleteWarning {
     text-align: center;
     color: red;
     font-size: large;
 }
 
-.clear:hover {
+.feedbacks .clear:hover {
     transform: scale(2);
 }
 
