@@ -9,11 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,39 +36,14 @@ public class AllOrderController {
         return orderService.getAllOpenOrder();
     }
 
-    @RequestMapping(path = "filtered-by-city-from", method = RequestMethod.GET)
-    List<OrderDto> filteredByCityFrom(@RequestParam String city) {
-        logger.info("Method AllOrderController.filteredByCityFrom()");
-        return orderService.getOrdersByCityFrom(city);
-    }
+    @RequestMapping (path = "filtered-orders", method = RequestMethod.GET)
+    List<OrderDto> filter (@RequestParam (required = false) String cityFrom,
+                           @RequestParam (required = false) String cityTo,
+                           @RequestParam (required = false) String weight,
+                           @RequestParam (required = false) String arrivalDate) {
 
-    @RequestMapping(path = "filtered-by-city-to", method = RequestMethod.GET)
-    List<OrderDto> filteredByCityTo(@RequestParam String city) {
-        logger.info("Method AllOrderController.filteredByCityTo()");
-        return orderService.getOrdersByCityTo(city);
-    }
-
-    @RequestMapping(path = "filtered-by-weight", method = RequestMethod.GET)
-    List<OrderDto> filteredByWeight(@RequestParam String weight) {
-        logger.info("Method AllOrderController.filteredByWeight()");
-        BigDecimal converted = BigDecimal.valueOf(Double.parseDouble(weight));
-        return orderService.getOrdersByWeight(converted);
-    }
-
-    @RequestMapping(path = "filtered-by-arrival-date", method = RequestMethod.GET)
-    List<OrderDto> filteredByArriwalDate(@RequestParam String date) {
-        logger.info("In method AllOrderController.filteredByArriwalDate()");
-        SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");
-        Date parsed = null;
-        try {
-            parsed = formater.parse(date);
-        } catch (ParseException e) {
-            logger.error("Error parsing date in filteredByArriwalDate()");
-            e.printStackTrace();
-        }
-        Timestamp timestamp = new Timestamp(parsed.getTime());
-        logger.info("Out of method AllOrderController.filteredByArriwalDate()");
-        return orderService.getOrdersByArriwalDate(timestamp);
+        logger.info("Method AllOrderController.filter()");
+        return orderService.getOrdersFiltered(cityFrom, cityTo, weight, arrivalDate);
     }
 
     @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)

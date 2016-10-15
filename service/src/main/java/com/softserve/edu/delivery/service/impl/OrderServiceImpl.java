@@ -206,66 +206,54 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrdersByCityFrom(String name) {
+    public List<OrderDto> getOrdersFiltered(String cityFrom, String cityTo, String weight, String arrivalDate) {
         List<OrderDto> result = new ArrayList<>();
-        Long cityId = 0L;
-        if (name == null) {
-            throw new IllegalArgumentException("Write name of city");
-        }
-        for (City city : cityDao.getCityByName(name)) {
-            cityId = city.getCityId();
-            if (cityId == 0) {
+        Long cityFromId = getCityIdByName(cityFrom);
+        Long cityToId = getCityIdByName(cityTo);
+        BigDecimal mass = parseWeight(weight);
+        Timestamp date = parseDate(arrivalDate);
+        result.addAll(orderRepository.getOrdersFiltered(cityFromId, cityToId, mass, date).stream()
+                .map(OrderDto::of).collect(Collectors.toList()));
+        return result;
+    }
+
+    private Long getCityIdByName (String name) {
+        Long cityId = null;
+        if (name != null && !name.isEmpty()) {
+            City city = (cityRepository.getCityByName(name)).get(0);
+            if (city == null) {
                 throw new IllegalArgumentException("Incorrect name of city");
             }
+            cityId = city.getCityId();
         }
-        for (Order ord : orderDao.getOrderByCityFrom(cityId)) {
-            result.add(OrderDto.of(ord));
-        }
-        return result;
+        return cityId;
     }
 
-    @Override
-    public List<OrderDto> getOrdersByCityTo(String name) {
-        List<OrderDto> result = new ArrayList<>();
-        Long cityId = 0L;
-        if (name == null) {
-            throw new IllegalArgumentException("Write name of city");
-        }
-        for (City city : cityDao.getCityByName(name)) {
-            cityId = city.getCityId();
-            if (cityId == 0) {
-                throw new IllegalArgumentException("Incorrect name of city");
+    private BigDecimal parseWeight (String weight) {
+        BigDecimal mass = null;
+        if (weight != null && !weight.isEmpty()) {
+            try {
+                mass = BigDecimal.valueOf(Double.parseDouble(weight));
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+            if (mass.doubleValue() < 0.0) {
+                throw new IllegalArgumentException("Incorrect weight");
             }
         }
-        for (Order ord : orderDao.getOrderByCityTo(cityId)) {
-            result.add(OrderDto.of(ord));
-        }
-        return result;
+        return mass;
     }
 
-    @Override
-    public List<OrderDto> getOrdersByWeight(BigDecimal weight) {
-        List<OrderDto> result = new ArrayList<>();
-        if (weight.doubleValue() <= 0.0) {
-            throw new IllegalArgumentException("Incorect weight");
+    private Timestamp parseDate (String date) {
+        Timestamp arrivalDate = null;
+        if (date != null && !date.isEmpty()) {
+            try {
+                arrivalDate = new Timestamp(Long.parseLong(date));
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
         }
-        for (Order ord : orderDao.getOrderByWeight(weight)) {
-            result.add(OrderDto.of(ord));
-        }
-        return result;
-    }
-
-    @Override
-    public List<OrderDto> getOrdersByArriwalDate(Timestamp arrivalDate) {
-        List<OrderDto> result = new ArrayList<>();
-        Date date = new Date();
-        if (arrivalDate.getTime() < date.getTime()) {
-            throw new IllegalArgumentException("Wrong date format");
-        }
-        for (Order ord : orderDao.getOrderByArrivalDate(arrivalDate)) {
-            result.add(OrderDto.of(ord));
-        }
-        return result;
+        return arrivalDate;
     }
 
     @Override
