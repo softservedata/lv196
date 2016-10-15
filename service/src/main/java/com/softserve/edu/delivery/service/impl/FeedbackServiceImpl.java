@@ -9,6 +9,8 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,6 @@ import java.util.Optional;
 @Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
-
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
@@ -36,104 +37,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private OrderDao orderDao;
 
-    private String processRequestText(String text){
-        if (text.equals("undefined")){
-            text = "%";
-        } else {
-            text = "%" + text + "%";
-        }
-        return text;
-    }
-
-    private Integer processRequestRate(String rate){
-        try {
-            return Integer.parseInt(rate.replaceAll("\\D+", ""));
-        } catch (IllegalArgumentException e) {
-            return 0;
-        }
-    }
-
-    private Timestamp processRequestCreatedOn(String createdOn){
-        try {
-            return new Timestamp(Long.parseLong(createdOn));
-        } catch (IllegalArgumentException e) {
-            return Timestamp.valueOf(LocalDateTime.MIN);
-        }
-    }
-
-    private Boolean processRequestApproved(String approved){
-        if (approved.toLowerCase().contains("tru")){
-            return true;
-        } else if (approved.toLowerCase().contains("fal")){
-            return false;
-        }
-        return null;
-    }
-
-    private String processRequestSortOrder(String sortOrder){
-        if (sortOrder.toLowerCase().contains("tru")) {
-            return "desc";
-        }
-        return "asc";
-    }
-
-    private List<FeedbackDTO> filteredNotByUserAndTransporter(String text, Integer rate, String userName, String transporterName,
-                                                 Timestamp createdOn, Boolean approved, String sortBy, String sort){
-
-        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(sort), sortBy);
-
-        if (approved == null) {
-            return copyFeedbackListToDTOList(feedbackRepository.findFilteredStatusUndefined(text, rate, userName,
-                    transporterName, createdOn, true, false, new Sort(sortOrder)));
-        }
-        return copyFeedbackListToDTOList(feedbackRepository.findFilteredStatusDefined(text, rate, userName,
-                transporterName, createdOn, approved, new Sort(sortOrder)));
-
-    }
-
-    private List<FeedbackDTO> filteredByUser(String text, Integer rate, String userName, String transporterName,
-                                                              Timestamp createdOn, Boolean approved, String sort) {
-        if (approved == null) {
-            if (sort.equals("desc")) {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusUndefinedDesc(text,
-                        rate, userName, transporterName, createdOn, true, false));
-            } else {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusUndefined(text,
-                        rate, userName, transporterName, createdOn, true, false));
-            }
-        } else {
-            if (sort.equals("desc")) {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusDefinedDesc(text,
-                        rate, userName, transporterName, createdOn, approved));
-            } else {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByUserNameStatusDefined(text,
-                        rate, userName, transporterName, createdOn, approved));
-
-            }
-        }
-    }
-
-    private List<FeedbackDTO> filteredByTransporter(String text, Integer rate, String userName, String transporterName,
-                                             Timestamp createdOn, Boolean approved, String sort) {
-        if (approved == null) {
-            if (sort.equals("desc")) {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusUndefinedDesc(text,
-                        rate, userName, transporterName, createdOn, true, false));
-            } else {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusUndefined(text,
-                        rate, userName, transporterName, createdOn, true, false));
-            }
-        } else {
-            if (sort.equals("desc")) {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusDefinedDesc(text,
-                        rate, userName, transporterName, createdOn, approved));
-            } else {
-                return copyFeedbackListToDTOList(feedbackRepository.findFilteredOrderByTransporterNameStatusDefined(text,
-                        rate, userName, transporterName, createdOn, approved));
-            }
-        }
-
-    }
+    private long totalItemsNumber;
+    private Sort.Order sortOrder;
+    private PageRequest pageRequest;
+    private Page<Feedback> returnedPage;
+    private Boolean approved1;
 
     public FeedbackServiceImpl() {
     }
@@ -142,6 +50,101 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.feedbackRepository = feedbackRepository;
         this.userDao = userDao;
         this.orderDao = orderDao;
+    }
+
+    private String processRequestText(String text) {
+        if (text.equals("undefined")) {
+            text = "%";
+        } else {
+            text = "%" + text + "%";
+        }
+        return text;
+    }
+
+    private Integer processRequestRate(String rate) {
+        try {
+            return Integer.parseInt(rate.replaceAll("\\D+", ""));
+        } catch (IllegalArgumentException e) {
+            return 0;
+        }
+    }
+
+    private Timestamp processRequestCreatedOn(String createdOn) {
+        try {
+            return new Timestamp(Long.parseLong(createdOn));
+        } catch (IllegalArgumentException e) {
+            return Timestamp.valueOf(LocalDateTime.MIN);
+        }
+    }
+
+    private Boolean processRequestApproved(String approved) {
+        if (approved.toLowerCase().contains("tru")) {
+            approved1 = true;
+            return true;
+        } else if (approved.toLowerCase().contains("fal")) {
+            approved1 = false;
+            return false;
+        }
+        approved1 = false;
+        return true;
+    }
+
+    private String processRequestSortOrder(String sortOrder) {
+        if (sortOrder.toLowerCase().contains("tru")) {
+            return "desc";
+        }
+        return "asc";
+    }
+
+    private List<FeedbackDTO> filteredOrderByNotUserAndTransporter(String text, Integer rate, String userName,
+                                                                   String transporterName, Timestamp createdOn,
+                                                                   Boolean approved, String sortBy, String sort,
+                                                                   int currentPage, int itemsPerPage) {
+
+        sortOrder = new Sort.Order(Sort.Direction.fromString(sort), sortBy);
+        pageRequest = new PageRequest(currentPage - 1, itemsPerPage, new Sort(sortOrder));
+
+        returnedPage = feedbackRepository.findFiltered(text, rate, userName,
+                transporterName, createdOn, approved, approved1, pageRequest);
+        totalItemsNumber = returnedPage.getTotalElements();
+        return copyFeedbackListToDTOList(returnedPage.getContent());
+    }
+
+    private List<FeedbackDTO> filteredOrderByUser(String text, Integer rate, String userName, String transporterName,
+                                                  Timestamp createdOn, Boolean approved, String sort, int currentPage,
+                                                  int itemsPerPage) {
+
+        pageRequest = new PageRequest(currentPage - 1, itemsPerPage);
+
+        if (sort.equals("desc")) {
+            returnedPage = feedbackRepository.findFilteredOrderByUserNameDesc(text,
+                    rate, userName, transporterName, createdOn, approved, approved1, pageRequest);
+            totalItemsNumber = returnedPage.getTotalElements();
+            return copyFeedbackListToDTOList(returnedPage.getContent());
+        } else {
+            returnedPage = feedbackRepository.findFilteredOrderByUserName(text,
+                    rate, userName, transporterName, createdOn, approved, approved1, pageRequest);
+            totalItemsNumber = returnedPage.getTotalElements();
+            return copyFeedbackListToDTOList(returnedPage.getContent());
+        }
+    }
+
+    private List<FeedbackDTO> filteredOrderByTransporter(String text, Integer rate, String userName,
+                                                         String transporterName, Timestamp createdOn, Boolean approved,
+                                                         String sort, int currentPage, int itemsPerPage) {
+        pageRequest = new PageRequest(currentPage - 1, itemsPerPage);
+
+        if (sort.equals("desc")) {
+            returnedPage = feedbackRepository.findFilteredOrderByTransporterNameDesc(text,
+                    rate, userName, transporterName, createdOn, approved, approved1, pageRequest);
+            totalItemsNumber = returnedPage.getTotalElements();
+            return copyFeedbackListToDTOList(returnedPage.getContent());
+        } else {
+            returnedPage = feedbackRepository.findFilteredOrderByTransporterName(text,
+                    rate, userName, transporterName, createdOn, approved, approved1, pageRequest);
+            totalItemsNumber = returnedPage.getTotalElements();
+            return copyFeedbackListToDTOList(returnedPage.getContent());
+        }
     }
 
     public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
@@ -292,7 +295,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public FeedbackDTO findByFeedbackId(Long id){
+    public FeedbackDTO findByFeedbackId(Long id) {
         Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
         if (oFeedback.isPresent()) {
             return copyFeedbackToDTO(oFeedback.get());
@@ -310,7 +313,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     @Transactional
     public List<FeedbackDTO> findFiltered(String text, String rateString, String userName, String transporterName,
-                                          String createdOnString, String approvedString, String sortBy, String sortOrder) {
+                                          String createdOnString, String approvedString, String sortBy,
+                                          String sortOrder, int currentPage, int itemsPerPage) {
 
         text = processRequestText(text);
         Integer rate = processRequestRate(rateString);
@@ -321,11 +325,19 @@ public class FeedbackServiceImpl implements FeedbackService {
         sortOrder = processRequestSortOrder(sortOrder);
 
         if (!sortBy.equals("userName") && !sortBy.equals("transporterName")) {
-            return filteredNotByUserAndTransporter(text, rate, userName,transporterName, createdOn, approved, sortBy, sortOrder);
+            return filteredOrderByNotUserAndTransporter(text, rate, userName, transporterName, createdOn, approved,
+                    sortBy, sortOrder, currentPage, itemsPerPage);
         } else if (sortBy.equals("userName")) {
-            return filteredByUser(text, rate, userName,transporterName, createdOn, approved, sortOrder);
+            return filteredOrderByUser(text, rate, userName, transporterName, createdOn, approved, sortOrder,
+                    currentPage, itemsPerPage);
         } else {
-            return filteredByTransporter(text, rate, userName,transporterName, createdOn, approved, sortOrder);
+            return filteredOrderByTransporter(text, rate, userName, transporterName, createdOn, approved, sortOrder,
+                    currentPage, itemsPerPage);
         }
+    }
+
+    @Override
+    public long getTotalItemsNumber() {
+        return totalItemsNumber;
     }
 }

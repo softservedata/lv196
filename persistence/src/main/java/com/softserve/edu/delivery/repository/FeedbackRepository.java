@@ -1,13 +1,13 @@
 package com.softserve.edu.delivery.repository;
 
 import com.softserve.edu.delivery.domain.Feedback;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Optional;
 
 public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaRepository<Feedback, Long> {
@@ -21,13 +21,7 @@ public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaR
                     "where off.approved = true and f.text like ?1 and f.rate >= ?2 and f.user.email in " +
                     "(select u.email from User u where concat(u.firstName, ' ', u.lastName) like ?3) " +
                     "and concat(u.firstName, ' ', u.lastName) like ?4 " +
-                    "and f.createdOn >= ?5 and ";
-
-    String APPROVED_UNDEFINED =
-            "(f.approved = ?6 or f.approved = ?7) ";
-
-    String APPROVED_DEFINED =
-            "f.approved = ?6 ";
+                    "and f.createdOn >= ?5 and (f.approved = ?6 or f.approved = ?7) ";
 
     String ORDER_BY_USERNAME =
             "order by concat(f.user.firstName, ' ', f.user.lastName) ";
@@ -57,43 +51,29 @@ public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaR
 
     /*------------- Find all feedbacks -----------------------*/
 
-    @Query(FIND_BY + APPROVED_UNDEFINED)
-    List<Feedback> findFilteredStatusUndefined(String text, Integer rate, String userName, String transporterName,
-                                                        Timestamp createdOn, Boolean approved0, Boolean approved1, Sort sort);
+    @Query(FIND_BY)
+    Page<Feedback> findFiltered(String text, Integer rate, String userName, String transporterName,
+                                Timestamp createdOn, Boolean approved0, Boolean approved1,
+                                Pageable pageable);
 
-    @Query(FIND_BY + APPROVED_DEFINED)
-    List<Feedback> findFilteredStatusDefined(String text, Integer rate, String userName, String transporterName,
-                                               Timestamp createdOn, Boolean approved, Sort sort);
+    @Query(FIND_BY + ORDER_BY_USERNAME)
+    Page<Feedback> findFilteredOrderByUserName(String text, Integer rate, String userName,
+                                               String transporterName, Timestamp createdOn,
+                                               Boolean approved0, Boolean approved1, Pageable pageable);
 
-    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_USERNAME)
-    List<Feedback> findFilteredOrderByUserNameStatusUndefined(String text, Integer rate, String userName, String transporterName,
-                                                              Timestamp createdOn, Boolean approved0, Boolean approved1);
+    @Query(FIND_BY + ORDER_BY_USERNAME + DESC)
+    Page<Feedback> findFilteredOrderByUserNameDesc(String text, Integer rate, String userName,
+                                                   String transporterName, Timestamp createdOn,
+                                                   Boolean approved0, Boolean approved1, Pageable pageable);
 
-    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_USERNAME)
-    List<Feedback> findFilteredOrderByUserNameStatusDefined(String text, Integer rate, String userName, String transporterName,
-                                                              Timestamp createdOn, Boolean approved0);
+    @Query(FIND_BY + ORDER_BY_TRANSPORTER_NAME)
+    Page<Feedback> findFilteredOrderByTransporterName(String text, Integer rate, String userName,
+                                                      String transporterName, Timestamp createdOn,
+                                                      Boolean approved0, Boolean approved1, Pageable pageable);
 
-    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_USERNAME + DESC)
-    List<Feedback> findFilteredOrderByUserNameStatusUndefinedDesc(String text, Integer rate, String userName, String transporterName,
-                                                              Timestamp createdOn, Boolean approved0, Boolean approved1);
+    @Query(FIND_BY + ORDER_BY_TRANSPORTER_NAME + DESC)
+    Page<Feedback> findFilteredOrderByTransporterNameDesc(String text, Integer rate, String userName,
+                                                          String transporterName, Timestamp createdOn,
+                                                          Boolean approved0, Boolean approved1, Pageable pageable);
 
-    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_USERNAME + DESC)
-    List<Feedback> findFilteredOrderByUserNameStatusDefinedDesc(String text, Integer rate, String userName, String transporterName,
-                                                            Timestamp createdOn, Boolean approved0);
-
-    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_TRANSPORTER_NAME)
-    List<Feedback> findFilteredOrderByTransporterNameStatusUndefined(String text, Integer rate, String userName, String transporterName,
-                                                              Timestamp createdOn, Boolean approved0, Boolean approved1);
-
-    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_TRANSPORTER_NAME)
-    List<Feedback> findFilteredOrderByTransporterNameStatusDefined(String text, Integer rate, String userName, String transporterName,
-                                                            Timestamp createdOn, Boolean approved0);
-
-    @Query(FIND_BY + APPROVED_UNDEFINED + ORDER_BY_TRANSPORTER_NAME + DESC)
-    List<Feedback> findFilteredOrderByTransporterNameStatusUndefinedDesc(String text, Integer rate, String userName, String transporterName,
-                                                                  Timestamp createdOn, Boolean approved0, Boolean approved1);
-
-    @Query(FIND_BY + APPROVED_DEFINED + ORDER_BY_TRANSPORTER_NAME + DESC)
-    List<Feedback> findFilteredOrderByTransporterNameStatusDefinedDesc(String text, Integer rate, String userName, String transporterName,
-                                                                Timestamp createdOn, Boolean approved0);
 }

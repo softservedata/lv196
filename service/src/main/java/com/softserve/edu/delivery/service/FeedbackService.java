@@ -4,9 +4,7 @@ import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
-import org.springframework.data.domain.Sort;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -39,7 +37,10 @@ public interface FeedbackService {
     /*------------- Find all feedbacks -----------------------*/
 
     List<FeedbackDTO> findFiltered(String text, String rateString, String userName, String transporterName,
-                                   String createdOnString, String approvedString, String sortBy, String sort);
+                                   String createdOnString, String approvedString, String sortBy, String sort,
+                                   int currentPage, int itemsPerPage);
+
+    long getTotalItemsNumber();
 
     /*------------- Find feedbacks by id -----------------------*/
 

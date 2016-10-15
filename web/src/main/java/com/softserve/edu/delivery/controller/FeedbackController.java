@@ -7,18 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "feedbacks")
 public class FeedbackController {
 
+    private Logger logger = LoggerFactory.getLogger(FeedbackController.class.getName());
     @Autowired
     private FeedbackService feedbackService;
-
-    Logger logger = LoggerFactory.getLogger(FeedbackController.class.getName());
 
     @RequestMapping(path = "all", method = RequestMethod.GET)
     List<FeedbackDTO> getAllFeedbacks(@RequestParam("text") String text,
@@ -28,17 +25,32 @@ public class FeedbackController {
                                       @RequestParam("createdOn") String createdOnString,
                                       @RequestParam("approved") String approvedString,
                                       @RequestParam("sortBy") String sortBy,
-                                      @RequestParam("sortDesc") String sortDesc) {
+                                      @RequestParam("sortDesc") String sortDesc,
+                                      @RequestParam("currentPage") int currentPage,
+                                      @RequestParam("itemsPerPage") int itemsPerPage) {
 
         logger.info("Method FeedbackController.findAll()");
 
         return feedbackService.findFiltered(text, rateString, userName, transporterName, createdOnString,
-                approvedString, sortBy, sortDesc);
+                approvedString, sortBy, sortDesc, currentPage, itemsPerPage);
     }
 
-    @RequestMapping(path = {"changeFeedbackStatus"}, method = RequestMethod.PUT)
-    void changeFeedbackStatus(@RequestBody FeedbackDTO feedbackDTO) {
-        logger.info("In method FeedbackController.changeFeedbackStatus()");
+    @RequestMapping(path = "totalItems", method = RequestMethod.GET)
+    long getTotalItemsNumber() {
+
+        logger.info("Method FeedbackController.getTotalItemsNumber()");
+        return feedbackService.getTotalItemsNumber();
+    }
+
+    @RequestMapping(path = {"updateFeedback"}, method = RequestMethod.PUT)
+    void updateFeedback(@RequestBody FeedbackDTO feedbackDTO) {
+        logger.info("In method FeedbackController.updateFeedback()");
         feedbackService.update(feedbackDTO);
+    }
+
+    @RequestMapping(path = {"deleteFeedback/{feedbackId}"}, method = RequestMethod.DELETE)
+    void deleteFeedback(@PathVariable Long feedbackId) {
+        logger.info("In method FeedbackController.deleteFeedback()");
+        feedbackService.delete(feedbackId);
     }
 }
