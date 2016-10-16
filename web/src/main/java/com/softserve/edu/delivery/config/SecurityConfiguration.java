@@ -51,8 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/", "/home", "/welcome").permitAll()
-                .antMatchers("/login*").anonymous()
-                .antMatchers("/registration*").anonymous()
+                .antMatchers("/login").anonymous()
+                .antMatchers("/registration", "/register", "/driverRegister", "/driverRegistration").anonymous()
                 .antMatchers("/admin", "/admin/**").hasRole(Role.ADMIN.getName())
                 .antMatchers("/moderator", "/moderator/**").hasRole(Role.MODERATOR.getName())
                 .and().formLogin().loginPage("/login")
@@ -60,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/welcome")
-                .failureUrl("/login?error=true")
+                .failureUrl("/login?auth=false")
                 .and().logout().logoutSuccessUrl("/welcome")
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().accessDeniedPage("/accessDenied");

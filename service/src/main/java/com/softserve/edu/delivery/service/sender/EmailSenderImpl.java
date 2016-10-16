@@ -28,6 +28,8 @@ public class EmailSenderImpl implements EmailSender {
 
     private Properties props = new Properties();
 
+    private Session mailSession;
+
     @PostConstruct
     protected void init() {
         props.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
@@ -35,6 +37,8 @@ public class EmailSenderImpl implements EmailSender {
         props.put("mail.smtp.host", env.getProperty("mail.smtp.host"));
         props.put("mail.smtp.port", env.getProperty("mail.smtp.port"));
         props.put("mail.mime.charset", env.getProperty("mail.mime.charset"));
+
+        this.mailSession = Session.getInstance(this.props, this.auth);
     }
 
     /**
@@ -47,12 +51,11 @@ public class EmailSenderImpl implements EmailSender {
     @Override
     public boolean send(String receiver, String subject, String content) {
         logger.info("In method EmailSenderImpl.send()");
-        Session session = Session.getInstance(this.props, this.auth);
         try {
             InternetAddress from = new InternetAddress(this.auth.getEmail());
             InternetAddress to = new InternetAddress(receiver);
 
-            Message message = new MimeMessage(session);
+            Message message = new MimeMessage(this.mailSession);
             message.setFrom(from);
             message.setRecipient(Message.RecipientType.TO, to);
             message.setSubject(subject);

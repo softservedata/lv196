@@ -1,6 +1,5 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.mysql.jdbc.Driver;
 import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.EmailVerificationToken;
@@ -27,7 +26,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service("userService")
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if ( ! this.exists(email)) {
+        if (!this.exists(email)) {
             throw new UsernameNotFoundException("Email " + email + " is not registered");
         }
 
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
         boolean enabled = user.getApproved();
         boolean accountNonExpired = true;
         boolean credentialsNotExpired = true;
-        boolean accountNonLocked = ! user.getBlocked();
+        boolean accountNonLocked = !user.getBlocked();
         String role = user.getUserRole().getName();
         List<GrantedAuthority> listUserRoles = new ArrayList<>();
         listUserRoles.add(new SimpleGrantedAuthority(role));
@@ -132,31 +134,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-	public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
-		return userDao
-				.getAllUsersInRange(page, size)
-				.stream()
-				.filter(filter)
-				.map(UserProfileDto::create)
-				.collect(Collectors.toList());
-	}
+    public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
+        return userDao
+                .getAllUsersInRange(page, size)
+                .stream()
+                .filter(filter)
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+    }
 
-	@Override
-	public UserProfileDto changeUserStatus(String email, boolean blocked){
-		return userRepository
+    @Override
+    public UserProfileDto changeUserStatus(String email, boolean blocked) {
+        return userRepository
                 .findOneOpt(email)
-				.map(user -> userRepository.save(user.setBlocked(!blocked)))
+                .map(user -> userRepository.save(user.setBlocked(!blocked)))
                 .map(UserProfileDto::create)
                 .<IllegalStateException>orElseThrow(() -> new IllegalStateException("User: " + email + " not found!"));
-	}
+    }
 
-	@Override
-	public List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map) {
-		return 	map
-				.keySet().stream()
-				.map(mail -> changeUserStatus(mail, map.get(mail)))
-				.collect(Collectors.toList());
-	}
+    @Override
+    public List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map) {
+        return map
+                .keySet().stream()
+                .map(mail -> changeUserStatus(mail, map.get(mail)))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<UserProfileDto> getAllUsers() {
@@ -166,58 +168,58 @@ public class UserServiceImpl implements UserService {
                 .map(UserProfileDto::create)
                 .collect(Collectors.toList());
     }
-    
+
     @Override
     public UserProfileDto getUser(String email) {
         return UserProfileDto.create(userRepository.findOne(email));
     }
-    
-	@Override
-	public List<UserProfileDto> findUsersByBanStatus(Boolean status) {
-		return userRepository
-				.findByBlockedOrderByLastNameAsc(status)
-				.stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<UserProfileDto> findUsersByEmail(String value) {
-		return userRepository
-				.findByEmailStartsWithOrderByLastNameAsc(value)
-				.stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<UserProfileDto> findUsersByFirstName(String value) {
-		return userRepository
-				.findByFirstNameStartsWithOrderByLastNameAsc(value)
-				.stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<UserProfileDto> findUsersByLastName(String value) {
-		return userRepository
-				.findByLastNameStartsWithOrderByLastNameAsc(value)
-				.stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<UserProfileDto> findUsersByRole(String value) {
-		return userRepository
-				.findByUserRoleOrderByLastNameAsc(Role.valueOf(value))
-				.stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-	}
 
-	private static String generateRandomUUID() {
+    @Override
+    public List<UserProfileDto> findUsersByBanStatus(Boolean status) {
+        return userRepository
+                .findByBlockedOrderByLastNameAsc(status)
+                .stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserProfileDto> findUsersByEmail(String value) {
+        return userRepository
+                .findByEmailStartsWithOrderByLastNameAsc(value)
+                .stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserProfileDto> findUsersByFirstName(String value) {
+        return userRepository
+                .findByFirstNameStartsWithOrderByLastNameAsc(value)
+                .stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserProfileDto> findUsersByLastName(String value) {
+        return userRepository
+                .findByLastNameStartsWithOrderByLastNameAsc(value)
+                .stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserProfileDto> findUsersByRole(String value) {
+        return userRepository
+                .findByUserRoleOrderByLastNameAsc(Role.valueOf(value))
+                .stream()
+                .map(UserProfileDto::create)
+                .collect(Collectors.toList());
+    }
+
+    private static String generateRandomUUID() {
         return UUID.randomUUID().toString();
     }
 

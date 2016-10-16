@@ -39,6 +39,9 @@
 <!--Sign in box-->
 <div id="signin_container" class="signin centered">
     <h3>Sign in</h3>
+    <c:if test="${msg != null}">
+        <h3>${msg}</h3>
+    </c:if>
     <h4>Log in Account</h4>
     <mvc:form modelAttribute="userAuthDto" id="login_form" action="loginProcess" method="post" enctype="utf-8">
         <div class="mess">

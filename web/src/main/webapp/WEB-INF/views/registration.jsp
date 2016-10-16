@@ -40,6 +40,9 @@
 
 <div id="reg_container" class="signin registr">
     <h3>Registration</h3>
+    <c:if test="${msg != null}">
+        <h3>${msg}</h3>
+    </c:if>
     <h4>Create an account</h4>
     <mvc:form modelAttribute="userRegistration" id="register_form" action="register" method = "post" enctype="utf-8">
         <div class="mess">
@@ -93,7 +96,7 @@
         <input type="submit" value="register">
         <div class="lost">
             <div class="lost-userPassword">
-                <a id="driver_btn" href="#">I'm driver</a>
+                <a href="driverRegistration">I'm driver</a>
             </div>
             <div class="clear"></div>
         </div>

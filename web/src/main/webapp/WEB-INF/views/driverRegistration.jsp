@@ -40,6 +40,9 @@
 
 <div id="reg_driver_container" class="signin registr">
     <h3>Registration</h3>
+    <c:if test="${msg != null}">
+        <h3>${msg}</h3>
+    </c:if>
     <h4>Driver registration</h4>
     <mvc:form modelAttribute="driverRegistration" id="driver_form" action="driverRegister" method = "post" enctype="utf-8">
         <div class="mess">

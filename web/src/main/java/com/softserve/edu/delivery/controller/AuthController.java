@@ -47,10 +47,13 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login")
-    public ModelAndView signIn() {
+    public ModelAndView signIn(@RequestParam(value = "auth", required = false) String auth) {
         logger.info("In method AuthController.login()");
 
         ModelAndView mv = new ModelAndView();
+        if (auth != null && auth.equals("false")) {
+            mv.addObject("msg", "You fill wrong credentials or email wasn't verified");
+        }
         mv.addObject("userAuthDto", new UserAuthDTO());
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("login");
@@ -64,12 +67,15 @@ public class AuthController {
         logger.info("In method AuthController.loginProcess()");
         if (result.hasErrors()) {
             logger.error("Has some binding error, method AuthController.loginProcess()");
-            return new ModelAndView("login", "userAuthDto", user);
+            ModelAndView mv = new ModelAndView("login", "userAuthDto", user);
+            mv.addObject("msg", "Please fill correct form");
+            return mv;
+        } else {
+            ModelAndView mv = new ModelAndView();
+            mv.setViewName("redirect:/welcome"); //todo don't redirect to welcome page!!!
+            logger.info("Out of method AuthController.loginProcess()");
+            return mv;
         }
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/welcome");
-        logger.info("Out of method AuthController.loginProcess()");
-        return mv;
     }
 
     @RequestMapping(value = "/registration")
@@ -96,11 +102,17 @@ public class AuthController {
         logger.info("In method AuthController.reg()");
         if (result.hasErrors()) {
             logger.error("Registration binding process has some error");
-            return new ModelAndView("registration", "userRegistration", userRegDTO);
+            ModelAndView mv = new ModelAndView("registration", "userRegistration", userRegDTO);
+            mv.addObject("msg", "Please fill correct registration form");
+            return mv;
         }else {
             String url = request.getRequestURL().toString();
             service.register(userRegDTO, url);
-            return new ModelAndView("redirect:/login");
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("msg", "Please check your mail box and verify your email");
+            mv.addObject("userAuthDto", new UserAuthDTO());
+            mv.setViewName("login");
+            return mv;
         }
     }
 
@@ -110,37 +122,50 @@ public class AuthController {
         logger.info("In method AuthController.regDriver()");
         if (result.hasErrors()) {
             logger.error("Registration binding process has some error");
-            return new ModelAndView("registration", "userRegistration", driverRegDTO);
+            return new ModelAndView("registration", "driverRegistration", driverRegDTO);
         }else {
             String url = request.getRequestURL().toString();
             service.register(driverRegDTO, url);
-            return new ModelAndView("redirect:/login");
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("userAuthDto", new UserAuthDTO());
+            mv.addObject("msg", "Please check your mail box and verify your email");
+            mv.setViewName("login");
+            return mv;
         }
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = {"/register", "/driverRegister"}, method = RequestMethod.GET)
     public ModelAndView reg(@RequestParam("token") String token) {
         service.verifyRegistration(token);
-        return new ModelAndView("redirect:/login");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("userAuthDto", new UserAuthDTO());
+        mv.addObject("msg", "You've successful verified your email. Please sign in.");
+        mv.setViewName("login");
+        return mv;
     }
 
     @RequestMapping(value = "/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         logger.info("In method AuthController.logout()");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         logger.info("Out of method AuthController.logout()");
-        return "redirect:/login";
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("msg", "You've successfully logout");
+        mv.addObject("userAuthDto", new UserAuthDTO());
+        mv.setViewName("login");
+        return mv;
     }
 
     @RequestMapping(value = "/accessDenied")
     public ModelAndView accessDenied() {
         logger.error("Access Denied. Role isn't allow to get this resource. Method AuthController.accessDenied()");
         ModelAndView mv = new ModelAndView();
+        mv.addObject("msg", "Access denied");
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
-        mv.setViewName("accessDenied");
+        mv.setViewName("welcome");
         return mv;
     }
 }

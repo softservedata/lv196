@@ -40,6 +40,9 @@
 
 <div id="track_container" class="signin centered">
     <h3>Track your luggage</h3>
+    <c:if test="${msg != null}">
+        <h3>${msg}</h3>
+    </c:if>
     <mvc:form modelAttribute="orderIdDto" action="tracking" method="post" enctype="utf-8">
         <div class="mess">
             <mvc:input path="orderId" type="number" class="user" min="1" max="9000000000000000000" placeholder="type here your order id" required="required"/>
