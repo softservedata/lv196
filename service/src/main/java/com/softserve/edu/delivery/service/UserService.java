@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.UserAuthDTO;
-import com.softserve.edu.delivery.dto.UserProfileDto;
-import com.softserve.edu.delivery.dto.UserProfileFilterDto;
-import com.softserve.edu.delivery.dto.UserRegistrationDTO;
+import com.softserve.edu.delivery.dto.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +21,8 @@ public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 
     void register(UserRegistrationDTO userRegDTO, String url);
+
+	void register(DriverRegistrationDTO driverRegDTO, String url);
 
     void verifyRegistration(String token);
     

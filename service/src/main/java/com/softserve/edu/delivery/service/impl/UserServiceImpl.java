@@ -1,14 +1,18 @@
 package com.softserve.edu.delivery.service.impl;
 
+import com.mysql.jdbc.Driver;
 import com.softserve.edu.delivery.dao.UserDao;
+import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.EmailVerificationToken;
 import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserProfileFilterDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.exception.EmailExistsException;
 import com.softserve.edu.delivery.exception.TokenNotFoundException;
+import com.softserve.edu.delivery.repository.CarRepository;
 import com.softserve.edu.delivery.repository.EmailTokenRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.UserService;
@@ -32,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final UserRepository userRepository;
+
+    @Autowired
+    private CarRepository carRepository;
 
     @Autowired
     private EmailTokenRepository tokenRepository;
@@ -77,12 +84,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserRegistrationDTO userRegDTO, String url) {
-        if (this.exists(userRegDTO.getEmail())) {
-            throw new EmailExistsException(userRegDTO.getEmail());
+        if (this.exists(userRegDTO.getUserEmail())) {
+            throw new EmailExistsException(userRegDTO.getUserEmail());
         } else {
             User newUser = createUser(userRegDTO);
 
-            newUser.setUserRole(Role.CUSTOMER);
             userRepository.save(newUser);
 
             String uuid = generateRandomUUID();
@@ -91,7 +97,26 @@ public class UserServiceImpl implements UserService {
 
             OnRegistrationCompleteEvent event = new OnRegistrationCompleteEvent(newUser.getEmail(), url, verificationToken.getToken());
             eventPublisher.publishEvent(event);
+        }
+    }
 
+    @Override
+    public void register(DriverRegistrationDTO driverRegDTO, String url) {
+        if (this.exists(driverRegDTO.getDriverEmail())) {
+            throw new EmailExistsException(driverRegDTO.getDriverEmail());
+        } else {
+            User newDriver = createDriver(driverRegDTO);
+            userRepository.save(newDriver);
+
+            Car newCar = createCar(driverRegDTO);
+            carRepository.save(newCar);
+
+            String uuid = generateRandomUUID();
+            EmailVerificationToken verificationToken = new EmailVerificationToken(uuid, newDriver);
+            tokenRepository.save(verificationToken);
+
+            OnRegistrationCompleteEvent event = new OnRegistrationCompleteEvent(newDriver.getEmail(), url, verificationToken.getToken());
+            eventPublisher.publishEvent(event);
         }
     }
 
@@ -196,17 +221,53 @@ public class UserServiceImpl implements UserService {
         return UUID.randomUUID().toString();
     }
 
+
     private User createUser(UserRegistrationDTO userRegDTO) {
         User newUser = new User();
-        newUser.setEmail(userRegDTO.getEmail());
-        newUser.setPassword(this.passwordEncoder.encode(userRegDTO.getPassword()));
-        newUser.setFirstName(userRegDTO.getFirstName());
-        newUser.setLastName(userRegDTO.getLastName());
-        newUser.setPhone(userRegDTO.getPhoneNumber());
-        newUser.setPassport(userRegDTO.getPassport());
-        newUser.setPhotoUrl(userRegDTO.getPhotoUrl());
+        newUser.setEmail(userRegDTO.getUserEmail());
+        newUser.setPassword(this.passwordEncoder.encode(userRegDTO.getUserPassword()));
+        newUser.setFirstName(userRegDTO.getUserFirstName());
+        newUser.setLastName(userRegDTO.getUserLastName());
+        newUser.setPhone(userRegDTO.getUserPhoneNumber());
+        newUser.setPassport(userRegDTO.getUserPassport());
+        newUser.setPhotoUrl(userRegDTO.getUserPhotoUrl());
+
         newUser.setBlocked(false);
         newUser.setApproved(false);
+        newUser.setUserRole(Role.CUSTOMER);
+
         return newUser;
+    }
+
+    private User createDriver(DriverRegistrationDTO driverRegDTO) {
+        User newDriver = new User();
+        newDriver.setEmail(driverRegDTO.getDriverEmail());
+        newDriver.setPassword(this.passwordEncoder.encode(driverRegDTO.getDriverPassword()));
+        newDriver.setFirstName(driverRegDTO.getDriverFirstName());
+        newDriver.setLastName(driverRegDTO.getDriverLastName());
+        newDriver.setPhone(driverRegDTO.getDriverPhoneNumber());
+        newDriver.setPassport(driverRegDTO.getDriverPassport());
+        newDriver.setPhotoUrl(driverRegDTO.getDriverPhotoUrl());
+
+        newDriver.setBlocked(false);
+        newDriver.setApproved(false);
+        newDriver.setUserRole(Role.DRIVER);
+
+        return newDriver;
+    }
+
+    private Car createCar(DriverRegistrationDTO driverRegDTO) {
+        Car newCar = new Car();
+        newCar.setVehicleName(driverRegDTO.getVehicleName());
+        newCar.setVehicleNumber(driverRegDTO.getVehicleNumber());
+        newCar.setVehicleVIN(driverRegDTO.getVehicleVIN());
+        newCar.setVehicleFrontPhotoURL(driverRegDTO.getVehicleFrontPhotoURL());
+        newCar.setVehicleBackPhotoURL(driverRegDTO.getVehicleBackPhotoURL());
+        newCar.setVehicleWeight(driverRegDTO.getVehicleWeight());
+        newCar.setVehicleLength(driverRegDTO.getVehicleLength());
+        newCar.setVehicleWidth(driverRegDTO.getVehicleWidth());
+        newCar.setVehicleHeight(driverRegDTO.getVehicleHeight());
+
+        return newCar;
     }
 }

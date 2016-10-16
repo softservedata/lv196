@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -6,86 +6,98 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <title>Delivery - Registration</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <spring:url value="css/welcome.css" var="style"/>
+    <spring:url value="js/welcome.js" var="script"/>
 
+    <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+    <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
+
+    <title>Delivery.com | welcome</title>
 </head>
-
 <body>
-<div class="container">
-    <br/>
-    <h2 style="text-align: center"> User registration form</h2>
-    <br/>
-    <mvc:form modelAttribute="userRegistration" id="register_form" action="register" method = "post" class="form-horizontal" enctype="utf-8">
-        <div class="form-group">
-            <label for="email" class="col-sm-2 col-sm-offset-2 control-lable">Email:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="email" type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" maxlength="255" required="required"/>
-                <mvc:errors path="email"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="firstName" class="col-sm-2 col-sm-offset-2 control-lable">First Name:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="firstName" type="text" class="form-control" id="firstName" pattern=".{3,15}" name="firstName" placeholder="Your first name" required="required"/>
-                <mvc:errors path="firstName"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="lastName" class="col-sm-2 col-sm-offset-2 control-lable">Last Name:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="lastName" type="text" class="form-control" id="lastName" pattern=".{3,15}" name="lastName" placeholder="Your last name" required="required"/>
-                <mvc:errors path="lastName"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password" class="col-sm-2 col-sm-offset-2 control-lable">Password:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="password" type="password" class="form-control" id="password" pattern=".{4,20}" name="password" placeholder="Password" required="required"/>
-                <mvc:errors path="password"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="confirmPassword" class="col-sm-2 col-sm-offset-2 control-lable">Confirm password:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="confirmPassword" type="password" class="form-control" id="confirmPassword" pattern=".{4,20}" name="confirmPassword" placeholder="Confirm password" required="required"/>
-                <mvc:errors path="confirmPassword"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="phoneNumber" class="col-sm-2 col-sm-offset-2 control-lable">Phone number:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="phoneNumber" type="text" class="form-control" id="phoneNumber" pattern=".\d+" name="phoneNumber" title="only digits" placeholder="380501234567" required="required"/>
-                <mvc:errors path="confirmPassword"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="passport" class="col-sm-2 col-sm-offset-2 control-lable">Passport:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="passport" type="text" class="form-control" id="passport" pattern=".{1,30}" name="passport" placeholder="CE12345" required="required"/>
-                <mvc:errors path="confirmPassword"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="photoUrl" class="col-sm-2 col-sm-offset-2 control-lable">Photo:</label>
-            <div class="col-sm-5 ">
-                <mvc:input path="photoUrl" type="text" class="form-control" id="photoUrl" pattern=".{1,500}" name="photoUrl" placeholder="Your photo url" required="required"/>
-                <mvc:errors path="confirmPassword"/>
-            </div>
-        </div>
+<ul class="topnav" id="myTopnav">
+    <security:authorize access="isAuthenticated()">
+        <li><a href="logout">Sign out</a></li>
+    </security:authorize>
+    <security:authorize access="isAnonymous()">
+        <li><a href="registration">Sign up</a></li>
+    </security:authorize>
+    <security:authorize access="isAnonymous()">
+        <li><a href="login">Sign in</a></li>
+    </security:authorize>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#">News</a></li>
+    <li><a href="welcome">Home</a></li>
+</ul>
 
-        <div class="col-sm-offset-8">
-            <input type ="submit" value = "register" class="btn btn-primary btn-md">
+<!--Sign up box-->
+
+<div id="reg_container" class="signin registr">
+    <h3>Registration</h3>
+    <h4>Create an account</h4>
+    <mvc:form modelAttribute="userRegistration" id="register_form" action="register" method = "post" enctype="utf-8">
+        <div class="mess">
+            <mvc:input path="userEmail" type="email" name="userEmail" id="userEmail" class="user" placeholder="Email" maxlength="255"
+                   required="required" title="email should looks like example@domain.com "/>
+            <mvc:errors path="userEmail"/>
+            <span class="mess1"></span>
+        </div>
+        <div class="mess">
+            <mvc:input path="userFirstName" type="text" class="user" id="userFirstName" pattern=".{3,15}" name="userFirstName" placeholder="First name"
+                   required="required" title="First name should have from 3 to 15 characters"/>
+            <mvc:errors path="userFirstName"/>
+            <span class="mess2"></span>
+        </div>
+        <div class="mess">
+            <mvc:input path="userLastName" type="text" class="user" id="userLastName" pattern=".{3,15}" name="userLastName" placeholder="Last name"
+                   required="required" title="First name should have from 3 to 15 characters"/>
+            <mvc:errors path="userLastName"/>
+            <span class="mess2"></span>
+        </div>
+        <div class="mess">
+            <mvc:input path="userPassword" type="password" name="userPassword" id="userPassword" pattern=".{4,20}" class="lock" placeholder="Password"
+                   required="required" title="Password should be from 4 to 20 symbols"/>
+            <mvc:errors path="userPassword"/>
+            <span class="mess2"></span>
+        </div>
+        <div class="mess">
+            <mvc:input path="userConfirmPassword" type="password" name="userConfirmPassword" id="userConfirmPassword"
+                       pattern=".{4,20}" class="lock" placeholder="Retype userPassword" required="required" title="Password should be from 4 to 20 symbols"/>
+            <mvc:errors path="userConfirmPassword"/>
+            <span class="mess2"></span>
+        </div>
+        <div class="mess">
+            <mvc:input path="userPhoneNumber" type="text" class="user" id="userPhoneNumber" pattern=".\d+" name="userPhoneNumber"
+                   placeholder="Phone number" required="required" title="only digits"/>
+            <mvc:errors path="userPhoneNumber"/>
+            <span class="mess2"></span>
+        </div>
+        <div class="mess">
+            <mvc:input path="userPassport" type="text" class="user" id="userPassport" pattern=".{8, 30}" name="userPassport"
+                       placeholder="Passport" required="required" title="Passport should be from 8 to 30 symbols"/>
+            <mvc:errors path="userPassport"/>
+            <span class="mess2"></span>
+        </div>
+        <div class="mess">
+            <mvc:input path="userPhotoUrl" type="text" class="user" id="userPhotoUrl" pattern=".{1, 255}" name="userPhotoUrl"
+                   placeholder="Your photo url" required="required" title="Length of URL should be less than 255 characters"/>
+            <mvc:errors path="userPhotoUrl"/>
+            <span class="mess2"></span>
+        </div>
+        <input type="submit" value="register">
+        <div class="lost">
+            <div class="lost-userPassword">
+                <a id="driver_btn" href="#">I'm driver</a>
+            </div>
+            <div class="clear"></div>
         </div>
     </mvc:form>
 </div>
 </body>
-
 </html>

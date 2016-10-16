@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.OrderIdDto;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
@@ -81,6 +82,14 @@ public class AuthController {
         return mv;
     }
 
+    @RequestMapping(value = "/driverRegistration")
+    public ModelAndView driverRegistration() {
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("driverRegistration", new DriverRegistrationDTO());
+        mv.setViewName("driverRegistration");
+        return mv;
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView reg(@ModelAttribute("userRegistration") @Valid UserRegistrationDTO userRegDTO,
                             BindingResult result, HttpServletRequest request) {
@@ -91,6 +100,20 @@ public class AuthController {
         }else {
             String url = request.getRequestURL().toString();
             service.register(userRegDTO, url);
+            return new ModelAndView("redirect:/login");
+        }
+    }
+
+    @RequestMapping(value = "/driverRegister", method = RequestMethod.POST)
+    public ModelAndView regDriver(@ModelAttribute("driverRegistration") @Valid DriverRegistrationDTO driverRegDTO,
+                            BindingResult result, HttpServletRequest request) {
+        logger.info("In method AuthController.regDriver()");
+        if (result.hasErrors()) {
+            logger.error("Registration binding process has some error");
+            return new ModelAndView("registration", "userRegistration", driverRegDTO);
+        }else {
+            String url = request.getRequestURL().toString();
+            service.register(driverRegDTO, url);
             return new ModelAndView("redirect:/login");
         }
     }

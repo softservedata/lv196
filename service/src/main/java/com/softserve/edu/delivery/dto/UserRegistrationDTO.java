@@ -1,113 +1,111 @@
 package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.dto.valid.PasswordMatches;
-import com.softserve.edu.delivery.dto.valid.PatternConstraints;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import static com.softserve.edu.delivery.dto.valid.PatternConstraints.*;
+
 @PasswordMatches
 public class UserRegistrationDTO {
 
-    //@Pattern(regexp = PatternConstraints.EMAIL_REGEX)
-    @NotNull(message = PatternConstraints.EMAIL_NOT_VALID_MESSAGE)
+    @NotNull(message = EMAIL_NOT_VALID_MESSAGE)
     @Email
-    private String email;
+    private String userEmail;
 
-    @NotNull(message = PatternConstraints.NAME_NOT_VALID_MESSAGE)
-    @Size(min = PatternConstraints.NAME_MIN_LENGTH, max = PatternConstraints.NAME_MAX_LENGTH)
-	private String firstName;
+    @NotNull(message = NAME_NOT_VALID_MESSAGE)
+    @Size(min = NAME_MIN_LENGTH, max = NAME_MAX_LENGTH)
+	private String userFirstName;
 
-    @NotNull(message = PatternConstraints.NAME_NOT_VALID_MESSAGE)
-    @Size(min = PatternConstraints.NAME_MIN_LENGTH, max = PatternConstraints.NAME_MAX_LENGTH)
-	private String lastName;
+    @NotNull(message = NAME_NOT_VALID_MESSAGE)
+    @Size(min = NAME_MIN_LENGTH, max = NAME_MAX_LENGTH)
+	private String userLastName;
 
-    @NotNull(message = PatternConstraints.PASS_NOT_VALID_MESSAGE)
-    @Size(min = PatternConstraints.PASS_MIN_LENGTH, max = PatternConstraints.PASS_MAX_LENGTH)
-	private String password;
+    @NotNull(message = PASS_NOT_VALID_MESSAGE)
+    @Size(min = PASS_MIN_LENGTH, max = PASS_MAX_LENGTH)
+	private String userPassword;
 
-    @NotNull(message = PatternConstraints.PASS_NOT_VALID_MESSAGE)
-    @Size(min = PatternConstraints.PASS_MIN_LENGTH, max = PatternConstraints.PASS_MAX_LENGTH)
-	private String confirmPassword;
+    @NotNull(message = PASS_NOT_VALID_MESSAGE)
+    @Size(min = PASS_MIN_LENGTH, max = PASS_MAX_LENGTH)
+	private String userConfirmPassword;
 
-    @NotNull(message = PatternConstraints.PHONE_NOT_VALID_MASSAGE)
-    @Pattern(regexp = PatternConstraints.PHONE_REGEX)
-	private String phoneNumber;
+    @NotNull(message = PHONE_NOT_VALID_MASSAGE)
+    @Pattern(regexp = PHONE_REGEX)
+	private String userPhoneNumber;
 
-    @NotNull(message = PatternConstraints.NOT_NULL_VALID_MASSAGE)
-	private String passport;
+    @NotNull(message = PASSPORT_NOT_VALID_MESSAGE)
+    @Size(min = PASSPORT_MIN_LENGTH, max = PASS_MAX_LENGTH)
+	private String userPassport;
 
-    @NotNull(message = PatternConstraints.NOT_NULL_VALID_MASSAGE)
-	private String photoUrl;
+    @NotNull(message = NOT_NULL_VALID_MASSAGE)
+    @Size(min = DEFAULT_MIN_LENGTH, max = DEFAULT_MAX_LENGTH)
+	private String userPhotoUrl;
 
-    public UserRegistrationDTO(String email,
-                               String firstName,
-                               String lastName,
-                               String password,
-                               String confirmPassword,
-                               String phoneNumber,
-                               String passport,
-                               String photoUrl) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.phoneNumber = phoneNumber;
-        this.passport = passport;
-        this.photoUrl = photoUrl;
-    }
-
-    public UserRegistrationDTO() {}
     
-    public String getEmail() {
-        return email;
+    public String getUserEmail() {
+        return userEmail;
     }
-    public String getFirstName() {
-        return firstName;
+
+    public String getUserFirstName() {
+        return userFirstName;
     }
-    public String getLastName() {
-        return lastName;
+
+    public String getUserLastName() {
+        return userLastName;
     }
-    public String getPassword() {
-        return password;
+
+    public String getUserPassword() {
+        return userPassword;
     }
-    public String getConfirmPassword() {
-        return confirmPassword;
+
+    public String getUserConfirmPassword() {
+        return userConfirmPassword;
     }
-    public String getPhoneNumber() {
-        return phoneNumber;
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
     }
-    public String getPassport() {
-        return passport;
+
+    public String getUserPassport() {
+        return userPassport;
     }
-    public String getPhotoUrl() {
-        return photoUrl;
+
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
     }
-    public void setEmail(String email) {
-        this.email = email;
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
     }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
     }
-    public void setPassword(String password) {
-        this.password = password;
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+
+    public void setUserConfirmPassword(String userConfirmPassword) {
+        this.userConfirmPassword = userConfirmPassword;
     }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
     }
-    public void setPassport(String passport) {
-        this.passport = passport;
+
+    public void setUserPassport(String userPassport) {
+        this.userPassport = userPassport;
     }
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
     }
 }

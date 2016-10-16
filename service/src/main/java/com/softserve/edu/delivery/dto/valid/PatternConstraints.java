@@ -19,6 +19,16 @@ public class PatternConstraints {
     public static final String NAME_NOT_VALID_MESSAGE =
             "Name cannot be empty and should be from " + NAME_MIN_LENGTH + " to " + NAME_MAX_LENGTH+ " characters";
 
+    public static final int PASSPORT_MIN_LENGTH = 8;
+    public static final int PASSPORT_MAX_LENGTH = 30;
+    public static final String PASSPORT_NOT_VALID_MESSAGE =
+            "Passport should be from " + PASSPORT_MIN_LENGTH + " to " + PASSPORT_MAX_LENGTH;
+
+    public static final int DEFAULT_MIN_LENGTH = 1;
+    public static final int DEFAULT_MAX_LENGTH = 255;
 
     public static final String NOT_NULL_VALID_MASSAGE = "Cannot be empty";
+
+    public static final int CAR_VIN_LENGTH = 17;
+    public static final String CAR_VIN_NOT_VALID_MESSAGE = "Car VIN should has " + CAR_VIN_LENGTH + " characters length";
 }
