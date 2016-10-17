@@ -14,23 +14,12 @@
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a><label for="feedbacksItemsPerPage">Items per page</label></a></li>
-                <li>
-                    <select dir="rtl" id="feedbacksItemsPerPage" class="form-control feedbacks" ng-model="itemsPerPage"
-                            ng-change="setItemsPerPage()">
-                        <option value="5" ng-selected="true">5</option>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </li>
             </ul>
         </div>
     </div>
 </div>
 <div class="main feedbacks" id="top">
-    <button class="btn btn-success btn-sm btn-round down  feedbacks" ng-click="scroll('down')">
+    <button class="btn btn-success btn-sm btn-round down feedbacks" ng-click="scroll('down')">
         <i class="fa fa-angle-double-down feedbacks"></i>
     </button>
     <div class="container-fluid">
@@ -54,7 +43,7 @@
             </thead>
             <tbody>
             <tr search-form></tr>
-            <tr ng-repeat="f in feedbacks">
+            <tr ng-repeat="f in feedbacks" disable-animate>
                 <td>{{f.text}}
                     <i class="fa fa-pencil-square-o feedbacks" aria-hidden="true" ng-click="editFeedbackText(f)"></i>
                 </td>
@@ -79,7 +68,17 @@
     </div>
     <footer>
         <ul uib-pagination class="pagination feedbacks" id="down" items-per-page="itemsPerPage" total-items="totalItems"
-            ng-model="currentPage"
-            ng-change="pageChanged()"></ul>
+            max-size="15" ng-model="currentPage" ng-change="pageChanged()"></ul>
+        <span class="feedbacks span">
+        <label for="feedbacksItemsPerPage">Items per page</label>
+            <select dir="rtl" id="feedbacksItemsPerPage" ng-model="itemsPerPage" class="form-control feedbacks select"
+                    ng-change="setItemsPerPage()">
+                <option value="5" ng-selected="true">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </span>
     </footer>
 </div>

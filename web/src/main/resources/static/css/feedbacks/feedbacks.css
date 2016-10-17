@@ -2,31 +2,36 @@
     background-color: green;
 }
 
-.feedbacks select.form-control {
-    width: 50px;
-    color: white;
-    background-color: green;
+.feedbacks.span {
+    float: right;
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.feedbacks.select.form-control {
+    width: 80px;
+    color: green;
 }
 
 .feedbacks.main {
     padding-top: 100px;
 }
 
-.feedbacks .tableSort {
+.feedbacks.tableSort {
     float: right;
 }
 
-.feedbacks .btn-round.down {
+.feedbacks.btn-round.down {
     top: 65px;
     right: 20px;
 }
 
-.feedbacks .btn-round.up {
+.feedbacks.btn-round.up {
     bottom: 0;
     right: 20px;
 }
 
-.feedbacks .btn-round.btn-sm {
+.feedbacks.btn-round.btn-sm {
     position: fixed;
     border-radius: 50%;
     width: 40px;
@@ -34,52 +39,52 @@
     opacity: 0.2;
 }
 
-.feedbacks .btn-round.btn-sm:hover {
+.feedbacks.btn-round.btn-sm:hover {
     opacity: 1;
 }
 
-.feedbacks .btn-round.btn-sm:focus {
+.feedbacks.btn-round.btn-sm:focus {
     outline-style: none;
 }
 
-.feedbacks .fa-angle-double-up {
+.feedbacks.fa-angle-double-up {
     color: white;
 }
 
-.feedbacks .fa-angle-double-down {
+.feedbacks.fa-angle-double-down {
     color: white;
 }
 
-.feedbacks .del, .feedbacks .clear {
+.feedbacks.del, .feedbacks.clear {
     text-align: center;
 }
 
-.feedbacks .action {
+.feedbacks.action {
     color: gray;
 }
 
-.feedbacks .action:hover {
+.feedbacks.action:hover {
     color: red;
     transform: scale(2);
 }
 
-.feedbacks .deleteWarning {
+.feedbacks.deleteWarning {
     text-align: center;
     color: red;
     font-size: large;
 }
 
-.feedbacks .clear:hover,
-.feedbacks .fa-user:hover {
+.feedbacks.clear:hover,
+.feedbacks.fa-user:hover {
     transform: scale(2);
 }
 
-.feedbacks .fa-pencil-square-o,
-.feedbacks .fa-user {
+.feedbacks.fa-pencil-square-o,
+.feedbacks.fa-user {
     float: right;
 }
 
-.feedbacks .fa-pencil-square-o:hover {
+.feedbacks.fa-pencil-square-o:hover {
     color: green;
     transform: scale(2);
 }
@@ -93,6 +98,10 @@
     color: white;
     background-color: green;
     outline-style: none;
+}
+
+.control-label.feedbacks {
+    font-size: large;
 }
 
 

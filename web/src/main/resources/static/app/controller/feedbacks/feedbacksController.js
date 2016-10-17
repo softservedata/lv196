@@ -123,11 +123,11 @@ angular
 
                 $http.post(requestText)
                     .then(function (response0) {
-                        $scope.feedbacks = response0.data;
                         $http.get("/feedbacks/totalItems")
                             .then(function (response1) {
                                 $scope.totalItems = response1.data;
                             });
+                        $scope.feedbacks = response0.data;
                     });
             };
 
@@ -305,5 +305,10 @@ angular
     .directive('searchForm', function () {
         return {
             templateUrl: '/app/views/feedbacks/searchFeedbackTemplate.html'
+        };
+    })
+    .directive("disableAnimate", function ($animate) {
+        return function (scope, element) {
+            $animate.enabled(element, false);
         };
     });

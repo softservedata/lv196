@@ -5,7 +5,6 @@ import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -35,7 +34,6 @@ public class FeedbackServiceImplTest{
 
     private final FeedbackService feedbackService;
 
-    @Autowired
     public FeedbackServiceImplTest(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
     }

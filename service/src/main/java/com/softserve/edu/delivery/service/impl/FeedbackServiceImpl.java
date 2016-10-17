@@ -1,12 +1,12 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
+import com.softserve.edu.delivery.repository.OrderRepository;
+import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,10 +22,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-/**
- * Created by Ivan Rudnytskyi on 15.09.2016.
- * implementation for business logic of the feedback part of the application
- */
 @Service("feedbackService")
 @Transactional
 public class FeedbackServiceImpl implements FeedbackService {
@@ -33,9 +29,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
     @Autowired
-    private OrderDao orderDao;
+    private OrderRepository orderRepository;
 
     private long totalItemsNumber;
     private Sort.Order sortOrder;
@@ -46,10 +42,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     public FeedbackServiceImpl() {
     }
 
-    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, UserDao userDao, OrderDao orderDao) {
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, UserRepository userRepository,
+                               OrderRepository orderRepository) {
         this.feedbackRepository = feedbackRepository;
-        this.userDao = userDao;
-        this.orderDao = orderDao;
+        this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
     }
 
     private String processRequestText(String text) {
@@ -183,13 +180,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
-        Optional<User> oUser = userDao.findOne(feedbackDTO.getUserEmail());
+        Optional<User> oUser = userRepository.findOneOpt(feedbackDTO.getUserEmail());
         if (oUser.isPresent()) {
             feedback.setUser(oUser.get());
         } else {
             throw new NoSuchElementException("User with id " + feedbackDTO.getUserEmail() + " not found");
         }
-        Optional<Order> oOrder = orderDao.findOne(feedbackDTO.getOrderId());
+        Optional<Order> oOrder = orderRepository.findOneOpt(feedbackDTO.getOrderId());
         if (oOrder.isPresent()) {
             feedback.setOrder(oOrder.get());
         } else {
@@ -274,7 +271,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     @Transactional
     public User getUser(String email) {
-        Optional<User> oUser = userDao.findOne(email);
+        Optional<User> oUser = userRepository.findOneOpt(email);
         if (oUser.isPresent()) {
             return oUser.get();
         } else {
@@ -285,7 +282,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     @Transactional
     public Order getOrder(Long id) {
-        Optional<Order> oOrder = orderDao.findOne(id);
+        Optional<Order> oOrder = orderRepository.findOneOpt(id);
         if (oOrder.isPresent()) {
             return oOrder.get();
         } else {
