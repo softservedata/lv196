@@ -1,20 +1,7 @@
-.user-header {
-    margin-left: 15px;
-}
-
-.user-profiles {
-    font-size: 16px;
-}
-
-.user-subinfo .user-sub {
-    padding-right: 15px;
-    font-size: 16px;
-}
-
 .custom-row {
     background-color: #fff;
-    margin-left: 2px;
-    margin-top: 50px;
+    margin-left: 0px;
+    margin-top: 120px;
 }
 
 .fa-angle-down {
@@ -24,7 +11,12 @@
 .status-btn {
     color: #a8040499;
     cursor: pointer;
-    margin-left: 20px;
+    margin-left: 17px;
+}
+
+.srch-sgn {
+	margin-top: 8px;
+	margin-left: 43px;
 }
 
 hr {
@@ -32,17 +24,77 @@ hr {
 }
 
 .name {
-    font-size: 25px;
+    font-size: 35px;
     font-weight: bold;
 }
 
 .user-info {
     font-weight: bold;
-    margin-right: 10px;
+    font-size: 15px;
+    margin-right: 15px;
+}
+
+.user-data {
+    font-size: 15px;
 }
 
 .photo {
-    margin-left: 30px;
+    
 }
+
+.status-btn {
+    color: #a8040499;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.status-srch {
+	margin-top: 8px;
+	cursor: pointer;
+	margin-left: 27px;
+}
+
+.ban {
+	padding-left: 47px;
+}
+
+.down-btn {
+	margin-left: 23px;
+}
+
+.srch-in {
+	color: #ffffff;
+	opacity: 1;
+	box-shadow: inset 0 -3px 0 #ffffff;
+}
+
+.srch-in::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #ffffff;
+   opacity:  0.5;
+   font-style: italic;
+}
+
+.srch-in::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #ffffff;
+    opacity:  0.5;
+    font-style: italic;
+}
+
+.scnd {
+	padding-left: 8px;
+}
+
+.thrd {
+	padding-left: 18px;
+}
+
+.frth {
+	padding-left: 25px;
+}
+
+.ffth {
+	padding-left: 68px;
+}
+
 
 

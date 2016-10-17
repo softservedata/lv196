@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.delivery.dto.UserProfileDto;
-import com.softserve.edu.delivery.dto.UserProfileFilterDto;
 import com.softserve.edu.delivery.service.UserService;
 
 @RestController
@@ -23,12 +22,6 @@ public class UserController {
 	   UserService userService;
 
 		Logger logger = LoggerFactory.getLogger(UserController.class.getName());
-
-	    @RequestMapping(path = "all", method = RequestMethod.GET)
-	    List<UserProfileDto> allUsers() {
-			logger.info("Method UserController.users()");
-	        return userService.getAllUsers();
-	    }
 	    
 	    @RequestMapping(path = "email", method = RequestMethod.GET)
 	    UserProfileDto getUser(@RequestParam("email") String email) {
@@ -48,39 +41,39 @@ public class UserController {
 	        return userService.changeUserStatus(email, status);
 	    }
 	    
-	    @RequestMapping(path = "find-by-ban", method = RequestMethod.GET)
-	    List<UserProfileDto> findUsersByBanStatus(@RequestParam("status") String value) {
-	    	logger.info("Method UserController.findUsersByBanStatus()");
+	    @RequestMapping(path = "count-pages", method = RequestMethod.GET)
+	    Long countUsers() {
+			logger.info("Method UserController.countUsers()");
+	        return userService.getPages();
+	    }
+	    
+	    @RequestMapping(path = "filter", method = RequestMethod.GET)
+	    List<UserProfileDto> allUsers(@RequestParam("rows") String arg0, @RequestParam("page") String arg1, @RequestParam("fname") String fname,
+	    							  @RequestParam("lname") String lname, @RequestParam("email") String email, @RequestParam("role") String role,
+	    							  @RequestParam("status") String blocked) {
+			logger.info("Method UserController.allUsers()");
+	        Integer rows = null;
+	        Integer page = null;
 	        Boolean status = null;
+	        if (lname.equals("")) {
+	        	lname = "%";
+	        }
+	        if (fname.equals("")) {
+	        	fname = "%";
+	        }
+	        if (email.equals("")) {
+	        	email = "%";
+	        }
+	        if (role.equals("")) {
+	        	role = null;
+	        }
 	        try {
-	        	status = Boolean.parseBoolean(value);
+	        	rows = Integer.parseInt(arg0);
+	        	page = Integer.parseInt(arg1);
+	        	status = Boolean.parseBoolean(blocked);
 	        } catch (IllegalArgumentException e) {
 	            e.printStackTrace();
 	        }
-	        return userService.findUsersByBanStatus(status);
-	    }
-	    
-	    @RequestMapping(path = "find-by-fname", method = RequestMethod.GET)
-	    List<UserProfileDto> findUsersByFirstName(@RequestParam("fname") String value) {
-	    	logger.info("Method UserController.findUsersByFirstName()");
-	        return userService.findUsersByFirstName(value);
-	    }
-	    
-	    @RequestMapping(path = "find-by-lname", method = RequestMethod.GET)
-	    List<UserProfileDto> findUsersByLastName(@RequestParam("lname") String value) {
-	    	logger.info("Method UserController.findUsersByLastName()");
-	        return userService.findUsersByLastName(value);
-	    }
-	    
-	    @RequestMapping(path = "find-by-email", method = RequestMethod.GET)
-	    List<UserProfileDto> findUsersByEmail(@RequestParam("email") String value) {
-	    	logger.info("Method UserController.findUsersByEmail()");
-	        return userService.findUsersByEmail(value);
-	    }
-	    
-	    @RequestMapping(path = "find-by-role", method = RequestMethod.GET)
-	    List<UserProfileDto> findUsersByRole(@RequestParam("role") String value) {
-	    	logger.info("Method UserController.findUsersByRole()");
-	        return userService.findUsersByRole(value);
+	        return userService.findUsers(fname, lname, email, role, status, rows, page);
 	    }
 }

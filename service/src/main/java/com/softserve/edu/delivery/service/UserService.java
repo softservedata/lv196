@@ -26,24 +26,15 @@ public interface UserService extends UserDetailsService {
 
     void verifyRegistration(String token);
     
-    List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter);
-	
     UserProfileDto changeUserStatus(String mail, boolean blocked);
 	
 	List<UserProfileDto> changeUsersStatus(Map<String, Boolean> map);
 	
-	List<UserProfileDto> getAllUsers();
-	
 	UserProfileDto getUser(String email);
 	
-	List<UserProfileDto> findUsersByBanStatus(Boolean status);
+	Long getPages();
 	
-	List<UserProfileDto> findUsersByEmail(String value);
-	
-	List<UserProfileDto> findUsersByFirstName(String value);
-	
-	List<UserProfileDto> findUsersByLastName(String value);
-	
-	List<UserProfileDto> findUsersByRole(String value);
+	List<UserProfileDto> findUsers(String fname, String lname, String email, 
+								   String role, Boolean status, int size, int page);
 
 }

@@ -4,12 +4,49 @@ angular
         $scope.users = {
             allProfiles: []
         };
-        $scope.retrieveUsers = () => {
-            $http.get('/users/all').then(response => {
-                $scope.users.allProfiles = response.data;
-            })
+        
+        $scope.currentPage = 1;
+        $scope.rows = 10;
+        $scope.pages;
+        $scope.status = false;
+        $scope.userInfo = false;
+        $scope.fname = ''; 
+        $scope.lname = ''; 
+        $scope.email = ''; 
+        $scope.role = '';
+        
+        $scope.changefilterStatus = () => {
+        	$scope.status = !$scope.status;
+        	$scope.filter.status = $scope.status;
+        }
+        
+        $scope.retrieveUsers = (rows, currentPage, fname, lname, email, status, role) => {
+            $http.get('/users/filter?rows=' + rows + '&page=' + currentPage + '&fname=' + fname + '&lname=' + lname +
+            		'&email=' + email  +'&status=' + status + '&role=' + role).then(response1 => {
+                $scope.users.allProfiles = response1.data;
+                $http.get('/users/count-pages').then(response2 => {
+                	$scope.pages = response2.data;
+                });
+            });
         };
-        $scope.retrieveUsers();
+                   
+        $scope.retrieveUsers($scope.rows, $scope.currentPage, $scope.fname, $scope.lname, $scope.email, $scope.status, $scope.role);
+ 
+        $scope.$watchGroup(['rows', 'currentPage', 'fname', 'lname', 'email', 'status', 'role'], (newValue, oldValue) => {
+        	if (newValue != oldValue) {
+        		$scope.retrieveUsers(newValue[0], newValue[1], newValue[2], newValue[3],
+        							  newValue[4], newValue[5], newValue[6]);
+        	  } 
+        	}
+        )
+        
+        $scope.skip = () => {
+        	$scope.fname = '';
+        	$scope.lname = '';
+        	$scope.email = '';
+        	$scope.role = '';
+        	$scope.retrieveUsers($scope.rows, $scope.currentPage, $scope.fname, $scope.lname, $scope.email, $scope.role, $scope.status);
+        }
         
         $scope.getUserInfo = (user) => {
         	var email = user.email;

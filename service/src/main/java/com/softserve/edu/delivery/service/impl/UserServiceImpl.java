@@ -7,7 +7,6 @@ import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
-import com.softserve.edu.delivery.dto.UserProfileFilterDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.exception.EmailExistsException;
 import com.softserve.edu.delivery.exception.TokenNotFoundException;
@@ -18,6 +17,8 @@ import com.softserve.edu.delivery.service.UserService;
 import com.softserve.edu.delivery.service.event.OnRegistrationCompleteEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+	private Long pages;
     private final UserRepository userRepository;
 
     @Autowired
@@ -52,8 +53,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, UserRepository userRepository) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -134,16 +134,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserProfileDto> getAllUsers(int page, int size, UserProfileFilterDto filter) {
-        return userDao
-                .getAllUsersInRange(page, size)
-                .stream()
-                .filter(filter)
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public UserProfileDto changeUserStatus(String email, boolean blocked) {
         return userRepository
                 .findOneOpt(email)
@@ -161,63 +151,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserProfileDto> getAllUsers() {
-        return userRepository
-                .findAll()
-                .stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public UserProfileDto getUser(String email) {
         return UserProfileDto.create(userRepository.findOne(email));
     }
 
     @Override
-    public List<UserProfileDto> findUsersByBanStatus(Boolean status) {
-        return userRepository
-                .findByBlockedOrderByLastNameAsc(status)
-                .stream()
+    public List<UserProfileDto> findUsers(String fname, String lname, String email,
+    									  String role, Boolean status, int size, int page) {
+    	Page<User> resultPage = userRepository.findUsers(fname, lname, email, 
+    									  				 role == null ? null : Role.valueOf(role.toUpperCase()),
+    													 status, new PageRequest(page - 1, size));
+    	pages = resultPage.getTotalElements();
+		return resultPage
+				.getContent()
+				.stream()
                 .map(UserProfileDto::create)
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public List<UserProfileDto> findUsersByEmail(String value) {
-        return userRepository
-                .findByEmailStartsWithOrderByLastNameAsc(value)
-                .stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserProfileDto> findUsersByFirstName(String value) {
-        return userRepository
-                .findByFirstNameStartsWithOrderByLastNameAsc(value)
-                .stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserProfileDto> findUsersByLastName(String value) {
-        return userRepository
-                .findByLastNameStartsWithOrderByLastNameAsc(value)
-                .stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserProfileDto> findUsersByRole(String value) {
-        return userRepository
-                .findByUserRoleOrderByLastNameAsc(Role.valueOf(value))
-                .stream()
-                .map(UserProfileDto::create)
-                .collect(Collectors.toList());
-    }
+    
+	@Override
+	public Long getPages() {
+		return pages;
+	}
 
     private static String generateRandomUUID() {
         return UUID.randomUUID().toString();
