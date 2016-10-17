@@ -48,32 +48,10 @@ public class UserController {
 	    }
 	    
 	    @RequestMapping(path = "filter", method = RequestMethod.GET)
-	    List<UserProfileDto> allUsers(@RequestParam("rows") String arg0, @RequestParam("page") String arg1, @RequestParam("fname") String fname,
+	    List<UserProfileDto> allUsers(@RequestParam("rows") String rows, @RequestParam("page") String page, @RequestParam("fname") String fname,
 	    							  @RequestParam("lname") String lname, @RequestParam("email") String email, @RequestParam("role") String role,
-	    							  @RequestParam("status") String blocked) {
+	    							  @RequestParam("status") String status) {
 			logger.info("Method UserController.allUsers()");
-	        Integer rows = null;
-	        Integer page = null;
-	        Boolean status = null;
-	        if (lname.equals("")) {
-	        	lname = "%";
-	        }
-	        if (fname.equals("")) {
-	        	fname = "%";
-	        }
-	        if (email.equals("")) {
-	        	email = "%";
-	        }
-	        if (role.equals("")) {
-	        	role = null;
-	        }
-	        try {
-	        	rows = Integer.parseInt(arg0);
-	        	page = Integer.parseInt(arg1);
-	        	status = Boolean.parseBoolean(blocked);
-	        } catch (IllegalArgumentException e) {
-	            e.printStackTrace();
-	        }
 	        return userService.findUsers(fname, lname, email, role, status, rows, page);
 	    }
 }

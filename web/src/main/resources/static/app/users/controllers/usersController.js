@@ -8,7 +8,8 @@ angular
         $scope.currentPage = 1;
         $scope.rows = 10;
         $scope.pages;
-        $scope.status = false;
+        $scope.filterStatus = false;
+        $scope.status = '';
         $scope.userInfo = false;
         $scope.fname = ''; 
         $scope.lname = ''; 
@@ -16,8 +17,8 @@ angular
         $scope.role = '';
         
         $scope.changefilterStatus = () => {
-        	$scope.status = !$scope.status;
-        	$scope.filter.status = $scope.status;
+        	$scope.filterStatus = !$scope.filterStatus;
+        	$scope.status = $scope.filterStatus;
         }
         
         $scope.retrieveUsers = (rows, currentPage, fname, lname, email, status, role) => {

@@ -35,6 +35,6 @@ public interface UserService extends UserDetailsService {
 	Long getPages();
 	
 	List<UserProfileDto> findUsers(String fname, String lname, String email, 
-								   String role, Boolean status, int size, int page);
+								   String role, String status, String size, String page);
 
 }

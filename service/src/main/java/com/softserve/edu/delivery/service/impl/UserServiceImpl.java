@@ -157,10 +157,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserProfileDto> findUsers(String fname, String lname, String email,
-    									  String role, Boolean status, int size, int page) {
-    	Page<User> resultPage = userRepository.findUsers(fname, lname, email, 
-    									  				 role == null ? null : Role.valueOf(role.toUpperCase()),
-    													 status, new PageRequest(page - 1, size));
+    									  String role, String blocked, String size, String page) {
+        Integer rows = null;
+        Integer currentPage = null;
+        Boolean status = null;
+        try {
+        	rows = Integer.parseInt(size);
+        	currentPage = Integer.parseInt(page);
+        	status = blocked == "" ? null : Boolean.parseBoolean(blocked);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    	
+    	Page<User> resultPage = userRepository.findUsers(fname == "" ? "%" : fname,
+    													 lname == "" ? "%" : lname,
+    													 email == "" ? "%" : email, 
+    									  				 role == "" ? null : Role.valueOf(role.toUpperCase()),
+    													 status, new PageRequest(currentPage - 1, rows));
     	pages = resultPage.getTotalElements();
 		return resultPage
 				.getContent()

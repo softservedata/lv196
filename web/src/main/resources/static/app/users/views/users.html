@@ -1,4 +1,4 @@
-<div class="navbar navbar-inverse navbar-static-top" style="background-color: #007772">
+<div class="navbar navbar-inverse navbar-static-top users" style="background-color: #007772">
     <div class="container-fluid">
 		<span class="navbar-brand">User profiles</span>
             <ul class="nav navbar-nav navbar-right">
@@ -33,22 +33,11 @@
                 					ng-model-options="{ debounce: 2500 }">
             		</div>					
 				</th>
-        		<th class="col-xs-1"><i class="fa fa-2x status-srch" ng-class="{'fa-toggle-on':status, 'fa-toggle-off':!status}" ng-click="changefilterStatus()" aria-hidden="true"
+        		<th class="col-xs-1"><i class="fa fa-2x status-srch" ng-class="{'fa-toggle-on':filterStatus, 'fa-toggle-off':!filterStatus}" ng-click="changefilterStatus()" aria-hidden="true"
         							ng-model-options="{ debounce: 1000 }"></i></th> 
         		<th class="col-xs-1"><i class="fa fa fa-times fa-2x status-srch" aria-hidden="true" ng-click=skip()></i></th>
         		<th class="col-xs-1">  
-                            <select  class="form-control srch-in" ng-model="rows">
-                                <option value="5">5</option>
-                                <option selected="selected" value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="40">40</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="200">200</option>
-                                <option value="500">500</option>
-                            </select> 
+ 
         		</th>
             </tr> 
        </table>
@@ -57,7 +46,7 @@
 
 <div class="container col-xs-12"> 
   <hr>
-  <div class="custom-row">
+  <div class="custom-row users-list">
     <table class="table table-striped table-hover table-responsive" >
     	<thead>
       		<tr>
@@ -72,7 +61,7 @@
       		</tr>
     	</thead>
     	<tbody>
-      		<tr ng-repeat-start="user in users.allProfiles | limitTo: rows">
+      		<tr ng-repeat-start="user in users.allProfiles | limitTo: rows" disable-animate>
         		<td class="col-xs-1"><img title="{{user.firstName}} {{user.lastName}}" src="./img/user-photo.png" class="img-thumbnail img-responsive img-circle"></td> 
         		<td class="col-xs-2">{{user.lastName}}</td> 
         		<td class="col-xs-2"><span class="scnd">{{user.firstName}}</span></td>
@@ -82,7 +71,7 @@
         		<td class="col-xs-1"></td>
         		<td class="col-xs-1"><a href="" class="down-btn"><i ng-click="getUserInfo(user)" class="fa fa-2x" ng-class="{'fa-angle-down':userInfo.email!==user.email, 'fa-angle-up':userInfo.email==user.email}"  aria-hidden="true"></i></a></td>
       		</tr>
-      		<tr ng-repeat-end="user in users.allProfiles" ng-if="userInfo.email==user.email" ng-click="hideInfo()">
+      		<tr ng-repeat-end="user in users.allProfiles" disable-animate ng-if="userInfo.email==user.email" ng-click="hideInfo()">
         		<td></td> 
         		<td colspan="7">
           			<div class="container col-xs-12">
@@ -108,8 +97,25 @@
   
   </div><!--/row-->
   
-<div class="custom-row">
+<div class="custom-row users-pagination">
     <footer>
-        <ul uib-pagination id="down" items-per-page="rows" total-items="pages" ng-model="currentPage"></ul>
+        <ul uib-pagination class="users-pagination" id="down" items-per-page="rows" total-items="pages" ng-model="currentPage"></ul>
+
+        <span class="col-xs-2 users-rows">
+        <label for="usersItems">Items per page</label>
+                            <select  id="usersItems" dir="rtl" class="form-control srch-rows" ng-model="rows">
+                                <option value="5">5</option>
+                                <option selected="selected" value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="500">500</option>
+                            </select>
+        </span>
+    
     </footer>
 </div><!--/container-->
