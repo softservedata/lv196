@@ -20,10 +20,14 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
             "from Offer off where off.order.id = :id and off.approved = true")
     Optional<String> findDriverNameByOrderId(@Param("id") Long id);
 
+    @Query("select concat(off.car.driver.firstName, ' ', off.car.driver.lastName) " +
+            "from Offer off where off.offerId = :id")
+    Optional<String> findDriverNameByOfferId(@Param("id") Long id);
+
     @Query("select o from Order o where o.orderStatus = 'OPEN'")
     List<Order> getAllOpenOrder();
 
-    @Query("select off.car.vehicleFrontPhotoURL from Offer off where off.order.id = :id and off.approved = true")
+    @Query("select off.car.vehicleFrontPhotoURL from Offer off where off.offerId = :id")
     Optional<String> findCarPhotoByOrderId(@Param("id") Long id);
 
     @Query("select off.car.driver.rate from Offer off where off.offerId = :id")

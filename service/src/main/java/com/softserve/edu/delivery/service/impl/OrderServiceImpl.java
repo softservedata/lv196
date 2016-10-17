@@ -189,10 +189,10 @@ public class OrderServiceImpl implements OrderService {
                 .map(offer -> {
                     OfferDtoForList dto = OfferDtoForList.offerToOfferDto(offer);
                     String name = orderRepository
-                            .findDriverNameByOrderId(dto.getOrderId())
+                            .findDriverNameByOfferId(dto.getOfferId())
                             .orElse(null);
                     String carPhoto = orderRepository
-                            .findCarPhotoByOrderId(dto.getOrderId())
+                            .findCarPhotoByOrderId(dto.getOfferId())
                             .orElse(null);
                     Integer rate = orderRepository
                             .findRateByOfferId(dto.getOfferId())

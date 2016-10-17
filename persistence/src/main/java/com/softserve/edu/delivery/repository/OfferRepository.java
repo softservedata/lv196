@@ -15,7 +15,7 @@ public interface OfferRepository extends BaseRepository<Offer, Long> {
     @Query("update Offer off set off.approved=false where off.order.id = :id")
     void findOfferByOrderIdAndChangeStatus(@Param("id") Long id);
 
-    @Query("select o from Offer o where o.order.id = :id and o.car.driver.blocked = true")
+    @Query("select o from Offer o where o.order.id = :id and o.car.driver.blocked = false")
     List<Offer> getAllOffersByOrderId(@Param("id")Long orderId);
 
     @Query("select o from Offer o where o.order.id = :id and o.car.id = :carId")

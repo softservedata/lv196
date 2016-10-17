@@ -185,7 +185,7 @@ angular
                 $scope.retrieveOffers();
             });
             $scope.info = function() {
-                Notification.info('Info : Succesful change Offer status');
+                Notification.success('Success : Succesful change Offer status');
             };
             $scope.info();
         };

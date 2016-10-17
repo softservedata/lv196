@@ -45,7 +45,7 @@
                                $scope.message = () => { Notification.warning('Warning : You already wrote several feedbacks on this Order. Please wait for moderation or contact with support.');}
                         }
                         else {
-                               $scope.message = () => { Notification('Info : Your feedback have been saved');}
+                               $scope.message = () => { Notification.success('Success : Your feedback have been saved');}
                         }
                         $scope.primary = function() {
                             $scope.message();

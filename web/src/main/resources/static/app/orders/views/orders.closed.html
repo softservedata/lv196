@@ -1,6 +1,5 @@
-<div data-ng-repeat="order in orders.closed track by order.id" class="panel panel-default order-closed">
+<div data-ng-repeat="order in orders.closed track by order.id" class="panel panel-default order-open">
     <div class="panel-body">
-
         <div class="order-actions" style="margin-top: -22px">
             <p class="navbar-btn">
                 <a data-ng-click="addFeedback(order)" class="btn btn-primary  btn-xs">
@@ -33,7 +32,7 @@
                             <img width="220px" ng-src="{{order.carPhoto}}">
                         </div>
                         <div class="col-sm-6 form-group">
-                            <label class="control-label">Description: </label> {{order.description}}
+                            <label class="control-label">Description: {{order.description}}</label>
                         </div>
                         <div class="col-sm-4 form-group">
                             <label class="control-label">Driver: {{order.driverName}} </label>
