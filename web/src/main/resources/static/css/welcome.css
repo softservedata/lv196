@@ -8,7 +8,7 @@ html, body{
    font-size: 100%;
     margin: 0;
     padding: 0;
-   background:#1f8dd6; 
+   background: #d8d9db;
 }
 a {
   text-decoration: none;
@@ -168,13 +168,13 @@ input.email {
 }
 .signin h3 {
     font-size: 1.8em;
-    color: #df4231;
+    color: #2b6290;
     font-weight:400;
     text-align: center;
 }
 .signin h4 {
-    font-size: 1.2em;
-    color: #acacac;
+    font-size: 1.1em;
+    color: #9c3134;
     font-weight: 400;
     text-align: center;
     margin:0.5em 0em 1em 0em;
@@ -262,7 +262,7 @@ span.mess2 {
 .signin input[type="submit"] {
     font-size: 1em;
     color: #fff;
-    background: #df4231;
+    background: #2e4467;
     border: none;
     padding: 0.7em 2em;
     width: 100%;
@@ -272,7 +272,7 @@ span.mess2 {
     font-family: 'Roboto Condensed', sans-serif;
 }
 .signin input[type="submit"]:hover{
-    background: #1FB2E6;
+    background: #305075;
     transition: 0.5s all;
   -webkit-transition: 0.5s all;
   -moz-transition: 0.5s all;
@@ -1423,7 +1423,7 @@ ul.topnav {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #1f8dd6;
+    background-color: #2b6290;
 }
 
 /* Float the list items side by side */
@@ -1441,7 +1441,7 @@ ul.topnav li a {
 }
 
 /* Change background color of links on hover */
-ul.topnav li a:hover {background-color: #df4231;}
+ul.topnav li a:hover {background-color: #2e4467;}
 
 /* Hide the list item that contains the link that should open and close the topnav on small screens */
 ul.topnav li.icon {display: none;}

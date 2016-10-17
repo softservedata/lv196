@@ -41,9 +41,8 @@
 <div id="reg_container" class="signin registr">
     <h3>Registration</h3>
     <c:if test="${msg != null}">
-        <h3>${msg}</h3>
+        <h4>${msg}</h4>
     </c:if>
-    <h4>Create an account</h4>
     <mvc:form modelAttribute="userRegistration" id="register_form" action="register" method = "post" enctype="utf-8">
         <div class="mess">
             <mvc:input path="userEmail" type="email" name="userEmail" id="userEmail" class="user" placeholder="Email" maxlength="255"

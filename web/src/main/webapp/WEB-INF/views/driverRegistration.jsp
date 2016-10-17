@@ -41,9 +41,8 @@
 <div id="reg_driver_container" class="signin registr">
     <h3>Registration</h3>
     <c:if test="${msg != null}">
-        <h3>${msg}</h3>
+        <h4>${msg}</h4>
     </c:if>
-    <h4>Driver registration</h4>
     <mvc:form modelAttribute="driverRegistration" id="driver_form" action="driverRegister" method = "post" enctype="utf-8">
         <div class="mess">
             <mvc:input path="driverEmail" type="email" name="driverEmail" id="dr_email" class="user" placeholder="Email" maxlength="255"
