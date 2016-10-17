@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.config;
 
 import com.softserve.edu.delivery.domain.Role;
+import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private static final String CUSTOMER_ROLE = Role.CUSTOMER.getName();
+    private static final String DRIVER_ROLE = Role.DRIVER.getName();
+    private static final String ADMIN_ROLE = Role.ADMIN.getName();
+    private static final String MODERATOR_ROLE = Role.MODERATOR.getName();
 
     @Autowired
     @Qualifier("userService")
@@ -36,10 +42,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("customer@delivery.com").password("customer").roles(Role.CUSTOMER.getName());
-        auth.inMemoryAuthentication().withUser("driver@delivery.com").password("driver").roles(Role.DRIVER.getName());
-        auth.inMemoryAuthentication().withUser("admin@delivery.com").password("admin").roles(Role.ADMIN.getName());
-        auth.inMemoryAuthentication().withUser("moderator@delivery.com").password("moderator").roles(Role.MODERATOR.getName());
+        auth.inMemoryAuthentication().withUser("customer@delivery.com").password("customer").roles(CUSTOMER_ROLE);
+        auth.inMemoryAuthentication().withUser("driver@delivery.com").password("driver").roles(DRIVER_ROLE);
+        auth.inMemoryAuthentication().withUser("admin@delivery.com").password("admin").roles(ADMIN_ROLE);
+        auth.inMemoryAuthentication().withUser("moderator@delivery.com").password("moderator").roles(MODERATOR_ROLE);
 
         auth.userDetailsService(this.userDetailsService);
         auth.authenticationProvider(authProvider());
@@ -53,13 +59,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/home", "/welcome").permitAll()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/registration", "/register", "/driverRegister", "/driverRegistration").anonymous()
-                .antMatchers("/admin", "/admin/**").hasRole(Role.ADMIN.getName())
-                .antMatchers("/moderator", "/moderator/**").hasRole(Role.MODERATOR.getName())
+                .antMatchers("/admin", "/admin/**").hasRole(ADMIN_ROLE)
+                .antMatchers("/moderator", "/moderator/**").hasRole(MODERATOR_ROLE)
                 .and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/loginProcess")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/welcome")
+                .defaultSuccessUrl("/authRedirect")
                 .failureUrl("/login?auth=false")
                 .and().logout().logoutSuccessUrl("/welcome")
                 .invalidateHttpSession(true)
