@@ -1,0 +1,33 @@
+<form name="showUser">
+    <div class="modal-header">
+        <button ng-click="closeFeedbackShowUser()" type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+            User Info
+        </h4>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-xs-6 form-group">
+                <img src="./img/user-photo.png" alt="user photo">
+            </div>
+            <div class="col-xs-6 form-group">
+                <label>Name: {{userDTO.firstName}} {{userDTO.lastName}}</label>
+                <br>
+                <label>Phone: {{userDTO.phone}}</label>
+                <br>
+                <label>Email: {{userDTO.email}}</label>
+                <br>
+                <label>Passport: {{userDTO.passport}}</label>
+                <br>
+                <label>Rate: {{userDTO.rate}}</label>
+                <br>
+                <label>Approved: {{userDTO.approved}}</label>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="closeFeedbackShowUser()" type="button" class="btn btn-primary">Close</button>
+    </div>
+</form>

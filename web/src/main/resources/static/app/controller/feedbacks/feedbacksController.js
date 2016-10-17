@@ -7,22 +7,15 @@ angular
             $scope.feedbackFilter = [];
             $scope.feedbackSortIcons = [];
             $scope.sortFeedbacksOrderDesc = [];
-            $scope.maxSize = 5;
-            $scope.currentPage;
-            $scope.itemsPerPage;
-            $scope.totalItems;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = 5;
+            $scope.totalItems = 0;
 
             var columnNumber = 7; // including pos 0 for getAllFeedbacks()
             var columnPos = 0;
             var toggleFilterApprovedPos = 0;
 
             var init = function () {
-                if ($scope.itemsPerPage == null) {
-                    $scope.itemsPerPage = 5;
-                }
-                if ($scope.currentPage == null) {
-                    $scope.currentPage = 1;
-                }
                 for (var i = 0; i < columnNumber; i++) {
                     $scope.sortFeedbacksOrderDesc.push(false);
                     if (i == 5) {
@@ -128,7 +121,7 @@ angular
                     "&sortBy=" + sortBy(columnPos) + "&sortDesc=" + $scope.sortFeedbacksOrderDesc[columnPos] +
                     "&currentPage=" + $scope.currentPage + "&itemsPerPage=" + $scope.itemsPerPage;
 
-                $http.get(requestText)
+                $http.post(requestText)
                     .then(function (response0) {
                         $scope.feedbacks = response0.data;
                         $http.get("/feedbacks/totalItems")
@@ -140,10 +133,7 @@ angular
 
             $scope.changeFeedbackStatus = function (feedbackDTO) {
                 feedbackDTO.approved = !feedbackDTO.approved;
-                $http.put("/feedbacks/updateFeedback", feedbackDTO)
-                    .then(function (response) {
-
-                    });
+                $http.put("/feedbacks/updateFeedback", feedbackDTO);
             };
 
             $scope.toggleApproved = function (approved) {
@@ -225,6 +215,27 @@ angular
                 $scope.changeFilterApprovedClass();
             };
 
+            $scope.getUser = function (email) {
+                $http.get("/users/email/?email=" + email)
+                    .then(function (response) {
+                        $scope.showUser(response.data);
+                    });
+            };
+
+            $scope.showUser = function (userDTO) {
+                var modalInstance = $uibModal.open({
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    controller: 'feedbackShowUserController',
+                    templateUrl: '/app/views/feedbacks/feedbackShowUser.html',
+                    resolve: {
+                        userDTO: function () {
+                            return userDTO;
+                        }
+                    }
+                });
+            };
+
             init();
         }])
     .controller('editFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackDTO',
@@ -235,10 +246,7 @@ angular
             $scope.updateFeedbackText = function () {
                 $uibModalInstance.close();
                 feedbackDTO.text = $scope.feedbackText;
-                $http.put("/feedbacks/updateFeedback", feedbackDTO)
-                    .then(function (response) {
-
-                    });
+                $http.put("/feedbacks/updateFeedback", feedbackDTO);
             };
 
             $scope.cancelEditFeedbackText = function () {
@@ -270,6 +278,16 @@ angular
             $scope.infoText = text;
 
             $scope.closeInfoFeedback = function () {
+                $uibModalInstance.close();
+            };
+
+        }])
+    .controller('feedbackShowUserController', ['$scope', '$uibModalInstance', 'userDTO',
+        function ($scope, $uibModalInstance, userDTO) {
+
+            $scope.userDTO = userDTO;
+
+            $scope.closeFeedbackShowUser = function () {
                 $uibModalInstance.close();
             };
 

@@ -9,11 +9,8 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Rate" ng-model="feedbackFilter[2]"
+        <input type="number" class="form-control" min="0" max="50" placeholder="Rate" ng-model="feedbackFilter[2]"
                ng-model="feedbackRate" ng-model-options="{ debounce: 500 }" ng-change="filterFeedbacks()"/>
-        <span class=" input-group-addon">
-        <i class="fa fa-search"></i>
-        </span>
     </div>
 </td>
 <td>

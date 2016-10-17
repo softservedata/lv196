@@ -8,16 +8,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <span class="navbar-brand">Feedback</span>
+            <span class="navbar-brand">Feedbacks</span>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a>Items per page</a></li>
-                <li><a></a></li>
+                <li><a><label for="feedbacksItemsPerPage">Items per page</label></a></li>
                 <li>
-                    <select dir="rtl" class="form-control" ng-model="itemsPerPage" ng-change="setItemsPerPage()">
+                    <select dir="rtl" id="feedbacksItemsPerPage" class="form-control feedbacks" ng-model="itemsPerPage"
+                            ng-change="setItemsPerPage()">
                         <option value="5" ng-selected="true">5</option>
                         <option value="10">10</option>
                         <option value="25">25</option>
@@ -30,50 +30,56 @@
     </div>
 </div>
 <div class="main feedbacks" id="top">
-    <button class="btn btn-success btn-sm btn-round down" ng-click="scroll('down')">
-        <i class="fa fa-angle-double-down"></i>
+    <button class="btn btn-success btn-sm btn-round down  feedbacks" ng-click="scroll('down')">
+        <i class="fa fa-angle-double-down feedbacks"></i>
     </button>
     <div class="container-fluid">
         <table class="table table-striped table-hover table-responsive header-fixed">
             <thead>
             <tr>
-                <th class="col-xs-3" ng-click="feedbackSorting(1)">Text<span class="tableSort">
+                <th class="col-xs-3" ng-click="feedbackSorting(1)">Text<span class="tableSort feedbacks">
                     <i class={{feedbackSortIcons[1]}} aria-hidden="true"></i></span></th>
-                <th class="col-xs-1" ng-click="feedbackSorting(2)">Rate<span class="tableSort">
+                <th class="col-xs-1" ng-click="feedbackSorting(2)">Rate<span class="tableSort feedbacks">
                     <i class={{feedbackSortIcons[2]}} aria-hidden="true"></i></span></th>
-                <th class="col-xs-2" ng-click="feedbackSorting(3)">User<span class="tableSort">
+                <th class="col-xs-2" ng-click="feedbackSorting(3)">User<span class="tableSort feedbacks">
                     <i class={{feedbackSortIcons[3]}} aria-hidden="true"></i></span></th>
-                <th class="col-xs-2" ng-click="feedbackSorting(4)">Transporter<span class="tableSort">
+                <th class="col-xs-2" ng-click="feedbackSorting(4)">Transporter<span class="tableSort feedbacks">
                     <i class={{feedbackSortIcons[4]}} aria-hidden="true"></i></span></th>
-                <th class="col-xs-2" ng-click="feedbackSorting(5)">Date<span class="tableSort">
+                <th class="col-xs-2" ng-click="feedbackSorting(5)">Date<span class="tableSort feedbacks">
                     <i class={{feedbackSortIcons[5]}} aria-hidden="true"></i></span></th>
-                <th class="col-xs-1" ng-click="feedbackSorting(6)">Status<span class="tableSort">
+                <th class="col-xs-1" ng-click="feedbackSorting(6)">Status<span class="tableSort feedbacks">
                     <i class={{feedbackSortIcons[6]}} aria-hidden="true"></i></span></th>
-                <th class="col-xs-1 del"><i class="fa fa-trash" aria-hidden="true"></i></span></th>
+                <th class="col-xs-1 del feedbacks"><i class="fa fa-trash" aria-hidden="true"></i></span></th>
             </tr>
             </thead>
             <tbody>
             <tr search-form></tr>
             <tr ng-repeat="f in feedbacks">
-                <td ng-dblclick="editFeedbackText(f)">{{f.text}}</td>
+                <td>{{f.text}}
+                    <i class="fa fa-pencil-square-o feedbacks" aria-hidden="true" ng-click="editFeedbackText(f)"></i>
+                </td>
                 <td>{{f.rate}}</td>
-                <td>{{f.userName}}</td>
-                <td>{{f.transporterName}}</td>
+                <td>{{f.userName}}<i class="fa fa-user feedbacks" aria-hidden="true"
+                                     ng-click="getUser(f.userEmail)"></i></td>
+                <td>{{f.transporterName}}<i class="fa fa-user feedbacks" aria-hidden="true"
+                                            ng-click="getUser(f.transporterEmail)"></i></td>
                 <td>{{f.createdOn | date:'medium'}}</td>
                 <td><a class="{{toggleApproved(f.approved)}}" style="{{toggleStyle(f.approved)}}"
                        ng-click="changeFeedbackStatus(f)"></a></td>
-                <td class="del">
-                    <i class="fa fa-trash action" aria-hidden="true" ng-click="deleteFeedback(f.feedbackId)"></i>
+                <td class="del feedbacks">
+                    <i class="fa fa-trash action feedbacks" aria-hidden="true"
+                       ng-click="deleteFeedback(f.feedbackId)"></i>
                 </td>
             </tr>
             </tbody>
         </table>
-        <button class="btn btn-success btn-sm btn-round up" ng-click="scroll('top')">
-            <i class="fa fa-angle-double-up"></i>
+        <button class="btn btn-success btn-sm btn-round up feedbacks" ng-click="scroll('top')">
+            <i class="fa fa-angle-double-up feedbacks"></i>
         </button>
     </div>
     <footer>
-        <ul uib-pagination id="down" items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage"
+        <ul uib-pagination class="pagination feedbacks" id="down" items-per-page="itemsPerPage" total-items="totalItems"
+            ng-model="currentPage"
             ng-change="pageChanged()"></ul>
     </footer>
 </div>

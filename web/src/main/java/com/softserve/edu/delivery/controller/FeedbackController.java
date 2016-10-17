@@ -17,7 +17,7 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
-    @RequestMapping(path = "all", method = RequestMethod.GET)
+    @RequestMapping(path = "all", method = RequestMethod.POST)
     List<FeedbackDTO> getAllFeedbacks(@RequestParam("text") String text,
                                       @RequestParam("rate") String rateString,
                                       @RequestParam("userName") String userName,
