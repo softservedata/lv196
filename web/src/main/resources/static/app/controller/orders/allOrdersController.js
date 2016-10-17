@@ -27,8 +27,8 @@ angular
                 var filterByWeight = $scope.filterByWeight || '';
                 var filterByArrivalDate = Date.parse($scope.filterByArrivalDate) || '';
 
-                $http.get('/all-orders/filtered-orders/?cityFrom=' + cityFromId +
-                    '&cityTo=' + cityToId + '&weight=' + filterByWeight +
+                $http.get('/all-orders/filtered-orders/?cityFromId=' + cityFromId +
+                    '&cityToId=' + cityToId + '&weight=' + filterByWeight +
                     '&arrivalDate=' + filterByArrivalDate).then(response => {
                     console.log(response.data),
                         $scope.orders.open = response.data
