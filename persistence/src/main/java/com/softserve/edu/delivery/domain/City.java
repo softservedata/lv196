@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,8 @@ public class City {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 
     public City() {
     }
@@ -54,6 +57,24 @@ public class City {
 
     public City setRegion(Region region) {
         this.region = region;
+        return this;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public City setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public City setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
         return this;
     }
 

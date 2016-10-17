@@ -1,5 +1,5 @@
 .sidebar-header {
-    background-color: rgb(2,119,189);
+    background-color: #148b73;
     color: rgba(255, 255, 255, 0.87);
     padding-top: 15px;
     padding-left: 12px;
@@ -12,7 +12,6 @@
 }
 
 .sidebar-menu {
-    color: rgba(0, 0, 0, 0.87);
     font-size: 16px;
 }
 

@@ -18,14 +18,10 @@ import java.util.List;
 @RequestMapping(path = "location")
 public class LocationController {
 
+    @Autowired
     private LocationService locationService;
 
     Logger logger = LoggerFactory.getLogger(LocationController.class.getName());
-
-    @Autowired
-    public LocationController(LocationService locationService) {
-        this.locationService = locationService;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     List<LocationDto> locations(@RequestParam(value = "city") String city) {

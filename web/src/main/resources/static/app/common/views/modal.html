@@ -1,0 +1,16 @@
+<form name="newOrder" autocomplete="off" class="order-creation">
+    <div class="modal-header">
+        <button ng-click="no()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label class="control-label label-lg">{{message}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="no()" type="button" class="btn btn-default btn-sm" data-dismiss="modal">{{noLabel}}</button>
+        <button ng-click="yes()" type="button" class="btn btn-sm" ng-class="yesBtnClass">{{yesLabel}}</button>
+    </div>
+</form>

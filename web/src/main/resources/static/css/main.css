@@ -51,6 +51,7 @@ html, body {
 
 .navbar-inverse {
     color: rgb(255, 255, 255);
+    background-color: #18bc9c;
 }
 
 .navbar-inverse .navbar-brand {

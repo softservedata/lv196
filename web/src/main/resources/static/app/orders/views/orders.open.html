@@ -7,7 +7,7 @@
             <i class="fa fa-pencil" ng-click="showOrderCreation(order)" aria-hidden="true"></i>
             <i class="fa fa-car" ng-click="showOffers(order)" data-notifications="{{order.amountOfOffers}}"
                aria-hidden="true"></i>
-            <i class="fa fa-trash" ng-click="showOrderTrash(order.id)" aria-hidden="true"></i>
+            <i class="fa fa-trash" ng-click="deleteOrder(order.id)" aria-hidden="true"></i>
         </div>
         <div class="order-city" ng-click="status.open = !status.open">
             {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
@@ -32,8 +32,6 @@
                             <label class="control-label">Length</label>
                             <input value="{{order.length}}" class="form-control" type="text" readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-6 form-group">
                             <label class="control-label">Description</label>
                             <input value="{{order.description}}" class="form-control" type="text" readonly>

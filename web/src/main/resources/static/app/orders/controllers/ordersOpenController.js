@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders','Notification',
-        function ($scope, $orderProperty, $uibModal, $orders, Notification) {
+    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders', '$utils', 'Notification',
+        function ($scope, $orderProperty, $uibModal, $orders, $utils, Notification) {
             $scope.orders = {
                 open: []
             };
@@ -23,32 +23,31 @@ angular
                     }
                 });
 
-                modalInstance.result.then(function (added) {
+                modalInstance.result.then(added => {
                     if (added) {
                         $scope.retrieveOpenOrders();
                     }
                 });
             };
 
-            $scope.showOrderTrash = (id) => {
-                $orderProperty.setId(id);
-                const modalInstance = $uibModal.open({
-                    animation: true,
-                    templateUrl: '/app/orders/views/submit.remove.html',
-                    controller: 'removeOrderController',
-                    size: 'sm'
-                });
-
-                modalInstance.result.then(function (del) {
-                    if (del) {
-                        $scope.retrieveOpenOrders();
+            $scope.deleteOrder = id => {
+                $utils.confirmDialog({
+                    message: 'Are you sure you want to delete this order?',
+                    yes: 'Remove',
+                    no: 'Cancel',
+                    yesBtnClass: 'btn-danger'
+                }).then(answer => {
+                    if (answer) {
+                        $orders.remove(id).then(
+                            () => $scope.retrieveOpenOrders(),
+                            () => Notification('Could not delete order'));
                     }
-                });
+                })
             };
 
             $scope.showOffers = (order) => {
                 if (order.amountOfOffers == 0) {
-                    $scope.primary = function() {
+                    $scope.primary = function () {
                         Notification('Info : Sorry there are no offers for your Order at this time');
                     };
                     $scope.primary();
@@ -63,8 +62,8 @@ angular
                 }
             };
         }])
-    .controller('addOrderController', ['$scope', '$uibModalInstance', '$orders', '$locations', 'order',
-        function ($scope, $uibModalInstance, $orders, $locations, order) {
+    .controller('addOrderController', ['$scope', '$timeout', '$uibModalInstance', '$orders', '$locations', 'Notification', 'order',
+        function ($scope, $timeout, $uibModalInstance, $orders, $locations, Notification, order) {
             $scope.datePicker = {
                 format: 'yyyy/MM/dd',
                 options: {
@@ -81,9 +80,21 @@ angular
                 }
             };
 
+            $scope.locationLabel = location => {
+                if (location) {
+                    let arr = [location.cityName];
+                    location.regionName ? arr.push(location.regionName + ' rg.') : {};
+                    location.stateName ? arr.push(location.stateName + ' obl.') : {};
+
+                    return arr.join(', ');
+                }
+            };
+
             $scope.findLocations = val => {
                 return $locations.find(val).then(response => response.data);
             };
+
+            $scope.cancel = () => $uibModalInstance.dismiss('cancel');
 
             $scope.form = {
                 submit: () => {
@@ -101,8 +112,63 @@ angular
                     $orders.save(data).then(response => {
                         $uibModalInstance.close(true)
                     }, response => {
-                        alert('failed to add order')
+                        Notification('failed to add order')
                     });
+                }
+            };
+
+            $scope.map = {
+                created: false,
+                init: () => {
+                    if (!$scope.map.created) {
+                        $scope.map.created = true;
+
+                        // build the map after the scope is rebuilt with new `$scope.map.created` value
+                        $timeout(() => {
+                            $scope.map.container = L.map('orderCreateMap')
+                            // Ukraine map centering
+                                .setView([49.7, 28.3], 5);
+
+                            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            }).addTo($scope.map.container);
+
+                            $scope.map.routing.addTo($scope.map.container);
+
+                        }, 0, false);
+                    }
+
+                },
+                routing: L.Routing.control({
+                    plan: L.Routing.plan({
+                        draggableWaypoints: false
+                    }),
+                    showAlternatives: false
+                }),
+                open: () => {
+                    let from = $scope.form.locationFrom;
+                    let to = $scope.form.locationTo;
+                    let fromInfo = checkLocation(from);
+                    let toInfo = checkLocation(to);
+
+                    if (fromInfo.valid && toInfo.valid) {
+                        $scope.map.init();
+                        $scope.map.routing.spliceWaypoints(0, 2);
+                        $scope.map.routing.setWaypoints([
+                            {
+                                latLng: L.latLng(from.latitude, from.longitude),
+                                name: from.cityName
+                            },
+                            {
+                                latLng: L.latLng(to.latitude, to.longitude),
+                                name: to.cityName
+                            }
+                        ]);
+                    } else if (fromInfo.message) {
+                        Notification(fromInfo.message);
+                    } else if (toInfo.message) {
+                        Notification(toInfo.message);
+                    }
                 }
             };
 
@@ -116,50 +182,22 @@ angular
                 $scope.form.length = order.length;
                 $scope.form.weight = order.weight;
                 $scope.form.description = order.description;
+                $timeout(() => $scope.map.open(), 0, false);
             }
 
+            function checkLocation(location) {
+                let info = {valid: false};
 
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-
-            $scope.initMap = function ($item, $model, $label) {
-                $scope.$item = $item;
-                $scope.$model = $model;
-                $scope.$label = $label;
-
-                const map = L.map('mapid').setView([49.7, 28.3], 5);
-
-                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                    maxZoom: 18,
-                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                    id: 'mapbox.streets',
-                    accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw'
-                }).addTo(map);
-
-                L.marker([49.8326678, 23.942024]).addTo(map);
-                L.marker([50.4016974, 30.2518212]).addTo(map);
-            };
+                if (location) {
+                    info.valid = Number.isFinite(location.latitude) && Number.isFinite(location.latitude);
+                    if (!info.valid) {
+                        info.message = 'Location is not defined for ' + $scope.locationLabel(location);
+                    }
+                }
+                return info;
+            }
         }
     ])
-    .controller('removeOrderController', ['$scope', '$orderProperty', '$uibModalInstance', '$orders',
-        function ($scope, $orderProperty, $uibModalInstance, $orders) {
-            $scope.form = {
-                submit: () => {
-                    $orders.remove($orderProperty.getId()).then(response => {
-                        $uibModalInstance.close(true)
-                    }, response => {
-                        alert('failed to remove order')
-                    });
-                }
-            };
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }]
-    )
     .controller('showOffersController', function ($scope, $orderProperty, $http, Notification) {
         $scope.offers = {
             offers: []

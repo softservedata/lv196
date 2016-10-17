@@ -1,10 +1,9 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.CityDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.domain.*;
-import com.softserve.edu.delivery.dto.CityDto;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.repository.*;
@@ -18,32 +17,25 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository orderRepository;
-    private final OrderDao orderDao;
-    private final CityDao cityDao;
-    private final CityRepository cityRepository;
-    private final OfferRepository offerRepository;
-    private final UserRepository userRepository;
-    private final FeedbackRepository feedbackRepository;
-
-
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDao orderDao, CityDao cityDao, CityRepository cityRepository, OfferRepository offerRepository, UserRepository userRepository, FeedbackRepository feedbackRepository) {
-        this.orderRepository = orderRepository;
-        this.orderDao = orderDao;
-        this.cityDao = cityDao;
-        this.cityRepository = cityRepository;
-        this.offerRepository = offerRepository;
-        this.userRepository = userRepository;
-        this.feedbackRepository = feedbackRepository;
-
-    }
+    private OrderRepository orderRepository;
+    @Autowired
+    private OrderDao orderDao;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private OfferRepository offerRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -68,14 +60,16 @@ public class OrderServiceImpl implements OrderService {
                 .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.OPEN)
                 .stream()
                 .map(order -> OrderDto.of(order)
-                        .setAmountOfOffers(offerRepository.countByOrderIdAndCarDriverBlocked(order.getId(),false))
+                        .setAmountOfOffers(offerRepository
+                                .countByOrderIdAndCarDriverBlocked(order.getId(), false))
                 )
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public void addOrder(OrderDto dto, String email) {
+        requireLocationsNonNull(dto.getLocationFrom(), dto.getLocationTo());
+
         User customer = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
 
@@ -89,12 +83,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrder(OrderDto dto, String email) {
-        Order order = orderRepository.findOneOpt(dto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getId()));
+        requireLocationsNonNull(dto.getLocationFrom(), dto.getLocationTo());
 
-        if (!order.getCustomer().getEmail().equals(email)) {
-            throw new IllegalArgumentException("User with email: " + email + " cannot edit order with id: " + dto.getId());
-        }
+        Order order = orderRepository.findOrderByIdAndCustomerEmail(dto.getId(), email)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No such order with id: " + dto.getId() + " for user with email: " + email));
 
         saveOrder(order, dto);
     }
@@ -103,8 +96,8 @@ public class OrderServiceImpl implements OrderService {
         City from = cityRepository.findOneOpt(dto.getLocationFrom().getCityId())
                 .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationFrom().getCityId()));
 
-        City to = cityRepository.findOneOpt(dto.getLocationFrom().getCityId())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationFrom().getCityId()));
+        City to = cityRepository.findOneOpt(dto.getLocationTo().getCityId())
+                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationTo().getCityId()));
 
         orderRepository.save(order
                 .setCityFrom(from)
@@ -115,6 +108,11 @@ public class OrderServiceImpl implements OrderService {
                 .setLength(dto.getLength())
                 .setWeight(dto.getWeight())
                 .setDescription(dto.getDescription()));
+    }
+
+    private void requireLocationsNonNull(LocationDto from, LocationDto to) {
+        Objects.requireNonNull(from, "Departure city cannot be null");
+        Objects.requireNonNull(to, "Arrival city cannot be null");
     }
 
     @Override

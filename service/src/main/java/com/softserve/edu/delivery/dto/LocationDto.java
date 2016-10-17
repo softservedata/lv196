@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.State;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -12,11 +13,13 @@ public class LocationDto {
     private String cityName;
     private String regionName;
     private String stateName;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 
     public LocationDto() {}
 
     public static LocationDto of(City city) {
-        Objects.requireNonNull(city);
+        Objects.requireNonNull(city, "No city found");
         Optional<Region> regionOptional = Optional.ofNullable(city.getRegion());
 
         String regionName = regionOptional.map(Region::getRegionName).orElse(null);
@@ -30,7 +33,9 @@ public class LocationDto {
                 .setCityId(city.getCityId())
                 .setCityName(city.getCityName())
                 .setRegionName(regionName)
-                .setStateName(stateName);
+                .setStateName(stateName)
+                .setLatitude(city.getLatitude())
+                .setLongitude(city.getLongitude());
     }
 
     public Long getCityId() {
@@ -66,6 +71,24 @@ public class LocationDto {
 
     public LocationDto setStateName(String stateName) {
         this.stateName = stateName;
+        return this;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public LocationDto setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public LocationDto setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
         return this;
     }
 }

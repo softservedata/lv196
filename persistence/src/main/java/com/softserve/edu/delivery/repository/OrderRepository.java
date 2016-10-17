@@ -13,7 +13,10 @@ import java.util.Optional;
 
 public interface OrderRepository extends BaseRepository<Order, Long> {
 
+    Optional<Order> findOrderByIdAndCustomerEmail(Long id, String email);
+
     List<Order> findOrderByCustomerEmailAndOrderStatus(String email, OrderStatus os);
+
     Long removeById(Long id);
 
     @Query("select concat(off.car.driver.firstName, ' ', off.car.driver.lastName) " +
