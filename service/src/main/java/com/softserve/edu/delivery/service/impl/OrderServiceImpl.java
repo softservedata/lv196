@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.dao.CityDao;
 import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.dto.CityDto;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
@@ -208,8 +209,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> getOrdersFiltered(String cityFrom, String cityTo, String weight, String arrivalDate) {
         List<OrderDto> result = new ArrayList<>();
-        Long cityFromId = getCityIdByName(cityFrom);
-        Long cityToId = getCityIdByName(cityTo);
+        Long cityFromId = getCityId(cityFrom);
+        Long cityToId = getCityId(cityTo);
         BigDecimal mass = parseWeight(weight);
         Timestamp date = parseDate(arrivalDate);
         result.addAll(orderRepository.getOrdersFiltered(cityFromId, cityToId, mass, date).stream()
@@ -217,14 +218,10 @@ public class OrderServiceImpl implements OrderService {
         return result;
     }
 
-    private Long getCityIdByName (String name) {
+    private Long getCityId (String txtCityId) {
         Long cityId = null;
-        if (name != null && !name.isEmpty()) {
-            City city = (cityRepository.getCityByName(name)).get(0);
-            if (city == null) {
-                throw new IllegalArgumentException("Incorrect name of city");
-            }
-            cityId = city.getCityId();
+        if (txtCityId != null && !txtCityId.isEmpty()) {
+            cityId = Long.parseLong(txtCityId);
         }
         return cityId;
     }

@@ -12,4 +12,11 @@ public interface CityRepository extends BaseRepository<City, Long> {
 
     @Query("select c from City c where c.cityName = :name")
     List<City> getCityByName(@Param("name")String name);
+
+    @Query("select c from City c where c.cityName = :cityName " +
+            "and (:regionName is null or c.region.regionName = :regionName)" +
+            "and (:stateName is null or c.region.state.stateName = :stateName)")
+    City getCityByNameRegionNameStateName(@Param("cityName")String cityName,
+                                          @Param("regionName") String regionName,
+                                          @Param("stateName") String stateName);
 }

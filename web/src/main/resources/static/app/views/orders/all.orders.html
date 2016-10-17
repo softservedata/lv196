@@ -18,12 +18,18 @@
                     </thead>
                     <td>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="City from" ng-model="filterByCityFrom"/>
+                            <input type="text" class="form-control" placeholder="City from" ng-model="filterByCityFrom"
+                                   uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
+                                   for location in findLocations($viewValue)"
+                                   typeahead-loading="loadingCityFrom" typeahead-no-results="noResultsCityFrom"/>
                         </div>
                     </td>
                     <td>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="City to" ng-model="filterByCityTo"/>
+                            <input type="text" class="form-control" placeholder="City to" ng-model="filterByCityTo"
+                                   uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
+                                   for location in findLocations($viewValue)"
+                                   typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"/>
                         </div>
                     </td>
                     <td>
@@ -33,34 +39,35 @@
                     </td>
                     <td>
                         <div class="input-group">
-                            <input type="date" class="form-control" placeholder="Arrival date" ng-model="filterByArrivalDate"/>
+                            <input type="date" class="form-control" placeholder="Arrival date"
+                                   ng-model="filterByArrivalDate"/>
                         </div>
                     </td>
                     <td>
                         <div class="input-group">
                             <input class="btn btn-default btn-sm" ng-click="filter()" type="submit" name="filter_submit"
                                    style="margin-top: 1mm" value="Filter">
-                         </div>
-                     </td>
-                 </table>
-             </div>
-         </div>
-     </div>
- </div>
- <div class="main" style="margin-top: 45mm">
-     <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
-         <div class="panel-body">
-             <div class="order-actions">
-                 <button type="button" class="btn btn-default btn-sm" ng-click="addOffer(order.id)">Add offer</button>
-             </div>
-             <div class="order-city">
-                 {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
-             </div>
-             <div class="order-subinfo">
-                 <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
-                 <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
-                 <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>Weight {{order.weight | number}}</span>
-             </div>
-         </div>
-     </div>
- </div>
+                        </div>
+                    </td>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main" style="margin-top: 45mm">
+    <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
+        <div class="panel-body">
+            <div class="order-actions">
+                <button type="button" class="btn btn-default btn-sm" ng-click="addOffer(order.id)">Add offer</button>
+            </div>
+            <div class="order-city">
+                {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
+            </div>
+            <div class="order-subinfo">
+                <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
+                <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>Weight {{order.weight | number}}</span>
+            </div>
+        </div>
+    </div>
+</div>

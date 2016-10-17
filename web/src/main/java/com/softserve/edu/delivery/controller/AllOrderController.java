@@ -37,13 +37,13 @@ public class AllOrderController {
     }
 
     @RequestMapping (path = "filtered-orders", method = RequestMethod.GET)
-    List<OrderDto> filter (@RequestParam (required = false) String cityFrom,
-                           @RequestParam (required = false) String cityTo,
+    List<OrderDto> filter (@RequestParam (required = false) String cityFromId,
+                           @RequestParam (required = false) String cityToId,
                            @RequestParam (required = false) String weight,
                            @RequestParam (required = false) String arrivalDate) {
 
         logger.info("Method AllOrderController.filter()");
-        return orderService.getOrdersFiltered(cityFrom, cityTo, weight, arrivalDate);
+        return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate);
     }
 
     @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)
