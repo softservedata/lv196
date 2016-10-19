@@ -56,4 +56,8 @@ public class RouteCityDaoImpl extends BaseDaoImpl<RouteCities, Long> implements 
         }
         return result;
     }
+    @Override
+    public void deleteAll() {
+        getEntityManager().createQuery("delete from RouteCities").executeUpdate();
+    }
 }

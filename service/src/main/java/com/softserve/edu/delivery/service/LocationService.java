@@ -9,6 +9,5 @@ import java.util.List;
 public interface LocationService {
     List<LocationDto> findCitiesByName(String name);
     List<LocationDto> findAllCities();
-    void savePleace(PleaceDto pleaceDto);
 
 }

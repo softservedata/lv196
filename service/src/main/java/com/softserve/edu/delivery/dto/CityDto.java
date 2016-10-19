@@ -14,10 +14,12 @@ public class CityDto {
 
     public CityDto(){}
 
+
     public CityDto(Long cityId, String name, RegionDto region) {
         this.cityId = cityId;
         this.name = name;
         this.region = region;
+
     }
 
     public Long getCityId() {

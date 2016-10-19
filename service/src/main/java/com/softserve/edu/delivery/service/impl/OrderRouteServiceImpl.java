@@ -23,7 +23,7 @@ import java.util.List;
  * */
 @Service("routeService")
 @Transactional
-public class OrderRouteServiceImpl implements OrderRouteService {
+public class OrderRouteServiceImpl /*implements OrderRouteService */{
 
     private final OrderDao orderDao;
     private final RouteCityDao routeCityDao;
@@ -36,16 +36,16 @@ public class OrderRouteServiceImpl implements OrderRouteService {
         this.offerDao = offerDao;
     }
 
-    @Override
+   /* @Override
     public boolean exists(Long id) {
         return (orderDao.findOne(id).isPresent());
     }
 
-    /**This method is responsible to get information(tracking) about user's order
+    *//**This method is responsible to get information(tracking) about user's order
      * @param id - order number (tracking page)
      * @throws OrderNotFoundException if order isn't exist
      * */
-    @Override
+  /*  @Override
     public OrderRouteDto getOrderRouteById(OrderIdDto id) {
         if ( ! this.exists(id.getOrderId())) {
             throw new OrderNotFoundException(id.getOrderId());
@@ -55,13 +55,13 @@ public class OrderRouteServiceImpl implements OrderRouteService {
         List<RouteCities> trackingList = routeCityDao.getRouteCitiesByOrder(order); //get all tracked cities
         Offer approvedOffer = offerDao.getApprovedOfferByOrder(order);
         return createRouteDTO(order, lastTrack, trackingList, approvedOffer);
-    }
+    }*/
 
 
     //<----------------------------------------Private--------------------------------------->
 
     //Retrieve all parameters
-    private static OrderRouteDto createRouteDTO(Order order, RouteCities lastTrack, List<RouteCities> trackingList, Offer approvedOf) {
+    /*private static OrderRouteDto createRouteDTO(Order order, RouteCities lastTrack, List<RouteCities> trackingList, Offer approvedOf) {
         String cityFrom = isNull(order.getCityFrom()) ? null : order.getCityFrom().getCityName();
         String cityTo = isNull(order.getCityTo()) ? null : order.getCityTo().getCityName();
         String lastLocation = isNull(lastTrack) ? null : lastTrack.getCity().getCityName();
@@ -79,7 +79,7 @@ public class OrderRouteServiceImpl implements OrderRouteService {
 
         return new OrderRouteDto(cityFrom, cityTo, lastLocation, expArrivalDate, lastTimeVisited, height,
                 width, length, weight, customerName, transporterName, receiverName, orderStatus);
-    }
+    }*/
 
     private static boolean isNull(Object obj) {
         return obj == null;

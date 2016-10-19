@@ -11,10 +11,13 @@ import java.util.List;
 
 public interface RouteCityDao extends BaseDao<RouteCities, Long> {
 
-    //Petro Shtenovych
+
     List<RouteCities> getRouteCitiesByOrder(Order order);
-    //Petro Shtenovych
+
     RouteCities getRouteCityWhenLastVisitedByOrder(Order order);
+
+    void deleteAll();
+
 
 
 }

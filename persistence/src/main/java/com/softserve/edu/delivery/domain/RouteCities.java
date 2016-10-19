@@ -17,19 +17,19 @@ public class RouteCities {
     @JoinColumn(name = "order_id")
     private Order route;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    private Double x;
+
+    private Double y;
 
     private Timestamp visitDate;
-
 
     public RouteCities(){}
     public Long getRouteCityId() {
         return routeCityId;
     }
-    public RouteCities(City city, Timestamp visitDate) {
-        this.city = city;
+    public RouteCities(Double x,Double y, Timestamp visitDate) {
+        this.x = x;
+        this.y = y;
         this.visitDate = visitDate;
     }
 
@@ -47,13 +47,20 @@ public class RouteCities {
         return this;
     }
 
-    public City getCity() {
-        return city;
+    public Double getX() {
+        return x;
     }
 
-    public RouteCities setCity(City city) {
-        this.city = city;
-        return this;
+    public void setX(Double x) {
+        this.x = x;
+    }
+
+    public Double getY() {
+        return y;
+    }
+
+    public void setY(Double y) {
+        this.y = y;
     }
 
     public Timestamp getVisitDate() {

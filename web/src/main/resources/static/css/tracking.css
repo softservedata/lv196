@@ -1,0 +1,14 @@
+#mymap {
+    width: 1050px;
+    height: 400px
+}
+.tracking-table {
+    width: 1050px;
+}
+.tracking-div {
+    width: 100%;
+}
+
+.map-container .leaflet-control-container {
+    /*display: none;*/
+}

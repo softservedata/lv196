@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.Point;
 import com.softserve.edu.delivery.domain.RouteCities;
 import com.softserve.edu.delivery.service.LocationService;
 import com.softserve.edu.delivery.service.TransporterService;
@@ -12,24 +13,15 @@ import com.softserve.edu.delivery.service.TransporterService;
 public class PleaceDto {
     private Long id;
     //private Order order;
-    private CityDto city;
+    private Point point;
     private String date;
 
     public PleaceDto(){}
 
-    public PleaceDto(CityDto city, String date/*, Order order*/) {
-        this.city = city;
+    public PleaceDto(Point point, String date/*, Order order*/) {
+        this.point = point;
         this.date = date;
-        //this.order = order;
     }
-
-   /* public Order getOrderId() {
-        return order;
-    }
-
-    public void setOrderId(Order order) {
-        this.order = order;
-    }*/
 
     public Long getId() {
         return id;
@@ -37,14 +29,6 @@ public class PleaceDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public CityDto getCity() {
-        return city;
-    }
-
-    public void setCity(CityDto city) {
-        this.city = city;
     }
 
     public String getDate() {
@@ -55,15 +39,18 @@ public class PleaceDto {
         this.date = date;
     }
 
+    public Point getPoint() {
+        return point;
+    }
+
    public static PleaceDto convertEntity(RouteCities routeCities){
-        return new PleaceDto(CityDto.convertEntity(routeCities.getCity()), routeCities.getVisitDate().toString());
+        return new PleaceDto(new Point(routeCities.getX(), routeCities.getY()), routeCities.getVisitDate().toString());
     }
 
     @Override
     public String toString() {
         return "PleaceDto{" +
                 "id=" + id +
-                ", city=" + city.toString()+
                 ", date=" + date +
                 '}';
     }

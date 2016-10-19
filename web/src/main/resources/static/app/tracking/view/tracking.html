@@ -1,39 +1,24 @@
-<div class="container" ng-controller="pleaceController" ng-init="updateTable()">
-    <br/>
-    <div class="col-md-6">
-        <button type="button" class="btn btn-default" ng-click="addLocation()">Add location</button>
+<div class="container tracking-div" ng-controller="pleaceController" ng-init="initializeMap()">
+    <div class="col-md-6" >
     </div>
     <br/>
+    <div id="mymap" class="map-container"></div>
     <br/>
     <form>
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" placeholder="Search pleace" ng-model="search">
+                <div class="input-group-addon "><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" placeholder="Search pleace" style="width: 200px" ng-model="search">
             </div>
         </div>
     </form>
-    <table class="table table-bordered table-striped" >
+    <table class="table table-bordered table-striped tracking-table" >
         <tr>
             <th>
                 <a href="#" ng-click="sortType = 'city.cityName'; sortReverse = !sortReverse">
-                    City
+                    Address
                     <span ng-show="sortType == 'city.cityName' && !sortReverse" class="fa fa-caret-down"></span>
                     <span ng-show="sortType == 'city.cityName' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </th>
-            <th>
-                <a href="#" ng-click="sortType = 'city.region.regionName'; sortReverse = !sortReverse">
-                    Region
-                    <span ng-show="sortType == 'city.region.regionName' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'city.region.regionName' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </th>
-            <th>
-                <a href="#" ng-click="sortType = 'city.region.state.stateName'; sortReverse = !sortReverse">
-                    State
-                    <span ng-show="sortType == 'city.region.state.stateName' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'city.region.state.stateName' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </th>
             <th>
@@ -44,10 +29,8 @@
                 </a>
             </th>
         </tr>
-        <tr  ng-model="listOfPleaces" ng-repeat="pleace in listOfPleaces.list | orderBy:sortType:sortReverse | filter:search">
-            <td>{{pleace.city.name}}</td>
-            <td>{{pleace.city.region.name}}</td>
-            <td>{{pleace.city.region.state.name}}</td>
+        <tr ng-model="resultList" ng-repeat="pleace in resultList | orderBy:sortType:sortReverse | filter:search">
+            <td>{{pleace.address| htmlToPlaintext}}</td>
             <td>{{pleace.date| date:'yyyy-MM-dd hh:mm'}}</td>
         </tr>
     </table>
