@@ -25,36 +25,26 @@
         };
         }
     )
-    .controller('addFeedbackController', function ($scope, $orderProperty, $http, $uibModalInstance, Notification) {
+    .controller('addFeedbackController', function ($scope, $orderProperty,$orders, $http, $uibModalInstance, Notification) {
             $scope.idForFeedback = $orderProperty.getId();
-
-            $http.get('/order/checkfeedback/' + $orderProperty.getId()).then(response => {
-                $scope.answer = response.data;
-            });
 
             $scope.form = {
                 submit: () => {
+                    // if ( ($scope.form.rate.$valid==true)&&($scope.form.text.$valid==true) ){
+                    //     $scope.primary = function() {
+                    //         Notification.error('Error : Failed to add feedback');
+                    //     };
+                    //     $scope.primary();
+                    // };
                     const data = {
+                        feedbackId: $scope.form.feedbackId,
                         rate: $scope.form.rate,
                         text: $scope.form.text,
                         orderId: $scope.idForFeedback
                     };
 
-                    $scope.retrieveNotice = () => {
-                        if ($scope.answer.Amount > 2){
-                               $scope.message = () => { Notification.warning('Warning : You already wrote several feedbacks on this Order. Please wait for moderation or contact with support.');}
-                        }
-                        else {
-                               $scope.message = () => { Notification.success('Success : Your feedback have been saved');}
-                        }
-                        $scope.primary = function() {
-                            $scope.message();
-                        };
-                        $scope.primary();
-                    };
-                    $scope.retrieveNotice();
-
-                    $http.post('/order/addfeedback', data).then(response => {
+                    $orders.saveFeedback(data).then(response => {
+                        Notification.success('Success : Your feedback have been saved')
                         $uibModalInstance.close(true)
                     }, response => {
                         Notification.error('Error : Failed to add feedback');
@@ -65,6 +55,17 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+
+            $http.get('/order/getFeedback/' + $orderProperty.getId()).then(response => {
+                $scope.feedback = response.data;
+                $scope.form.feedbackId = $scope.feedback.feedbackId;
+                $scope.form.rate = $scope.feedback.rate;
+                $scope.form.text = $scope.feedback.text;
+                $scope.form.approved = $scope.feedback.approved;
+                $scope.form.orderId = $scope.feedback.orderId;
+                $scope.form.userEmail = $scope.feedback.userEmail;
+                $scope.form.createdOn = $scope.feedback.createdOn;
+            })
         }
     );
 

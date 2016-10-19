@@ -63,11 +63,18 @@ public class OrderController {
         orderService.addFeedback(dto, email);
     }
 
-    @RequestMapping(path = "checkfeedback/{id}", method = RequestMethod.GET)
-    String checkFeedback(@PathVariable Long id) {
-        logger.info("Method OrderController.checkFeedback()");
-        Integer answer = orderService.checkFeedback(id);
-        return "{ \"Amount\" : \""+answer+"\" }";
+    @RequestMapping(path = "addfeedback", method = RequestMethod.PUT)
+    void updateFeedback(@RequestBody FeedbackDTO dto) {
+        logger.info("Method OrderController.updateFeedback()");
+//        String email = authenticationDetails.getAuthenticatedUserEmail();
+        String email = "martin@gmail.com";
+        orderService.updateFeedback(dto, email);
+    }
+
+    @RequestMapping(path = "getFeedback/{id}", method = RequestMethod.GET)
+    FeedbackDTO getFeedback(@PathVariable Long id) {
+        logger.info("Method OrderController.getFeedback()");
+        return orderService.getFeedback(id);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)

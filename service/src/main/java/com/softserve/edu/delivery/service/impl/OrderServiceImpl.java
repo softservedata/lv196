@@ -144,17 +144,12 @@ public class OrderServiceImpl implements OrderService {
         feedbackRepository.save(feedback);
     }
 
-    @Transactional(readOnly = true)
-    public Integer checkFeedback (Long orderId){
-        return feedbackRepository.countFeedbacks(orderId);
-    }
-
+    @Override
     public void changeStatus(Long offerId, Boolean offerStatus, Long orderId) {
         offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
-        Boolean newOfferStatus = !offerStatus;
         Offer offer = offerRepository.findOneOpt(offerId)
-                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + offerId));
-        offer.setApproved(newOfferStatus);
+                .orElseThrow(() -> new IllegalArgumentException("No such offer with id: " + offerId));
+        offer.setApproved(!offerStatus);
         offerRepository.save(offer);
     }
 
@@ -202,6 +197,33 @@ public class OrderServiceImpl implements OrderService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateFeedback(FeedbackDTO dto, String email) {
+        Feedback feedback = feedbackRepository.findOneOpt(dto.getFeedbackId())
+                .orElseThrow(() -> new IllegalArgumentException("No such feedback with id: " + dto.getFeedbackId()));
+        feedback.setRate(dto.getRate());
+        feedback.setText(dto.getText());
+        feedbackRepository.save(feedback);
+    }
+
+    @Override
+    public FeedbackDTO getFeedback(Long orderId) {
+        Feedback feedback = feedbackRepository
+                .getFeedbackByOrderId(orderId)
+                .stream()
+                .findFirst()
+                .orElse(null);
+        FeedbackDTO feedbackDTO = new FeedbackDTO();
+        feedbackDTO.setCreatedOn(feedback.getCreatedOn());
+        feedbackDTO.setApproved(feedback.getApproved());
+        feedbackDTO.setText(feedback.getText());
+        feedbackDTO.setRate(feedback.getRate());
+        feedbackDTO.setFeedbackId(feedback.getFeedbackId());
+        feedbackDTO.setOrderId(feedback.getOrder().getId());
+        feedbackDTO.setUserEmail(feedback.getUser().getEmail());
+        return feedbackDTO;
     }
 
     @Override

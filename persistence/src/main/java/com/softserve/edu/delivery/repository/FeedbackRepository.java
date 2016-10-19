@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaRepository<Feedback, Long> {
@@ -45,10 +46,8 @@ public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaR
             "where ord.id = :id and off.approved = true")
     Optional<String> getApprovedDriverEmail(@Param("id") Long id);
 
-    @Query("select count(f.feedbackId)" +
-            "from Feedback f where f.order.id = :id")
-    Integer countFeedbacks(@Param("id") Long id);
-
+    @Query("select f from Feedback f where f.order.id = :id")
+    List<Feedback> getFeedbackByOrderId(@Param("id") Long id);
     /*------------- Find all feedbacks -----------------------*/
 
     @Query(FIND_BY)

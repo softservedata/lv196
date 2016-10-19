@@ -56,7 +56,9 @@ public interface OrderService {
     //Method for user story - "As customer I want to change offer status."
     void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
 
-    Integer checkFeedback (Long orderId);
+    FeedbackDTO getFeedback (Long orderId);
+
+    void updateFeedback(FeedbackDTO dto, String email);
 
     List<OrderDto> findAllClosedOrders(String email);
 /**
