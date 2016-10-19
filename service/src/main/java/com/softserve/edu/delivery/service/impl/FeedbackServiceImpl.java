@@ -51,16 +51,15 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private String processRequestText(String text) {
         if (text.equals("undefined")) {
-            text = "%";
+            return "%";
         } else {
-            text = "%" + text + "%";
+            return "%" + text + "%";
         }
-        return text;
     }
 
     private Integer processRequestRate(String rate) {
         try {
-            return Integer.parseInt(rate.replaceAll("\\D+", ""));
+            return Integer.parseInt(rate);
         } catch (IllegalArgumentException e) {
             return 0;
         }

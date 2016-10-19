@@ -29,28 +29,29 @@ public class FeedbackController {
                                       @RequestParam("currentPage") int currentPage,
                                       @RequestParam("itemsPerPage") int itemsPerPage) {
 
-        logger.info("Method FeedbackController.findAll()");
-
+        logger.info("Before feedbackService.findFiltered()");
         return feedbackService.findFiltered(text, rateString, userName, transporterName, createdOnString,
                 approvedString, sortBy, sortDesc, currentPage, itemsPerPage);
     }
 
     @RequestMapping(path = "totalItems", method = RequestMethod.GET)
     long getTotalItemsNumber() {
-
-        logger.info("Method FeedbackController.getTotalItemsNumber()");
+        logger.info("Before feedbackService.getTotalItemsNumber()");
         return feedbackService.getTotalItemsNumber();
+
     }
 
     @RequestMapping(path = {"updateFeedback"}, method = RequestMethod.PUT)
     void updateFeedback(@RequestBody FeedbackDTO feedbackDTO) {
-        logger.info("In method FeedbackController.updateFeedback()");
+        logger.info("Before feedbackService.update(feedbackDTO)");
         feedbackService.update(feedbackDTO);
+        logger.info("After feedbackService.update(feedbackDTO)");
     }
 
     @RequestMapping(path = {"deleteFeedback/{feedbackId}"}, method = RequestMethod.DELETE)
     void deleteFeedback(@PathVariable Long feedbackId) {
-        logger.info("In method FeedbackController.deleteFeedback()");
+        logger.info("Before feedbackService.delete(feedbackId)");
         feedbackService.delete(feedbackId);
+        logger.info("After feedbackService.delete(feedbackDTO)");
     }
 }

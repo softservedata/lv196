@@ -1,5 +1,5 @@
 .feedbacks.navbar {
-    background-color: green;
+    background-color: #148b73;
 }
 
 .feedbacks.span {
@@ -9,12 +9,14 @@
 }
 
 .feedbacks.select.form-control {
-    width: 80px;
-    color: green;
+    width: 50px;
+    color: #148b73;
+    display: inline;
+    margin: 10px;
 }
 
 .feedbacks.main {
-    padding-top: 100px;
+    padding-top: 70px;
 }
 
 .feedbacks.tableSort {
@@ -55,7 +57,8 @@
     color: white;
 }
 
-.feedbacks.del, .feedbacks.clear {
+.feedbacks.del,
+.feedbacks.clear {
     text-align: center;
 }
 
@@ -90,18 +93,22 @@
 }
 
 .feedbacks ul.pagination li a {
-    color: green;
+    color: #148b73;
 }
 
 .feedbacks ul.pagination li.active a,
 .feedbacks ul.pagination li a:focus {
     color: white;
-    background-color: green;
+    background-color: #148b73;
     outline-style: none;
 }
 
-.control-label.feedbacks {
+.feedbacks.control-label {
     font-size: large;
+}
+
+.feedbacks.rating {
+    color: darkgoldenrod;
 }
 
 

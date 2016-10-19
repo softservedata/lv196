@@ -1,7 +1,7 @@
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Text" ng-model="feedbackFilter[1]"
-               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(1)"/>
+        <input type="text" class="form-control" placeholder="Text" ng-model="feedbackFilter.text"
+               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilter.text)"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
         </span>
@@ -9,37 +9,41 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="number" class="form-control" min="0" max="50" placeholder="Rate" ng-model="feedbackFilter[2]"
-               ng-model="feedbackRate" ng-model-options="{ debounce: 500 }" ng-change="filterFeedbacks()"/>
-    </div>
-</td>
-<td>
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="User" ng-model="feedbackFilter[3]"
-               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(3)"/>
-        <span class=" input-group-addon">
-        <i class="fa fa-search"></i>
-        </span>
-    </div>
-</td>
-<td>
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Transporter" ng-model="feedbackFilter[4]"
-               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(4)"/>
-        <span class=" input-group-addon">
-        <i class="fa fa-search"></i>
-        </span>
-    </div>
-</td>
-<td>
-    <div class="input-group">
-        <input type="date" class="form-control" placeholder="Date" ng-model="feedbackFilter[5]"
+        <input type="number" class="form-control" min="0" max="5" placeholder="Rate" ng-model="feedbackFilter.rate"
                ng-model-options="{ debounce: 500 }" ng-change="filterFeedbacks()"/>
     </div>
 </td>
 <td>
-    <div class=" input-group">
-        <a class="{{toggleFilterApprovedClass()}}" style="{{toggleFilterApprovedStyle()}}"
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="User" ng-model="feedbackFilter.userName"
+               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilter.userName)"/>
+        <span class=" input-group-addon">
+        <i class="fa fa-search"></i>
+        </span>
+    </div>
+</td>
+<td>
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Transporter" ng-model="feedbackFilter.transporterName"
+               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilter.transporterName)"/>
+        <span class=" input-group-addon">
+        <i class="fa fa-search"></i>
+        </span>
+    </div>
+</td>
+<td>
+    <div class="input-group">
+        <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" placeholder="Date"
+               ng-model="feedbackFilter.createdOn" is-open="popupDatePicker.opened" ng-change="filterFeedbacks()"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-link" ng-click="openDatePicker()">
+                <i class="fa fa-calendar"></i></button>
+          </span>
+    </div>
+</td>
+<td>
+    <div class="input-group">
+        <a class="{{toggleFilterApprovedClass()}} feedbacks" style="{{toggleFilterApprovedStyle()}}"
            ng-click="changeFilterApprovedClass()"></a>
     </div>
 </td>

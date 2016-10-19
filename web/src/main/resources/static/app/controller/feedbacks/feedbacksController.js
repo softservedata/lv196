@@ -1,19 +1,32 @@
 angular
     .module('delivery')
-    .controller('feedbacksController', ['$scope', '$http', 'shareFeedbackDataService', '$uibModal', '$location', '$anchorScroll',
-        function ($scope, $http, shareFeedbackDataService, $uibModal, $location, $anchorScroll) {
+    .controller('feedbacksController', ['$scope', '$http', 'shareFeedbackDataService', '$uibModal', '$location',
+        '$anchorScroll', function ($scope, $http, shareFeedbackDataService, $uibModal, $location, $anchorScroll) {
 
             $scope.feedbacks = [];
-            $scope.feedbackFilter = [];
             $scope.feedbackSortIcons = [];
             $scope.sortFeedbacksOrderDesc = [];
+
+            $scope.feedbackFilter = {
+                text: '',
+                rate: '',
+                userName: '',
+                transporterName: '',
+                createdOn: '',
+                approved: ''
+            };
             $scope.currentPage = 1;
             $scope.itemsPerPage = 5;
             $scope.totalItems = 0;
+            $scope.popupDatePicker = {
+                opened: false
+            };
+            $scope.rateFactor = 10;
 
-            var columnNumber = 7; // including pos 0 for getAllFeedbacks()
+            var columnNumber = 7;
             var columnPos = 0;
             var toggleFilterApprovedPos = 0;
+            var rateStep = 0.5;
 
             var init = function () {
                 for (var i = 0; i < columnNumber; i++) {
@@ -56,14 +69,14 @@ angular
             $scope.toggleFilterApprovedStyle = function () {
                 switch (toggleFilterApprovedPos) {
                     case 1:
-                        $scope.feedbackFilter[6] = "false";
-                        return "color:red";
+                        $scope.feedbackFilter.approved = "false";
+                        return "color: red;";
                     case 2:
-                        $scope.feedbackFilter[6] = "true";
-                        return "color:green";
+                        $scope.feedbackFilter.approved = "true";
+                        return "color: green;";
                     default:
-                        $scope.feedbackFilter[6] = "";
-                        return "color:lightgray";
+                        $scope.feedbackFilter.approved = "";
+                        return "color: lightgray;";
                 }
             };
 
@@ -85,14 +98,14 @@ angular
             };
 
             var replacePlus = function (text) {
-                if (text != null && text != '' && text.includes("+")) {
+                if (text != null && text != '' && text.indexOf("+") != -1) {
                     return text.split("+").join("%2B");
                 }
                 return text;
             };
 
-            $scope.checkInputLength = function (columnIndex) {
-                if ($scope.feedbackFilter[columnIndex].length > 2 || $scope.feedbackFilter[columnIndex].length == 0) {
+            $scope.checkInputLength = function (contents) {
+                if (contents.length > 2 || contents.length == 0) {
                     $scope.filterFeedbacks();
                 }
             };
@@ -115,11 +128,13 @@ angular
             };
 
             $scope.filterFeedbacks = function () {
-                var requestText = "/feedbacks/all?text=" + replacePlus($scope.feedbackFilter[1]) + "&rate=" + $scope.feedbackFilter[2] +
-                    "&userName=" + $scope.feedbackFilter[3] + "&transporterName=" + $scope.feedbackFilter[4] +
-                    "&createdOn=" + Date.parse($scope.feedbackFilter[5]) + "&approved=" + $scope.feedbackFilter[6] +
-                    "&sortBy=" + sortBy(columnPos) + "&sortDesc=" + $scope.sortFeedbacksOrderDesc[columnPos] +
-                    "&currentPage=" + $scope.currentPage + "&itemsPerPage=" + $scope.itemsPerPage;
+                var requestText = "/feedbacks/all?text=" + replacePlus($scope.feedbackFilter.text) + "&rate=" +
+                    ($scope.feedbackFilter.rate - rateStep) * $scope.rateFactor + "&userName=" +
+                    $scope.feedbackFilter.userName + "&transporterName=" + $scope.feedbackFilter.transporterName +
+                    "&createdOn=" + Date.parse($scope.feedbackFilter.createdOn) + "&approved=" +
+                    $scope.feedbackFilter.approved + "&sortBy=" + sortBy(columnPos) + "&sortDesc=" +
+                    $scope.sortFeedbacksOrderDesc[columnPos] + "&currentPage=" + $scope.currentPage + "&itemsPerPage=" +
+                    $scope.itemsPerPage;
 
                 $http.post(requestText)
                     .then(function (response0) {
@@ -208,9 +223,12 @@ angular
             });
 
             $scope.clearAllFilters = function () {
-                for (var i = 0; i < $scope.feedbackFilter.length; i++) {
-                    $scope.feedbackFilter[i] = '';
-                }
+                $scope.feedbackFilter.text = '';
+                $scope.feedbackFilter.rate = '';
+                $scope.feedbackFilter.userName = '';
+                $scope.feedbackFilter.transporterName = '';
+                $scope.feedbackFilter.createdOn = '';
+                $scope.feedbackFilter.approved = '';
                 toggleFilterApprovedPos = 2;
                 $scope.changeFilterApprovedClass();
             };
@@ -234,6 +252,10 @@ angular
                         }
                     }
                 });
+            };
+
+            $scope.openDatePicker = function () {
+                $scope.popupDatePicker.opened = true;
             };
 
             init();

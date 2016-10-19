@@ -47,7 +47,10 @@
                 <td>{{f.text}}
                     <i class="fa fa-pencil-square-o feedbacks" aria-hidden="true" ng-click="editFeedbackText(f)"></i>
                 </td>
-                <td>{{f.rate}}</td>
+                <td>
+                    <span uib-rating class="feedbacks rating" ng-model="f.rate / rateFactor" read-only="true"
+                          aria-labelledby="default-rating"></span>
+                </td>
                 <td>{{f.userName}}<i class="fa fa-user feedbacks" aria-hidden="true"
                                      ng-click="getUser(f.userEmail)"></i></td>
                 <td>{{f.transporterName}}<i class="fa fa-user feedbacks" aria-hidden="true"
