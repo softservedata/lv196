@@ -6,6 +6,9 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
 public interface OrderService {
 
     /**
@@ -65,7 +68,7 @@ public interface OrderService {
 * Author - Ivan Synyshyn
 */
     //As transporter I want to choose orders by filter
-    List<OrderDto> getOrdersFiltered (String cityFrom, String cityTo, String weight, String arrivalDate);
+    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, BigDecimal weight, Timestamp arrivalDate);
     List<OrderDto> getAllOpenOrder();
     
     OrderDto getOrderById(Long orderId);

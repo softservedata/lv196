@@ -237,50 +237,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrdersFiltered(String cityFrom, String cityTo, String weight, String arrivalDate) {
-        List<OrderDto> result = new ArrayList<>();
-        Long cityFromId = getCityId(cityFrom);
-        Long cityToId = getCityId(cityTo);
-        BigDecimal mass = parseWeight(weight);
-        Timestamp date = parseDate(arrivalDate);
-        result.addAll(orderRepository.getOrdersFiltered(cityFromId, cityToId, mass, date).stream()
-                .map(OrderDto::of).collect(Collectors.toList()));
-        return result;
-    }
-
-    private Long getCityId (String txtCityId) {
-        Long cityId = null;
-        if (txtCityId != null && !txtCityId.isEmpty()) {
-            cityId = Long.parseLong(txtCityId);
-        }
-        return cityId;
-    }
-
-    private BigDecimal parseWeight (String weight) {
-        BigDecimal mass = null;
-        if (weight != null && !weight.isEmpty()) {
-            try {
-                mass = BigDecimal.valueOf(Double.parseDouble(weight));
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            }
-            if (mass.doubleValue() < 0.0) {
-                throw new IllegalArgumentException("Incorrect weight");
-            }
-        }
-        return mass;
-    }
-
-    private Timestamp parseDate (String date) {
-        Timestamp arrivalDate = null;
-        if (date != null && !date.isEmpty()) {
-            try {
-                arrivalDate = new Timestamp(Long.parseLong(date));
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            }
-        }
-        return arrivalDate;
+    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, BigDecimal weight, Timestamp arrivalDate) {
+        return orderRepository
+                .getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate)
+                .stream()
+                .map(OrderDto::of)
+                .collect(Collectors.toList());
     }
 
     @Override

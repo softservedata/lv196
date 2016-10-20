@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -37,12 +39,24 @@ public class AllOrderController {
     }
 
     @RequestMapping (path = "filtered-orders", method = RequestMethod.GET)
-    List<OrderDto> filter (@RequestParam (required = false) String cityFromId,
-                           @RequestParam (required = false) String cityToId,
-                           @RequestParam (required = false) String weight,
-                           @RequestParam (required = false) String arrivalDate) {
+    List<OrderDto> filter (@RequestParam (required = false) Long cityFromId,
+                           @RequestParam (required = false) Long cityToId,
+                           @RequestParam (required = false) BigDecimal weight,
+                           @RequestParam (required = false) String date) {
 
+        Timestamp arrivalDate = null;
+        if (date != null && !date.isEmpty()) {
+            try {
+                arrivalDate = new Timestamp(Long.parseLong(date));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Incorrect date");
+            }
+        }
         logger.info("Method AllOrderController.filter()");
+        logger.info("cityFromId = " + cityFromId);                          //will delete it later!!!
+        logger.info("cityToId = " + cityToId);                              //will delete it later!!!
+        logger.info("weight = " + weight);                                  //will delete it later!!!
+        logger.info("arrivalDate = " + arrivalDate);                        //will delete it later!!!
         return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate);
     }
 
