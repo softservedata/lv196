@@ -1,7 +1,9 @@
 angular
     .module('delivery')
     .controller('feedbacksController', ['$scope', '$http', 'shareFeedbackDataService', '$uibModal', '$location',
-        '$anchorScroll', function ($scope, $http, shareFeedbackDataService, $uibModal, $location, $anchorScroll) {
+        '$anchorScroll', 'Notification',
+        function ($scope, $http, shareFeedbackDataService, $uibModal, $location, $anchorScroll,
+                  Notification) {
 
             $scope.feedbacks = [];
             $scope.feedbackSortIcons = [];
@@ -21,8 +23,8 @@ angular
             $scope.popupDatePicker = {
                 opened: false
             };
-            $scope.rateFactor = 10;
 
+            var rateFactor = 10;
             var columnNumber = 7;
             var columnPos = 0;
             var toggleFilterApprovedPos = 0;
@@ -45,6 +47,12 @@ angular
             var resetSortIcons = function () {
                 for (var i = 0; i < columnNumber; i++) {
                     $scope.feedbackSortIcons[i] = ("fa fa-sort");
+                }
+            };
+
+            var recalcRate = function () {
+                for (var i = 0, len = $scope.feedbacks.length; i < len; i++) {
+                    $scope.feedbacks[i].rate = $scope.feedbacks[i].rate / rateFactor;
                 }
             };
 
@@ -129,7 +137,7 @@ angular
 
             $scope.filterFeedbacks = function () {
                 var requestText = "/feedbacks/all?text=" + replacePlus($scope.feedbackFilter.text) + "&rate=" +
-                    ($scope.feedbackFilter.rate - rateStep) * $scope.rateFactor + "&userName=" +
+                    ($scope.feedbackFilter.rate - rateStep) * rateFactor + "&userName=" +
                     $scope.feedbackFilter.userName + "&transporterName=" + $scope.feedbackFilter.transporterName +
                     "&createdOn=" + Date.parse($scope.feedbackFilter.createdOn) + "&approved=" +
                     $scope.feedbackFilter.approved + "&sortBy=" + sortBy(columnPos) + "&sortDesc=" +
@@ -138,17 +146,26 @@ angular
 
                 $http.post(requestText)
                     .then(function (response0) {
-                        $http.get("/feedbacks/totalItems")
-                            .then(function (response1) {
-                                $scope.totalItems = response1.data;
-                            });
-                        $scope.feedbacks = response0.data;
-                    });
+                            $http.get("/feedbacks/totalItems")
+                                .then(function (response1) {
+                                    $scope.totalItems = response1.data;
+                                });
+                            $scope.feedbacks = response0.data;
+                            recalcRate();
+                        },
+                        function (response) {
+                            Notification.error({message: response.data.message, title: "Error!"});
+                        });
             };
 
             $scope.changeFeedbackStatus = function (feedbackDTO) {
                 feedbackDTO.approved = !feedbackDTO.approved;
-                $http.put("/feedbacks/updateFeedback", feedbackDTO);
+                $http.put("/feedbacks/updateFeedback", feedbackDTO)
+                    .then(function (response) {
+                        },
+                        function (response) {
+                            Notification.error({message: response.data.message, title: "Error!"});
+                        });
             };
 
             $scope.toggleApproved = function (approved) {
@@ -218,7 +235,6 @@ angular
             };
 
             $scope.$on('item_deleted', function () {
-                showInfo("The feedback was successfully deleted");
                 $scope.filterFeedbacks();
             });
 
@@ -236,8 +252,11 @@ angular
             $scope.getUser = function (email) {
                 $http.get("/users/email/?email=" + email)
                     .then(function (response) {
-                        $scope.showUser(response.data);
-                    });
+                            $scope.showUser(response.data);
+                        },
+                        function (response) {
+                            Notification.error({message: response.data.message, title: "Error!"});
+                        });
             };
 
             $scope.showUser = function (userDTO) {
@@ -260,15 +279,23 @@ angular
 
             init();
         }])
-    .controller('editFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackDTO',
-        function ($scope, $http, $uibModalInstance, feedbackDTO) {
+    .controller('editFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackDTO', 'Notification',
+        function ($scope, $http, $uibModalInstance, feedbackDTO, Notification) {
 
             $scope.feedbackText = feedbackDTO.text;
 
             $scope.updateFeedbackText = function () {
                 $uibModalInstance.close();
                 feedbackDTO.text = $scope.feedbackText;
-                $http.put("/feedbacks/updateFeedback", feedbackDTO);
+                $http.put("/feedbacks/updateFeedback", feedbackDTO)
+                    .then(function (response) {
+                            if (response.status == 200) {
+                                Notification.success('The feedbacks was succesfully updated');
+                            }
+                        },
+                        function (response) {
+                            Notification.error({message: response.data.message, title: "Error!"});
+                        });
             };
 
             $scope.cancelEditFeedbackText = function () {
@@ -276,17 +303,22 @@ angular
             };
 
         }])
-    .controller('deleteFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackId', 'shareFeedbackDataService',
-        function ($scope, $http, $uibModalInstance, feedbackId, shareFeedbackDataService) {
+    .controller('deleteFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackId',
+        'shareFeedbackDataService', 'Notification',
+        function ($scope, $http, $uibModalInstance, feedbackId, shareFeedbackDataService, Notification) {
 
             $scope.confirmDeleteFeedback = function () {
                 $uibModalInstance.close();
                 $http.delete("/feedbacks/deleteFeedback/" + feedbackId)
                     .then(function (response) {
-                        if (response.status == 200) {
-                            shareFeedbackDataService.itemDeleted();
-                        }
-                    });
+                            if (response.status == 200) {
+                                Notification.success('The feedbacks was succesfully deleted');
+                                shareFeedbackDataService.itemDeleted();
+                            }
+                        },
+                        function (response) {
+                            Notification.error({message: response.data.message, title: "Error!"});
+                        });
             };
 
             $scope.cancelDeleteFeedback = function () {
@@ -307,7 +339,10 @@ angular
     .controller('feedbackShowUserController', ['$scope', '$uibModalInstance', 'userDTO',
         function ($scope, $uibModalInstance, userDTO) {
 
+            var rateFactor = 10;
+
             $scope.userDTO = userDTO;
+            $scope.userDTO.rate = $scope.userDTO.rate / rateFactor;
 
             $scope.closeFeedbackShowUser = function () {
                 $uibModalInstance.close();
