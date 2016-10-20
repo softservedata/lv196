@@ -30,28 +30,20 @@ public class UserController {
 	    }
 	    
 	    @RequestMapping(path = "change-status", method = RequestMethod.PUT)
-	    UserProfileDto changeUserStatus(@RequestParam("email") String email, @RequestParam("status") String value) {
+	    UserProfileDto changeUserStatus(@RequestParam("email") String email, @RequestParam("status") Boolean status) {
 			logger.info("Method UserController.changeUserStatus()");
-			Boolean status = null;
-			try{
-				status = Boolean.parseBoolean(value);
-			} catch(IllegalArgumentException e) {
-	            e.printStackTrace();
-			}
 	        return userService.changeUserStatus(email, status);
 	    }
 	    
-	    @RequestMapping(path = "count-pages", method = RequestMethod.GET)
+	    @RequestMapping(path = "count-items", method = RequestMethod.GET)
 	    Long countUsers() {
 			logger.info("Method UserController.countUsers()");
-	        return userService.getPages();
+	        return userService.countItems();
 	    }
 	    
-	    @RequestMapping(path = "filter", method = RequestMethod.GET)
-	    List<UserProfileDto> allUsers(@RequestParam("rows") String rows, @RequestParam("page") String page, @RequestParam("fname") String fname,
-	    							  @RequestParam("lname") String lname, @RequestParam("email") String email, @RequestParam("role") String role,
-	    							  @RequestParam("status") String status) {
+	    @RequestMapping(path = "filter", method = RequestMethod.POST)
+	    List<UserProfileDto> allUsers(@RequestBody UserProfileDto dto   ) {
 			logger.info("Method UserController.allUsers()");
-	        return userService.findUsers(fname, lname, email, role, status, rows, page);
+	        return userService.findUsers(dto);
 	    }
 }
