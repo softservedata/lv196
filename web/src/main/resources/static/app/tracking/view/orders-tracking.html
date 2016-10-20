@@ -1,0 +1,8 @@
+<div class="container" ng-controller="ordersTrackingController" >
+    <input type = "text" ng-model = "orderId" ng-change="trackOrder(orderId)"/>
+ 
+    <p ng-repeat="routeCity in ordersTracking.routeCityDTOs">
+  {{routeCity.cityDto.cityName}} 
+  {{routeCity.date}}
+ <p>
+</div>

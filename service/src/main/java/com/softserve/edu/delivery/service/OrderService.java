@@ -1,10 +1,10 @@
 package com.softserve.edu.delivery.service;
 
+import java.util.List;
+
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
-
-import java.util.List;
 
 public interface OrderService {
 
@@ -67,4 +67,6 @@ public interface OrderService {
     //As transporter I want to choose orders by filter
     List<OrderDto> getOrdersFiltered (String cityFrom, String cityTo, String weight, String arrivalDate);
     List<OrderDto> getAllOpenOrder();
+    
+    OrderDto getOrderById(Long orderId);
 }

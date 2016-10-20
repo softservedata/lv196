@@ -53,5 +53,10 @@ angular
                 url: '/dialog',
                 templateUrl: '/app/tracking/view/dialog.html',
                 controller: 'pleaceController'
-            });
+            })
+	        .state('orders-tracking', {
+	            url: '/orders-tracking',
+	            templateUrl: '/app/tracking/view/orders-tracking.html',
+	            controller: 'ordersTrackingController'
+	        });
     }]);

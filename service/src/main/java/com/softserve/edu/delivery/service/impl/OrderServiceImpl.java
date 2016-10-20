@@ -1,17 +1,5 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.domain.*;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
-import com.softserve.edu.delivery.dto.LocationDto;
-import com.softserve.edu.delivery.dto.OfferDtoForList;
-import com.softserve.edu.delivery.dto.OrderDto;
-import com.softserve.edu.delivery.repository.*;
-import com.softserve.edu.delivery.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -19,6 +7,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.softserve.edu.delivery.dao.OrderDao;
+import com.softserve.edu.delivery.domain.City;
+import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.Offer;
+import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.OrderStatus;
+import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.LocationDto;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
+import com.softserve.edu.delivery.dto.OrderDto;
+import com.softserve.edu.delivery.repository.CityRepository;
+import com.softserve.edu.delivery.repository.FeedbackRepository;
+import com.softserve.edu.delivery.repository.OfferRepository;
+import com.softserve.edu.delivery.repository.OrderRepository;
+import com.softserve.edu.delivery.repository.UserRepository;
+import com.softserve.edu.delivery.service.OrderService;
 
 @Service
 @Transactional
@@ -280,5 +290,14 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(OrderDto::of)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderDto getOrderById(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+        if(order == null ) {
+            return null;
+        }
+        return OrderDto.of(order);
     }
 }
