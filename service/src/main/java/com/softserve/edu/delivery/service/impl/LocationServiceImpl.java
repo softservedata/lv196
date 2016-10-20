@@ -46,30 +46,4 @@ public class LocationServiceImpl implements LocationService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void savePleace(PleaceDto pleaceDto){
-        RouteCities routeCities = convertToEntity(pleaceDto);
-        System.out.println("routeCities : "+routeCities.toString());
-        routeCityDao.save(routeCities);
-    }
-
-    public  RouteCities convertToEntity(PleaceDto pleaceDto) {
-        CityDto cityDto = pleaceDto.getCity();
-        return new RouteCities(convertToEntity(cityDto), Timestamp.valueOf(pleaceDto.getDate()));
-    }
-
-    public static Region convertToEntity(RegionDto regionDto) {
-        return new Region(regionDto.getName(), convertToEntity(regionDto.getState()));
-    }
-
-    public static State convertToEntity(StateDto stateDto) {
-        return new State(stateDto.getName());
-    }
-
-
-    public City convertToEntity(CityDto cityDto) {
-
-        return new City(cityDto.getCityId(), cityDto.getName(), convertToEntity(cityDto.getRegion()));
-    }
-
 }

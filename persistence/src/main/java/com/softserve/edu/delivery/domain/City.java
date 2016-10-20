@@ -9,6 +9,7 @@ import java.util.Objects;
 public class City {
 
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cityId;
     private String cityName;
@@ -18,6 +19,7 @@ public class City {
     private Region region;
     private BigDecimal latitude;
     private BigDecimal longitude;
+
 
     public City() {
     }

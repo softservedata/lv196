@@ -16,6 +16,10 @@ public class UserProfileDto {
     private String photoUrl;
     private String passport;
     private Boolean approved;
+    private Integer currentPage;
+    private Integer rows;
+    private String sortType;
+    private Boolean sortReverse;
 	
 	public UserProfileDto() {
 	}
@@ -123,6 +127,42 @@ public class UserProfileDto {
 
 	public UserProfileDto setApproved(Boolean approved) {
 		this.approved = approved;
+		return this;
+	}
+	
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+
+	public UserProfileDto setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+		return this;
+	}
+	
+	public Integer getRows() {
+		return rows;
+	}
+
+	public UserProfileDto setRows(Integer rows) {
+		this.rows = rows;
+		return this;
+	}
+	
+	public String getSortType() {
+		return sortType;
+	}
+
+	public UserProfileDto setSortType(String sortType) {
+		this.sortType = sortType;
+		return this;
+	}
+	
+	public Boolean getSortReverse() {
+		return sortReverse;
+	}
+
+	public UserProfileDto setSortReverse(Boolean sortReverse) {
+		this.sortReverse = sortReverse;
 		return this;
 	}
 	

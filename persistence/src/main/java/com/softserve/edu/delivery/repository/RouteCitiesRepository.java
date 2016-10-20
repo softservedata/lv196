@@ -11,5 +11,4 @@ public interface RouteCitiesRepository extends BaseRepository<RouteCities, Long>
     
     @Query("select c from RouteCities c where c.route.id = :orderId")
     List<RouteCities> findRouteCitiesByOrderId(@Param("orderId") Long orderId);
-    
 }

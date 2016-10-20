@@ -36,18 +36,18 @@
 }
 
 .status-btn {
-    color: #a8040499;
+    color: #d24646;
     cursor: pointer;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .status-srch {
 	margin-top: 8px;
 	cursor: pointer;
-	margin-left: 27px;
+	margin-left: 20px;
 }
 
-.ban {
+.ban-btn {
 	padding-left: 47px;
 }
 
@@ -63,30 +63,37 @@
 
 .srch-in::-moz-placeholder { /* Mozilla Firefox 19+ */
    color:    #ffffff;
-   opacity:  0.5;
+   opacity:  1;
    font-style: italic;
 }
 
 .srch-in::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #ffffff;
-    opacity:  0.5;
+    opacity:  1;
     font-style: italic;
 }
 
+.frst {
+	cursor: pointer;	
+}
 .scnd {
 	padding-left: 8px;
+	cursor: pointer;
 }
 
 .thrd {
 	padding-left: 18px;
+	cursor: pointer;
 }
 
 .frth {
 	padding-left: 25px;
+	cursor: pointer;
 }
 
 .ffth {
-	padding-left: 68px;
+	padding-left: 52px;
+	cursor: pointer;
 }
 
 .user-pagination ul.pagination li a {
@@ -102,10 +109,48 @@
 
 .users-rows {
 	color: #007772;
-	float: right;
+	float: left;
 }
 
 .srch-rows {
 	color: #007772;
 }
 
+.srch-roles {
+	color:    #ffffff;
+    opacity:  1;
+    font-style: italic;
+    background-color: #007772;
+    box-shadow: inset 0 -3px 0 #ffffff;
+}
+.search-table {
+	border-top: 1px solid #007772;
+}
+
+.srch-roles select, .srch-roles select.form-control {
+	 box-shadow: inset 0 -1px 0 #ffffff;
+}
+
+.userspagination {
+	margin-left: 120px;
+}
+
+.up-btn {
+	color: #007772;
+	float: right;
+    padding-right: 25px;
+    cursor: pointer;
+}
+
+.user-rate {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.approved {
+	color: #4080ff;
+}
+  
+ .not-approved {
+ 	opacity:  0.2;
+ }  

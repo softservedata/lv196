@@ -1,6 +1,5 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.EmailVerificationToken;
 import com.softserve.edu.delivery.domain.Role;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-	private Long pages;
+	private Long totalItems;
     private final UserRepository userRepository;
 
     @Autowired
@@ -156,25 +156,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserProfileDto> findUsers(String fname, String lname, String email,
-    									  String role, String blocked, String size, String page) {
-        Integer rows = null;
-        Integer currentPage = null;
-        Boolean status = null;
-        try {
-        	rows = Integer.parseInt(size);
-        	currentPage = Integer.parseInt(page);
-        	status = blocked == "" ? null : Boolean.parseBoolean(blocked);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    	
-    	Page<User> resultPage = userRepository.findUsers(fname == "" ? "%" : fname,
-    													 lname == "" ? "%" : lname,
-    													 email == "" ? "%" : email, 
-    									  				 role == "" ? null : Role.valueOf(role.toUpperCase()),
-    													 status, new PageRequest(currentPage - 1, rows));
-    	pages = resultPage.getTotalElements();
+    public List<UserProfileDto> findUsers(UserProfileDto filter) {
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(filter.getSortReverse() == true ? "ASC" : "DESC" ), 
+        																filter.getSortType());
+    	Page<User> resultPage = userRepository
+    					.findUsers(filter.getFirstName(), 
+    							   filter.getLastName(), 
+    							   filter.getEmail(), 
+    							   filter.getRole().isEmpty() ? null : Role.valueOf(filter.getRole().toUpperCase()),
+    							   filter.getBlocked(), new PageRequest(filter.getCurrentPage() - 1, 
+    							   filter.getRows(), new Sort(sortOrder)));
+    	totalItems = resultPage.getTotalElements();
 		return resultPage
 				.getContent()
 				.stream()
@@ -183,8 +175,8 @@ public class UserServiceImpl implements UserService {
     }
     
 	@Override
-	public Long getPages() {
-		return pages;
+	public Long countItems() {
+		return totalItems;
 	}
 
     private static String generateRandomUUID() {

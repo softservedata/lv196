@@ -20,7 +20,9 @@
                 <br>
                 <label>Passport: {{userDTO.passport}}</label>
                 <br>
-                <label>Rate: {{userDTO.rate}}</label>
+                <label>Rate: </label>
+                <span uib-rating class="feedbacks rating" ng-model="userDTO.rate" read-only="true"
+                      aria-labelledby="default-rating"></span>
                 <br>
                 <label>Approved: {{userDTO.approved}}</label>
                 <br>

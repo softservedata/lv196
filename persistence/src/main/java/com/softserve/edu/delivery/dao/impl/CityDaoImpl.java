@@ -5,10 +5,12 @@ package com.softserve.edu.delivery.dao.impl;
  */
 import com.softserve.edu.delivery.dao.CityDao;
 import com.softserve.edu.delivery.domain.City;
+import com.softserve.edu.delivery.domain.Point;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository("cityDao")
@@ -32,5 +34,10 @@ public class CityDaoImpl extends BaseDaoImpl<City, Long> implements CityDao {
         return getEntityManager().createQuery("select c from City c where c.region.regionName = :region", City.class)
                 .setParameter("region", region).getResultList();
 
+    }
+    @Override
+    public City findOne(Double x, Double y){
+        return getEntityManager().createQuery("select c from City c where c.x = :x and c.y = :y", City.class)
+                .setParameter("x", x).setParameter("y", y).getSingleResult();
     }
 }
