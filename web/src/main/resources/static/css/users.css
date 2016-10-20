@@ -141,4 +141,16 @@
     padding-right: 25px;
     cursor: pointer;
 }
-    
+
+.user-rate {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.approved {
+	color: #4080ff;
+}
+  
+ .not-approved {
+ 	opacity:  0.2;
+ }  

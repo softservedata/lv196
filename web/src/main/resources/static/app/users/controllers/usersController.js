@@ -8,7 +8,8 @@ angular
         $scope.totalItems;
         $scope.filterStatus = false;
         $scope.userInfo = false;
-
+        $scope.userRate;
+        
         $scope.filter = {
         	rows: 10,
         	currentPage: 1,
@@ -25,7 +26,7 @@ angular
         	$scope.filterStatus = !$scope.filterStatus;
         	$scope.filter.blocked = $scope.filterStatus;
         }
-        
+
         $scope.retrieveUsers = (filter) => {
             $http.post('/users/filter', filter).then(response1 => {
                 $scope.users.allProfiles = response1.data;
@@ -55,8 +56,10 @@ angular
         
         $scope.getUserInfo = (user) => {
         	var email = user.email;
+        	var rate = user.rate;
             $http.get('/users/email?email=' + email).then(response => {
                 $scope.userInfo = response.data;
+                $scope.userRate = rate / 10;
             })
         };
         
@@ -78,5 +81,6 @@ angular
             $location.hash(id);
             $anchorScroll();
         };
+
 
         }]);

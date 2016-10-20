@@ -109,7 +109,9 @@
         		<td></td> 
         		<td colspan="7">
           			<div class="container col-xs-12">
-            		<div class="col-xs-12"><h1 class="name">{{userInfo.firstName}}</h1></div>
+            		<div class="col-xs-12"><h1 class="name">{{userInfo.firstName}} 
+            			<i class="fa " ng-class="{'fa-check-circle approved':userInfo.approved==true, 'fa-check-circle not-approved':userInfo.approved==false}" title="approved status"  aria-hidden="true"></i></h1>
+            		</div>
             		<div class="col-md-4 col-xs-7 small">
               			<label class="user-info">Last name</label>{{userInfo.lastName}}<br>
               			<label class="user-info">Phone</label>{{userInfo.phone}}<br>
@@ -118,11 +120,13 @@
             		<div class="col-md-4 col-xs-7 small">
               			<label class="user-info">Passport</label>{{userInfo.passport}}<br>
               			<label class="user-info">Rate</label>{{userInfo.rate}}<br>
+              			<label class="user-rate"><span uib-rating class="rating user-rate" ng-model="userRate"
+                 				aria-labelledby="default-rating" readonly="isReadonly" ></span></label>	 
             		</div>
             		<div class="col-md-3 col-xs-10 text-center">
               			<img title="{{userInfo.firstName}} {{userInfo.lastName}}" src="./img/user-photo.png" class="img-thumbnail img-responsive img-circle center-block photo">
             		</div>
-            		<div class="col-xs-12"><hr></div>
+            		<div class="col-xs-12"></div>
           			</div>
         		</td>
       		</tr>
