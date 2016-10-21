@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.domain;
 
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -72,45 +73,15 @@ public class RouteCities {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((city == null) ? 0 : city.hashCode());
-        result = prime * result + ((route == null) ? 0 : route.hashCode());
-        result = prime * result + ((routeCityId == null) ? 0 : routeCityId.hashCode());
-        result = prime * result + ((visitDate == null) ? 0 : visitDate.hashCode());
-        return result;
+        return Objects.hash(routeCityId);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RouteCities other = (RouteCities) obj;
-        if (city == null) {
-            if (other.city != null)
-                return false;
-        } else if (!city.equals(other.city))
-            return false;
-        if (route == null) {
-            if (other.route != null)
-                return false;
-        } else if (!route.equals(other.route))
-            return false;
-        if (routeCityId == null) {
-            if (other.routeCityId != null)
-                return false;
-        } else if (!routeCityId.equals(other.routeCityId))
-            return false;
-        if (visitDate == null) {
-            if (other.visitDate != null)
-                return false;
-        } else if (!visitDate.equals(other.visitDate))
-            return false;
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RouteCities routeCities = (RouteCities) o;
+        return Objects.equals(routeCityId, routeCities.routeCityId);
     }
     
 }
