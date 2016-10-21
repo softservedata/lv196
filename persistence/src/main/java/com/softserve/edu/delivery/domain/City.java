@@ -24,8 +24,8 @@ public class City {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 
 
     public City() {
@@ -69,20 +69,20 @@ public class City {
         return this;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public City setLatitude(double latitude) {
+    public City setLatitude(Double latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public City setLongitude(double longitude) {
+    public City setLongitude(Double longitude) {
         this.longitude = longitude;
         return this;
     }
