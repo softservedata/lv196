@@ -1,24 +1,20 @@
 package com.softserve.edu.delivery.dto;
 
-import com.softserve.edu.delivery.domain.City;
-import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.Point;
 import com.softserve.edu.delivery.domain.RouteCities;
-import com.softserve.edu.delivery.service.LocationService;
-import com.softserve.edu.delivery.service.TransporterService;
 
 /**
  * Created by Natalia on 02.10.2016.
  */
-public class PleaceDto {
+public class PlaceDTO {
     private Long id;
     //private Order order;
     private Point point;
     private String date;
 
-    public PleaceDto(){}
+    public PlaceDTO(){}
 
-    public PleaceDto(Point point, String date/*, Order order*/) {
+    public PlaceDTO(Point point, String date/*, Order order*/) {
         this.point = point;
         this.date = date;
     }
@@ -43,8 +39,9 @@ public class PleaceDto {
         return point;
     }
 
-   public static PleaceDto convertEntity(RouteCities routeCities){
-        return new PleaceDto(new Point(routeCities.getX(), routeCities.getY()), routeCities.getVisitDate().toString());
+   public static PlaceDTO convertEntity(RouteCities routeCities){
+        return new PlaceDTO(new Point(routeCities.getCity().getLatitude(), routeCities.getCity().getLongitude()), 
+                routeCities.getVisitDate().toString());
     }
 
     @Override

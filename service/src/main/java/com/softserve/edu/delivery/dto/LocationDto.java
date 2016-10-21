@@ -1,20 +1,19 @@
 package com.softserve.edu.delivery.dto;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.State;
-
-import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.Optional;
 
 public class LocationDto {
     private Long cityId;
     private String cityName;
     private String regionName;
     private String stateName;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private Double latitude;
+    private Double longitude;
 
     public LocationDto() {}
 
@@ -74,20 +73,20 @@ public class LocationDto {
         return this;
     }
 
-    public BigDecimal getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public LocationDto setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
+    public LocationDto setLatitude(Double double1) {
+        this.latitude = double1;
         return this;
     }
 
-    public BigDecimal getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public LocationDto setLongitude(BigDecimal longitude) {
+    public LocationDto setLongitude(Double longitude) {
         this.longitude = longitude;
         return this;
     }

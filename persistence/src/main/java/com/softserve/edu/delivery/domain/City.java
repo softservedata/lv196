@@ -1,8 +1,15 @@
 package com.softserve.edu.delivery.domain;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "cities")
@@ -17,8 +24,8 @@ public class City {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private double latitude;
+    private double longitude;
 
 
     public City() {
@@ -62,20 +69,20 @@ public class City {
         return this;
     }
 
-    public BigDecimal getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public City setLatitude(BigDecimal latitude) {
+    public City setLatitude(double latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public BigDecimal getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public City setLongitude(BigDecimal longitude) {
+    public City setLongitude(double longitude) {
         this.longitude = longitude;
         return this;
     }

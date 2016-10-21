@@ -19,4 +19,5 @@ public interface CityRepository extends BaseRepository<City, Long> {
     City getCityByNameRegionNameStateName(@Param("cityName")String cityName,
                                           @Param("regionName") String regionName,
                                           @Param("stateName") String stateName);
+    
 }

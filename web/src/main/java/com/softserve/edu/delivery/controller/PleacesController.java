@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.Point;
 import com.softserve.edu.delivery.dto.CityDto;
-import com.softserve.edu.delivery.dto.PleaceDto;
+import com.softserve.edu.delivery.dto.PlaceDTO;
 import com.softserve.edu.delivery.dto.RegionDto;
 import com.softserve.edu.delivery.dto.StateDto;
 import com.softserve.edu.delivery.service.LocationService;
@@ -29,8 +29,8 @@ public class PleacesController {
     private TransporterService teTransporterService;
 
     @RequestMapping(path ="/track", method = RequestMethod.GET)
-    public List<PleaceDto> getTracking() {
-        List<PleaceDto> list = teTransporterService.getAllPleaces();
+    public List<PlaceDTO> getTracking() {
+        List<PlaceDTO> list = teTransporterService.getAllPleaces();
         return list;
     }
 

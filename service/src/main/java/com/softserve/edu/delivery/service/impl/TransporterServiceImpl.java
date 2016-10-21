@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dto.PleaceDto;
+import com.softserve.edu.delivery.dto.PlaceDTO;
 import com.softserve.edu.delivery.repository.RouteCitiesRepository;
 import com.softserve.edu.delivery.service.TransporterService;
 
@@ -20,10 +20,10 @@ public class TransporterServiceImpl implements TransporterService {
     public TransporterServiceImpl(RouteCitiesRepository routeCityRepository) {
         this.routeCityRepository = routeCityRepository;
     }
-    public List<PleaceDto> getAllPleaces() {
+    public List<PlaceDTO> getAllPleaces() {
         return routeCityRepository.findAll()
                 .stream()
-                .map(entity -> PleaceDto.convertEntity(entity))
+                .map(entity -> PlaceDTO.convertEntity(entity))
                 .collect(Collectors.toList());
     }
 

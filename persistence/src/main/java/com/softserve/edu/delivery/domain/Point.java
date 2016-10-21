@@ -1,7 +1,5 @@
 package com.softserve.edu.delivery.domain;
 
-import java.math.BigDecimal;
-
 /**
  * Created by Natalia on 12.10.2016.
  */

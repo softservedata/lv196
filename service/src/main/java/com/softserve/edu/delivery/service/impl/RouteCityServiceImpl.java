@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.softserve.edu.delivery.domain.RouteCities;
-import com.softserve.edu.delivery.dto.CityDto;
 import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.RouteCityDTO;
 import com.softserve.edu.delivery.repository.RouteCitiesRepository;
