@@ -67,7 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .defaultSuccessUrl("/authRedirect")
                 .failureUrl("/login?auth=false")
-                .and().logout().logoutSuccessUrl("/welcome")
+                .and().logout().logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().accessDeniedPage("/accessDenied");
     }
