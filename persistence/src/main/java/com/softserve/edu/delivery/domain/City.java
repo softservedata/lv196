@@ -16,17 +16,16 @@ import javax.persistence.Table;
 public class City {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cityId;
-    private String cityName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+
+    private String cityName;
     private Double latitude;
     private Double longitude;
-
 
     public City() {
     }
@@ -89,8 +88,10 @@ public class City {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         City city = (City) o;
         return Objects.equals(cityId, city.cityId);
     }
@@ -99,6 +100,7 @@ public class City {
     public int hashCode() {
         return Objects.hash(cityId);
     }
+
     @Override
     public String toString() {
         return "City [id = " + cityId + ", City = " + cityName + ", Region = " + region + "]";
