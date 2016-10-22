@@ -29,10 +29,15 @@ angular
                 templateUrl: '/app/orders/views/orders.closed.html',
                 controller: 'ordersClosedController'
             })
-            .state('all-orders', {
-                url: '/all-orders',
-                templateUrl: '/app/views/orders/all.orders.html',
-                controller: 'allOrdersController'
+            .state('driver', {
+                url: '/driver',
+                templateUrl: '/app/views/driver/driver.html',
+                controller: 'driverController'
+            })
+            .state('findOrder', {
+                url: '/find-order',
+                templateUrl: '/app/views/driver/findOrder.html',
+                controller: 'findOrdersController'
             })
             .state('feedbacks', {
                 url: '/feedbacks',

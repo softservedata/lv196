@@ -1,13 +1,13 @@
 angular
     .module('delivery')
-    .controller('allOrdersController', ['$scope', '$locations', '$orderProperty', '$http', 'Notification',
+    .controller('findOrdersController', ['$scope', '$locations', '$orderProperty', '$http', 'Notification',
         function ($scope, $locations, $orderProperty, $http, Notification) {
             $scope.orders = {
                 open: []
             };
 
             $scope.retrieveOpenOrders = () => {
-                $http.get('/all-orders/open').then(response => {
+                $http.get('/find-order/open').then(response => {
                     $scope.orders.open = response.data;
                 })
             };
@@ -47,7 +47,7 @@ angular
                 }
 
                 $http({
-                    url: '/all-orders/filtered-orders/',
+                    url: '/find-order/filtered-orders/',
                     method: 'GET',
                     params: {
                         cityFromId: cityFromId,
@@ -63,7 +63,7 @@ angular
 
             $scope.addOffer = (id) => {
                 $orderProperty.setId(id);
-                $http.post('/all-orders/offer/' + $orderProperty.getId()).then(response => {
+                $http.post('/find-order/offer/' + $orderProperty.getId()).then(response => {
                     console.log("addOffer");
                     Notification.success('Thank you, your offer added successfully');
                 }).catch(function () {

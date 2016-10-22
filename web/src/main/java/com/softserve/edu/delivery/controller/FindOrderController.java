@@ -18,8 +18,8 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(path = "all-orders")
-public class AllOrderController {
+@RequestMapping(path = "find-order")
+public class FindOrderController {
 
     @Autowired
     private OrderService orderService;
@@ -30,7 +30,7 @@ public class AllOrderController {
     @Autowired
     private UserAuthenticationDetails authenticationDetails;
 
-    private final Logger logger = LoggerFactory.getLogger(AllOrderController.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(FindOrderController.class.getName());
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderDto> open() {
