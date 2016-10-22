@@ -41,11 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-    @Bean
-    public ErrorPageRegistrar errorPageRegistrar() {
-        return new ApplicationErrorPageRegistrator();
-    }
-
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("customer@delivery.com").password("customer").roles(CUSTOMER_ROLE);
