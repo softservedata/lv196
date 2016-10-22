@@ -36,12 +36,12 @@ public class UserRegistrationDTO {
     @Pattern(regexp = PHONE_REGEX)
 	private String userPhoneNumber;
 
-    @NotNull(message = PASSPORT_NOT_VALID_MESSAGE)
-    @Size(min = PASSPORT_MIN_LENGTH, max = PASS_MAX_LENGTH)
+    /*@NotNull(message = PASSPORT_NOT_VALID_MESSAGE)
+    @Size(min = PASSPORT_MIN_LENGTH, max = PASS_MAX_LENGTH)*/
 	private String userPassport;
 
-    @NotNull(message = NOT_NULL_VALID_MASSAGE)
-    @Size(min = DEFAULT_MIN_LENGTH, max = DEFAULT_MAX_LENGTH)
+/*    @NotNull(message = NOT_NULL_VALID_MASSAGE)
+    @Size(min = DEFAULT_MIN_LENGTH, max = DEFAULT_MAX_LENGTH)*/
 	private String userPhotoUrl;
 
     

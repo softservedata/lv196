@@ -38,7 +38,7 @@
 
 <!--Sign up box-->
 
-<div id="reg_container" class="signin registr">
+<div id="reg_container" class="signin centered">
     <h3>Registration</h3>
     <c:if test="${msg != null}">
         <h4>${msg}</h4>
@@ -80,7 +80,7 @@
             <mvc:errors path="userPhoneNumber"/>
             <span class="mess2"></span>
         </div>
-        <div class="mess">
+        <%--<div class="mess">
             <mvc:input path="userPassport" type="text" class="user" id="userPassport" pattern=".{8, 30}" name="userPassport"
                        placeholder="Passport" required="required" title="Passport should be from 8 to 30 symbols"/>
             <mvc:errors path="userPassport"/>
@@ -91,7 +91,7 @@
                    placeholder="Your photo url" required="required" title="Length of URL should be less than 255 characters"/>
             <mvc:errors path="userPhotoUrl"/>
             <span class="mess2"></span>
-        </div>
+        </div>--%>
         <input type="submit" value="register">
         <div class="lost">
             <div class="lost-userPassword">

@@ -105,7 +105,7 @@
             <span class="mess2"></span>
         </div>
         <div class="mess">
-            <mvc:input path="vehicleVIN" type="text" class="user" id="vehicleVIN" pattern=".{17, 17}" name="vehicleVIN"
+            <mvc:input path="vehicleVIN" type="text" class="user" id="vehicleVIN" pattern=".{1, 17}" name="vehicleVIN"
                    placeholder="Car ID number (17 length)" required="required" title="Length of VIN should be 17 symbols"/>
             <mvc:errors path="vehicleVIN"/>
             <span class="mess2"></span>
