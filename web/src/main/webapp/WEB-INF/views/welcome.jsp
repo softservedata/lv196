@@ -33,6 +33,21 @@
     <li><a href="#">About</a></li>
     <li><a href="#">Contact</a></li>
     <li><a href="#">News</a></li>
+    <security:authentication property="authorities" var="roles" scope="page" />
+    <c:forEach var="role" items="${roles}">
+        <c:if test="${role == 'Customer'}">
+            <li><a href="/#/orders/open">Orders</a></li>
+        </c:if>
+        <c:if test="${role == 'Driver'}">
+            <li><a href="/#/all-orders">All Orders</a></li>
+        </c:if>
+        <c:if test="${role == 'Admin'}">
+            <li><a href="/#/users">Users</a></li>
+        </c:if>
+        <c:if test="${role == 'Moderator'}">
+            <li><a href="/#/feedbacks">Feedbacks</a></li>
+        </c:if>
+    </c:forEach>
     <li><a href="welcome">Home</a></li>
 </ul>
 
