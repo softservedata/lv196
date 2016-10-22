@@ -55,6 +55,11 @@ public class OrderController {
         orderService.updateOrder(dto, email);
     }
 
+    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
+    void removeOrder(@PathVariable Long id) {
+        orderService.removeOrder(id);
+    }
+
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
     void addFeedback(@RequestBody FeedbackDTO dto) {
         logger.info("Method OrderController.addFeedback()");
@@ -75,11 +80,6 @@ public class OrderController {
     FeedbackDTO getFeedback(@PathVariable Long id) {
         logger.info("Method OrderController.getFeedback()");
         return orderService.getFeedback(id);
-    }
-
-    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    void removeOrder(@PathVariable Long id) {
-        orderService.removeOrder(id);
     }
 
     @RequestMapping(path = "change", method = RequestMethod.PUT)

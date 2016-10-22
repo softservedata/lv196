@@ -1,22 +1,13 @@
 package com.softserve.edu.delivery.domain;
 
+import javax.persistence.*;
 import java.util.Objects;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "cities")
 public class City {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cityId;
     private String cityName;
@@ -26,7 +17,6 @@ public class City {
     private Region region;
     private Double latitude;
     private Double longitude;
-
 
     public City() {
     }
