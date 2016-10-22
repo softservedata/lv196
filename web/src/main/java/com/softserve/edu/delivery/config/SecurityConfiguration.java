@@ -5,6 +5,7 @@ import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.ErrorPageRegistrar;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -38,6 +39,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authProvider.setUserDetailsService(this.userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    public ErrorPageRegistrar errorPageRegistrar() {
+        return new ApplicationErrorPageRegistrator();
     }
 
     @Autowired

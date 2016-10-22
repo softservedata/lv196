@@ -37,11 +37,14 @@ public class AuthController {
     private final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
 
     @RequestMapping(value = {"/welcome"})
-    public ModelAndView welcome() {
+    public ModelAndView welcome(@RequestParam(value = "nf", required = false) String notFound) {
         logger.info("In method AuthController.welcome()");
         ModelAndView mv = new ModelAndView();
         mv.addObject("orderIdDto", new OrderIdDto());
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
+        if (notFound != null && notFound.equals("true")) {
+            mv.addObject("msg", "Page not found");
+        }
         mv.setViewName("welcome");
         logger.info("Out of method AuthController.welcome()");
         return mv;
