@@ -1,17 +1,20 @@
+<h4 style="padding-left: 10px;"> Approved driver: {{GetApprovedOffers().driverName}} <a style="margin-right: 40px;" class="btn btn-primary btn-xs" role="button" data-ng-click="changeStatus()">Apply</a></h4>
+
 <div data-ng-repeat="offer in offers track by offer.offerId"  class="panel panel-default">
-    <div class="panel-body">
+    <div class="{{btnApprovedStyle(offer.approved)}}">
         <div class="row">
-            <div class="col-sm-6 form-group">
-                <img width="220px" ng-src="{{offer.carPhoto}}">
+            <div class="col-sm-3 form-group">
+                <img width="100px" ng-src="{{offer.carPhoto}}">
             </div>
             <div class="col-sm-4 form-group">
                 <label class="control-label">Driver's rate: </label> {{offer.rate}}
             </div>
             <div class="col-sm-4 form-group">
-                <label class="control-label">Driver: {{offer.driverName}} </label>
+                <label class="control-label">Driver:
+                    <input type="radio" name="radio-primary" ng-value="true" ng-model="offer.approved" ng-checked="offer.approved" ng-change="update(offer)"/>
+                    {{offer.driverName}}
+                </label>
             </div>
-            <a class="{{btnApprovedStyle(offer.approved)}}" role="button"
-               data-ng-click="changeStatus(offer)">Change (Now {{offer.approved}})</a>
         </div>
     </div>
 </div>

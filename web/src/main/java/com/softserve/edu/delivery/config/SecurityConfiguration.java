@@ -5,6 +5,7 @@ import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.ErrorPageRegistrar;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -40,6 +41,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
+    @Bean
+    public ErrorPageRegistrar errorPageRegistrar() {
+        return new ApplicationErrorPageRegistrator();
+    }
+
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("customer@delivery.com").password("customer").roles(CUSTOMER_ROLE);
@@ -67,7 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .defaultSuccessUrl("/authRedirect")
                 .failureUrl("/login?auth=false")
-                .and().logout().logoutSuccessUrl("/welcome")
+                .and().logout().logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().accessDeniedPage("/accessDenied");
     }

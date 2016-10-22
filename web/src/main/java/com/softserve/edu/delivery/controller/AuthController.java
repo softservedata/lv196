@@ -36,35 +36,30 @@ public class AuthController {
 
     private final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
 
-    private static final String CUSTOMER_ROLE = Role.CUSTOMER.getName();
-    private static final String DRIVER_ROLE = Role.DRIVER.getName();
-    private static final String ADMIN_ROLE = Role.ADMIN.getName();
-    private static final String MODERATOR_ROLE = Role.MODERATOR.getName();
-
-    private static final String WELCOME_PAGE = "/welcome";
-    private static final String CUSTOMER_PATH = "/#/orders";
-    private static final String DRIVER_PATH = "/#/all-orders";
-    private static final String ADMIN_PATH = "/#/users";
-    private static final String MODERATOR_PATH = "/#/feedbacks";
-
     @RequestMapping(value = {"/welcome"})
-    public ModelAndView welcome() {
+    public ModelAndView welcome(@RequestParam(value = "nf", required = false) String notFound) {
         logger.info("In method AuthController.welcome()");
         ModelAndView mv = new ModelAndView();
         mv.addObject("orderIdDto", new OrderIdDto());
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
+        if (notFound != null && notFound.equals("true")) {
+            mv.addObject("msg", "Page not found");
+        }
         mv.setViewName("welcome");
         logger.info("Out of method AuthController.welcome()");
         return mv;
     }
 
     @RequestMapping(value = "/login")
-    public ModelAndView signIn(@RequestParam(value = "auth", required = false) String auth) {
+    public ModelAndView signIn(@RequestParam(value = "auth", required = false) String auth,
+                               @RequestParam(value = "logout", required = false) String logout){
         logger.info("In method AuthController.login()");
 
         ModelAndView mv = new ModelAndView();
         if (auth != null && auth.equals("false")) {
             mv.addObject("msg", "You fill wrong credentials or email wasn't verified");
+        }else if (logout != null && logout.equals("true")) {
+            mv.addObject("msg", "You've successfully logout");
         }
         mv.addObject("userAuthDto", new UserAuthDTO());
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
@@ -152,21 +147,6 @@ public class AuthController {
         return mv;
     }
 
-    @RequestMapping(value = "/logout")
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("In method AuthController.logout()");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        logger.info("Out of method AuthController.logout()");
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg", "You've successfully logout");
-        mv.addObject("userAuthDto", new UserAuthDTO());
-        mv.setViewName("login");
-        return mv;
-    }
-
     @RequestMapping(value = "/accessDenied")
     public ModelAndView accessDenied() {
         logger.error("Access Denied. Role isn't allow to get this resource. Method AuthController.accessDenied()");
@@ -176,6 +156,17 @@ public class AuthController {
         mv.setViewName("welcome");
         return mv;
     }
+
+    private static final String CUSTOMER_ROLE = Role.CUSTOMER.getName();
+    private static final String DRIVER_ROLE = Role.DRIVER.getName();
+    private static final String ADMIN_ROLE = Role.ADMIN.getName();
+    private static final String MODERATOR_ROLE = Role.MODERATOR.getName();
+
+    private static final String WELCOME_PAGE = "/welcome";
+    private static final String CUSTOMER_PATH = "/#/orders/open";
+    private static final String DRIVER_PATH = "/#/all-orders";
+    private static final String ADMIN_PATH = "/#/users";
+    private static final String MODERATOR_PATH = "/#/feedbacks";
 
     private String roleRedirect() {
         logger.info("In method AuthController.roleRedirect()");

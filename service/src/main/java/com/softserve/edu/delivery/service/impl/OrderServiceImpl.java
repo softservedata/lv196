@@ -1,34 +1,25 @@
 package com.softserve.edu.delivery.service.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.domain.City;
-import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.Offer;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.OrderStatus;
-import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
-import com.softserve.edu.delivery.repository.CityRepository;
-import com.softserve.edu.delivery.repository.FeedbackRepository;
-import com.softserve.edu.delivery.repository.OfferRepository;
-import com.softserve.edu.delivery.repository.OrderRepository;
-import com.softserve.edu.delivery.repository.UserRepository;
+import com.softserve.edu.delivery.repository.*;
 import com.softserve.edu.delivery.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -51,28 +42,22 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public List<OrderDto> findInProgressOrders(String email) {
         return orderRepository
-                .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.IN_PROGRESS)
+                .findOrderInProgressByCustomerEmail(email)
                 .stream()
-                .map(order -> {
-                    OrderDto dto = OrderDto.of(order);
-                    String name = orderRepository
-                            .findDriverNameByOrderId(dto.getId())
-                            .orElse(null);
-                    return dto.setDriverName(name);
-                })
+                .map(OrderDto::ofContainer)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OrderDto> findOpenOrders(String email) {
-        return orderRepository
-                .findOrderByCustomerEmailAndOrderStatus(email, OrderStatus.OPEN)
-                .stream()
-                .map(order -> OrderDto.of(order)
-                        .setAmountOfOffers(offerRepository
-                                .countByOrderIdAndCarDriverBlocked(order.getId(), false))
-                )
+        return Stream.of(
+                orderRepository
+                .findOrderOpenWithOffersByCustomerEmail(email),
+                orderRepository
+                .findOrderOpenWithoutOffersByCustomerEmail(email))
+                .flatMap(Collection::stream)
+                .map(OrderDto::ofContainer)
                 .collect(Collectors.toList());
     }
 
@@ -159,7 +144,7 @@ public class OrderServiceImpl implements OrderService {
         offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
         Offer offer = offerRepository.findOneOpt(offerId)
                 .orElseThrow(() -> new IllegalArgumentException("No such offer with id: " + offerId));
-        offer.setApproved(!offerStatus);
+        offer.setApproved(offerStatus);
         offerRepository.save(offer);
     }
 

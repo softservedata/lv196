@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.container.OrderContainer;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -25,6 +26,12 @@ public class OrderDto {
     public OrderDto() {
     }
 
+    public static OrderDto ofContainer(OrderContainer container) {
+        return of(container.getOrder())
+                .setDriverName(container.getDriverName())
+                .setAmountOfOffers(container.getOffersAmount());
+    }
+
     public static OrderDto of(Order order) {
         OrderDto dto = new OrderDto()
                 .setId(order.getId())
@@ -35,8 +42,7 @@ public class OrderDto {
                 .setHeight(order.getHeight())
                 .setWidth(order.getWidth())
                 .setLength(order.getLength())
-                .setDescription(order.getDescription())
-                .setAmountOfOffers(0L);
+                .setDescription(order.getDescription());
 
         User customer = order.getCustomer();
         if (customer != null) {

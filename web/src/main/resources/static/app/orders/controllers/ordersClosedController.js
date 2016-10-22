@@ -1,6 +1,6 @@
     angular
     .module('delivery')
-    .controller('ordersClosedController',
+    .controller('ordersClosedController',['$scope', '$orderProperty', '$http', '$uibModal',
         function ($scope, $orderProperty, $http, $uibModal) {
 
         $scope.orders = {
@@ -23,19 +23,15 @@
             });
 
         };
-        }
+        }]
     )
-    .controller('addFeedbackController', function ($scope, $orderProperty,$orders, $http, $uibModalInstance, Notification) {
+    .controller('addFeedbackController', ['$scope', '$orderProperty','$orders', '$http', '$uibModalInstance', 'Notification',
+        function ($scope, $orderProperty,$orders, $http, $uibModalInstance, Notification) {
             $scope.idForFeedback = $orderProperty.getId();
 
             $scope.form = {
                 submit: () => {
-                    // if ( ($scope.form.rate.$valid==true)&&($scope.form.text.$valid==true) ){
-                    //     $scope.primary = function() {
-                    //         Notification.error('Error : Failed to add feedback');
-                    //     };
-                    //     $scope.primary();
-                    // };
+
                     const data = {
                         feedbackId: $scope.form.feedbackId,
                         rate: $scope.form.rate,
@@ -66,6 +62,6 @@
                 $scope.form.userEmail = $scope.feedback.userEmail;
                 $scope.form.createdOn = $scope.feedback.createdOn;
             })
-        }
+        }]
     );
 
