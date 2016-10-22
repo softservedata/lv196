@@ -19,6 +19,12 @@
 .modal-body .panel-body {
     padding: 0;
 }
+.offerfalse {
+    background: antiquewhite;
+}
+.offertrue {
+    background: mediumspringgreen;
+}
 .modal-body .panel-group {
     margin-bottom: 0;
 }

@@ -1,5 +1,5 @@
 
-<form name="newFeedback" autocomplete="off" class="feedback-creation">
+<form name="newFeedback" autocomplete="off" ng-submit="form.submit()" novalidate class="feedback-creation">
     <div class="modal-header">
         <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="modal-title">
@@ -11,7 +11,7 @@
                     <span class="error" ng-show="newFeedback.rate.$error.required"> - Required!</span>
                     <span class="error" ng-show="newFeedback.rate.$error.pattern">The value of the rate is incorrect. It must be a number less than 50 or greater than 0 </span>
                 </div>
-                <input style="width: 50px;"  name="rate" ng-model="form.rate" type="number" class="form-control" id="rateInput" ng-pattern="/^[0-9]{1,2}$/" required>
+                <input style="width: 50px;"  name="rate" ng-model="form.rate" type="number" class="form-control" id="rateInput" ng-pattern="/^([1-9]|[1-4][0-9]|50)$/" required>
             </div>
             <div class="col-xs-12 form-group">
                 <label class="control-label" for="textInput">Description: </label>
@@ -26,6 +26,6 @@
     </div>
     <div class="modal-footer">
             <button ng-click="cancel()" type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancel</button>
-            <button ng-click="form.submit()" type="button" class="btn btn-primary btn-xs">Create</button>
+            <button ng-disabled="newFeedback.$invalid" type="submit" class="btn btn-primary btn-xs">Create</button>
     </div>
 </form>

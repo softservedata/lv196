@@ -198,7 +198,7 @@ angular
             }
         }
     ])
-    .controller('showOffersController', function ($scope, $orderProperty, $http, Notification) {
+    .controller('showOffersController',['$scope', '$orderProperty', '$http', 'Notification', function ($scope, $orderProperty, $http, Notification, $filter) {
         $scope.offers = {
             offers: []
         };
@@ -212,14 +212,29 @@ angular
 
         $scope.btnApprovedStyle = function (approved) {
             if (approved) {
-                return "btn btn-primary btn-xs";
+                return "offertrue";
             } else {
-                return "btn btn-danger btn-xs";
+                return "offerfalse";
             }
         };
 
-        $scope.changeStatus = (offer) => {
-            $http.put('/order/change/', offer).then(response => {
+        $scope.GetApprovedOffers = function () {
+            for (var i=0;i<$scope.offers.length;i++) {
+                if ($scope.offers[i].approved) {
+                   return $scope.offers[i]
+                }
+            }
+        };
+
+        $scope.update = function(offer) {
+            for (var i=0;i<$scope.offers.length;i++) {
+                    $scope.offers[i].approved = false;
+            }
+            offer.approved = true;
+        };
+
+        $scope.changeStatus = () => {
+            $http.put('/order/change/', $scope.GetApprovedOffers()).then(response => {
                 $scope.retrieveOffers();
             });
             $scope.info = function() {
@@ -227,4 +242,4 @@ angular
             };
             $scope.info();
         };
-    });
+    }]);

@@ -159,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
         offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
         Offer offer = offerRepository.findOneOpt(offerId)
                 .orElseThrow(() -> new IllegalArgumentException("No such offer with id: " + offerId));
-        offer.setApproved(!offerStatus);
+        offer.setApproved(offerStatus);
         offerRepository.save(offer);
     }
 
