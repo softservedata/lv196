@@ -39,7 +39,7 @@
             <li><a href="/#/orders/open">Orders</a></li>
         </c:if>
         <c:if test="${role == 'Driver'}">
-            <li><a href="/#/all-orders">All Orders</a></li>
+            <li><a href="/#/find-order/open">Find Orders</a></li>
         </c:if>
         <c:if test="${role == 'Admin'}">
             <li><a href="/#/users">Users</a></li>

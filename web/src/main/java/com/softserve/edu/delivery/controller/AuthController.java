@@ -160,7 +160,7 @@ public class AuthController {
 
     private static final String WELCOME_PAGE = "/welcome";
     private static final String CUSTOMER_PATH = "/#/orders/open";
-    private static final String DRIVER_PATH = "/#/all-orders";
+    private static final String DRIVER_PATH = "/#/find-order/open";
     private static final String ADMIN_PATH = "/#/users";
     private static final String MODERATOR_PATH = "/#/feedbacks";
 
