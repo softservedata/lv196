@@ -1,5 +1,5 @@
 angular
-    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate'])
+    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate', 'ngCookies'])
     .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function ($stateProvider, $urlRouterProvider, $translateProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
         $urlRouterProvider.when('/orders', '/orders/in-progress');
@@ -76,5 +76,6 @@ angular
 	  			suffix: '.json'
 	  		})
 	  		.preferredLanguage('en')
+	  		.useLocalStorage()
 	  		.useMissingTranslationHandlerLog();
     }]);
