@@ -63,5 +63,10 @@ angular
 	            url: '/orders-tracking',
 	            templateUrl: '/app/tracking/view/orders-tracking.html',
 	            controller: 'ordersTrackingController'
-	        });
+	        })
+            .state('notification', {
+                url: '/notification',
+                templateUrl: '/app/notification/views/show.notification.html',
+                controller: 'notificationController'
+            });
     }]);

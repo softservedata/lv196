@@ -46,6 +46,10 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     @Query("select o from Order o where o.orderStatus = 'OPEN'")
     List<Order> getAllOpenOrder();
 
+    @Query("select o from Order o where o.orderStatus = 'CLOSED'" +
+            "and o.customer.email = :email ")
+    List<Order> getAllClosedOrderByCustomerEmail(@Param("email") String email);
+
     @Query("select off.car.vehicleFrontPhotoURL from Offer off where off.offerId = :id")
     Optional<String> findCarPhotoByOrderId(@Param("id") Long id);
 

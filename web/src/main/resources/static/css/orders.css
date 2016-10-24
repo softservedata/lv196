@@ -208,14 +208,14 @@
 [data-notifications]:after {
     content: attr(data-notifications);
     position: absolute;
-    font-size: 13px;
+    font-size: 15px;
     text-align: center;
     background: red;
     border-radius: 100%;
     color: #f2f2f2;
     right: -1px;
     top: -6px;
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
 }
 

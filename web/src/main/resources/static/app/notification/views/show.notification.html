@@ -1,0 +1,20 @@
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand">Notifications</span>
+        </div>
+    </div>
+</div>
+<div class="site-content orders">
+    <ui-view></ui-view>
+</div>
+
+<div class="panel-body">
+<div data-ng-repeat="notification in notifications track by notification.notificationId"  class="panel panel-default">
+        <div style="font-size: 14px; padding-left: 10px;" class="{{notification.notificationStatus}}">
+            <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
+              Status:  {{notification.notificationStatus}}
+           <p>Message: {{notification.message}}
+        </div>
+</div>
+</div>

@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.controller;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
+import com.softserve.edu.delivery.service.NotificationService;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
@@ -18,7 +19,8 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
+    @Autowired
+    private NotificationService notification;
     @Autowired
     private UserAuthenticationDetails authenticationDetails;
 
@@ -85,6 +87,7 @@ public class OrderController {
     @RequestMapping(path = "change", method = RequestMethod.PUT)
     void changeOfferStatus(@RequestBody OfferDtoForList offerDto) {
         logger.info("Method OrderController.changeOfferStatus()");
+        notification.addNotification("Info", "Customer " + offerDto.getCustomerName() + " approved your offer for his Order", offerDto.getDriverEmail());
         orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved(),offerDto.getOrderId());
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Natalia on 12.10.2016.
  */
-@Component
+//@Component
 public class ScheduledTasks {
     private static final List<Point> points = new ArrayList<>();
     private int count = 0;

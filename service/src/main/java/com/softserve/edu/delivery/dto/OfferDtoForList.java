@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.dto;
 import com.softserve.edu.delivery.domain.Offer;
+import com.softserve.edu.delivery.domain.User;
+
 import java.util.Objects;
 
 
@@ -13,15 +15,22 @@ public class OfferDtoForList {
     private String driverName;
     private String carPhoto;
     private Integer rate;
+    private String customerEmail;
+    private String driverEmail;
+    private String customerName;
 
     public OfferDtoForList(){}
 
     public static OfferDtoForList offerToOfferDto(Offer offer){
         OfferDtoForList offerDto = new OfferDtoForList();
+        User customer = offer.getOrder().getCustomer();
         offerDto.setOfferId(offer.getOfferId())
                 .setCarId(offer.getCar().getCarId())
                 .setOrderId(offer.getOrder().getId())
-                .setApproved(offer.isApproved());
+                .setApproved(offer.isApproved())
+                .setDriverEmail(offer.getCar().getDriver().getEmail())
+                .setCustomerEmail(customer.getEmail())
+                .setCustomerName(customer.getFirstName() + " " + customer.getLastName());
         return offerDto;
     }
 
@@ -87,6 +96,34 @@ public class OfferDtoForList {
         this.rate = rate;
         return this;
     }
+
+    public String getDriverEmail() {
+        return driverEmail;
+    }
+
+    public OfferDtoForList setDriverEmail(String driverEmail) {
+        this.driverEmail = driverEmail;
+        return this;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public OfferDtoForList setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+        return this;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public OfferDtoForList setCustomerName(String customerName) {
+        this.customerName = customerName;
+        return this;
+    }
+
 
     @Override
     public boolean equals(Object o) {

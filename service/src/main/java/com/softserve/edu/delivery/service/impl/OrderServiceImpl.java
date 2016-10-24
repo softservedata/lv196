@@ -151,8 +151,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderDto> findAllClosedOrders(String email) {
-        return orderDao
-                .findClosedOrders(email)
+        return orderRepository
+                .getAllClosedOrderByCustomerEmail(email)
                 .stream()
                 .map(order -> {
                     OrderDto dto = OrderDto.of(order);
