@@ -1,3 +1,5 @@
+'use strict';
+
 angular
     .module('delivery')
     .controller('feedbacksController', ['$scope', '$http', 'shareFeedbackDataService', '$uibModal', '$location',
@@ -187,7 +189,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'editFeedbackController',
-                    templateUrl: '/app/views/feedbacks/editFeedbackText.html',
+                    templateUrl: '/app/feedbacks/views/editFeedbackText.html',
                     resolve: {
                         feedbackDTO: function () {
                             return feedbackDTO;
@@ -201,7 +203,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'deleteFeedbackController',
-                    templateUrl: '/app/views/feedbacks/deleteFeedback.html',
+                    templateUrl: '/app/feedbacks/views/deleteFeedback.html',
                     resolve: {
                         feedbackId: function () {
                             return feedbackId;
@@ -215,7 +217,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'feedbackInfoController',
-                    templateUrl: '/app/views/feedbacks/infoFeedbacks.html',
+                    templateUrl: '/app/feedbacks/views/infoFeedbacks.html',
                     resolve: {
                         text: function () {
                             return text;
@@ -264,7 +266,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'feedbackShowUserController',
-                    templateUrl: '/app/views/feedbacks/feedbackShowUser.html',
+                    templateUrl: '/app/feedbacks/views/feedbackShowUser.html',
                     resolve: {
                         userDTO: function () {
                             return userDTO;
@@ -279,76 +281,6 @@ angular
 
             init();
         }])
-    .controller('editFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackDTO', 'Notification',
-        function ($scope, $http, $uibModalInstance, feedbackDTO, Notification) {
-
-            $scope.feedbackText = feedbackDTO.text;
-
-            $scope.updateFeedbackText = function () {
-                $uibModalInstance.close();
-                feedbackDTO.text = $scope.feedbackText;
-                $http.put("/feedbacks/updateFeedback", feedbackDTO)
-                    .then(function (response) {
-                            if (response.status == 200) {
-                                Notification.success('The feedbacks was succesfully updated');
-                            }
-                        },
-                        function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
-                        });
-            };
-
-            $scope.cancelEditFeedbackText = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-
-        }])
-    .controller('deleteFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackId',
-        'shareFeedbackDataService', 'Notification',
-        function ($scope, $http, $uibModalInstance, feedbackId, shareFeedbackDataService, Notification) {
-
-            $scope.confirmDeleteFeedback = function () {
-                $uibModalInstance.close();
-                $http.delete("/feedbacks/deleteFeedback/" + feedbackId)
-                    .then(function (response) {
-                            if (response.status == 200) {
-                                Notification.success('The feedbacks was succesfully deleted');
-                                shareFeedbackDataService.itemDeleted();
-                            }
-                        },
-                        function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
-                        });
-            };
-
-            $scope.cancelDeleteFeedback = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-
-        }])
-    .controller('feedbackInfoController', ['$scope', '$uibModalInstance', 'text',
-        function ($scope, $uibModalInstance, text) {
-
-            $scope.infoText = text;
-
-            $scope.closeInfoFeedback = function () {
-                $uibModalInstance.close();
-            };
-
-        }])
-    .controller('feedbackShowUserController', ['$scope', '$uibModalInstance', 'userDTO',
-        function ($scope, $uibModalInstance, userDTO) {
-
-            var rateFactor = 10;
-
-            $scope.userDTO = userDTO;
-            $scope.userDTO.rate = $scope.userDTO.rate / rateFactor;
-
-            $scope.closeFeedbackShowUser = function () {
-                $uibModalInstance.close();
-            };
-
-        }])
     .factory('shareFeedbackDataService', function ($rootScope) {
         var service = {};
 
@@ -357,11 +289,10 @@ angular
         };
 
         return service;
-
     })
     .directive('searchForm', function () {
         return {
-            templateUrl: '/app/views/feedbacks/searchFeedbackTemplate.html'
+            templateUrl: '/app/feedbacks/views/searchFeedbackTemplate.html'
         };
     })
     .directive("disableAnimate", function ($animate) {

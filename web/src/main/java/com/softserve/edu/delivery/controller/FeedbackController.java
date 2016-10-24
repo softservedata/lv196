@@ -18,11 +18,10 @@ import java.util.NoSuchElementException;
 @RequestMapping(path = "feedbacks")
 public class FeedbackController {
 
-    private Logger logger = LoggerFactory.getLogger(FeedbackController.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(FeedbackController.class.getName());
+    private final Map<String, String> response = new HashMap<>();
     @Autowired
     private FeedbackService feedbackService;
-
-    private Map<String, String> response = new HashMap<>();
     private HttpStatus status;
 
     @RequestMapping(path = "all", method = RequestMethod.POST)

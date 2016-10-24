@@ -7,9 +7,6 @@ import com.softserve.edu.delivery.dto.FeedbackDTO;
 
 import java.util.List;
 
-/**
- * Created by Ivan Rudnytskyi on 15.09.2016.
- */
 public interface FeedbackService {
 
     FeedbackDTO copyFeedbackToDTO(Feedback feedback);
@@ -17,8 +14,6 @@ public interface FeedbackService {
     Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO);
 
     List<FeedbackDTO> findAll();
-
-    List<FeedbackDTO> getAllFeedbacksInRange(Long from, int number);
 
     void changeFeedbackStatus(Long id, boolean status);
 

@@ -23,6 +23,12 @@
         <i class="fa fa-angle-double-down feedbacks"></i>
     </button>
     <div class="container-fluid">
+        <div ng-controller="imageUploadController">
+            <label class="btn btn-default btn-file">
+                <input type="file" accept="image/*" style="display: none;" custom-on-change="uploadImage">
+                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+            </label>
+        </div>
         <table class="table table-striped table-hover table-responsive header-fixed">
             <thead>
             <tr>

@@ -9,7 +9,7 @@
     <div class="modal-body" id="modal-body">
         <div class="row">
             <div class="col-xs-6 form-group">
-                <img src="./img/user-photo.png" alt="user photo">
+                <img ng-src="{{userDTO.photoUrl}}" class="feedbacks userPhoto" alt="user photo">
             </div>
             <div class="col-xs-6 form-group">
                 <label>Name: {{userDTO.firstName}} {{userDTO.lastName}}</label>
@@ -17,8 +17,6 @@
                 <label>Phone: {{userDTO.phone}}</label>
                 <br>
                 <label>Email: {{userDTO.email}}</label>
-                <br>
-                <label>Passport: {{userDTO.passport}}</label>
                 <br>
                 <label>Rate: </label>
                 <span uib-rating class="feedbacks rating" ng-model="userDTO.rate" read-only="true"

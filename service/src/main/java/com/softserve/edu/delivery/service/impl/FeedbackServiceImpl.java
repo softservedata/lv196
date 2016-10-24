@@ -146,16 +146,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public List<FeedbackDTO> getAllFeedbacksInRange(Long idFrom, int number) {
-
-        List<FeedbackDTO> feedbackDTOs = new ArrayList<>();
-
-        return feedbackDTOs;
-
-    }
-
-    @Override
-    @Transactional
     public void changeFeedbackStatus(Long id, boolean status) {
 
         Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);

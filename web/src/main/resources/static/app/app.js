@@ -41,7 +41,7 @@ angular
             })
             .state('feedbacks', {
                 url: '/feedbacks',
-                templateUrl: '/app/views/feedbacks/feedbacks.html',
+                templateUrl: '/app/feedbacks/views/feedbacks.html',
                 controller: 'feedbacksController'
             })
             .state('users', {

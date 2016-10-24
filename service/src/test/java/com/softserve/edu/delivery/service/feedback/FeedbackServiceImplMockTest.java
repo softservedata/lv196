@@ -28,7 +28,6 @@ import static org.mockito.Mockito.*;
 public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTests {
 
     private final Long FEEDBACK_ID = 1L;
-    private final Long START_ID = 10L;
     private final int COUNT = 2;
     private final String APPROVED_DRIVER_NAME = "Approved Driver";
     private final String APPROVED_DRIVER_EMAIL = "email0@gmail.com";
