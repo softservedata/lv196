@@ -69,7 +69,7 @@ angular
                 templateUrl: '/app/notification/views/show.notification.html',
                 controller: 'notificationController'
             });
-        
+
   	  	$translateProvider
 	  		.useStaticFilesLoader({
 	  			prefix: '/i18n/',
