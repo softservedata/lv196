@@ -6,26 +6,26 @@
         </h4>
         <div class="row">
             <div class="col-xs-12 form-group">
-                <label class="control-label" for="rateInput">Rate: </label>
+                <label class="control-label" for="rateInput">{{ 'rate' | translate }}: </label>
                 <div role="alert" style="color:red;display:inline">
-                    <span class="error" ng-show="newFeedback.rate.$error.required"> - Required!</span>
-                    <span class="error" ng-show="newFeedback.rate.$error.pattern">The value of the rate is incorrect. It must be a number less than 50 or greater than 0 </span>
+                    <span class="error" ng-show="newFeedback.rate.$error.required"> - {{ 'required' | translate }}!</span>
+                    <span class="error" ng-show="newFeedback.rate.$error.pattern">{{ 'feedback_error' | translate }} </span>
                 </div>
                 <input style="width: 50px;"  name="rate" ng-model="form.rate" type="number" class="form-control" id="rateInput" ng-pattern="/^([1-9]|[1-4][0-9]|50)$/" required>
             </div>
             <div class="col-xs-12 form-group">
-                <label class="control-label" for="textInput">Description: </label>
+                <label class="control-label" for="textInput">{{ 'description' | translate }}: </label>
                 <div role="alert" style="color:red;display:inline">
-                    <span class="error" ng-show="newFeedback.description.$error.required"> - Required!</span>
-                    <span class="error" ng-show="newFeedback.description.$error.minlength">Your description is too short!</span>
-                    <span class="error" ng-show="newFeedback.description.$error.maxlength">Your description is too long!</span>
+                    <span class="error" ng-show="newFeedback.description.$error.required"> - {{ 'required' | translate }}!</span>
+                    <span class="error" ng-show="newFeedback.description.$error.minlength">{{ 'description_tooShort' | translate }}!</span>
+                    <span class="error" ng-show="newFeedback.description.$error.maxlength">{{ 'description_tooLong' | translate }}!</span>
                 </div>
                 <textarea name="description"  ng-model="form.text" class="form-control" rows="1" id="textInput" minlength="10" maxlength="999999" required></textarea>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-            <button ng-click="cancel()" type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancel</button>
-            <button ng-disabled="newFeedback.$invalid" type="submit" class="btn btn-primary btn-xs">Create</button>
+            <button ng-click="cancel()" type="button" class="btn btn-default btn-xs" data-dismiss="modal">{{ 'cancel' | translate }}</button>
+            <button ng-disabled="newFeedback.$invalid" type="submit" class="btn btn-primary btn-xs">{{ 'create' | translate }}</button>
     </div>
 </form>

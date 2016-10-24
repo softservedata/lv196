@@ -3,7 +3,7 @@
         <div class="order-actions" style="margin-top: -22px">
             <p class="navbar-btn">
                 <a data-ng-click="addFeedback(order)" class="btn btn-primary  btn-xs">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Feedback
+                    <i class="fa fa-plus" aria-hidden="true"></i> {{ 'feedback' | translate }}
                 </a>
             </p>
         </div>
@@ -15,16 +15,16 @@
                 <div uib-accordion-group is-open="status.open">
                     <div class="row">
                         <div class="col-sm-2 form-group">
-                            <label class="control-label">Weight: {{order.weight}} </label>
+                            <label class="control-label">{{ 'weight' | translate }}: {{order.weight}} </label>
                         </div>
                         <div class="col-sm-2 form-group">
-                            <label class="control-label">Height: {{order.height}}</label>
+                            <label class="control-label">{{ 'height' | translate }}: {{order.height}}</label>
                         </div>
                         <div class="col-sm-2 form-group">
-                            <label class="control-label">Width: {{order.width}} </label>
+                            <label class="control-label">{{ 'width' | translate }}: {{order.width}} </label>
                         </div>
                         <div class="col-sm-2 form-group">
-                            <label class="control-label">Length: {{order.length}} </label>
+                            <label class="control-label">{{ 'length' | translate }}: {{order.length}} </label>
                         </div>
                     </div>
                     <div class="row">
@@ -32,17 +32,17 @@
                             <img width="220px" ng-src="{{order.carPhoto}}">
                         </div>
                         <div class="col-sm-6 form-group">
-                            <label class="control-label">Description: {{order.description}}</label>
+                            <label class="control-label">{{ 'description' | translate }}: {{order.description}}</label>
                         </div>
                         <div class="col-sm-4 form-group">
-                            <label class="control-label">Driver: {{order.driverName}} </label>
+                            <label class="control-label">{{ 'driver' | translate }}: {{order.driverName}} </label>
                         </div>
                     </div>
                 </div>
             </uib-accordion>
         </div>
         <div class="order-subinfo">
-            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>Arrival in {{order.arrivalDate | date}}</span>
+            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
         </div>
     </div>
 </div>

@@ -7,10 +7,10 @@
                 <img width="100px" ng-src="{{offer.carPhoto}}">
             </div>
             <div class="col-sm-4 form-group">
-                <label class="control-label">Driver's rate: </label> {{offer.rate}}
+                <label class="control-label">{{ 'driver_rate' | translate }}: </label> {{offer.rate}}
             </div>
             <div class="col-sm-4 form-group">
-                <label class="control-label">Driver:
+                <label class="control-label">{{ 'driver' | translate }}:
                     <input type="radio" name="radio-primary" ng-value="true" ng-model="offer.approved" ng-checked="offer.approved" ng-change="update(offer)"/>
                     {{offer.driverName}}
                 </label>

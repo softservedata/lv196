@@ -1,6 +1,6 @@
-<div class="navbar navbar-inverse navbar-static-top users" style="background-color: #007772">
+<div class="navbar navbar-inverse navbar-static-top users" style="background-color: #148b73">
     <div class="container-fluid">
-		<span class="navbar-brand">User profiles</span>
+		<span class="navbar-brand">{{ 'user_profiles' | translate }}</span>
             <ul class="nav navbar-nav navbar-right">
    		 <div class="col-md-2">
     </div>
@@ -11,26 +11,26 @@
         		<th class="col-xs-1"><i class="fa fa-search fa-2x srch-sgn" aria-hidden="true"></i></th> 
         		<th class="col-xs-2">
         		    <div class="input-group">
-                			<input type="text" class="form-control srch-in" placeholder="last name" ng-model="filter.lastName"
+                			<input type="text" class="form-control srch-in" placeholder="{{ 'lname' | translate }}" ng-model="filter.lastName"
                 					ng-model-options="{ debounce: 1000 }">
             		</div>
 				</th> 
        			<th class="col-xs-2">
             		<div class="input-group">
-                			<input type="text" class="form-control srch-in" placeholder="first name" ng-model="filter.firstName"
+                			<input type="text" class="form-control srch-in" placeholder="{{ 'fname' | translate }}" ng-model="filter.firstName"
                 					ng-model-options="{ debounce: 1000 }">
             		</div>       			      			
        			</th>
         		<th class="col-xs-2">
             		<div class="input-group">
-                			<input type="text" class="form-control srch-in" placeholder="email" ng-model="filter.email"
+                			<input type="text" class="form-control srch-in" placeholder="{{ 'email' | translate }}" ng-model="filter.email"
                 					ng-model-options="{ debounce: 1000 }">
             		</div>				
 				</th>
         		<th class="col-xs-2">
             		<div class="input-group">
             		    <select name="userRole" id="usersRole" class="form-control srch-roles" ng-model="filter.role">
-      						<option value="">role</option> 
+      						<option value="">{{ 'role' | translate }}</option> 
       						<option value="Customer">Customer</option>
       						<option value="Driver">Driver</option>
       						<option value="Moderator">Moderator</option>
@@ -57,35 +57,35 @@
         		<th class="col-xs-1"></th> 
         		<th class="col-xs-2">
         		    <span class="frst" ng-click="filter.sortType = 'lastName'; filter.sortReverse = !filter.sortReverse">
-                    Last name
+                    {{ 'lname' | translate }}
                     	<span ng-show="filter.sortType == 'lastName' && !filter.sortReverse" class="fa fa-caret-down"></span>
                     	<span ng-show="filter.sortType == 'lastName' && filter.sortReverse" class="fa fa-caret-up"></span>
                 	</span>
         		</th> 
         		<th class="col-xs-2">
         			<span class="scnd" ng-click="filter.sortType = 'firstName'; filter.sortReverse = !filter.sortReverse">
-                    First name
+                    {{ 'fname' | translate }}
                     	<span ng-show="filter.sortType == 'firstName' && !filter.sortReverse" class="fa fa-caret-down"></span>
                     	<span ng-show="filter.sortType == 'firstName' && filter.sortReverse" class="fa fa-caret-up"></span>
                 	</span>
         		</th>
         		<th class="col-xs-2">
         		    <span class="thrd" ng-click="filter.sortType = 'email'; filter.sortReverse = !filter.sortReverse">
-                    Email
+                    {{ 'email' | translate }}
                     	<span ng-show="filter.sortType == 'email' && !filter.sortReverse" class="fa fa-caret-down"></span>
                     	<span ng-show="filter.sortType == 'email' && filter.sortReverse" class="fa fa-caret-up"></span>
                 	</span>
                 </th>
         		<th class="col-xs-2">
         			 <span class="frth" ng-click="filter.sortType = 'userRole'; filter.sortReverse = !filter.sortReverse">
-                    Role
+                    {{ 'role' | translate }}
                     	<span ng-show="filter.sortType == 'userRole' && !filter.sortReverse" class="fa fa-caret-down"></span>
                     	<span ng-show="filter.sortType == 'userRole' && filter.sortReverse" class="fa fa-caret-up"></span>
                 	</span>
         		</th>
         		<th class="col-xs-1">
         			<span class="ffth" ng-click="filter.sortType = 'blocked'; filter.sortReverse = !filter.sortReverse">
-                    Ban
+                    {{ 'ban' | translate }}
                     	<span ng-show="filter.sortType == 'blocked' && !filter.sortReverse" class="fa fa-caret-down"></span>
                     	<span ng-show="filter.sortType == 'blocked' && filter.sortReverse" class="fa fa-caret-up"></span>
                 	</span>
@@ -113,13 +113,12 @@
             			<i class="fa " ng-class="{'fa-check-circle approved':userInfo.approved==true, 'fa-check-circle not-approved':userInfo.approved==false}" title="approved status"  aria-hidden="true"></i></h1>
             		</div>
             		<div class="col-md-4 col-xs-7 small">
-              			<label class="user-info">Last name</label>{{userInfo.lastName}}<br>
-              			<label class="user-info">Phone</label>{{userInfo.phone}}<br>
-              			<label class="user-info">Email</label>{{userInfo.email}}<br>
+              			<label class="user-info">{{ 'lname' | translate }}</label>{{userInfo.lastName}}<br>
+              			<label class="user-info">{{ 'phone' | translate }}</label>{{userInfo.phone}}<br>
+              			<label class="user-info">{{ 'email' | translate }}</label>{{userInfo.email}}<br>
             		</div>
             		<div class="col-md-4 col-xs-7 small">
-              			<label class="user-info">Passport</label>{{userInfo.passport}}<br>
-              			<label class="user-info">Rate</label>{{userInfo.rate}}<br>
+              			<label class="user-info">{{ 'rate' | translate }}</label>{{userInfo.rate}}<br>
               			<label class="user-rate"><span uib-rating class="rating user-rate" ng-model="userRate"
                  				aria-labelledby="default-rating" readonly="isReadonly" ></span></label>	 
             		</div>
@@ -137,7 +136,7 @@
     <footer>
         <ul uib-pagination class="pagination" total-items="totalItems" items-per-page="filter.rows"  ng-model="filter.currentPage" max-size="5" class="pagination-sm" boundary-link-numbers="true" ng-click="scrollTo('top')"></ul>
         <span class="col-xs-2 users-rows">
-        	<label for="usersItems">Items per page</label>
+        	<label for="usersItems">{{ 'items_page' | translate }}</label>
         	<div class="input-group">
            		<select name="filter.rows" class="form-control col-xs-2 srch-rows" ng-model="filter.rows">
       				<option value="5">5</option>

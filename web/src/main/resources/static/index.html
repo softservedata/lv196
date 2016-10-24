@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 
 <head>
     <meta charset="utf-8">
@@ -45,45 +45,50 @@
             <div class="sidebar-menu hidden-xs">
                 <a ui-sref="profile" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    Profile
+                    {{ 'profile' | translate }}
                 </a>
                 <a ui-sref="orders" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-truck" aria-hidden="true"></i>
-                    Orders
+                    {{ 'orders' | translate }}
                 </a>
                 <a ui-sref="driver" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-car" aria-hidden="true"></i>
-                    Driver
+                    {{ 'driver' | translate }}
                 </a>
                 <a ui-sref="feedbacks" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-comment" aria-hidden="true"></i>
-                    Feedbacks
+                    {{ 'feedbacks' | translate }}
                 </a>
                 <a ui-sref="users" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-users" aria-hidden="true"></i>
-                    User profiles
+                    {{ 'user_profiles' | translate }}
                 </a>
                 <a ui-sref="notification" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <div ng-controller="notificationAmountController">
                         <i class="fa fa-comment-o"  aria-hidden="true" data-notifications="{{amountNewNotification}}"></i>
-                        Notifications
+                        {{ 'notifications' | translate }}
                     </div>
                 </a>
                 <hr/>
                 <a href="welcome" class="sidebar-menu-item">
                     <i class="fa fa-home" aria-hidden="true"></i>
-                    Home
+                    {{ 'home' | translate }}
                 </a>
                 <a href="logout" class="sidebar-menu-item">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    Log out
+                    {{ 'logout' | translate }}
                 </a>
             </div>
 
             <div class="sidebar-footer hidden-xs">
                 <h3>Delivery</h3>
             </div>
-
+			<div class="languages" ng-controller="LanguageSwitchController">
+  					<a ng-class="{'lang-on':lang=='uk', 'lang-off':lang!=='uk'}"  
+  					   ng-click="changeLanguage('uk')" translate="lang_uk"></a>
+  					<a ng-class="{'lang-on':lang=='en', 'lang-off':lang!=='en'}"
+  					   ng-click="changeLanguage('en')" translate="lang_en"></a>
+			</div>
             <div class="nav visible-xs">
             </div>
 
@@ -104,6 +109,9 @@
 <script src="./bower_components/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
 <script src="./bower_components/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
 <script src="./bower_components/leaflet-control-geocoder-1.5.3/dist/Control.Geocoder.js"></script>
+<script src="./bower_components/angular-translate/angular-translate.min.js"></script>
+<script src="./bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script src="./bower_components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
 
 <script src="./app/app.js"></script>
 <script src="./app/orders/services/orderService.js"></script>
@@ -125,5 +133,6 @@
 <script src="./app/controller/tracking/ordersTrackingController.js"></script>
 <script src="app/common/controllers/imageUploadController.js"></script>
 <script src="./app/notification/controller/notificationController.js"></script>
+<script src="./app/common/i18n.js"></script>
 </body>
 </html>

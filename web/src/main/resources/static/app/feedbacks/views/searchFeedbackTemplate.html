@@ -1,6 +1,6 @@
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Text" ng-model="feedbackFilter.text"
+        <input type="text" class="form-control" placeholder="{{ 'text' | translate }}" ng-model="feedbackFilter.text"
                ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilter.text)"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
@@ -9,13 +9,13 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="number" class="form-control" min="0" max="5" placeholder="Rate" ng-model="feedbackFilter.rate"
+        <input type="number" class="form-control" min="0" max="5" placeholder="{{ 'rate' | translate }}" ng-model="feedbackFilter.rate"
                ng-model-options="{ debounce: 500 }" ng-change="filterFeedbacks()"/>
     </div>
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="User" ng-model="feedbackFilter.userName"
+        <input type="text" class="form-control" placeholder="{{ 'user' | translate }}" ng-model="feedbackFilter.userName"
                ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilter.userName)"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
@@ -24,7 +24,7 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Transporter" ng-model="feedbackFilter.transporterName"
+        <input type="text" class="form-control" placeholder="{{ 'driver' | translate }}" ng-model="feedbackFilter.transporterName"
                ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilter.transporterName)"/>
         <span class=" input-group-addon">
         <i class="fa fa-search"></i>
@@ -33,7 +33,7 @@
 </td>
 <td>
     <div class="input-group">
-        <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" placeholder="Date"
+        <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" placeholder="{{ 'date' | translate }}"
                ng-model="feedbackFilter.createdOn" is-open="popupDatePicker.opened" ng-change="filterFeedbacks()"/>
         <span class="input-group-btn">
             <button type="button" class="btn btn-link" ng-click="openDatePicker()">

@@ -97,34 +97,34 @@
 }
 
 .user-pagination ul.pagination li a {
-    color: #007772;
+    color: #148b73;
 }
 
 .users-pagination ul.pagination li.active a,
 .users-pagination ul.pagination li a:focus {
     color: white;
-    background-color: #007772;
+    background-color: #148b73;
     outline-style: none;
 }
 
 .users-rows {
-	color: #007772;
+	color: #148b73;
 	float: left;
 }
 
 .srch-rows {
-	color: #007772;
+	color: #148b73;
 }
 
 .srch-roles {
 	color:    #ffffff;
     opacity:  1;
     font-style: italic;
-    background-color: #007772;
+    background-color: #148b73;
     box-shadow: inset 0 -3px 0 #ffffff;
 }
 .search-table {
-	border-top: 1px solid #007772;
+	border-top: 1px solid #148b73;
 }
 
 .srch-roles select, .srch-roles select.form-control {
@@ -136,7 +136,7 @@
 }
 
 .up-btn {
-	color: #007772;
+	color: #148b73;
 	float: right;
     padding-right: 25px;
     cursor: pointer;

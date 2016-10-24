@@ -1,6 +1,6 @@
 angular
-    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification'])
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate'])
+    .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function ($stateProvider, $urlRouterProvider, $translateProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
         $urlRouterProvider.when('/orders', '/orders/in-progress');
 
@@ -69,4 +69,12 @@ angular
                 templateUrl: '/app/notification/views/show.notification.html',
                 controller: 'notificationController'
             });
+        
+  	  	$translateProvider
+	  		.useStaticFilesLoader({
+	  			prefix: '/i18n/',
+	  			suffix: '.json'
+	  		})
+	  		.preferredLanguage('en')
+	  		.useMissingTranslationHandlerLog();
     }]);

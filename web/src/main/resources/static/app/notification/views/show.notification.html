@@ -1,7 +1,7 @@
 <div class="navbar navbar-inverse navbar-static-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <span class="navbar-brand">Notifications</span>
+            <span class="navbar-brand">{{ 'notifications' | translate }}</span>
         </div>
     </div>
 </div>
@@ -13,8 +13,8 @@
 <div data-ng-repeat="notification in notifications track by notification.notificationId"  class="panel panel-default">
         <div style="font-size: 14px; padding-left: 10px;" class="{{notification.notificationStatus}}">
             <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
-              Status:  {{notification.notificationStatus}}
-           <p>Message: {{notification.message}}
+              {{ 'status' | translate }}:  {{notification.notificationStatus}}
+           <p>{{ 'message' | translate }}: {{notification.message}}
         </div>
 </div>
 </div>

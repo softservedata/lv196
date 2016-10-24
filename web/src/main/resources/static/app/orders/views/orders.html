@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <span class="navbar-brand">Orders</span>
+            <span class="navbar-brand">{{ 'orders' | translate }}</span>
         </div>
 
         <div class="collapse navbar-collapse">
@@ -21,9 +21,9 @@
         </div>
         <div class="navbar-sub">
             <ul class="nav nav-tabs">
-                <li ui-sref-active="active"><a ui-sref="orders.inProgress" data-toggle="tab" aria-expanded="true">IN PROGRESS</a></li>
-                <li ui-sref-active="active"><a ui-sref="orders.open" data-toggle="tab" aria-expanded="false">OPEN</a></li>
-                <li ui-sref-active="active"><a ui-sref="orders.closed" data-toggle="tab" aria-expanded="false">CLOSED</a></li>
+                <li ui-sref-active="active"><a ui-sref="orders.inProgress" data-toggle="tab" aria-expanded="true">{{ 'in_progress' | translate }}</a></li>
+                <li ui-sref-active="active"><a ui-sref="orders.open" data-toggle="tab" aria-expanded="false">{{ 'open' | translate }}</a></li>
+                <li ui-sref-active="active"><a ui-sref="orders.closed" data-toggle="tab" aria-expanded="false">{{ 'closed' | translate }}</a></li>
             </ul>
         </div>
     </div>
