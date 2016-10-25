@@ -20,7 +20,7 @@ public class NotificationController {
     private UserAuthenticationDetails authenticationDetails;
 
     Logger logger = LoggerFactory.getLogger(NotificationController.class.getName());
-
+    Integer lastAmountNewNotification = 0;
 
     @RequestMapping(method = RequestMethod.GET)
     List<NotificationDto> all() {
@@ -39,13 +39,14 @@ public class NotificationController {
     Integer countNotification() throws InterruptedException {
 //        String email = authenticationDetails.getAuthenticatedUserEmail();
         String email = "kurdiukov.taras@gmail.com";
-        Integer amountNewNotification = 0;
+        Integer amountNewNotification = null;
         do{
             Thread.sleep(2000);
             amountNewNotification = this.notificationService.countNewNotification(email);
             logger.info("amountNewNotification " + amountNewNotification+";");
         }
-        while (amountNewNotification == null);
+        while (amountNewNotification == lastAmountNewNotification);
+        lastAmountNewNotification = amountNewNotification;
         return amountNewNotification;
     }
 

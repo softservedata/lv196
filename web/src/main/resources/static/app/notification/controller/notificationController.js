@@ -32,6 +32,9 @@ angular
                         Notification('You have new Notification');
                         $notificationProperty.setAmount($scope.amountNewNotification);
                     }
+                    else {
+                        $notificationProperty.setAmount(0);
+                    }
                     $scope.countNewNotification();
                 })
             };
