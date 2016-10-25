@@ -5,7 +5,7 @@ angular
     .controller('imageUploadController', ['$scope', '$http', 'Notification',
         function ($scope, $http, Notification) {
 
-            $scope.uploadImage = function (event) {
+            $scope.uploadUserPhoto = function (event) {
 
                 var file = event.target.files[0];
 
@@ -18,7 +18,30 @@ angular
                 })
                     .then(function (response) {
                             if (response.status == 200) {
-                                Notification.success("The image was successfully uploaded");
+                                Notification.success("The user photo was successfully uploaded");
+                            }
+                        },
+                        function (response) {
+                            Notification.error({message: response.data.message, title: "Error!"});
+                        });
+            };
+
+            $scope.uploadCarFrontPhoto = function (event) {
+
+                var file = event.target.files[0];
+
+                var sendData = new FormData();
+                sendData.append('file', file);
+                sendData.append('carId', 1);
+                sendData.append('side', 'front');
+
+                $http.post("/upload/carPhoto", sendData, {
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+                })
+                    .then(function (response) {
+                            if (response.status == 200) {
+                                Notification.success("The car front photo was successfully uploaded");
                             }
                         },
                         function (response) {

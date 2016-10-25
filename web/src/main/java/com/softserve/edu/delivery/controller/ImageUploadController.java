@@ -1,7 +1,9 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.repository.UserRepository;
+import com.softserve.edu.delivery.service.CarService;
+import com.softserve.edu.delivery.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +31,17 @@ public class ImageUploadController {
     private final String SERVER_PATH_TO_USERS_UPLOAD = "/uploads/users/";
     private final String SERVER_PATH_TO_CARS_UPLOAD = "/uploads/cars/";
     private final Map<String, String> response = new HashMap<>();
+
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+    @Autowired
+    private CarService carService;
     @Autowired
     private HttpServletRequest request;
     private HttpStatus status;
 
-    private File multipartToFile(MultipartFile multipart, String prefix) throws IOException {
-        String realPathToUploads = request.getServletContext().getRealPath(SERVER_PATH_TO_USERS_UPLOAD);
+    private File multipartToFile(MultipartFile multipart, String prefix, String path) throws IOException {
+        String realPathToUploads = request.getServletContext().getRealPath(path);
         if (!new File(realPathToUploads).exists()) {
             new File(realPathToUploads).mkdirs();
         }
@@ -48,34 +53,73 @@ public class ImageUploadController {
     }
 
     @RequestMapping(path = "userPhoto", method = RequestMethod.POST)
-    ResponseEntity uploadImage(@RequestParam("file") MultipartFile file) {
+    ResponseEntity uploadUserPhoto(@RequestParam("file") MultipartFile file) {
         status = HttpStatus.OK;
         response.put("message", "OK");
 
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        User user = userRepository.findOne(principal.getUsername());
+        User user = userService.findOne(principal.getUsername());
 
         try {
-            File userPhoto = multipartToFile(file, user.getEmail());
+            File userPhoto = multipartToFile(file, user.getEmail(), SERVER_PATH_TO_USERS_UPLOAD);
             user.setPhotoUrl(SERVER_PATH_TO_USERS_UPLOAD + userPhoto.getName());
 
         } catch (IOException e) {
             logger.info("Exception while trying to save user photo " + user.getEmail() +
-                    " in feedbackService.uploadImage() " + e.getMessage());
+                    " in feedbackService.uploadUserPhoto() " + e.getMessage());
             status = HttpStatus.NOT_FOUND;
             response.put("message", e.getMessage());
             return new ResponseEntity(response, status);
         }
 
         try {
-            userRepository.save(user);
+            userService.save(user);
         } catch (NoSuchElementException e) {
             status = HttpStatus.BAD_REQUEST;
             response.put("message", e.getMessage());
         }
         return new ResponseEntity(response, status);
     }
+
+    @RequestMapping(path = "carPhoto", method = RequestMethod.POST)
+    ResponseEntity uploadCarPhoto(@RequestParam("file") MultipartFile file,
+                                  @RequestParam("carId") long carId,
+                                  @RequestParam("side") String side) {
+        status = HttpStatus.OK;
+        response.put("message", "OK");
+
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userService.findOne(principal.getUsername());
+
+        Car car = carService.findOne(carId);
+
+        try {
+            File userPhoto = multipartToFile(file, user.getEmail() + "_" + side + "_photo_car_id_" + car.getCarId(),
+                    SERVER_PATH_TO_CARS_UPLOAD);
+            car.setVehicleFrontPhotoURL(SERVER_PATH_TO_CARS_UPLOAD + userPhoto.getName());
+
+        } catch (IOException e) {
+            logger.info("Exception while trying to save car front photo " + user.getEmail() +
+                    " in feedbackService.uploadCarPhoto() " + e.getMessage());
+            status = HttpStatus.NOT_FOUND;
+            response.put("message", e.getMessage());
+            return new ResponseEntity(response, status);
+        }
+
+        try {
+            carService.save(car);
+        } catch (NoSuchElementException e) {
+            logger.info("Exception while trying to persist car " + car.getCarId() +
+                    " in feedbackService.uploadCarPhoto() " + e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+            response.put("message", e.getMessage());
+        }
+        return new ResponseEntity(response, status);
+    }
+
 
 }

@@ -1,15 +1,17 @@
 package com.softserve.edu.delivery.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.*;
+import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
+import com.softserve.edu.delivery.dto.UserProfileDto;
+import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -35,5 +37,9 @@ public interface UserService extends UserDetailsService {
 	Long countItems();
 	
 	List<UserProfileDto> findUsers(UserProfileDto filter);
+
+    User findOne(String email);
+
+    void save(User user);
 
 }

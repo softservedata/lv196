@@ -37,9 +37,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-	private Long totalItems;
     private final UserRepository userRepository;
-
+    private Long totalItems;
     @Autowired
     private CarRepository carRepository;
 
@@ -55,6 +54,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    private static String generateRandomUUID() {
+        return UUID.randomUUID().toString();
     }
 
     @Override
@@ -157,15 +160,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserProfileDto> findUsers(UserProfileDto filter) {
-        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(filter.getSortReverse() == true ? "ASC" : "DESC" ), 
-        																filter.getSortType());
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(filter.getSortReverse() == true ? "ASC" : "DESC"),
+                filter.getSortType());
     	Page<User> resultPage = userRepository
-    					.findUsers(filter.getFirstName(), 
-    							   filter.getLastName(), 
-    							   filter.getEmail(), 
-    							   filter.getRole().isEmpty() ? null : Role.valueOf(filter.getRole().toUpperCase()),
-    							   filter.getBlocked(), new PageRequest(filter.getCurrentPage() - 1, 
-    							   filter.getRows(), new Sort(sortOrder)));
+                .findUsers(filter.getFirstName(),
+                        filter.getLastName(),
+                        filter.getEmail(),
+                        filter.getRole().isEmpty() ? null : Role.valueOf(filter.getRole().toUpperCase()),
+                        filter.getBlocked(), new PageRequest(filter.getCurrentPage() - 1,
+                                filter.getRows(), new Sort(sortOrder)));
     	totalItems = resultPage.getTotalElements();
 		return resultPage
 				.getContent()
@@ -173,16 +176,11 @@ public class UserServiceImpl implements UserService {
                 .map(UserProfileDto::create)
                 .collect(Collectors.toList());
     }
-    
+
 	@Override
 	public Long countItems() {
 		return totalItems;
 	}
-
-    private static String generateRandomUUID() {
-        return UUID.randomUUID().toString();
-    }
-
 
     private User createUser(UserRegistrationDTO userRegDTO) {
         User newUser = new User();
@@ -231,5 +229,15 @@ public class UserServiceImpl implements UserService {
         newCar.setVehicleHeight(driverRegDTO.getVehicleHeight());
 
         return newCar;
+    }
+
+    @Override
+    public User findOne(String email) {
+        return userRepository.findOne(email);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 }
