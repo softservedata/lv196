@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.controller;
 
 import java.util.List;
 
+import com.softserve.edu.delivery.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class UserController {
 	
 	   @Autowired
 	   UserService userService;
+	   @Autowired
+	   private NotificationService notificationService;
 
 		Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 	    
@@ -32,6 +35,7 @@ public class UserController {
 	    @RequestMapping(path = "change-status", method = RequestMethod.PUT)
 	    UserProfileDto changeUserStatus(@RequestParam("email") String email, @RequestParam("status") Boolean status) {
 			logger.info("Method UserController.changeUserStatus()");
+			notificationService.changeUserStatus(email,status);
 	        return userService.changeUserStatus(email, status);
 	    }
 	    

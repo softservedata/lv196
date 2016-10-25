@@ -3,18 +3,22 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.domain.Notification;
 import com.softserve.edu.delivery.domain.NotificationStatus;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.NotificationDto;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.repository.NotificationRepository;
+import com.softserve.edu.delivery.repository.OfferRepository;
+import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -33,7 +37,9 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private OrderRepository orderRepository;
+    @Autowired
+    private OfferRepository offerRepository;
     @Autowired
     private Environment env;
     @Autowired
@@ -81,10 +87,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository
                 .findNotificationByEmail(email)
                 .stream()
-                .map(notification -> {
-                    NotificationDto dto = NotificationDto.notificationToNotificationDto(notification);
-                    return dto;
-                })
+                .map(NotificationDto::notificationToNotificationDto)
                 .collect(Collectors.toList());
     }
 
@@ -104,10 +107,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository
                 .findNotificationByEmailAndStatus(email, NotificationStatus.INFO.getName())
                 .stream()
-                .map(notification -> {
-                    NotificationDto dto = NotificationDto.notificationToNotificationDto(notification);
-                    return dto;
-                })
+                .map(NotificationDto::notificationToNotificationDto)
                 .collect(Collectors.toList());
     }
 
@@ -117,10 +117,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository
                 .findNotificationByEmailAndStatus(email, NotificationStatus.WARNING.getName())
                 .stream()
-                .map(notification -> {
-                    NotificationDto dto = NotificationDto.notificationToNotificationDto(notification);
-                    return dto;
-                })
+                .map(NotificationDto::notificationToNotificationDto)
                 .collect(Collectors.toList());
     }
 
@@ -130,10 +127,39 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository
                 .findNotificationByEmailAndStatus(email, NotificationStatus.SUCCESS.getName())
                 .stream()
-                .map(notification -> {
-                    NotificationDto dto = NotificationDto.notificationToNotificationDto(notification);
-                    return dto;
-                })
+                .map(NotificationDto::notificationToNotificationDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void removeOrder(Long orderId) {
+        offerRepository.getAllOffersByOrderId(orderId)
+                .stream()
+                .map(OfferDtoForList::offerToOfferDto)
+                .forEach(offer ->
+                        addNotification("Warning",
+                                " Dear " + offer.getDriverName() + " We are sorry, but Customer " + offer.getCustomerName() + " cancel Order №" + offer.getOrderId(),
+                                offer.getDriverEmail())
+                );
+    }
+
+    @Override
+    public void updateFeedback(FeedbackDTO feedbackDTO) {
+        addNotification("Info", "Dear " + feedbackDTO.getUserName() +
+                " your feedback for Driver " + feedbackDTO.getTransporterName() +
+                " was moderated. For now, your feedback status - approved = " + feedbackDTO.getApproved() ,feedbackDTO.getUserEmail());
+    }
+
+    @Override
+    public void changeOfferStatus(OfferDtoForList offerDto){
+        addNotification("Info", "Customer " + offerDto.getCustomerName() + " approved your offer for his Order", offerDto.getDriverEmail());
+    }
+
+    @Override
+    public void changeUserStatus(String email, Boolean status) {
+        User user = userRepository.findOneOpt(email)
+                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+        addNotification("Warning", "Dear " + user.getFirstName() + " " + user.getLastName() +
+                " your status was changed by admin or moderator. For now your status - is blocked = " + user.getBlocked(), email);
     }
 }

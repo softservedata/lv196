@@ -35,7 +35,7 @@ public class Order {
     @JoinColumn(name = "city_to_id")
     private City cityTo;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Offer> offers = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

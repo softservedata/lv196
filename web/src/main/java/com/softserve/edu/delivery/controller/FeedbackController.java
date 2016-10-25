@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
+import com.softserve.edu.delivery.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class FeedbackController {
     private final Map<String, String> response = new HashMap<>();
     @Autowired
     private FeedbackService feedbackService;
+    @Autowired
+    private NotificationService notificationService;
     private HttpStatus status;
 
     @RequestMapping(path = "all", method = RequestMethod.POST)
@@ -62,6 +65,7 @@ public class FeedbackController {
             response.put("message", e.getMessage());
         }
         logger.info("After feedbackService.update(feedbackDTO)");
+        notificationService.updateFeedback(feedbackDTO);
         return new ResponseEntity(response, status);
     }
 

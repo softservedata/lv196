@@ -1,6 +1,8 @@
 package com.softserve.edu.delivery.service;
 
+import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.NotificationDto;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
 
 import java.util.List;
 
@@ -17,4 +19,9 @@ public interface NotificationService {
     List<NotificationDto> findNotificationByEmailAndInfoStatus(String email);
     List<NotificationDto> findNotificationByEmailAndWarningStatus(String email);
     List<NotificationDto> findNotificationByEmailAndSuccessStatus(String email);
+
+    void removeOrder(Long orderId);
+    void changeOfferStatus(OfferDtoForList offerDto);
+    void updateFeedback(FeedbackDTO feedbackDTO);
+    void changeUserStatus(String email, Boolean status);
 }

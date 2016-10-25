@@ -28,8 +28,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private OrderDao orderDao;
-    @Autowired
     private CityRepository cityRepository;
     @Autowired
     private OfferRepository offerRepository;
@@ -123,9 +121,7 @@ public class OrderServiceImpl implements OrderService {
 
         User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-        /*changed by Ivan Rudnytskyi - the structure of FeedbackDTO was changed - entities Order and User are removed.
-        *to get User use feedbackDTO.getUserId(), Order - feedbackDTO.getOrderId()
-         */
+
         Order order = orderRepository.findOneOpt(dto.getOrderId())
                 .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrderId()));
 

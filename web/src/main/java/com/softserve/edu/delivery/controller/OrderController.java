@@ -59,6 +59,7 @@ public class OrderController {
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
     void removeOrder(@PathVariable Long id) {
+        notification.removeOrder(id);
         orderService.removeOrder(id);
     }
 
@@ -87,8 +88,8 @@ public class OrderController {
     @RequestMapping(path = "change", method = RequestMethod.PUT)
     void changeOfferStatus(@RequestBody OfferDtoForList offerDto) {
         logger.info("Method OrderController.changeOfferStatus()");
-        notification.addNotification("Info", "Customer " + offerDto.getCustomerName() + " approved your offer for his Order", offerDto.getDriverEmail());
         orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved(),offerDto.getOrderId());
+        notification.changeOfferStatus(offerDto);
     }
 
     @RequestMapping(path = "offers/{id}", method = RequestMethod.GET)
