@@ -18,7 +18,7 @@
             $orderProperty.setId(order.id);
             const modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: '/app/views/feedbacks/add.feedback.html',
+                templateUrl: '/app/feedbacks/views/add.feedback.html',
                 controller: 'addFeedbackController'
             });
 

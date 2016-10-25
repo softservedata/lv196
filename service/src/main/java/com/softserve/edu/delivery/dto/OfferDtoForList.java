@@ -30,6 +30,9 @@ public class OfferDtoForList {
                 .setApproved(offer.isApproved())
                 .setDriverEmail(offer.getCar().getDriver().getEmail())
                 .setCustomerEmail(customer.getEmail())
+                .setRate(offer.getCar().getDriver().getRate())
+                .setCarPhoto(offer.getCar().getVehicleFrontPhotoURL())
+                .setDriverName(offer.getCar().getDriver().getFirstName() + " " + offer.getCar().getDriver().getFirstName())
                 .setCustomerName(customer.getFirstName() + " " + customer.getLastName());
         return offerDto;
     }

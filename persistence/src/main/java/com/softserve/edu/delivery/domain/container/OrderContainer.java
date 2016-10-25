@@ -9,6 +9,7 @@ public class OrderContainer {
     private Order order;
     private Long offersAmount;
     private String driverName;
+    private String carPhoto;
 
     public OrderContainer(Order order, Long offersAmount) {
         this.order = order;
@@ -19,6 +20,11 @@ public class OrderContainer {
     public OrderContainer(Order order, String driverName) {
         this.order = order;
         this.driverName = driverName;
+    }
+
+    public OrderContainer(Order order, String driverName, String carPhoto) {
+        this(order, driverName);
+        this.carPhoto = carPhoto;
     }
 
     public Order getOrder() {
@@ -45,6 +51,15 @@ public class OrderContainer {
 
     public OrderContainer setDriverName(String driverName) {
         this.driverName = driverName;
+        return this;
+    }
+
+    public String getCarPhoto() {
+        return carPhoto;
+    }
+
+    public OrderContainer setCarPhoto(String carPhoto) {
+        this.carPhoto = carPhoto;
         return this;
     }
 

@@ -35,26 +35,14 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
             "group by ord.id having count(off.order.id) = 0")
     List<OrderContainer> findOrderOpenWithoutOffersByCustomerEmail(@Param("email") String email);
 
-    @Query("select concat(off.car.driver.firstName, ' ', off.car.driver.lastName) " +
-            "from Offer off where off.order.id = :id and off.approved = true")
-    Optional<String> findDriverNameByOrderId(@Param("id") Long id);
-
-    @Query("select concat(off.car.driver.firstName, ' ', off.car.driver.lastName) " +
-            "from Offer off where off.offerId = :id")
-    Optional<String> findDriverNameByOfferId(@Param("id") Long id);
-
     @Query("select o from Order o where o.orderStatus = 'OPEN'")
     List<Order> getAllOpenOrder();
 
-    @Query("select o from Order o where o.orderStatus = 'CLOSED'" +
-            "and o.customer.email = :email ")
-    List<Order> getAllClosedOrderByCustomerEmail(@Param("email") String email);
-
-    @Query("select off.car.vehicleFrontPhotoURL from Offer off where off.offerId = :id")
-    Optional<String> findCarPhotoByOrderId(@Param("id") Long id);
-
-    @Query("select off.car.driver.rate from Offer off where off.offerId = :id")
-    Optional<Integer> findRateByOfferId(@Param("id") Long id);
+    @Query("select new com.softserve.edu.delivery.domain.container.OrderContainer(" +
+            "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName), off.car.vehicleFrontPhotoURL) " +
+            "from Offer off join off.order ord where ord.orderStatus = 'CLOSED' " +
+            "and off.approved = 1 and ord.customer.email = :email")
+    List<OrderContainer> getAllClosedOrderByCustomerEmail(@Param("email") String email);
 
     @Query("select o from Order o where o.orderStatus = 'OPEN' " +
             "and (:cityFromId is null or o.cityFrom.id = :cityFromId) " +
