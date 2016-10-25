@@ -29,7 +29,8 @@ public class OrderDto {
     public static OrderDto ofContainer(OrderContainer container) {
         return of(container.getOrder())
                 .setDriverName(container.getDriverName())
-                .setAmountOfOffers(container.getOffersAmount());
+                .setAmountOfOffers(container.getOffersAmount())
+                .setCarPhoto(container.getCarPhoto());
     }
 
     public static OrderDto of(Order order) {

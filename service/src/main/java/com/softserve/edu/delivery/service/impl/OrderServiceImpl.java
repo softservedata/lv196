@@ -1,6 +1,5 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.OrderDao;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.LocationDto;
@@ -150,18 +149,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository
                 .getAllClosedOrderByCustomerEmail(email)
                 .stream()
-                .map(order -> {
-                    OrderDto dto = OrderDto.of(order);
-                    String name = orderRepository
-                            .findDriverNameByOrderId(dto.getId())
-                            .orElse(null);
-                    String carPhoto = orderRepository
-                            .findCarPhotoByOrderId(dto.getId())
-                            .orElse(null);
-                    dto.setDriverName(name);
-                    dto.setCarPhoto(carPhoto);
-                    return dto;
-                })
+                .map(OrderDto::ofContainer)
                 .collect(Collectors.toList());
     }
 
@@ -171,22 +159,7 @@ public class OrderServiceImpl implements OrderService {
         return offerRepository
                 .getAllOffersByOrderId(orderId)
                 .stream()
-                .map(offer -> {
-                    OfferDtoForList dto = OfferDtoForList.offerToOfferDto(offer);
-                    String name = orderRepository
-                            .findDriverNameByOfferId(dto.getOfferId())
-                            .orElse(null);
-                    String carPhoto = orderRepository
-                            .findCarPhotoByOrderId(dto.getOfferId())
-                            .orElse(null);
-                    Integer rate = orderRepository
-                            .findRateByOfferId(dto.getOfferId())
-                            .orElse(null);
-                    dto.setDriverName(name);
-                    dto.setCarPhoto(carPhoto);
-                    dto.setRate(rate);
-                    return dto;
-                })
+                .map(OfferDtoForList::offerToOfferDto)
                 .collect(Collectors.toList());
     }
 

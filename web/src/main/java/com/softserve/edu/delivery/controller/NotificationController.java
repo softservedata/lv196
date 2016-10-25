@@ -26,7 +26,7 @@ public class NotificationController {
     List<NotificationDto> all() {
         logger.info("Method NotificationController.all()");
 //        String email = authenticationDetails.getAuthenticatedUserEmail();
-        String email = "martin@gmail.com";
+        String email = "kurdiukov.taras@gmail.com";
         return notificationService.findAllNotificationByEmail(email);
     }
 
@@ -38,11 +38,12 @@ public class NotificationController {
     @RequestMapping(path = "count", method = RequestMethod.GET)
     Integer countNotification() throws InterruptedException {
 //        String email = authenticationDetails.getAuthenticatedUserEmail();
-        String email = "martin@gmail.com";
-        Integer amountNewNotification = Integer.valueOf(0);
+        String email = "kurdiukov.taras@gmail.com";
+        Integer amountNewNotification = 0;
         do{
             Thread.sleep(2000);
             amountNewNotification = this.notificationService.countNewNotification(email);
+            logger.info("amountNewNotification " + amountNewNotification+";");
         }
         while (amountNewNotification == null);
         return amountNewNotification;
