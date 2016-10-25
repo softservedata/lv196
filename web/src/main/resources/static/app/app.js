@@ -31,12 +31,12 @@ angular
             })
             .state('driver', {
                 url: '/driver',
-                templateUrl: '/app/views/driver/driver.html',
+                templateUrl: '/app/driver/views/driver.html',
                 controller: 'driverController'
             })
             .state('findOrder', {
                 url: '/find-order',
-                templateUrl: '/app/views/driver/findOrder.html',
+                templateUrl: '/app/driver/views/findOrder.html',
                 controller: 'findOrdersController'
             })
             .state('feedbacks', {
