@@ -9,9 +9,9 @@
     <ui-view></ui-view>
 </div>
 
-<div class="panel-body">
+<div class="panel-body notification">
 <div data-ng-repeat="notification in notifications track by notification.notificationId"  class="panel panel-default">
-        <div style="font-size: 14px; padding-left: 10px;" class="{{notification.notificationStatus}}">
+        <div class="{{notification.notificationStatus}}">
             <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
               {{ 'status' | translate }}:  {{notification.notificationStatus}}
            <p>{{ 'message' | translate }}: {{notification.message}}

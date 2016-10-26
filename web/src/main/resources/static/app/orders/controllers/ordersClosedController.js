@@ -34,7 +34,7 @@
 
                     const data = {
                         feedbackId: $scope.form.feedbackId,
-                        rate: $scope.form.rate,
+                        rate: $scope.form.rate*10,
                         text: $scope.form.text,
                         orderId: $scope.idForFeedback
                     };
@@ -55,7 +55,7 @@
             $http.get('/order/getFeedback/' + $orderProperty.getId()).then(response => {
                 $scope.feedback = response.data;
                 $scope.form.feedbackId = $scope.feedback.feedbackId;
-                $scope.form.rate = $scope.feedback.rate;
+                $scope.form.rate = $scope.feedback.rate/10;
                 $scope.form.text = $scope.feedback.text;
                 $scope.form.approved = $scope.feedback.approved;
                 $scope.form.orderId = $scope.feedback.orderId;

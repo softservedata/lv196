@@ -107,17 +107,29 @@ html, body {
 .rating {
     color: rgb(249, 201, 18);
 }
-.Info{
-    color: #fff;
-    background: #5bc0de;
+
+.notification{
+    font-size: 16px;
+    padding-left: 10px;
+}
+.notification .fa:hover{
+    color: rgba(85, 85, 85, 0.74);
+    cursor: pointer;
 }
 .Success{
     color: #fff;
     background: #5cb85c;
+    padding-left: 10px;
+}
+.Info{
+    color: #fff;
+    background: #5bc0de;
+    padding-left: 10px;
 }
 .Warning{
     color: #fff;
     background: #d9534f;
+    padding-left: 10px;
 }
 
 .languages {
@@ -136,3 +148,9 @@ html, body {
 	text-decoration: none;
 	padding-left: 10px;
 }
+
+.ngrateit-star{
+    background-size: 32px;
+}
+
+

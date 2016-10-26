@@ -1,5 +1,5 @@
 angular
-    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate', 'ngCookies'])
+    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate', 'ngCookies', 'ngRateIt'])
     .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function ($stateProvider, $urlRouterProvider, $translateProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
         $urlRouterProvider.when('/orders', '/orders/in-progress');

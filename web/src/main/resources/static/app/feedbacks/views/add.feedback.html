@@ -6,12 +6,8 @@
         </h4>
         <div class="row">
             <div class="col-xs-12 form-group">
-                <label class="control-label" for="rateInput">{{ 'rate' | translate }}: </label>
-                <div role="alert" style="color:red;display:inline">
-                    <span class="error" ng-show="newFeedback.rate.$error.required"> - {{ 'required' | translate }}!</span>
-                    <span class="error" ng-show="newFeedback.rate.$error.pattern">{{ 'feedback_error' | translate }} </span>
-                </div>
-                <input style="width: 50px;"  name="rate" ng-model="form.rate" type="number" class="form-control" id="rateInput" ng-pattern="/^([1-9]|[1-4][0-9]|50)$/" required>
+                <label class="control-label">{{ 'rate' | translate }}: </label>
+                <ng-rate-it resetable="false" step="0.2" star-width="32" star-height="32" ng-model="form.rate"></ng-rate-it>
             </div>
             <div class="col-xs-12 form-group">
                 <label class="control-label" for="textInput">{{ 'description' | translate }}: </label>
