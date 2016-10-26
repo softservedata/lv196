@@ -53,4 +53,8 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
                                   @Param("cityToId") Long cityToId,
                                   @Param("weight") BigDecimal weight,
                                   @Param("arrivalDate") Timestamp arrivalDate);
+
+    @Query("select off.order from Offer off where off.car.driver.email = :email " +
+            "and off.order.orderStatus = 'OPEN'")
+    List<Order> getOpenOrdersWithMyOffers(@Param("email") String email);
 }

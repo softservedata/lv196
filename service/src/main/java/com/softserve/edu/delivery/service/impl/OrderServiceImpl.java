@@ -209,6 +209,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDto> getOpenOrdersWithMyOffers(String email) {
+        return orderRepository
+                .getOpenOrdersWithMyOffers(email)
+                .stream()
+                .map(OrderDto::of)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public OrderDto getOrderById(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         if(order == null ) {

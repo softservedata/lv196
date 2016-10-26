@@ -34,7 +34,7 @@ public class FindOrderController {
 
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderDto> open() {
-        logger.info("Method AllOrderController.open()");
+        logger.info("Method FindOrderController.open()");
         return orderService.getAllOpenOrder();
     }
 
@@ -52,7 +52,7 @@ public class FindOrderController {
                 throw new IllegalArgumentException("Incorrect date");
             }
         }
-        logger.info("Method AllOrderController.filter()");
+        logger.info("Method FindOrderController.filter()");
         logger.info("cityFromId = " + cityFromId);                          //will delete it later!!!
         logger.info("cityToId = " + cityToId);                              //will delete it later!!!
         logger.info("weight = " + weight);                                  //will delete it later!!!
@@ -62,9 +62,9 @@ public class FindOrderController {
 
     @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)
     void addOffer(@PathVariable Long id) {
-        logger.info("Method AllOrderController.addOffer()");
-        String email = "email2@gmail.com";                                  //will delete it later!!!
-//        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
+        logger.info("Method FindOrderController.addOffer()");
+//        String email = "email2@gmail.com";                                  //will delete it later!!!
+        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
         offerService.addOffer(id, email);
     }
 }

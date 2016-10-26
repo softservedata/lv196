@@ -70,6 +70,7 @@ public interface OrderService {
     //As transporter I want to choose orders by filter
     List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, BigDecimal weight, Timestamp arrivalDate);
     List<OrderDto> getAllOpenOrder();
-    
+    List<OrderDto> getOpenOrdersWithMyOffers(String email);
+
     OrderDto getOrderById(Long orderId);
 }

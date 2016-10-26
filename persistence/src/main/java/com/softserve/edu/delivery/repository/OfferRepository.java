@@ -20,4 +20,7 @@ public interface OfferRepository extends BaseRepository<Offer, Long> {
 
     @Query("select o from Offer o where o.order.id = :id and o.car.id = :carId")
     List<Offer> getOfferByOrderIdAndCarId(@Param("id")Long orderId, @Param("carId")Long carId);
+
+    @Query("select o from Offer o where o.order.id = :id and o.car.driver.email = :email")
+    List<Offer> findOfferByOrderIdAndDrverId(@Param("id")Long orderId, @Param("email")String email);
 }

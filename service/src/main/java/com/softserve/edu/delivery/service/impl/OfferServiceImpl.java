@@ -50,4 +50,9 @@ public class OfferServiceImpl implements OfferService{
         offer.setCar(car);
         offerRepository.save(offer);
     }
+
+    @Override
+    public void cancelOffer(Long orderId, String email) {
+        offerRepository.delete(offerRepository.findOfferByOrderIdAndDrverId(orderId, email));
+    }
 }

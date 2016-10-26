@@ -7,4 +7,5 @@ public interface OfferService {
 
     //As transporter I want to add Offer on order.
     void addOffer(Long orderId, String email);
+    void cancelOffer(Long orderId, String email);
 }
