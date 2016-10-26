@@ -22,7 +22,7 @@ angular
                 $http.delete('/driver/cancel-offer/' + $orderProperty.getId()).then(response => {
                     console.log("cancelOffer");
                     Notification.success('Thank you, your offer canceled successfully');
+                    $scope.retrieveOpenOrdersWithMyOffers();
                 })
             }
-
         }]);

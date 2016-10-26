@@ -44,8 +44,8 @@ public class DriverController {
     @RequestMapping(path = "cancel-offer/{id}", method = RequestMethod.DELETE)
     void cancelOffer(@PathVariable Long id) {
         logger.info("Method DriverController.cancelOffer()");
-//        String email = "email2@gmail.com";                                  //will delete it later!!!
-        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
+        String email = "email2@gmail.com";                                  //will delete it later!!!
+//        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
         offerService.cancelOffer(id, email);
     }
 

@@ -63,8 +63,8 @@ public class FindOrderController {
     @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)
     void addOffer(@PathVariable Long id) {
         logger.info("Method FindOrderController.addOffer()");
-//        String email = "email2@gmail.com";                                  //will delete it later!!!
-        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
+        String email = "email2@gmail.com";                                  //will delete it later!!!
+//        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
         offerService.addOffer(id, email);
     }
 }
