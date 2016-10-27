@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders', '$utils', 'Notification',
-        function ($scope, $orderProperty, $uibModal, $orders, $utils, Notification) {
+    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders', '$utils', 'Notification', '$rootScope',
+        function ($scope, $orderProperty, $uibModal, $orders, $utils, Notification, $rootScope) {
             $scope.orders = {
                 open: []
             };
@@ -48,7 +48,9 @@ angular
             $scope.showOffers = (order) => {
                 if (order.amountOfOffers == 0) {
                     $scope.primary = function () {
-                        Notification('Info : Sorry there are no offers for your Order at this time');
+                        ($rootScope.lang === 'en') ?
+                            Notification('Info : Sorry there are no offers for your Order at this time'):
+                            Notification('Інформація : Вибачте, але на данний момент немає жодної заявки');
                     };
                     $scope.primary();
                 }
@@ -198,7 +200,8 @@ angular
             }
         }
     ])
-    .controller('showOffersController',['$scope', '$orderProperty', '$http', 'Notification', function ($scope, $orderProperty, $http, Notification, $filter) {
+    .controller('showOffersController',['$scope', '$orderProperty', '$http', 'Notification','$rootScope',
+        function ($scope, $orderProperty, $http, Notification, $rootScope) {
         $scope.offers = {
             offers: []
         };
@@ -206,6 +209,9 @@ angular
         $scope.retrieveOffers = () => {
             $http.get('/order/offers/' + $orderProperty.getId()).then(response => {
                 $scope.offers = response.data;
+                for (var i=0;i<$scope.offers.length;i++){
+                    $scope.offers[i].rate = $scope.offers[i].rate/10;
+                }
             })
         };
         $scope.retrieveOffers();
@@ -238,7 +244,9 @@ angular
                 $scope.retrieveOffers();
             });
             $scope.info = function() {
-                Notification.success('Success : Succesful change Offer status');
+                ($rootScope.lang === 'en') ?
+                    Notification.success('Success : Succesful change Offer status'):
+                    Notification.success('Успіх : Успішно змінено статус заявки');
             };
             $scope.info();
         };

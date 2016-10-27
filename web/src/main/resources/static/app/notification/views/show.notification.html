@@ -8,12 +8,15 @@
 <div class="site-content orders">
     <ui-view></ui-view>
 </div>
-
 <div class="panel-body notification">
 <div data-ng-repeat="notification in notifications track by notification.notificationId"  class="panel panel-default">
         <div class="{{notification.notificationStatus}}">
-            <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
-              {{ 'status' | translate }}:  {{notification.notificationStatus}}
+            <div style="display:inline">
+                {{ 'status' | translate }}:  {{notification.notificationStatus}}
+                <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
+                <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
+                </span>
+            </div>
            <p>{{ 'message' | translate }}: {{notification.message}}
         </div>
 </div>

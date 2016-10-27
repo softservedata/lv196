@@ -32,7 +32,7 @@ public class OfferDtoForList {
                 .setCustomerEmail(customer.getEmail())
                 .setRate(offer.getCar().getDriver().getRate())
                 .setCarPhoto(offer.getCar().getVehicleFrontPhotoURL())
-                .setDriverName(offer.getCar().getDriver().getFirstName() + " " + offer.getCar().getDriver().getFirstName())
+                .setDriverName(offer.getCar().getDriver().getFirstName() + " " + offer.getCar().getDriver().getLastName())
                 .setCustomerName(customer.getFirstName() + " " + customer.getLastName());
         return offerDto;
     }

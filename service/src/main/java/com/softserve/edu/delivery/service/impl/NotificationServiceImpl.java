@@ -74,7 +74,7 @@ public class NotificationServiceImpl implements NotificationService {
             String text = status + " notification: " + message;
             messageHelper.setText(text, true);
         };
-        mailSender.send(messagePreparator);
+//        mailSender.send(messagePreparator);
     }
 
     @Override
