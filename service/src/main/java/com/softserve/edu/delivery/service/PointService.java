@@ -8,6 +8,6 @@ import java.math.BigDecimal;
  * Created by Natalia on 12.10.2016.
  */
 public interface PointService {
-    void savePlace(Point point);
+    void savePleace(Point point);
     void deleteAll();
 }
