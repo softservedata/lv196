@@ -23,11 +23,14 @@ public class PointServiceImpl implements PointService{
         this.routeCitiesRepository = routeCitiesRepository;
     }
     @Override
-    public void savePleace(Point point){
-        City city = new City();
-        city.setLatitude(point.getX());
-        city.setLongitude(point.getY());
-        RouteCities routeCities = new RouteCities(city, new Timestamp(new java.util.Date().getTime()));
+    public void savePlace(Point point){
+        Timestamp now = new Timestamp(new java.util.Date().getTime());
+
+        RouteCities routeCities = new RouteCities();
+        routeCities.setVisitDate(now);
+        routeCities.setLatitude(point.getX());
+        routeCities.setLongitude(point.getY());
+
         routeCitiesRepository.save(routeCities);
     }
     @Override

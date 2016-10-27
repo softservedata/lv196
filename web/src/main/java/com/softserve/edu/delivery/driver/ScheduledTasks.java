@@ -40,7 +40,7 @@ public class ScheduledTasks {
         }
         Point point = points.get(count++);
         System.out.println(point);
-        pointService.savePleace(point);
+        pointService.savePlace(point);
 
         return point;
 

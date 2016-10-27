@@ -16,8 +16,6 @@ public class City {
     private Region region;
 
     private String cityName;
-    private Double latitude;
-    private Double longitude;
 
     public City() {
     }
@@ -57,24 +55,6 @@ public class City {
 
     public City setRegion(Region region) {
         this.region = region;
-        return this;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public City setLatitude(Double latitude) {
-        this.latitude = latitude;
-        return this;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public City setLongitude(Double longitude) {
-        this.longitude = longitude;
         return this;
     }
 

@@ -28,16 +28,22 @@ public class RouteCities {
     @JoinColumn(name = "city_id")
     private City city;
 
+    private Double latitude;
+    private Double longitude;
+
     private Timestamp visitDate;
     
     public RouteCities() {
     }
-    
-    public RouteCities(City city, Timestamp visitDate) {
+
+
+    public RouteCities(Order route, City city, Double latitude, Double longitude, Timestamp visitDate) {
+        this.route = route;
         this.city = city;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.visitDate = visitDate;
     }
-
 
     public Long getRouteCityId() {
         return routeCityId;
@@ -83,5 +89,21 @@ public class RouteCities {
         RouteCities routeCities = (RouteCities) o;
         return Objects.equals(routeCityId, routeCities.routeCityId);
     }
-    
+
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
 }

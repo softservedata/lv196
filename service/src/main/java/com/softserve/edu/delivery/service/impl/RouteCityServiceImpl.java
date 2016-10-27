@@ -27,8 +27,7 @@ public class RouteCityServiceImpl implements RouteCityService{
         List<RouteCities> routeCities = routeCitiesRepository.findRouteCitiesByOrderId(orderId);
         List<RouteCityDTO> routeCityDTOs = new ArrayList<>();
         for (RouteCities routeCity : routeCities) {
-            LocationDto locationDto = routeCity.getCity() != null ? 
-                    LocationDto.of(routeCity.getCity()) : null;
+            LocationDto locationDto = LocationDto.of(routeCity);
             RouteCityDTO routeCityDTO = new RouteCityDTO(locationDto, 
                     new Date(routeCity.getVisitDate().getTime()));
             

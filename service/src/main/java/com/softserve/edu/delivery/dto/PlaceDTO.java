@@ -40,7 +40,7 @@ public class PlaceDTO {
     }
 
    public static PlaceDTO convertEntity(RouteCities routeCities){
-        return new PlaceDTO(new Point(routeCities.getCity().getLatitude(), routeCities.getCity().getLongitude()), 
+        return new PlaceDTO(new Point(routeCities.getLatitude(), routeCities.getLongitude()),
                 routeCities.getVisitDate().toString());
     }
 

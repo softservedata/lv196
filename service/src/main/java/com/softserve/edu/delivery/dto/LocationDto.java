@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
+import com.softserve.edu.delivery.domain.RouteCities;
 import com.softserve.edu.delivery.domain.State;
 
 public class LocationDto {
@@ -17,8 +18,16 @@ public class LocationDto {
 
     public LocationDto() {}
 
+    public static LocationDto of(RouteCities routeCities) {
+        Objects.requireNonNull(routeCities, "No route city found");
+
+        City city = routeCities.getCity();
+        return LocationDto.of(city);
+    }
+
     public static LocationDto of(City city) {
         Objects.requireNonNull(city, "No city found");
+
         Optional<Region> regionOptional = Optional.ofNullable(city.getRegion());
 
         String regionName = regionOptional.map(Region::getRegionName).orElse(null);
@@ -32,9 +41,7 @@ public class LocationDto {
                 .setCityId(city.getCityId())
                 .setCityName(city.getCityName())
                 .setRegionName(regionName)
-                .setStateName(stateName)
-                .setLatitude(city.getLatitude())
-                .setLongitude(city.getLongitude());
+                .setStateName(stateName);
     }
 
     public Long getCityId() {
