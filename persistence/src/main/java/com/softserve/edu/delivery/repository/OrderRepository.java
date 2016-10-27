@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,4 +58,12 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     @Query("select off.order from Offer off where off.car.driver.email = :email " +
             "and off.order.orderStatus = 'OPEN'")
     List<Order> getOpenOrdersWithMyOffers(@Param("email") String email);
+
+    @Query("select off.order from Offer off where off.car.driver.email = :email " +
+            "and off.order.orderStatus = 'IN_PROGRESS'")
+    List<Order> getMyOrdersInProgress(@Param("email") String email);
+
+    @Query("select off.order from Offer off where off.car.driver.email = :email " +
+            "and off.order.orderStatus = 'CLOSED'")
+    List<Order> getMyOrdersClosed(@Param("email") String email);
 }

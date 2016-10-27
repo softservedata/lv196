@@ -33,22 +33,33 @@ public class DriverController {
 
     private final Logger logger = LoggerFactory.getLogger(FindOrderController.class.getName());
 
+    private final String email = "email2@gmail.com";                            //will delete it later!!!
+
     @RequestMapping(path = "my-offers", method = RequestMethod.GET)
     List<OrderDto> myOffers() {
         logger.info("Method DriverController.myOffers()");
-        String email = "email2@gmail.com";                                  //will delete it later!!!
-//        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
+//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
         return orderService.getOpenOrdersWithMyOffers(email);
+    }
+
+    @RequestMapping(path = "my-orders-in-progress", method = RequestMethod.GET)
+    List<OrderDto> myOrdersInProgress() {
+        logger.info("Method DriverController.myOrdersInProgress()");
+//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
+        return orderService.getMyOrdersInProgress(email);
+    }
+
+    @RequestMapping(path = "my-orders-closed", method = RequestMethod.GET)
+    List<OrderDto> myOrdersClosed() {
+        logger.info("Method DriverController.myOrdersClosed()");
+//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
+        return orderService.getMyOrdersClosed(email);
     }
 
     @RequestMapping(path = "cancel-offer/{id}", method = RequestMethod.DELETE)
     void cancelOffer(@PathVariable Long id) {
         logger.info("Method DriverController.cancelOffer()");
-        String email = "email2@gmail.com";                                  //will delete it later!!!
-//        String email = authenticationDetails.getAuthenticatedUserEmail(); //will use it later.
+//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
         offerService.cancelOffer(id, email);
     }
-
-
-
 }

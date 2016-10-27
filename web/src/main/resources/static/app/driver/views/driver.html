@@ -4,19 +4,19 @@
             <span class="navbar-brand">{{ 'driver_menu' | translate }}</span>
         </div>
         <div class="input-group" style="margin-top: 5mm; float: right">
-            <input class="btn btn-default btn-sm" ng-click="redirect()" value="{{ 'find_newOrder' | translate }}">
+            <button type="button" class="btn btn-default btn-sm" ng-click="redirect()">{{ 'find new order' | translate }}</button>
         </div>
     </div>
 </div>
 <div class="my-offers" style="margin-top: 20mm">
     <uib-accordion close-others="true">
         <div uib-accordion-group class="panel-default" heading="Open orders with my offers"
-             is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+             is-open="false">
             <div class="main">
                 <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
                     <div class="panel-body">
                         <div class="order-actions">
-                            <button type="button" class="btn btn-danger btn-sm" ng-click="cancelOffer(order.id)">{{ 'cancel_offer' | translate }}</button>
+                            <button type="button" class="btn btn-danger btn-sm" ng-click="cancelOffer(order.id)">{{ 'cancel offer' | translate }}</button>
                         </div>
                         <div class="order-city" ng-click="status.open = !status.open">
                             {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
@@ -26,17 +26,112 @@
                                 <div uib-accordion-group is-open="status.open">
                                     <div class="row">
                                         <div class="col-sm-12 form-group">
-                                <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
-                                    {{order.locationFrom.regionName}}, {{order.locationFrom.stateName}} &mdash;
-                                    {{order.locationTo.regionName}}, {{order.locationTo.stateName}}</span>
+                                            <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                                {{order.locationFrom.regionName}}, {{order.locationFrom.stateName}} &mdash;
+                                                {{order.locationTo.regionName}}, {{order.locationTo.stateName}}</span>
                                         </div>
                                         <div class="col-sm-12 form-group">
-                                <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
-                                    {{ 'Dimensions:' | translate }} {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                            <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                                {{ 'Dimensions:' | translate }} {{order.height}} / {{order.width}} / {{order.length}}</span>
                                         </div>
                                         <div class="col-sm-12 form-group">
-                                <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
-                                    {{ 'Description:' | translate }} {{order.description}}</span>
+                                            <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                {{ 'Description:' | translate }} {{order.description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                        <div class="order-subinfo">
+                            <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+                            <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>{{ 'weight' | translate }} {{order.weight | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="my-orders-in-progress">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="My orders in progress"
+             is-open="false">
+            <div class="main">
+                <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
+                    <div class="panel-body">
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="chatRedirect()">{{ 'chat' | translate }}</button>
+                        </div>
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="trackingRedirect()">{{ 'tracking' | translate }}</button>
+                        </div>
+                        <div class="order-city" ng-click="status.open = !status.open">
+                            {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
+                        </div>
+                        <div class="order-details">
+                            <uib-accordion close-others="true">
+                                <div uib-accordion-group is-open="status.open">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                                {{order.locationFrom.regionName}}, {{order.locationFrom.stateName}} &mdash;
+                                                {{order.locationTo.regionName}}, {{order.locationTo.stateName}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                                {{ 'Dimensions:' | translate }} {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                {{ 'Description:' | translate }} {{order.description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                        <div class="order-subinfo">
+                            <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+                            <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>{{ 'weight' | translate }} {{order.weight | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="my-closed-orders">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="My closed orders"
+             is-open="false">
+            <div class="main">
+                <div ng-repeat="order in orders.closed track by $index" class="panel panel-default order-open">
+                    <div class="panel-body">
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="addFeedback()">{{ 'add feedback' | translate }}</button>
+                        </div>
+                        <div class="order-city" ng-click="status.open = !status.open">
+                            {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
+                        </div>
+                        <div class="order-details">
+                            <uib-accordion close-others="true">
+                                <div uib-accordion-group is-open="status.open">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                                {{order.locationFrom.regionName}}, {{order.locationFrom.stateName}} &mdash;
+                                                {{order.locationTo.regionName}}, {{order.locationTo.stateName}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                                {{ 'Dimensions:' | translate }} {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                {{ 'Description:' | translate }} {{order.description}}</span>
                                         </div>
                                     </div>
                                 </div>

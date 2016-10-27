@@ -71,6 +71,8 @@ public interface OrderService {
     List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, BigDecimal weight, Timestamp arrivalDate);
     List<OrderDto> getAllOpenOrder();
     List<OrderDto> getOpenOrdersWithMyOffers(String email);
+    List<OrderDto> getMyOrdersInProgress(String email);
+    List<OrderDto> getMyOrdersClosed(String email);
 
     OrderDto getOrderById(Long orderId);
 }
