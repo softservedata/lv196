@@ -24,20 +24,16 @@ public class RouteCities {
     @JoinColumn(name = "order_id")
     private Order route;
     
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
-
     private Timestamp visitDate;
+    private Double latitude;
+    private Double longitude;
     
     public RouteCities() {
     }
     
-    public RouteCities(City city, Timestamp visitDate) {
-        this.city = city;
+    public RouteCities(Timestamp visitDate) {
         this.visitDate = visitDate;
     }
-
 
     public Long getRouteCityId() {
         return routeCityId;
@@ -45,10 +41,6 @@ public class RouteCities {
 
     public Order getRoute() {
         return route;
-    }
-
-    public City getCity() {
-        return city;
     }
 
     public Timestamp getVisitDate() {
@@ -63,12 +55,31 @@ public class RouteCities {
         this.route = route;
     }
 
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     public void setVisitDate(Timestamp visitDate) {
         this.visitDate = visitDate;
+    }
+
+    public RouteCities(Timestamp visitDate, Double latitude, Double longitude) {
+        this.visitDate = visitDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     @Override

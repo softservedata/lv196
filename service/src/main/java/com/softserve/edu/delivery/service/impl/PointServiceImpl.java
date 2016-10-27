@@ -24,10 +24,7 @@ public class PointServiceImpl implements PointService{
     }
     @Override
     public void savePleace(Point point){
-        City city = new City();
-        city.setLatitude(point.getX());
-        city.setLongitude(point.getY());
-        RouteCities routeCities = new RouteCities(city, new Timestamp(new java.util.Date().getTime()));
+        RouteCities routeCities = new RouteCities(new Timestamp(new java.util.Date().getTime()), point.getX(), point.getY());
         routeCitiesRepository.save(routeCities);
     }
     @Override
