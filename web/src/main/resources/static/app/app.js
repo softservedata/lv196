@@ -78,4 +78,6 @@ angular
 	  		.preferredLanguage('en')
 	  		.useLocalStorage()
 	  		.useMissingTranslationHandlerLog();
+  	  	
+  	  $translateProvider.useSanitizeValueStrategy('escapeParameters');
     }]);

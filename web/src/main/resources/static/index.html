@@ -44,7 +44,7 @@
                 </div>
                 <div class="user-name">Martin Odersky</div>
             </div>
-            <div class="sidebar-menu hidden-xs">
+            <div class="sidebar-menu hidden-xs" ng-cloak disable-animate>
                 <a ui-sref="profile" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     {{ 'profile' | translate }}
@@ -84,13 +84,13 @@
 
             <div class="sidebar-footer hidden-xs">
                 <h3>Delivery</h3>
-            </div>
-			<div class="languages" ng-controller="LanguageSwitchController">
+                <div class="languages" ng-controller="LanguageSwitchController">
   					<a ng-class="{'lang-on':lang=='uk', 'lang-off':lang!=='uk'}"
   					   ng-click="changeLanguage('uk')" translate="lang_uk"></a>
   					<a ng-class="{'lang-on':lang=='en', 'lang-off':lang!=='en'}"
   					   ng-click="changeLanguage('en')" translate="lang_en"></a>
-			</div>
+				</div>
+            </div>
             <div class="nav visible-xs">
             </div>
 
