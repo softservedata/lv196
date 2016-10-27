@@ -72,5 +72,14 @@
 	"notifications": "Сповіщення",
 	"message": "Повідомлення",
 	"search_pleace": "Місце пошуку",
-  	"user_profiles": "Профілі користувачів"
+	"user_profiles": "Профілі користувачів",
+	"driver_open": "Відкриті замовлення з пропозиціями",
+	"orders_inPrigress": "Активні замовлення",
+	"orders_closed": "Закриті замовлення",
+	"dimensions": "Розміри",
+	"chat": "чат",
+	"track": "відслідкувати",
+	"add_feedback": "додати відгук",
+	"cancel_offer": "відмінити пропозицію"
+  	
 }

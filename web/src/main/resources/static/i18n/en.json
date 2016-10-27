@@ -72,6 +72,15 @@
 	"notifications": "Notifications",
 	"message": "Message",
 	"search_pleace": "Place search",
-  	"user_profiles": "User profiles"
+	"user_profiles": "User profiles",
+	"driver_open": "Open orders with offers",
+	"orders_inPrigress": "My orders in progress",
+	"orders_closed": "Closed orders ",
+	"dimensions": "Dimensions",
+	"chat": "chat",
+	"track": "track",
+	"add_feedback": "add feedback",
+	"cancel_offer": "cancel offer"
+  	
 
 }
