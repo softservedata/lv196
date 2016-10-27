@@ -26,23 +26,23 @@
                         <div class="col-sm-2 form-group">
                             <label class="control-label">{{ 'length' | translate }}: {{order.length}} </label>
                         </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label">{{ 'description' | translate }}: {{order.description}}</label>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4 form-group">
                             <img width="220px" ng-src="{{order.carPhoto}}">
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            <label class="control-label">{{ 'description' | translate }}: {{order.description}}</label>
-                        </div>
-                        <div class="col-sm-4 form-group">
-                            <label class="control-label">{{ 'driver' | translate }}: {{order.driverName}} </label>
                         </div>
                     </div>
                 </div>
             </uib-accordion>
         </div>
         <div class="order-subinfo">
-            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+            <span class="order-sub">
+                <i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}
+                <i class="fa fa-car" aria-hidden="true"></i>{{order.driverName}}
+            </span>
         </div>
     </div>
 </div>
