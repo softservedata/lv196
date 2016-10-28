@@ -54,7 +54,7 @@
 <!--Tracking box-->
 
 <div id="track_container" class="signin centered">
-    <h3>Track your luggage</h3>
+    <h3>Track your baggage</h3>
     <c:if test="${msg != null}">
         <h4>${msg}</h4>
     </c:if>

@@ -9,7 +9,10 @@ import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 import java.util.List;
 
@@ -26,18 +29,21 @@ public class OrderController {
 
     Logger logger = LoggerFactory.getLogger(OrderController.class.getName());
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "in-progress", method = RequestMethod.GET)
     List<OrderDto> inProgress() {
         String email = "martin@gmail.com";
         return orderService.findInProgressOrders(email);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderDto> open() {
         String email = "martin@gmail.com";
         return orderService.findOpenOrders(email);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "closed", method = RequestMethod.GET)
     List<OrderDto> closed() {
 //        String email = authenticationDetails.getAuthenticatedUserEmail();
@@ -45,24 +51,28 @@ public class OrderController {
         return orderService.findAllClosedOrders(email);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(method = RequestMethod.POST)
     void addOrder(@RequestBody OrderDto dto) {
         String email = "martin@gmail.com";
         orderService.addOrder(dto, email);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(method = RequestMethod.PUT)
     void updateOrder(@RequestBody OrderDto dto) {
         String email = "martin@gmail.com";
         orderService.updateOrder(dto, email);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
     void removeOrder(@PathVariable Long id) {
         notification.removeOrder(id);
         orderService.removeOrder(id);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
     void addFeedback(@RequestBody FeedbackDTO dto) {
         logger.info("Method OrderController.addFeedback()");
@@ -71,6 +81,7 @@ public class OrderController {
         orderService.addFeedback(dto, email);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.PUT)
     void updateFeedback(@RequestBody FeedbackDTO dto) {
         logger.info("Method OrderController.updateFeedback()");
@@ -79,12 +90,14 @@ public class OrderController {
         orderService.updateFeedback(dto, email);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "getFeedback/{id}", method = RequestMethod.GET)
     FeedbackDTO getFeedback(@PathVariable Long id) {
         logger.info("Method OrderController.getFeedback()");
         return orderService.getFeedback(id);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "change", method = RequestMethod.PUT)
     void changeOfferStatus(@RequestBody OfferDtoForList offerDto) {
         logger.info("Method OrderController.changeOfferStatus()");
@@ -92,6 +105,7 @@ public class OrderController {
         notification.changeOfferStatus(offerDto);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "offers/{id}", method = RequestMethod.GET)
     List<OfferDtoForList> getOffersByOrderId(@PathVariable Long id) {
         logger.info("Method OrderController.getOfferByOrderId()");

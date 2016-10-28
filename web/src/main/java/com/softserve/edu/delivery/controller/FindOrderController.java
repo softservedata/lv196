@@ -7,7 +7,10 @@ import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -32,12 +35,14 @@ public class FindOrderController {
 
     private final Logger logger = LoggerFactory.getLogger(FindOrderController.class.getName());
 
+    @PreAuthorize(DRIVER)
     @RequestMapping(path = "open", method = RequestMethod.GET)
     List<OrderDto> open() {
         logger.info("Method FindOrderController.open()");
         return orderService.getAllOpenOrder();
     }
 
+    @PreAuthorize(DRIVER)
     @RequestMapping (path = "filtered-orders", method = RequestMethod.GET)
     List<OrderDto> filter (@RequestParam (required = false) Long cityFromId,
                            @RequestParam (required = false) Long cityToId,
@@ -60,6 +65,7 @@ public class FindOrderController {
         return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate);
     }
 
+    @PreAuthorize(DRIVER)
     @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)
     void addOffer(@PathVariable Long id) {
         logger.info("Method FindOrderController.addOffer()");

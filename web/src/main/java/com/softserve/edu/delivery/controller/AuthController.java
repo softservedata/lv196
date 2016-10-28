@@ -1,6 +1,5 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.OrderIdDto;
 import com.softserve.edu.delivery.dto.UserAuthDTO;
@@ -21,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
+
 @Controller
 public class AuthController {
 
@@ -33,14 +34,11 @@ public class AuthController {
     private final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
 
     @RequestMapping(value = {"/welcome"})
-    public ModelAndView welcome(@RequestParam(value = "nf", required = false) String notFound) {
+    public ModelAndView welcome() {
         logger.info("In method AuthController.welcome()");
         ModelAndView mv = new ModelAndView();
         mv.addObject("orderIdDto", new OrderIdDto());
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
-        if (notFound != null && notFound.equals("true")) {
-            mv.addObject("msg", "Page not found");
-        }
         mv.setViewName("welcome");
         logger.info("Out of method AuthController.welcome()");
         return mv;
@@ -49,12 +47,12 @@ public class AuthController {
     @RequestMapping(value = "/login")
     public ModelAndView signIn(@RequestParam(value = "auth", required = false) String auth,
                                @RequestParam(value = "logout", required = false) String logout){
-        logger.info("In method AuthController.login()");
+        logger.info("In method AuthController.signIn()");
 
         ModelAndView mv = new ModelAndView();
         if (auth != null && auth.equals("false")) {
             mv.addObject("msg", "You fill wrong credentials or email wasn't verified");
-        }else if (logout != null && logout.equals("true")) {
+        }else if (logout != null) {
             mv.addObject("msg", "You've successfully logout");
         }
         mv.addObject("userAuthDto", new UserAuthDTO());
@@ -65,12 +63,24 @@ public class AuthController {
         return mv;
     }
 
-    @RequestMapping(value = "/authRedirect", method = RequestMethod.GET)
-    public ModelAndView loginProcess() {
+    @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
+    public ModelAndView loginProcess(@ModelAttribute("userAuthDto") @Valid UserAuthDTO userAuthDTO,
+                                     BindingResult result) {
         logger.info("In method AuthController.loginProcess()");
+        if (result.hasErrors()) {
+            logger.error("Binding error in AuthController().loginProcess(), user: " + userAuthDTO.getEmail());
+            return new ModelAndView("login", "userAuthDto", userAuthDTO);
+        }
+        logger.info("Out of method AuthController.loginProcess()");
+        return new ModelAndView("redirect:/welcome");
+    }
+
+    @RequestMapping(value = "/authRedirect", method = RequestMethod.GET)
+    public ModelAndView authRedirect() {
+        logger.info("In method AuthController.authRedirect()");
         ModelAndView mv = new ModelAndView();
         mv.setViewName(roleRedirect());
-        logger.info("Out of method AuthController.loginProcess()");
+        logger.info("Out of method AuthController.authRedirect()");
         return mv;
     }
 
@@ -148,38 +158,28 @@ public class AuthController {
         logger.error("Access Denied. Role isn't allow to get this resource. Method AuthController.accessDenied()");
         ModelAndView mv = new ModelAndView();
         mv.addObject("msg", "Access denied");
+        mv.addObject("orderIdDto", new OrderIdDto());
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("welcome");
         return mv;
     }
-
-    private static final String CUSTOMER_ROLE = Role.CUSTOMER.getName();
-    private static final String DRIVER_ROLE = Role.DRIVER.getName();
-    private static final String ADMIN_ROLE = Role.ADMIN.getName();
-    private static final String MODERATOR_ROLE = Role.MODERATOR.getName();
-
-    private static final String WELCOME_PAGE = "/welcome";
-    private static final String CUSTOMER_PATH = "/#/orders/open";
-    private static final String DRIVER_PATH = "/#/find-order/open";
-    private static final String ADMIN_PATH = "/#/users";
-    private static final String MODERATOR_PATH = "/#/feedbacks";
 
     private String roleRedirect() {
         logger.info("In method AuthController.roleRedirect()");
         String authRole = this.authenticationDetails.getAuthenticatedUserRole();
         logger.info("Role of user is: " + authRole);
         if (authRole.equals(CUSTOMER_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + CUSTOMER_PATH);
-            return "redirect:" + CUSTOMER_PATH;
+            logger.info("AuthController.roleRedirect() return: " + CUSTOMER_PAGE);
+            return "redirect:" + CUSTOMER_PAGE;
         } else if (authRole.equals(DRIVER_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + DRIVER_PATH);
-            return "redirect:" + DRIVER_PATH;
+            logger.info("AuthController.roleRedirect() return: " + DRIVER_PAGE);
+            return "redirect:" + DRIVER_PAGE;
         } else if (authRole.equals(ADMIN_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + ADMIN_PATH);
-            return "redirect:" + ADMIN_PATH;
+            logger.info("AuthController.roleRedirect() return: " + ADMIN_PAGE);
+            return "redirect:" + ADMIN_PAGE;
         } else if (authRole.equals(MODERATOR_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + MODERATOR_PATH);
-            return "redirect:" + MODERATOR_PATH;
+            logger.info("AuthController.roleRedirect() return: " + MODERATOR_PAGE);
+            return "redirect:" + MODERATOR_PAGE;
         } else {
             logger.info("AuthController.roleRedirect() return: " + WELCOME_PAGE);
             return "redirect:" + WELCOME_PAGE;

@@ -58,7 +58,8 @@ a:hover {
     margin-top: 0.8em;
 }
 input.lock {
-    background:url(../images/lock.png)no-repeat 7px 9px;
+    background-repeat: no-repeat;
+    background-position: 7px 9px;
 }
 .john-text input[type="text"] {
     font-size: 1em;
@@ -121,11 +122,13 @@ input.lock {
     font-family: 'Roboto Condensed', sans-serif;
 }
 input.email {
-    background: url(../images/mail.png)no-repeat 10px 10px;
+    background-repeat: no-repeat;
+    background-position: 10px 10px;
 }
 
 .john-text input[type="text"]{
-    background: url(../images/pen.png)no-repeat 10px 10px;
+    background-repeat: no-repeat;
+    background-position: 10px 10px;
 }
 
 .johndoe-right input[type="submit"] {
@@ -231,7 +234,8 @@ span.mess1 {
     vertical-align: sub;
 }
 .mess input.user{
-    background: url(../images/mail.png)no-repeat 6px 7px;
+    background-repeat: no-repeat;
+    background-position: 6px 7px;
 }
 
 .mess input[type="password"] {
@@ -317,19 +321,27 @@ ul.with-login li a {
     display: block;
 }
 ul.with-login li a.fb {
-    background: url(../images/fa.png)no-repeat 30px 11px #0172b8;
+    background-color: #0172b8;
+    background-repeat: no-repeat;
+    background-position: 30px 11px;
     text-align: center;
 }
 ul.with-login a.tw {
-    background:url(../images/tw.png)no-repeat 35px 11px #1fb2e6;
+    background-repeat: no-repeat;
+    background-color: #1fb2e6;
+    background-position: 35px 11px;
     text-align: center;
 }
 ul.with-login li a.fb:hover {
-    background: url(../images/fa.png)no-repeat 30px 11px #1fb2e6;
+    background-repeat: no-repeat;
+    background-color: #1fb2e6;
+    background-position: 30px 11px;
     text-align: center;
 }
 ul.with-login a.tw:hover {
-    background:url(../images/tw.png)no-repeat 35px 11px #0172b8;
+    background-repeat: no-repeat;
+    background-color: #0172b8;
+    background-position: 35px 11px;
     text-align: center;
 }
 .lost-password a {
@@ -368,7 +380,8 @@ span.checkbox1 {
 }
 .checkbox input + i:after {
 	content: '';
-	background: url("../images/tic2.png") no-repeat 5px 5px;
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
 	top: -1px;
 	left: -1px;
 	width: 15px;
@@ -589,7 +602,8 @@ span.checkbox1 {
     font-family: 'Roboto Condensed', sans-serif;
 }
 .signup input.user {
-    background: url(../images/user.png)no-repeat 6px 7px;
+    background-repeat: no-repeat;
+    background-position: 6px 7px;
 }
 .signup input[type="password"] {
     font-size: 1em;
@@ -720,7 +734,9 @@ span.checkbox1 {
     font-family: 'Roboto Condensed', sans-serif;
 }
 .small-contact-main input[type="submit"] {
-    background: url(../images/search.png)no-repeat 14px 18px #DF4231;
+    background-color: #DF4231;
+    background-repeat: no-repeat;
+    background-position: 14px 18px;
     width: 53px;
     height: 53px;
     display: inline-block;
@@ -730,7 +746,9 @@ span.checkbox1 {
     border-radius: 0px 3px 3px 0px;
 }
 .small-contact-main input[type="submit"]:hover{
-	 background:url(../images/search.png)no-repeat 14px 18px #1FB2E6;
+    background-repeat: no-repeat;
+    background-position: 14px 18px;
+    background-color: #1FB2E6;
     transition: 0.5s all;
   -webkit-transition: 0.5s all;
   -moz-transition: 0.5s all;
@@ -860,18 +878,26 @@ ul.with-login li {
     padding: 2.8em 2em;
 }
 ul.with-login li a.fb {
-    background: url(../images/fa.png)no-repeat 22px 12px #0172b8;
+    background-repeat: no-repeat;
+    background-position: 22px 12px;
+    background-color: #0172b8;
     text-align: center;
 }
 ul.with-login li a.fb:hover{
-    background: url(../images/fa.png)no-repeat 22px 12px #1fb2e6;
+    background-repeat: no-repeat;
+    background-position: 22px 12px;
+    background-color: #1fb2e6;
     text-align: center;
 }
 ul.with-login a.tw {
-    background: url(../images/tw.png)no-repeat 25px 13px #1fb2e6;
+    background-repeat: no-repeat;
+    background-position: 25px 13px;
+    background-color: #1fb2e6;
 }
 ul.with-login a.tw:hover {
-    background: url(../images/tw.png)no-repeat 25px 13px #0172b8;
+    background-repeat: no-repeat;
+    background-position: 25px 13px;
+    background-color: #0172b8;
 }
 .johndoe-left {
     float: none;
@@ -1178,12 +1204,16 @@ span.checkbox1 {
     padding: 13px 10px;
 }
 .small-contact-main input[type="submit"] {
-    background: url(../images/search.png)no-repeat 13px 12px #DF4231;
+    background-repeat: no-repeat;
+    background-position: 13px 12px;
+    background-color: #DF4231;
     width: 43px;
     height: 45px;
 }
 .small-contact-main input[type="submit"]:hover {
-    background: url(../images/search.png)no-repeat 13px 12px #1FB2E6;
+    background-repeat: no-repeat;
+    background-position: 13px 12px;
+    background-color: #1FB2E6;
 }
 .small-contact-text {
     top: 11%;
@@ -1227,7 +1257,8 @@ span.checkbox1 {
     padding: 0.5em 0.5em 0.5em 0.8em;
 }
 input.email {
-    background: url(../images/mail.png)no-repeat 6px 7px;
+    background-repeat: no-repeat;
+    background-position: 6px 7px;
 }
 .john-text input[type="submit"] {
     font-size: 0.9em;
@@ -1239,7 +1270,8 @@ input.email {
     padding: 0.5em 0.5em 0.5em 0.8em;
 }
 input.lock {
-    background: url(../images/lock.png)no-repeat 7px 5px;
+    background-repeat: no-repeat;
+    background-position: 7px 5px;
 }
 .johndoe-right input[type="submit"] {
     font-size: 0.9em;
@@ -1275,16 +1307,24 @@ ul.with-login li a {
     padding: 0.5em 0.8em 0.5em 2em;
 }
 ul.with-login li a.fb {
-    background: url(../images/fa.png)no-repeat 16px 6px #0172b8;
+    background-repeat: no-repeat;
+    background-position: 16px 6px;
+    background-color: #0172b8;
 }
 ul.with-login li a.fb:hover {
-    background: url(../images/fa.png)no-repeat 16px 6px #1fb2e6;
+    background-repeat: no-repeat;
+    background-position: 16px 6px;
+    background-color: #1fb2e6;
 }
 ul.with-login a.tw {
-    background: url(../images/tw.png)no-repeat 18px 6px #1fb2e6;
+    background-repeat: no-repeat;
+    background-position: 18px 6px;
+    background-color: #1fb2e6;
 }
 ul.with-login a.tw:hover {
-    background: url(../images/tw.png)no-repeat 18px 6px #0172b8;
+    background-repeat: no-repeat;
+    background-position: 18px 6px;
+    background-color: #0172b8;
 }
 .left-forgot h3 {
     font-size: 1.2em;
@@ -1396,12 +1436,16 @@ ul.with-login a.tw:hover {
     padding: 4px 7px;
 }
 .small-contact-main input[type="submit"] {
-    background: url(../images/search.png)no-repeat 14px 9px #DF4231;
+    background-repeat: no-repeat;
+    background-position: 14px 9px;
+    background-color: #DF4231;
     height: 37px;
     width: 47px;
 }
 .small-contact-main input[type="submit"]:hover {
-    background: url(../images/search.png)no-repeat 14px 9px #1FB2E6;
+    background-repeat: no-repeat;
+    background-position: 14px 9px;
+    background-color: #1FB2E6;
 }
 .small-contact-main input.hola[type="text"] {
     padding: 9px 10px;

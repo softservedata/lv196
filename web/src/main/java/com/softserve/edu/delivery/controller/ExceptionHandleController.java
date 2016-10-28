@@ -19,7 +19,7 @@ public class ExceptionHandleController {
     public ModelAndView errorHandle(ApplicationException ex) {
         logger.error("In method ExceptionHandleController.errorHandle().");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("404");
+        mv.setViewName("redirect:/welcome");
         mv.addObject("msg", ex.getMessage());
         return mv;
     }

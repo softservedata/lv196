@@ -7,10 +7,13 @@ import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 import java.util.List;
 
@@ -33,8 +36,10 @@ public class DriverController {
 
     private final Logger logger = LoggerFactory.getLogger(FindOrderController.class.getName());
 
+
     private final String email = "email2@gmail.com";                            //will delete it later!!!
 
+    @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-offers", method = RequestMethod.GET)
     List<OrderDto> myOffers() {
         logger.info("Method DriverController.myOffers()");
@@ -42,6 +47,7 @@ public class DriverController {
         return orderService.getOpenOrdersWithMyOffers(email);
     }
 
+    @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-orders-in-progress", method = RequestMethod.GET)
     List<OrderDto> myOrdersInProgress() {
         logger.info("Method DriverController.myOrdersInProgress()");
@@ -49,6 +55,7 @@ public class DriverController {
         return orderService.getMyOrdersInProgress(email);
     }
 
+    @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-orders-closed", method = RequestMethod.GET)
     List<OrderDto> myOrdersClosed() {
         logger.info("Method DriverController.myOrdersClosed()");
@@ -56,6 +63,7 @@ public class DriverController {
         return orderService.getMyOrdersClosed(email);
     }
 
+    @PreAuthorize(DRIVER)
     @RequestMapping(path = "cancel-offer/{id}", method = RequestMethod.DELETE)
     void cancelOffer(@PathVariable Long id) {
         logger.info("Method DriverController.cancelOffer()");

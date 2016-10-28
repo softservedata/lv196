@@ -8,7 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +33,7 @@ public class FeedbackController {
     private NotificationService notificationService;
     private HttpStatus status;
 
+    @PreAuthorize(MODERATOR)
     @RequestMapping(path = "all", method = RequestMethod.POST)
     List<FeedbackDTO> getAllFeedbacks(@RequestParam("text") String text,
                                       @RequestParam("rate") String rateString,
@@ -44,12 +51,14 @@ public class FeedbackController {
                 approvedString, sortBy, sortDesc, currentPage, itemsPerPage);
     }
 
+    @PreAuthorize(MODERATOR)
     @RequestMapping(path = "totalItems", method = RequestMethod.GET)
     long getTotalItemsNumber() {
         logger.info("Before feedbackService.getTotalItemsNumber()");
         return feedbackService.getTotalItemsNumber();
     }
 
+    @PreAuthorize(MODERATOR)
     @RequestMapping(path = {"updateFeedback"}, method = RequestMethod.PUT)
     ResponseEntity updateFeedback(@RequestBody FeedbackDTO feedbackDTO) {
         logger.info("Before feedbackService.update(feedbackDTO)");
@@ -69,6 +78,7 @@ public class FeedbackController {
         return new ResponseEntity(response, status);
     }
 
+    @PreAuthorize(MODERATOR)
     @RequestMapping(path = {"deleteFeedback/{feedbackId}"}, method = RequestMethod.DELETE)
     ResponseEntity deleteFeedback(@PathVariable Long feedbackId) {
         logger.info("Before feedbackService.delete(feedbackId)");
