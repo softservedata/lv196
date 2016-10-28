@@ -1,39 +1,33 @@
 package com.softserve.edu.delivery.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.Point;
-import com.softserve.edu.delivery.dto.CityDto;
-import com.softserve.edu.delivery.dto.PlaceDTO;
-import com.softserve.edu.delivery.dto.RegionDto;
-import com.softserve.edu.delivery.dto.StateDto;
-import com.softserve.edu.delivery.service.LocationService;
+import com.softserve.edu.delivery.dto.PlaceDto;
+import com.softserve.edu.delivery.dto.RoutesDto;
 import com.softserve.edu.delivery.service.TransporterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
+
 import java.util.List;
 
 @RestController
 @RequestMapping
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PleacesController {
     @Autowired
     private TransporterService teTransporterService;
 
-    @RequestMapping(path ="/track", method = RequestMethod.GET)
-    public List<PlaceDTO> getTracking() {
-        List<PlaceDTO> list = teTransporterService.getAllPleaces();
-        return list;
+    @RequestMapping(path ="/track/{id}", method = RequestMethod.GET)
+    public List<PlaceDto> getTracking(@PathVariable Long id) {
+        return teTransporterService.getAllPleacesByOrderId(id);
     }
-
-
-
+    @RequestMapping(path ="/routes/{size}/{page}", method = RequestMethod.GET)
+    public List<RoutesDto> getAllRoutes(@PathVariable int size, @PathVariable int page){
+        Pageable pageable = new PageRequest(page, size);
+        return teTransporterService.getAllOrdersInProgress(pageable);
+    }
+    @RequestMapping(path ="/count", method = RequestMethod.GET)
+    public Long getCountPages(){
+        return  teTransporterService.getCount();
+    }
 }

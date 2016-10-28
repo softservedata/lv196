@@ -22,11 +22,11 @@ public class RouteCities {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order route;
+    private Order order;
     
     private Timestamp visitDate;
-    private Double latitude;
-    private Double longitude;
+    private Double x;
+    private Double y;
     
     public RouteCities() {
     }
@@ -39,8 +39,8 @@ public class RouteCities {
         return routeCityId;
     }
 
-    public Order getRoute() {
-        return route;
+    public Order getOrder() {
+        return order;
     }
 
     public Timestamp getVisitDate() {
@@ -51,8 +51,8 @@ public class RouteCities {
         this.routeCityId = routeCityId;
     }
 
-    public void setRoute(Order route) {
-        this.route = route;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public void setVisitDate(Timestamp visitDate) {
@@ -61,25 +61,25 @@ public class RouteCities {
 
     public RouteCities(Timestamp visitDate, Double latitude, Double longitude) {
         this.visitDate = visitDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.x = latitude;
+        this.y = longitude;
     }
 
-    public Double getLatitude() {
+    public Double getX() {
 
-        return latitude;
+        return x;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setX(Double latitude) {
+        this.x = latitude;
     }
 
-    public Double getLongitude() {
-        return longitude;
+    public Double getY() {
+        return y;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setY(Double longitude) {
+        this.y = longitude;
     }
 
     @Override
@@ -94,5 +94,15 @@ public class RouteCities {
         RouteCities routeCities = (RouteCities) o;
         return Objects.equals(routeCityId, routeCities.routeCityId);
     }
-    
+
+    @Override
+    public String toString() {
+        return "RouteCities{" +
+                "routeCityId=" + routeCityId +
+                ", order=" + order.toString() +
+                ", visitDate=" + visitDate +
+                ", latitude=" + x +
+                ", longitude=" + y +
+                '}';
+    }
 }

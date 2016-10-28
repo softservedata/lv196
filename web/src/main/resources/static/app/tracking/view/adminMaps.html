@@ -1,0 +1,23 @@
+<div class="navbar navbar-inverse navbar-static-top" style="background-color: #007772">
+    <div class="container-fluid">
+        <span class="navbar-brand">All orders in progress</span>
+        <ul class="nav navbar-nav navbar-right">
+            <div class="col-md-2"></div>
+    </ul>
+</div>
+</div>
+<br/>
+<br/>
+<div ng-controller="adminMapsController">
+    <div class="container tracking-div modal-dialog"  ng-init="mapInit()">
+        <div id="adminMap" class="map-container"></div>
+    </div>
+    <div class="form-group">
+        <div class="input-group filtr">
+            <input type="number" min="1" class="form-control" placeholder="Count of routes" style="width: 70px" ng-model="size" ng-click="getAllRoutes()">
+            <ul uib-pagination  class="tracking-pageination" id="down" items-per-page="size" total-items="count" ng-model="currentPage" ng-click="getAllRoutes()"></ul>
+        </div>
+    </div>
+</div>
+
+

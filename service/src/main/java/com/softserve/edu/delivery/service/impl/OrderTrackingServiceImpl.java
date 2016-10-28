@@ -20,9 +20,8 @@ public class OrderTrackingServiceImpl implements OrderTrackingService{
     @Autowired
     private RouteCityService routeCityService;
     
-    @Override
+   @Override
     public OrderTrackingDTO getOrderTracking(Long orderId) {
-
         OrderTrackingDTO orderTrackingDTO = new OrderTrackingDTO();
         orderTrackingDTO.setOrderDto(orderService.getOrderById(orderId));
         orderTrackingDTO.setRouteCityDTOs(routeCityService.getRouteCitiesByOrderId(orderId));

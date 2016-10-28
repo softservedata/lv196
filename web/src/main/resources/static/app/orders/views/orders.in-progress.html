@@ -1,5 +1,8 @@
 <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
     <div class="panel-body">
+        <div class="order-actions">
+        <i class="fa fa-map"  aria-hidden="true" ui-sref="tracking({id: order.id})"></i>
+        </div>
         <div ng-click="status.open = !status.open" class="order-city">
             {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
         </div>

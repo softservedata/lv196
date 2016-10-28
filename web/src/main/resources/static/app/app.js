@@ -52,12 +52,20 @@ angular
             .state('tracking', {
             url: '/tracking',
             templateUrl: '/app/tracking/view/tracking.html',
-            controller: 'pleaceController'
+            controller: 'pleaceController',
+            params: {
+                id: null,
+             }
             })
             .state('dialog', {
                 url: '/dialog',
                 templateUrl: '/app/tracking/view/dialog.html',
                 controller: 'pleaceController'
+            })
+            .state('adminMaps', {
+            url: '/adminMaps',
+            templateUrl: '/app/tracking/view/adminMaps.html',
+            controller: 'adminMapsController'
             })
 	        .state('orders-tracking', {
 	            url: '/orders-tracking',
@@ -78,6 +86,6 @@ angular
 	  		.preferredLanguage('en')
 	  		.useLocalStorage()
 	  		.useMissingTranslationHandlerLog();
-  	  	
+
   	  $translateProvider.useSanitizeValueStrategy('escapeParameters');
     }]);

@@ -4,10 +4,10 @@ import java.sql.Date;
 
 public class RouteCityDTO {
 
-    private final PlaceDTO placeDTO;
+    private final PlaceDto placeDTO;
     private final Date date;
 
-    public PlaceDTO getPlaceDTO() {
+    public PlaceDto getPlaceDTO() {
         return placeDTO;
     }
 
@@ -15,7 +15,7 @@ public class RouteCityDTO {
         return date;
     }
 
-    public RouteCityDTO(PlaceDTO placeDTO, Date date) {
+    public RouteCityDTO(PlaceDto placeDTO, Date date) {
 
         this.placeDTO = placeDTO;
         this.date = date;

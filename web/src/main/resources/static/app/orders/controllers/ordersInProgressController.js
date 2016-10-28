@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersInProgressController', ['$scope', '$orders',
-        function ($scope, $orders) {
+    .controller('ordersInProgressController', ['$scope', '$orders','$uibModal',
+        function ($scope, $orders, $uibModal) {
             $scope.orders = {
                 inProgress: []
             };
@@ -12,4 +12,10 @@ angular
                 })
             };
             $scope.retrieveInProgressOrders();
+
+            $scope.showMap = function (orderThis) {
+
+                        order: () => orderThis
+
+            }
         }]);

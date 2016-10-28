@@ -2,6 +2,7 @@
     width: 1050px;
     height: 400px
 }
+
 .tracking-table {
     width: 1050px;
 }
@@ -11,4 +12,15 @@
 
 .map-container .leaflet-control-container {
     /*display: none;*/
+}
+.modal-dialog{
+    width: whatever;
+}
+#adminMap { height: 500px; }
+
+.filtr {
+    margin-left: 13px;
+}
+.tracking-pageination{
+    margin-left: 300px;
 }

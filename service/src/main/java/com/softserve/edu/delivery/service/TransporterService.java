@@ -2,12 +2,12 @@ package com.softserve.edu.delivery.service;
 
 import java.util.List;
 
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.dto.CityDto;
-import com.softserve.edu.delivery.dto.PlaceDTO;
-import com.softserve.edu.delivery.dto.RegionDto;
-import com.softserve.edu.delivery.dto.StateDto;
+import com.softserve.edu.delivery.dto.*;
+import org.springframework.data.domain.Pageable;
 
 public interface TransporterService {
-    List<PlaceDTO> getAllPleaces();
+    List<PlaceDto> getAllPleaces();
+    List<PlaceDto> getAllPleacesByOrderId(Long id);
+    List<RoutesDto> getAllOrdersInProgress(Pageable pageable);
+    Long getCount();
 }

@@ -5,14 +5,15 @@ angular
             return text ? String(text).replace(/<[^>]+>/gm, '') : '';
         }
     })
-    .controller("pleaceController",["$scope", "$http", "$interval", function ($scope, $http, $interval){
+    .controller("pleaceController",["$scope", "$http", "$timeout",'$stateParams', function ($scope, $http, $timeout, $stateParams){
         $scope.sortType     = 'city.cityName';
         $scope.sortReverse  = false;
         $scope.search   = '';
         $scope.listOfPleaces ={
             list: []
          }
-
+        $scope.id = $stateParams.id;
+        $scope.varModal = true;
          $scope.addresses = [];
          $scope.points = [];
          $scope.list = [];
@@ -35,8 +36,10 @@ angular
         var car2 = new LeafIcon({iconUrl: '../../img/car2.png'})
 
         $scope.updateTable = function () {
-            $http.get('/track').success(function(result) {
-                $scope.listOfPleaces.list = result;
+            var id = $scope.id;
+            console.log(id);
+            $http.get('/track/' + id).then(response = function(result) {
+                $scope.listOfPleaces.list = result.data;
                 for (var i = 0; i < $scope.listOfPleaces.list.length; i++) {
                     $scope.points.push(new L.LatLng($scope.listOfPleaces.list[i].point.x, $scope.listOfPleaces.list[i].point.y));
                     control = new L.Control.Geocoder({geocoder: null});
@@ -80,12 +83,20 @@ angular
             };
 
             $scope.initializeMap = function () {
-                map = new L.Map('mymap');
+                $timeout(() => {
+                    map = new L.Map('mymap');
+                    map.setView([48.8573822,31.1200367], 6);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+                    $scope.updateTable();
+                }, 0, false);
+                /*map = new L.Map('mymap');
                 map.setView([48.8573822,31.1200367], 6);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(map);
-                $scope.updateTable();
+                $scope.updateTable();*/
             }
            /* $interval(function() {
                 $scope.updateTable();

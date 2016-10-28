@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.softserve.edu.delivery.dto.PlaceDTO;
+import com.softserve.edu.delivery.dto.PlaceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class RouteCityServiceImpl implements RouteCityService{
         List<RouteCities> routeCities = routeCitiesRepository.findRouteCitiesByOrderId(orderId);
         List<RouteCityDTO> routeCityDTOs = new ArrayList<>();
         for (RouteCities routeCity : routeCities) {
-            RouteCityDTO routeCityDTO = new RouteCityDTO(PlaceDTO.convertEntity(routeCity),
+            RouteCityDTO routeCityDTO = new RouteCityDTO(PlaceDto.convertEntity(routeCity),
                     new Date(routeCity.getVisitDate().getTime()));
             
             routeCityDTOs.add(routeCityDTO);

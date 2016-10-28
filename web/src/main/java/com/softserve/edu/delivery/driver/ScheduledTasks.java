@@ -32,11 +32,11 @@ public class ScheduledTasks {
         points.add(new Point(50.425987, 29.961527));
         points.add(new Point(50.456188, 30.436237));
     }
-    @Scheduled(fixedRate = 5000)
+    //@Scheduled(fixedRate = 5000)
     public Point getPoints() {
         if(count == points.size()){
             count = 0;
-            pointService.deleteAll();
+            //pointService.deleteAll();
         }
         Point point = points.get(count++);
         System.out.println(point);

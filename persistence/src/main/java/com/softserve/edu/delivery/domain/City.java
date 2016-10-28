@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -8,16 +9,17 @@ import java.util.Objects;
 public class City {
 
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cityId;
+    private String cityName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
-
-    private String cityName;
     private Double latitude;
     private Double longitude;
+
 
     public City() {
     }
