@@ -1,6 +1,8 @@
 angular
-    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate', 'ngCookies', 'ngRateIt'])
-    .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function ($stateProvider, $urlRouterProvider, $translateProvider) {
+    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate', 
+                         'ngCookies', 'ngRateIt', , 'ngMaterial'])
+    .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', '$mdThemingProvider', function ($stateProvider, 
+    		  $urlRouterProvider, $translateProvider, $mdThemingProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
         $urlRouterProvider.when('/orders', '/orders/in-progress');
 
@@ -76,6 +78,11 @@ angular
                 url: '/notification',
                 templateUrl: '/app/notification/views/show.notification.html',
                 controller: 'notificationController'
+            })
+            .state('statistics', {
+                url: '/statistics',
+                templateUrl: '/app/statistics/views/statistics.html',
+                controller: 'statisticsController'
             });
 
   	  	$translateProvider

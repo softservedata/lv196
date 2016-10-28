@@ -17,6 +17,9 @@
     "angular-translate-loader-static-files": "2.12.1",
     "angular-translate-handler-log": "2.12.1",
     "angular-translate-storage-local": "2.12.1",
-    "angular-rateit": "3.0.2"
+    "angular-rateit": "3.0.2",
+    "angular-material" : "1.1.1",
+    "angular-chart": "0.5.0",
+    "chart.js": "2.3.0"
   }
 }

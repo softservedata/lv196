@@ -1,0 +1,11 @@
+.data-header {
+	background-color: #148b73;
+	color: 			  #ffffff;
+}
+.data-row {
+    width: 33%;
+}
+
+.data-track {
+	width: 100%;
+}
