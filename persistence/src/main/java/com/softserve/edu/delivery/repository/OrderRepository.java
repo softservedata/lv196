@@ -2,8 +2,8 @@ package com.softserve.edu.delivery.repository;
 
 
 import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.container.OrderContainer;
 import com.softserve.edu.delivery.domain.OrderStatus;
+import com.softserve.edu.delivery.domain.container.OrderContainer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,7 +1,5 @@
 package com.softserve.edu.delivery.service.order;
 
-import com.softserve.edu.delivery.dao.OrderDao;
-import com.softserve.edu.delivery.dao.UserDao;
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.OrderStatus;
@@ -9,6 +7,8 @@ import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.repository.CityRepository;
+import com.softserve.edu.delivery.repository.OrderRepository;
+import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.impl.OrderServiceImpl;
 import org.mockito.*;
 import org.testng.Assert;
@@ -25,10 +25,10 @@ import static org.mockito.Mockito.*;
 
 public class OrderServiceAddOrderTest {
     @Mock
-    OrderDao orderDao;
+    OrderRepository orderRepository;
 
     @Mock
-    UserDao userDao;
+    UserRepository userRepository;
 
     @Mock
     CityRepository cityRepository;
@@ -49,10 +49,10 @@ public class OrderServiceAddOrderTest {
 
     @BeforeMethod
     public void mockDaos() {
-        doNothing().when(orderDao).save(any(Order.class));
+        doNothing().when(orderRepository).save(any(Order.class));
 
-        when(userDao.findOne(any(String.class))).thenReturn(Optional.empty());
-        when(userDao.findOne(dummyEmail)).thenReturn(Optional.of(new User().setEmail(dummyEmail)));
+        when(userRepository.findOneOpt(any(String.class))).thenReturn(Optional.empty());
+        when(userRepository.findOneOpt(dummyEmail)).thenReturn(Optional.of(new User().setEmail(dummyEmail)));
 
         when(cityRepository.findOneOpt(any(Long.class))).thenReturn(Optional.empty());
         when(cityRepository.findOneOpt(1L)).thenReturn(Optional.of(new City().setCityId(1L)));
@@ -63,7 +63,7 @@ public class OrderServiceAddOrderTest {
     public void addOrderSuccess() {
         orderService.addOrder(dummyDto(), dummyEmail);
 
-        verify(orderDao, times(1)).save(orderCaptor.capture());
+        verify(orderRepository, times(1)).save(orderCaptor.capture());
 
         Order captured = orderCaptor.getValue();
 

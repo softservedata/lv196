@@ -12,9 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.*;
-
+import java.security.Principal;
 import java.util.List;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.CUSTOMER_OR_DRIVER;
 
 @RestController
 @RequestMapping(path = "order")
@@ -31,16 +32,14 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "in-progress", method = RequestMethod.GET)
-    List<OrderDto> inProgress() {
-        String email = "martin@gmail.com";
-        return orderService.findInProgressOrders(email);
+    List<OrderDto> inProgress(Principal principal) {
+        return orderService.findInProgressOrders(principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "open", method = RequestMethod.GET)
-    List<OrderDto> open() {
-        String email = "martin@gmail.com";
-        return orderService.findOpenOrders(email);
+    List<OrderDto> open(Principal principal) {
+        return orderService.findOpenOrders(principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
@@ -53,16 +52,14 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(method = RequestMethod.POST)
-    void addOrder(@RequestBody OrderDto dto) {
-        String email = "martin@gmail.com";
-        orderService.addOrder(dto, email);
+    void addOrder(@RequestBody OrderDto dto, Principal principal) {
+        orderService.addOrder(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(method = RequestMethod.PUT)
-    void updateOrder(@RequestBody OrderDto dto) {
-        String email = "martin@gmail.com";
-        orderService.updateOrder(dto, email);
+    void updateOrder(@RequestBody OrderDto dto, Principal principal) {
+        orderService.updateOrder(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)

@@ -1,7 +1,5 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.dao.CityDao;
-import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Point;
 import com.softserve.edu.delivery.domain.RouteCities;
 import com.softserve.edu.delivery.repository.RouteCitiesRepository;
@@ -19,7 +17,7 @@ import java.sql.Timestamp;
 public class PointServiceImpl implements PointService{
     private final RouteCitiesRepository routeCitiesRepository;
 
-    public PointServiceImpl(CityDao cityDao, RouteCitiesRepository routeCitiesRepository){
+    public PointServiceImpl(RouteCitiesRepository routeCitiesRepository){
         this.routeCitiesRepository = routeCitiesRepository;
     }
     @Override
