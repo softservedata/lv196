@@ -41,8 +41,9 @@
             </div>
 
             <div class="sidebar-header hidden-xs">
-                <div class="user-avatar">
+                <div style="display: inline" class="user-avatar">
                     <img src="./img/male.svg" alt="User avatar">
+                    <i class="fa fa-bell" ng-controller="notificationAmountController" aria-hidden="true" data-ng-click="open()" data-notifications="{{amountNewNotification}}"></i>
                 </div>
                 <div class="user-name">Martin Odersky</div>
             </div>
@@ -66,12 +67,6 @@
                 <a ui-sref="users" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     {{ 'user_profiles' | translate }}
-                </a>
-                <a ui-sref="notification" ui-sref-active="active-list-item" class="sidebar-menu-item">
-                    <div ng-controller="notificationAmountController">
-                        <i class="fa fa-comment-o"  aria-hidden="true" data-notifications="{{amountNewNotification}}"></i>
-                        {{ 'notifications' | translate }}
-                    </div>
                 </a>
                 <a ui-sref="statistics" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>

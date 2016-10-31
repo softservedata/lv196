@@ -1,6 +1,6 @@
 angular
     .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate', 
-                         'ngCookies', 'ngRateIt', , 'ngMaterial'])
+                         'ngCookies', 'ngRateIt', 'ngMaterial'])
     .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', '$mdThemingProvider', function ($stateProvider, 
     		  $urlRouterProvider, $translateProvider, $mdThemingProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
@@ -74,11 +74,6 @@ angular
 	            templateUrl: '/app/tracking/view/orders-tracking.html',
 	            controller: 'ordersTrackingController'
 	        })
-            .state('notification', {
-                url: '/notification',
-                templateUrl: '/app/notification/views/show.notification.html',
-                controller: 'notificationController'
-            })
             .state('statistics', {
                 url: '/statistics',
                 templateUrl: '/app/statistics/views/statistics.html',

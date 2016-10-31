@@ -44,10 +44,8 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "closed", method = RequestMethod.GET)
-    List<OrderDto> closed() {
-//        String email = authenticationDetails.getAuthenticatedUserEmail();
-        String email = "martin@gmail.com";
-        return orderService.findAllClosedOrders(email);
+    List<OrderDto> closed(Principal principal) {
+        return orderService.findAllClosedOrders(principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
@@ -71,20 +69,16 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
-    void addFeedback(@RequestBody FeedbackDTO dto) {
+    void addFeedback(@RequestBody FeedbackDTO dto, Principal principal) {
         logger.info("Method OrderController.addFeedback()");
-//        String email = authenticationDetails.getAuthenticatedUserEmail();
-        String email = "martin@gmail.com";
-        orderService.addFeedback(dto, email);
+        orderService.addFeedback(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.PUT)
-    void updateFeedback(@RequestBody FeedbackDTO dto) {
+    void updateFeedback(@RequestBody FeedbackDTO dto,  Principal principal) {
         logger.info("Method OrderController.updateFeedback()");
-//        String email = authenticationDetails.getAuthenticatedUserEmail();
-        String email = "martin@gmail.com";
-        orderService.updateFeedback(dto, email);
+        orderService.updateFeedback(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)

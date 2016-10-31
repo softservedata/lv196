@@ -1,19 +1,16 @@
-<div class="navbar navbar-inverse navbar-static-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <span class="navbar-brand">{{ 'notifications' | translate }}</span>
-        </div>
-    </div>
+<div style="padding-bottom: 60px;">
+<span class="navbar-brand">{{ 'notifications' | translate }}</span>
+</div>
     <uib-accordion close-others="true">
         <div uib-accordion-group class="Info" style="margin-bottom: -20px;" heading="{{ 'retrieve_notifications_info' | translate }}"
-             is-open="false" data-ng-click="retrieveNotificationsByStatus()">
+             is-open="false" data-ng-click="retrieveNotifications()">
             <div data-ng-repeat="notification in notifications.info track by $index"  class="panel panel-default">
                 <div class="{{notification.notificationStatus}}">
-                    <div style="display:inline">
-                        {{ 'message' | translate }}: {{notification.message}}
+                    <div>
                         <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
                             <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
                          </span>
+                        {{ 'message' | translate }}: {{notification.message}}
                     </div>
                 </div>
             </div>
@@ -21,14 +18,14 @@
     </uib-accordion>
     <uib-accordion close-others="true">
         <div uib-accordion-group class="Success" style="margin-bottom: -20px;" heading="{{ 'retrieve_notifications_success' | translate }}"
-             is-open="false" data-ng-click="retrieveNotificationsByStatus()">
+             is-open="false" data-ng-click="retrieveNotifications()">
             <div data-ng-repeat="notification in notifications.success track by $index"  class="panel panel-default">
                 <div class="{{notification.notificationStatus}}">
                     <div style="display:inline">
-                        {{ 'message' | translate }}: {{notification.message}}
-                        <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
+                         <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
                             <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
                          </span>
+                        {{ 'message' | translate }}: {{notification.message}}
                     </div>
                 </div>
             </div>
@@ -36,22 +33,19 @@
     </uib-accordion>
     <uib-accordion close-others="true">
         <div uib-accordion-group class="Warning" style="margin-bottom: -20px;" heading="{{ 'retrieve_notifications_warning' | translate }}"
-             is-open="false" data-ng-click="retrieveNotificationsByStatus()">
+             is-open="false" data-ng-click="retrieveNotifications()">
             <div data-ng-repeat="notification in notifications.warning track by $index"  class="panel panel-default">
                 <div class="{{notification.notificationStatus}}">
                     <div style="display:inline">
-                        {{ 'message' | translate }}: {{notification.message}}
-                        <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
+                         <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
                             <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
                          </span>
+                        {{ 'message' | translate }}: {{notification.message}}
                     </div>
                 </div>
             </div>
         </div>
     </uib-accordion>
-</div>
-<div class="site-content orders">
-    <ui-view></ui-view>
 </div>
 <div class="panel-body notification" >
     <div data-ng-repeat="notification in notifications.notifications track by $index"  class="panel panel-default">
