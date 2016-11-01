@@ -48,28 +48,28 @@
                     <i class="fa fa-bell" ng-controller="notificationAmountController" ng-cloak aria-hidden="true" data-ng-click="open()" data-notifications="{{amountNewNotification}}"></i>
                 </div>
             </div>
-            <div class="sidebar-menu hidden-xs" ng-cloak >
+            <div ng-controller="roleController" ng-init="getRole()" class="sidebar-menu hidden-xs" ng-cloak >
                 <a ui-sref="profile" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     {{ 'profile' | translate }}
                 </a>
-                <a ui-sref="orders" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="orders" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-truck" aria-hidden="true"></i>
                     {{ 'orders' | translate }}
                 </a>
-                <a ui-sref="driver" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Driver')" ui-sref="driver" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-car" aria-hidden="true"></i>
                     {{ 'driver' | translate }}
                 </a>
-                <a ui-sref="feedbacks" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Moderator')" ui-sref="feedbacks" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-comment" aria-hidden="true"></i>
                     {{ 'feedbacks' | translate }}
                 </a>
-                <a ui-sref="users" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Admin')" ui-sref="users" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     {{ 'user_profiles' | translate }}
                 </a>
-                <a ui-sref="statistics" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Admin')" ui-sref="statistics" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                     {{ 'statistics' | translate }}
                 </a>
@@ -147,6 +147,7 @@
 <script src="app/common/controllers/imageUploadController.js"></script>
 <script src="./app/notification/controller/notificationController.js"></script>
 <script src="./app/statistics/controllers/statisticsController.js"></script>
+<script src="app/users/controllers/roleController.js"></script>
 
 </body>
 </html>

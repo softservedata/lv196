@@ -1,20 +1,15 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
-import com.softserve.edu.delivery.dto.OrderIdDto;
-import com.softserve.edu.delivery.dto.UserAuthDTO;
-import com.softserve.edu.delivery.dto.UserRegistrationDTO;
+import com.softserve.edu.delivery.dto.*;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,6 +77,14 @@ public class AuthController {
         mv.setViewName(roleRedirect());
         logger.info("Out of method AuthController.authRedirect()");
         return mv;
+    }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(value = "role")
+    public @ResponseBody StringResponse getRole() {
+        String role = authenticationDetails.getAuthenticatedUserRole();
+        logger.info("AuthController.getRole(), return: " + role);
+        return new StringResponse(role);
     }
 
     @RequestMapping(value = "/registration")
