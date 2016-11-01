@@ -2,12 +2,13 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.NotificationDto;
 import com.softserve.edu.delivery.service.NotificationService;
-import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.List;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.*;
@@ -18,17 +19,14 @@ public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
-    @Autowired
-    private UserAuthenticationDetails authenticationDetails;
 
     Logger logger = LoggerFactory.getLogger(NotificationController.class.getName());
-    Integer lastAmountNewNotification = 0;
+    Integer lastAmountNewNotification = null;
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(method = RequestMethod.GET)
-    List<NotificationDto> all() {
-        logger.info("authenticationDetails.getAuthenticatedUserEmail() = " + authenticationDetails.getAuthenticatedUserEmail());
-        return notificationService.findAllNotificationByEmail(authenticationDetails.getAuthenticatedUserEmail());
+    List<NotificationDto> all(Principal principal) {
+        return notificationService.findAllNotificationByEmail(principal.getName());
     }
 
     @PreAuthorize(AUTHENTICATED)
@@ -39,15 +37,20 @@ public class NotificationController {
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "count", method = RequestMethod.GET)
-    Integer countNotification() throws InterruptedException {
+    Integer countNotification(Principal principal) throws InterruptedException {
         Integer amountNewNotification = null;
         do{
             Thread.sleep(2000);
-            amountNewNotification = this.notificationService.countNewNotification(authenticationDetails.getAuthenticatedUserEmail());
+            amountNewNotification = this.notificationService.countNewNotification(principal.getName());
+            logger.info("amountNewNotification = " + amountNewNotification);
+            logger.info("lastAmountNewNotification = " + lastAmountNewNotification);
         }
         while (amountNewNotification == lastAmountNewNotification);
         lastAmountNewNotification = amountNewNotification;
+        logger.info("return = " + amountNewNotification);
+
         return amountNewNotification;
+
     }
 
 }

@@ -17,6 +17,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 
 import java.sql.Timestamp;
@@ -39,6 +41,8 @@ public class NotificationServiceImpl implements NotificationService {
     private OfferRepository offerRepository;
     @Autowired
     private Environment env;
+    @Autowired
+    TemplateEngine templateEngine;
     @Autowired
     private JavaMailSender mailSender;
 
@@ -68,10 +72,16 @@ public class NotificationServiceImpl implements NotificationService {
             messageHelper.setFrom(env.getProperty("spring.mail.username"));
             messageHelper.setTo(email);
             messageHelper.setSubject("Notification from Delivery");
-            String text = status + " notification: " + message;
+            String text = buildHtmlTemplate(message);
             messageHelper.setText(text, true);
         };
         mailSender.send(messagePreparator);
+    }
+
+    private String buildHtmlTemplate(String notification) {
+        Context context = new Context();
+        context.setVariable("notification", notification);
+        return templateEngine.process("notification", context);
     }
 
     @Override
@@ -135,7 +145,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .map(OfferDtoForList::offerToOfferDto)
                 .forEach(offer ->
                         addNotification("Warning",
-                                " Dear " + offer.getDriverName() + " We are sorry, but Customer " + offer.getCustomerName() + " cancel Order №" + offer.getOrderId() + "\t&#8195;<br> " +
+                                " Dear " + offer.getDriverName() + " We are sorry, but Customer " + offer.getCustomerName() + " cancel Order №" + offer.getOrderId() + ";<br>" +
                                 " Дорогий " + offer.getDriverName() + " ми перепрошуємо, але користувач " + offer.getCustomerName() + " відмінив Ордер №" + offer.getOrderId(),
                                 offer.getDriverEmail())
                 );
@@ -145,7 +155,7 @@ public class NotificationServiceImpl implements NotificationService {
     public void updateFeedback(FeedbackDTO feedbackDTO) {
         addNotification("Info",
                 " Dear " + feedbackDTO.getUserName() + " your feedback for Driver " + feedbackDTO.getTransporterName() +
-                        " was moderated. For now, your feedback status - approved = " + feedbackDTO.getApproved() + "\t&#8195;<br>" +
+                        " was moderated. For now, your feedback status - approved = " + feedbackDTO.getApproved() + ";<br>" +
                 " Дорогий " + feedbackDTO.getUserName() + " Ваш відгук на водія " + feedbackDTO.getTransporterName() +
                         " був змодерований. На данний момент, статус вашого відгука - approved = " + feedbackDTO.getApproved()
                 ,feedbackDTO.getUserEmail());
@@ -154,7 +164,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void changeOfferStatus(OfferDtoForList offerDto){
         addNotification("Info",
-                " Customer " + offerDto.getCustomerName() + " approved your offer for his Order" + "\t&#8195;<br>" +
+                " Customer " + offerDto.getCustomerName() + " approved your offer for his Order" + ";<br>" +
                 " Користувач " + offerDto.getCustomerName() + " затвердив вашу заявку на цей Ордер"
                 , offerDto.getDriverEmail());
     }
@@ -165,7 +175,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
         addNotification("Warning",
                 " Dear " + user.getFirstName() + " " + user.getLastName() +
-                " your status was changed by admin or moderator. For now your status - is blocked = " + user.getBlocked() + "\t&#8195;<br>" +
+                " your status was changed by admin or moderator. For now your status - is blocked = " + user.getBlocked() + ";<br>" +
                 " Дорогий " + user.getFirstName() + " " + user.getLastName() +
                         " ваш статус був змуненний Адміном чи Модератором. На данний момент ваш статус - Заблокованний = " + user.getBlocked()
                 , email);

@@ -1,7 +1,7 @@
     angular
     .module('delivery')
-    .controller('ordersClosedController',['$scope', '$orderProperty', '$http', '$uibModal',
-        function ($scope, $orderProperty, $http, $uibModal) {
+    .controller('ordersClosedController',['$scope', '$http', '$uibModal',
+        function ($scope, $http, $uibModal) {
 
         $scope.orders = {
             closed: []
@@ -14,20 +14,22 @@
         };
         $scope.retrieveClosedOrders();
 
-        $scope.addFeedback = function (order) {
-            $orderProperty.setId(order.id);
+        $scope.addFeedback = function (orderForFeedback) {
             const modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '/app/feedbacks/views/add.feedback.html',
-                controller: 'addFeedbackController'
+                controller: 'addFeedbackController',
+                resolve:{
+                    order: ()=> orderForFeedback
+                }
             });
 
         };
         }]
     )
-    .controller('addFeedbackController', ['$scope', '$orderProperty','$orders', '$http', '$uibModalInstance', 'Notification', '$rootScope',
-        function ($scope, $orderProperty,$orders, $http, $uibModalInstance, Notification, $rootScope) {
-            $scope.idForFeedback = $orderProperty.getId();
+    .controller('addFeedbackController', ['$scope','$orders', '$http', '$uibModalInstance', 'Notification', '$rootScope', 'order',
+        function ($scope, $orders, $http, $uibModalInstance, Notification, $rootScope, order) {
+            $scope.idForFeedback = order.id;
 
             $scope.form = {
                 submit: () => {
@@ -54,7 +56,7 @@
                 $uibModalInstance.dismiss('cancel');
             };
 
-            $http.get('/order/getFeedback/' + $orderProperty.getId()).then(response => {
+            $http.get('/order/getFeedback/' + order.id).then(response => {
                 $scope.feedback = response.data;
                 $scope.form.feedbackId = $scope.feedback.feedbackId;
                 $scope.form.rate = $scope.feedback.rate/10;

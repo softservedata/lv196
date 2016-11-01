@@ -76,7 +76,7 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.PUT)
-    void updateFeedback(@RequestBody FeedbackDTO dto,  Principal principal) {
+    void updateFeedback(@RequestBody FeedbackDTO dto, Principal principal) {
         logger.info("Method OrderController.updateFeedback()");
         orderService.updateFeedback(dto, principal.getName());
     }

@@ -18,6 +18,7 @@ public class Notification {
 
     private boolean readed;
 
+    @Column(columnDefinition="varchar(1000)")
     private String message;
 
     private Timestamp time;

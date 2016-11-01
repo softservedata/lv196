@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope', '$orderProperty', '$uibModal', '$orders', '$utils', 'Notification', '$rootScope',
-        function ($scope, $orderProperty, $uibModal, $orders, $utils, Notification, $rootScope) {
+    .controller('ordersOpenController', ['$scope', '$uibModal', '$orders', '$utils', 'Notification', '$rootScope',
+        function ($scope, $uibModal, $orders, $utils, Notification, $rootScope) {
             $scope.orders = {
                 open: []
             };
@@ -45,8 +45,8 @@ angular
                 })
             };
 
-            $scope.showOffers = (order) => {
-                if (order.amountOfOffers == 0) {
+            $scope.showOffers = (orderWithOffers) => {
+                if (orderWithOffers.amountOfOffers == 0) {
                     $scope.primary = function () {
                         ($rootScope.lang === 'en') ?
                             Notification('Info : Sorry there are no offers for your Order at this time'):
@@ -55,11 +55,13 @@ angular
                     $scope.primary();
                 }
                 else {
-                    $orderProperty.setId(order.id);
                     $uibModal.open({
                         animation: true,
                         templateUrl: '/app/orders/views/show.offers.html',
-                        controller: 'showOffersController'
+                        controller: 'showOffersController',
+                        resolve:{
+                            order: ()=> orderWithOffers
+                        }
                     });
                 }
             };
@@ -200,14 +202,14 @@ angular
             }
         }
     ])
-    .controller('showOffersController',['$scope', '$orderProperty', '$http', 'Notification','$rootScope',
-        function ($scope, $orderProperty, $http, Notification, $rootScope) {
+    .controller('showOffersController',['$scope', '$http', 'Notification','$rootScope', 'order',
+        function ($scope, $http, Notification, $rootScope, order) {
         $scope.offers = {
             offers: []
         };
 
         $scope.retrieveOffers = () => {
-            $http.get('/order/offers/' + $orderProperty.getId()).then(response => {
+            $http.get('/order/offers/' + order.id).then(response => {
                 $scope.offers = response.data;
                 for (var i=0;i<$scope.offers.length;i++){
                     $scope.offers[i].rate = $scope.offers[i].rate/10;

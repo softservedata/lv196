@@ -120,10 +120,10 @@ html, body {
 .user-avatar .fa{
     font-size: 40px;
 }
-.user-avatar [data-notifications] {
+.user-name [data-notifications] {
     position: relative;
 }
-.user-avatar [data-notifications]:after {
+.user-name [data-notifications]:after {
     content: attr(data-notifications);
     position: absolute;
     font-size: 14px;
