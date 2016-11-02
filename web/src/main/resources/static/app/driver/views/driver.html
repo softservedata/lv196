@@ -133,6 +133,14 @@
                                             <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
                                                 {{ 'description' | translate }}: {{order.description}}</span>
                                         </div>
+                                        <div class="col-sm-12 form-group">
+                                            <i class="fa fa-star" aria-hidden="true"></i><label class="control-label">{{ 'customer_rate' | translate }}: </label>
+                                            <span uib-rating read-only="true" ng-model="order.feedbackDTO.rate/10"></span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="order-sub"><i class="fa fa-comment" aria-hidden="true"></i>{{ 'customer_feedback' | translate }}:
+                                                {{ order.feedbackDTO.text }}</label>
+                                        </div>
                                     </div>
                                 </div>
                             </uib-accordion>

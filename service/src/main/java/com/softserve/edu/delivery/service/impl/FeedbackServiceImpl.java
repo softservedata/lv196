@@ -274,11 +274,19 @@ public class FeedbackServiceImpl implements FeedbackService {
         totalItemsNumber = feedbackRepositoryCustom.getTotalItemsNumber();
 
         return copyFeedbackListToDTOList(feedbackList);
-
     }
 
     @Override
     public long getTotalItemsNumber() {
         return totalItemsNumber;
+    }
+
+    @Override
+    public FeedbackDTO getCustomerFeedback(Long id) {
+        Feedback feedback = feedbackRepository.getCustomerFeedback(id);
+        if (feedback != null) {
+            return copyFeedbackToDTO(feedback);
+        }
+        else return null;
     }
 }

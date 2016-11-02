@@ -41,4 +41,5 @@ public interface FeedbackService {
 
     FeedbackDTO findByFeedbackId(Long id);
 
+    FeedbackDTO getCustomerFeedback(Long id);
 }

@@ -1,11 +1,15 @@
 package com.softserve.edu.delivery.dto;
 
+import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.domain.container.OrderContainer;
+import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 public class OrderDto {
@@ -22,6 +26,8 @@ public class OrderDto {
     private String description;
     private Long amountOfOffers;
     private String carPhoto;
+    private FeedbackDTO feedbackDTO;
+
 
     public OrderDto() {
     }
@@ -50,6 +56,12 @@ public class OrderDto {
             dto.setCustomerName(customer.getFirstName() + " " + customer.getLastName());
         }
 
+        return dto;
+    }
+
+    public static OrderDto orderAndFeedbackOf(Order order, FeedbackDTO feedback) {
+        OrderDto dto = OrderDto.of(order);
+        dto.setFeedbackDTO(feedback);
         return dto;
     }
 
@@ -168,6 +180,14 @@ public class OrderDto {
     public OrderDto setCarPhoto(String carPhoto) {
         this.carPhoto = carPhoto;
         return this;
+    }
+
+    public FeedbackDTO getFeedbackDTO() {
+        return feedbackDTO;
+    }
+
+    public void setFeedbackDTO(FeedbackDTO feedbackDTO) {
+        this.feedbackDTO = feedbackDTO;
     }
 
     @Override

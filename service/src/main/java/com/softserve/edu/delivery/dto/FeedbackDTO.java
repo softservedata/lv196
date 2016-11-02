@@ -1,6 +1,10 @@
 package com.softserve.edu.delivery.dto;
 
+import com.softserve.edu.delivery.domain.Feedback;
+
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Ivan Rudnytskyi on 15.09.2016.
@@ -110,4 +114,19 @@ public class FeedbackDTO {
                 "feedbackId=" + feedbackId +
                 '}';
     }
+
+    public static List<FeedbackDTO> of(List<Feedback> feedbacks) {
+        return feedbacks.stream().map(feedback -> {
+            FeedbackDTO feedbackDTO = new FeedbackDTO();
+            feedbackDTO.setFeedbackId(feedback.getFeedbackId());
+            feedbackDTO.setOrderId(feedback.getOrder().getId());
+            feedbackDTO.setText(feedback.getText());
+            feedbackDTO.setUserName(feedback.getUser().getFirstName() + " " + feedback.getUser().getLastName());
+            feedbackDTO.setUserEmail(feedback.getUser().getEmail());
+            feedbackDTO.setRate(feedback.getRate());
+            feedbackDTO.setApproved(feedback.getApproved());
+            return feedbackDTO;
+        }).collect(Collectors.toList());
+    }
+
 }

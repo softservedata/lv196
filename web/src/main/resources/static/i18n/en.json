@@ -103,5 +103,8 @@
 	"vehicle_width": "Cargo width",
 	"vehicle_length": "Cargo length",
 	"vehicle_height": "Cargo height",
-	"click_to_upload_a_photo": "click to upload a photo"
+	"click_to_upload_a_photo": "click to upload a photo",
+	"customer_rate": "Customer rate",
+  	"customer_feedback": "Customer feedback",
+  	"driver_feedback": "Driver feedback"
 }

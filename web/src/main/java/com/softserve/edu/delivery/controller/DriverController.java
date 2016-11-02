@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.OrderDto;
+import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OfferService;
 import com.softserve.edu.delivery.service.OrderService;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
@@ -32,18 +33,18 @@ public class DriverController {
     private OfferService offerService;
 
     @Autowired
+    private FeedbackService feedbackService;
+
+    @Autowired
     private UserAuthenticationDetails authenticationDetails;
 
     private final Logger logger = LoggerFactory.getLogger(FindOrderController.class.getName());
-
-
-    private final String email = "email2@gmail.com";                            //will delete it later!!!
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-offers", method = RequestMethod.GET)
     List<OrderDto> myOffers() {
         logger.info("Method DriverController.myOffers()");
-//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         return orderService.getOpenOrdersWithMyOffers(email);
     }
 
@@ -51,7 +52,7 @@ public class DriverController {
     @RequestMapping(path = "my-orders-in-progress", method = RequestMethod.GET)
     List<OrderDto> myOrdersInProgress() {
         logger.info("Method DriverController.myOrdersInProgress()");
-//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         return orderService.getMyOrdersInProgress(email);
     }
 
@@ -59,7 +60,7 @@ public class DriverController {
     @RequestMapping(path = "my-orders-closed", method = RequestMethod.GET)
     List<OrderDto> myOrdersClosed() {
         logger.info("Method DriverController.myOrdersClosed()");
-//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         return orderService.getMyOrdersClosed(email);
     }
 
@@ -67,7 +68,15 @@ public class DriverController {
     @RequestMapping(path = "cancel-offer/{id}", method = RequestMethod.DELETE)
     void cancelOffer(@PathVariable Long id) {
         logger.info("Method DriverController.cancelOffer()");
-//        String email = authenticationDetails.getAuthenticatedUserEmail();       //will use it later.
+        String email = authenticationDetails.getAuthenticatedUserEmail();
         offerService.cancelOffer(id, email);
+    }
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping(path = "customer-feedback/{id}", method = RequestMethod.GET)
+    void customerFedback(@PathVariable Long id) {
+        logger.info("Method DriverController.customerFedback()");
+        logger.info("order id = " + id);
+        feedbackService.getCustomerFeedback(id);
     }
 }

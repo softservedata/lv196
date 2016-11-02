@@ -47,4 +47,23 @@ angular
                 })
             };
             $scope.retrieveMyOrdersClosed();
-        }]);
+        }])
+
+    .controller('customerFeedbackController', ['$scope', '$orderProperty', '$http',
+        function ($scope, $orderProperty, $http) {
+
+            $scope.feedbacks = {
+                feedback: []
+            };
+
+            $scope.customerFeedback = (id) => {
+                console.log("customerFeedback");
+                console.log(id);
+                console.log($orderProperty);
+                console.log($orderProperty.getId());
+                $orderProperty.setId(id);
+                $http.get('/driver/customer-feedback/' + $orderProperty.getId()).then(response => {
+                    console.log(response.data)
+                    $scope.feedbacks.feedback = response.data;
+                })};
+}])

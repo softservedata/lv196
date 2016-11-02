@@ -6,6 +6,7 @@ import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.repository.*;
+import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static javafx.scene.input.KeyCode.F;
+import static javafx.scene.input.KeyCode.L;
 
 @Service
 @Transactional
@@ -34,6 +35,8 @@ public class OrderServiceImpl implements OrderService {
     private UserRepository userRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
+    @Autowired
+    FeedbackService feedbackService;
 
     @Override
     @Transactional(readOnly = true)
@@ -228,11 +231,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getMyOrdersClosed(String email) {
-        return orderRepository
-                .getMyOrdersClosed(email)
-                .stream()
-                .map(OrderDto::of)
-                .collect(Collectors.toList());
+
+        List<Order> listOrders = orderRepository.getMyOrdersClosed(email);
+        List<OrderDto> result = new ArrayList<>();
+        for (Order order : listOrders) {
+            Feedback feedBack = feedbackRepository.getCustomerFeedback(order.getId());
+            if (feedBack != null) {
+                FeedbackDTO feedbackDTO = feedbackService.copyFeedbackToDTO(feedBack);
+                result.add(OrderDto.orderAndFeedbackOf(order, feedbackDTO));
+            }
+            else result.add(OrderDto.of(order));
+        }
+        return result;
     }
 
     @Override
