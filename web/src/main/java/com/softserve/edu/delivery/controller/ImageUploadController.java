@@ -3,25 +3,25 @@ package com.softserve.edu.delivery.controller;
 import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.service.CarService;
+import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -31,9 +31,10 @@ import java.util.NoSuchElementException;
 public class ImageUploadController {
 
     private final Logger logger = LoggerFactory.getLogger(ImageUploadController.class.getName());
+    private final HttpHeaders responseHeaders = new HttpHeaders();
+    private final Map<String, String> response = new HashMap<>();
     private final String SERVER_PATH_TO_USERS_UPLOAD = "/uploads/users/";
     private final String SERVER_PATH_TO_CARS_UPLOAD = "/uploads/cars/";
-    private final Map<String, String> response = new HashMap<>();
 
     @Autowired
     private UserService userService;
@@ -41,10 +42,17 @@ public class ImageUploadController {
     private CarService carService;
     @Autowired
     private HttpServletRequest request;
-    private HttpStatus status;
+    @Autowired
+    private UserAuthenticationDetails authenticationDetails;
+
+    private HttpStatus status = HttpStatus.OK;
+    private String realPathToUploads;
+    private String errorDetails;
+    private User user;
+    private Car car;
 
     private File multipartToFile(MultipartFile multipart, String prefix, String path) throws IOException {
-        String realPathToUploads = request.getServletContext().getRealPath(path);
+        realPathToUploads = request.getServletContext().getRealPath(path);
         if (!new File(realPathToUploads).exists()) {
             new File(realPathToUploads).mkdirs();
         }
@@ -55,74 +63,110 @@ public class ImageUploadController {
         return convFile;
     }
 
-    @PreAuthorize(AUTHENTICATED)
+    private void deleteOldPhoto(String path) {
+        try {
+            realPathToUploads = request.getServletContext().getRealPath("");
+            Files.delete(Paths.get(realPathToUploads + path));
+        } catch (IOException e) {
+            logger.error("Exception while trying to delete user photo " + path +
+                    " in imageUploadController.deleteOldPhoto() " + e.getMessage());
+        }
+    }
+
+    private String saveCarPhoto(MultipartFile file, String side) throws IOException {
+        String carPhotoPath;
+        String photoUrl = null;
+
+        if (side.equals("front")) {
+            photoUrl = car.getVehicleFrontPhotoURL();
+        } else if (side.equals("back")) {
+            photoUrl = car.getVehicleBackPhotoURL();
+        }
+
+        if (photoUrl != null) {
+            if (user.getPhotoUrl() != null) {
+                deleteOldPhoto(photoUrl);
+            }
+        }
+
+        File carPhoto = multipartToFile(file, user.getEmail() + "_" + side + "_photo_car_id_" + car.getCarId(),
+                SERVER_PATH_TO_CARS_UPLOAD);
+        carPhotoPath = SERVER_PATH_TO_CARS_UPLOAD + carPhoto.getName();
+
+        if (side.toLowerCase().equals("front")) {
+            car.setVehicleFrontPhotoURL(carPhotoPath);
+        } else if (side.toLowerCase().equals("back")) {
+            car.setVehicleBackPhotoURL(carPhotoPath);
+        }
+
+        return carPhotoPath;
+    }
+
+    private ResponseEntity handleException(String errorDetails, String message) {
+        logger.error(errorDetails + message);
+        status = HttpStatus.BAD_REQUEST;
+        responseHeaders.set("message", message);
+        return new ResponseEntity(responseHeaders, status);
+    }
+
     @RequestMapping(path = "userPhoto", method = RequestMethod.POST)
     ResponseEntity uploadUserPhoto(@RequestParam("file") MultipartFile file) {
-        status = HttpStatus.OK;
-        response.put("message", "OK");
+        responseHeaders.set("message", "OK");
 
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user = userService.findOne(authenticationDetails.getAuthenticatedUserEmail());
 
-        User user = userService.findOne(principal.getUsername());
+        if (user.getPhotoUrl() != null) {
+            deleteOldPhoto(user.getPhotoUrl());
+        }
 
         try {
             File userPhoto = multipartToFile(file, user.getEmail(), SERVER_PATH_TO_USERS_UPLOAD);
             user.setPhotoUrl(SERVER_PATH_TO_USERS_UPLOAD + userPhoto.getName());
-
         } catch (IOException e) {
-            logger.info("Exception while trying to save user photo " + user.getEmail() +
-                    " in feedbackService.uploadUserPhoto() " + e.getMessage());
-            status = HttpStatus.NOT_FOUND;
-            response.put("message", e.getMessage());
-            return new ResponseEntity(response, status);
+            errorDetails = "Exception while trying to save user photo " + user.getEmail() +
+                    " in imageUploadController.uploadUserPhoto() ";
+            return handleException(errorDetails, e.getMessage());
         }
 
         try {
             userService.save(user);
         } catch (NoSuchElementException e) {
-            status = HttpStatus.BAD_REQUEST;
-            response.put("message", e.getMessage());
+            errorDetails = "Exception while trying to save user " + user.getEmail() +
+                    " in imageUploadController.uploadUserPhoto() ";
+            return handleException(errorDetails, e.getMessage());
         }
-        return new ResponseEntity(response, status);
+        return new ResponseEntity(responseHeaders, status);
     }
 
-    @PreAuthorize(AUTHENTICATED)
+    @SuppressWarnings("unchecked")
     @RequestMapping(path = "carPhoto", method = RequestMethod.POST)
     ResponseEntity uploadCarPhoto(@RequestParam("file") MultipartFile file,
                                   @RequestParam("carId") long carId,
                                   @RequestParam("side") String side) {
-        status = HttpStatus.OK;
-        response.put("message", "OK");
+        String carPhotoPath;
+        responseHeaders.set("message", "OK");
 
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user = userService.findOne(authenticationDetails.getAuthenticatedUserEmail());
 
-        User user = userService.findOne(principal.getUsername());
-
-        Car car = carService.findOne(carId);
+        car = carService.findOne(carId);
 
         try {
-            File userPhoto = multipartToFile(file, user.getEmail() + "_" + side + "_photo_car_id_" + car.getCarId(),
-                    SERVER_PATH_TO_CARS_UPLOAD);
-            car.setVehicleFrontPhotoURL(SERVER_PATH_TO_CARS_UPLOAD + userPhoto.getName());
-
+            carPhotoPath = saveCarPhoto(file, side);
         } catch (IOException e) {
-            logger.info("Exception while trying to save car front photo " + user.getEmail() +
-                    " in feedbackService.uploadCarPhoto() " + e.getMessage());
-            status = HttpStatus.NOT_FOUND;
-            response.put("message", e.getMessage());
-            return new ResponseEntity(response, status);
+            errorDetails = "Exception while trying to save car front photo " + user.getEmail() +
+                    " in imageUploadController.uploadCarPhoto() ";
+            return handleException(errorDetails, e.getMessage());
         }
 
         try {
             carService.save(car);
         } catch (NoSuchElementException e) {
-            logger.info("Exception while trying to persist car " + car.getCarId() +
-                    " in feedbackService.uploadCarPhoto() " + e.getMessage());
-            status = HttpStatus.BAD_REQUEST;
-            response.put("message", e.getMessage());
+            errorDetails = "Exception while trying to persist car " + car.getCarId() +
+                    " in imageUploadController.uploadCarPhoto() ";
+            return handleException(errorDetails, e.getMessage());
         }
-        return new ResponseEntity(response, status);
+
+        response.put("carPhotoPath", carPhotoPath);
+        return new ResponseEntity(response, responseHeaders, status);
     }
 }

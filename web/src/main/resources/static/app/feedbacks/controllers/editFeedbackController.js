@@ -13,7 +13,7 @@ angular
                 $http.put("/feedbacks/updateFeedback", feedbackDTO)
                     .then(function (response) {
                             if (response.status == 200) {
-                                Notification.success('The feedbacks was succesfully updated');
+                                Notification.success('The feedbacks was successfully updated');
                             }
                         },
                         function (response) {

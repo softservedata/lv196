@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class CarDTO {
 
+    private Long id;
     private String vehicleName;
     private String vehicleNumber;
     private String vehicleVIN;
@@ -13,6 +14,7 @@ public class CarDTO {
     private BigDecimal vehicleLength;
     private BigDecimal vehicleWidth;
     private BigDecimal vehicleHeight;
+    private String driverEmail;
     
     public CarDTO() {
     }
@@ -89,5 +91,19 @@ public class CarDTO {
         this.vehicleHeight = vehicleHeight;
     }
 
-    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDriverEmail() {
+        return driverEmail;
+    }
+
+    public void setDriverEmail(String driverEmail) {
+        this.driverEmail = driverEmail;
+    }
 }

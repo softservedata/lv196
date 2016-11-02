@@ -14,7 +14,7 @@
     <link href="./bower_components/leaflet-routing-machine/dist/leaflet-routing-machine.css">
     <link href="./bower_components/leaflet-control-geocoder/dist/Control.Geocoder.css">
     <link href="./bower_components/angular-rateit/dist/ng-rateit.css" rel="stylesheet">
-    <link href="./bower_components/angular-ui-notification/dist/angular-ui-notification.min.css" rel="stylesheet" >
+    <link href="./bower_components/angular-ui-notification/dist/angular-ui-notification.min.css" rel="stylesheet">
     <link href="./bower_components/angular-material/angular-material.min.css" rel="stylesheet">
 
     <link href="./css/main.css" rel="stylesheet">
@@ -24,7 +24,7 @@
     <link href="./css/feedbacks.css" rel="stylesheet">
     <link href="./css/tracking.css" rel="stylesheet">
     <link href="./css/statistics.css" rel="stylesheet">
-
+    <link href="./css/profile.css" rel="stylesheet">
 
 </head>
 <body>
@@ -40,36 +40,45 @@
                 </a>
             </div>
 
-            <div class="sidebar-header hidden-xs">
-                <div class="user-avatar">
-                    <img src="./img/male.svg" alt="User avatar">
-                </div>
-                <div style="display: inline" class="user-name">Martin Odersky
-                    <i class="fa fa-bell" ng-controller="notificationAmountController" ng-cloak aria-hidden="true" data-ng-click="open()" data-notifications="{{amountNewNotification}}"></i>
+            <div ng-controller="currentUserController">
+                <div class="sidebar-header hidden-xs">
+                    <div class="user-avatar">
+                        <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" style="height:100px; border-radius: 50px;
+display:block; margin:auto;">
+                    </div>
+                    <div class="user-name" style="text-align:center">{{loggedUser.firstName}} {{loggedUser.lastName}}
+                        <i class="fa fa-bell" ng-controller="notificationAmountController" ng-cloak aria-hidden="true"
+                           data-ng-click="open()" data-notifications="{{amountNewNotification}}"></i>
+                    </div>
                 </div>
             </div>
-            <div ng-controller="roleController" ng-init="getRole()" class="sidebar-menu hidden-xs" ng-cloak >
+            <div ng-controller="roleController" ng-init="getRole()" class="sidebar-menu hidden-xs" ng-cloak>
                 <a ui-sref="profile" ui-sref-active="active-list-item" class="sidebar-menu-item">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     {{ 'profile' | translate }}
                 </a>
-                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="orders" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="orders" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
                     <i class="fa fa-truck" aria-hidden="true"></i>
                     {{ 'orders' | translate }}
                 </a>
-                <a ng-show="forRole('Driver')" ui-sref="driver" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Driver')" ui-sref="driver" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
                     <i class="fa fa-car" aria-hidden="true"></i>
                     {{ 'driver' | translate }}
                 </a>
-                <a ng-show="forRole('Moderator')" ui-sref="feedbacks" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Moderator')" ui-sref="feedbacks" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
                     <i class="fa fa-comment" aria-hidden="true"></i>
                     {{ 'feedbacks' | translate }}
                 </a>
-                <a ng-show="forRole('Admin')" ui-sref="users" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Admin')" ui-sref="users" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     {{ 'user_profiles' | translate }}
                 </a>
-                <a ng-show="forRole('Admin')" ui-sref="statistics" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                <a ng-show="forRole('Admin')" ui-sref="statistics" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                     {{ 'statistics' | translate }}
                 </a>
@@ -87,11 +96,11 @@
             <div class="sidebar-footer hidden-xs">
                 <h3>Delivery</h3>
                 <div class="languages" ng-controller="LanguageSwitchController">
-  					<a ng-class="{'lang-on':lang=='uk', 'lang-off':lang!=='uk'}"
-  					   ng-click="changeLanguage('uk')" translate="lang_uk"></a>
-  					<a ng-class="{'lang-on':lang=='en', 'lang-off':lang!=='en'}"
-  					   ng-click="changeLanguage('en')" translate="lang_en"></a>
-				</div>
+                    <a ng-class="{'lang-on':lang=='uk', 'lang-off':lang!=='uk'}"
+                       ng-click="changeLanguage('uk')" translate="lang_uk"></a>
+                    <a ng-class="{'lang-on':lang=='en', 'lang-off':lang!=='en'}"
+                       ng-click="changeLanguage('en')" translate="lang_en"></a>
+                </div>
             </div>
             <div class="nav visible-xs">
             </div>
@@ -136,18 +145,21 @@
 <script src="app/driver/controllers/findOrdersController.js"></script>
 <script src="app/driver/controllers/driverController.js"></script>
 <script src="./app/users/controllers/usersController.js"></script>
-<script src="app/feedbacks/controllers/feedbacksController.js"></script>
-<script src="app/feedbacks/controllers/editFeedbackController.js"></script>
-<script src="app/feedbacks/controllers/feedbackInfoController.js"></script>
-<script src="app/feedbacks/controllers/feedbackShowUserController.js"></script>
-<script src="app/feedbacks/controllers/deleteFeedbackController.js"></script>
+<script src="./app/feedbacks/controllers/feedbacksController.js"></script>
+<script src="./app/feedbacks/controllers/editFeedbackController.js"></script>
+<script src="./app/feedbacks/controllers/feedbackInfoController.js"></script>
+<script src="./app/feedbacks/controllers/feedbackShowUserController.js"></script>
+<script src="./app/feedbacks/controllers/deleteFeedbackController.js"></script>
 <script src="./app/tracking/controller/trackingForDriver.js"></script>
 <script src="./app/tracking/controller/trackingForAdmin.js"></script>
 <script src="app/tracking/controller/ordersTrackingController.js"></script>
-<script src="app/common/controllers/imageUploadController.js"></script>
+<script src="./app/common/controllers/imageUploadController.js"></script>
 <script src="./app/notification/controller/notificationController.js"></script>
 <script src="./app/statistics/controllers/statisticsController.js"></script>
 <script src="app/users/controllers/roleController.js"></script>
+<script src="./app/users/controllers/userProfileController.js"></script>
+<script src="./app/users/controllers/currentUserController.js"></script>
+<script src="./app/users/controllers/addCarController.js"></script>
 
 </body>
 </html>

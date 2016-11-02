@@ -1,0 +1,46 @@
+.main.profile {
+    padding-top: 70px;
+}
+
+.form-group.center{
+    text-align: center;
+}
+
+.form-group.left{
+    text-align: left;
+}
+
+.profile.useravatar {
+    height: 200px;
+    border-radius: 10%;
+}
+
+.profile.hiddenInput {
+    display: none;
+}
+
+.profile.addCar {
+    margin: 20px;
+}
+
+.profile.addCar.form-group{
+    text-align: left;
+}
+
+.profile.carPhoto {
+    display: inline-block;
+    text-align:center;
+    width: 200px;
+    height: 200px;
+    margin: 1em;
+}
+
+.profile.carImage {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.profile.button, .profile.well {
+    margin: 5px;
+}

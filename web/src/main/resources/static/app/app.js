@@ -9,7 +9,8 @@ angular
         $stateProvider
             .state('profile', {
                 url: '/profile',
-                templateUrl: '/app/views/profile.html'
+                templateUrl: '/app/users/views/profile.html',
+                controller: 'userProfileController'
             })
             .state('orders', {
                 url: '/orders',

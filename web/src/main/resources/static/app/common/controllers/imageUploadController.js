@@ -2,38 +2,44 @@
 
 angular
     .module('delivery')
-    .controller('imageUploadController', ['$scope', '$http', 'Notification',
-        function ($scope, $http, Notification) {
+    .controller('imageUploadController', ['$scope', '$http', 'Notification', 'shareUserProfileDTOService',
+        function ($scope, $http, Notification, shareUserProfileDTOService) {
+
+            $scope.carId;
 
             $scope.uploadUserPhoto = function (event) {
 
                 var file = event.target.files[0];
 
-                var sendData = new FormData();
-                sendData.append('file', file);
+                if (file != null) {
 
-                $http.post("/upload/userPhoto", sendData, {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                })
-                    .then(function (response) {
-                            if (response.status == 200) {
-                                Notification.success("The user photo was successfully uploaded");
-                            }
-                        },
-                        function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
-                        });
+                    var sendData = new FormData();
+                    sendData.append('file', file);
+
+                    $http.post("/upload/userPhoto", sendData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    })
+                        .then(function (response) {
+                                if (response.status == 200) {
+                                    Notification.success("The user photo was successfully uploaded");
+                                    shareUserProfileDTOService.userDataChanged();
+                                }
+                            },
+                            function (response) {
+                                Notification.error({message: response.data.message, title: "Error!"});
+                            });
+                }
             };
 
-            $scope.uploadCarFrontPhoto = function (event) {
+            $scope.uploadCarPhoto = function (event) {
 
                 var file = event.target.files[0];
 
                 var sendData = new FormData();
                 sendData.append('file', file);
-                sendData.append('carId', 1);
-                sendData.append('side', 'front');
+                sendData.append('carId', shareUserProfileDTOService.getCarId());
+                sendData.append('side', shareUserProfileDTOService.getCarSide());
 
                 $http.post("/upload/carPhoto", sendData, {
                     transformRequest: angular.identity,
@@ -41,7 +47,8 @@ angular
                 })
                     .then(function (response) {
                             if (response.status == 200) {
-                                Notification.success("The car front photo was successfully uploaded");
+                                shareUserProfileDTOService.carPhotoUploaded();
+                                Notification.success("The car photo was successfully uploaded");
                             }
                         },
                         function (response) {
@@ -58,4 +65,52 @@ angular
                 element.bind('change', onChangeHandler);
             }
         };
+    })
+    .factory('shareUserProfileDTOService', function ($rootScope) {
+        var service = {};
+        var serviceLoggedUser;
+        var serviceCarId;
+        var serviceCarSide;
+
+        service.userDataChanged = function () {
+            $rootScope.$broadcast('user data changed');
+        };
+
+        service.userDataChangedForMainView = function () {
+            $rootScope.$broadcast('user data changed for main view');
+        };
+
+        service.setLoggedUser = function (loggedUser) {
+            serviceLoggedUser = loggedUser;
+        };
+
+        service.getLoggedUser = function () {
+            return serviceLoggedUser;
+        };
+
+        service.setCarId = function (carId) {
+            serviceCarId = carId;
+        };
+
+        service.setCarSide = function (carSide) {
+            serviceCarSide = carSide;
+        };
+
+        service.getCarId = function () {
+            return serviceCarId;
+        };
+
+        service.getCarSide = function () {
+            return serviceCarSide;
+        };
+
+        service.carSelected = function () {
+            $rootScope.$broadcast('car selected');
+        };
+
+        service.carPhotoUploaded = function () {
+            $rootScope.$broadcast('car uploaded');
+        };
+
+        return service;
     });

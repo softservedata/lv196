@@ -6,6 +6,7 @@ import com.softserve.edu.delivery.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -26,7 +27,7 @@ import java.util.NoSuchElementException;
 public class FeedbackController {
 
     private final Logger logger = LoggerFactory.getLogger(FeedbackController.class.getName());
-    private final Map<String, String> response = new HashMap<>();
+    private final HttpHeaders responseHeaders = new HttpHeaders();
     @Autowired
     private FeedbackService feedbackService;
     @Autowired
@@ -63,7 +64,7 @@ public class FeedbackController {
     ResponseEntity updateFeedback(@RequestBody FeedbackDTO feedbackDTO) {
         logger.info("Before feedbackService.update(feedbackDTO)");
         status = HttpStatus.OK;
-        response.put("message", "OK");
+        responseHeaders.set("message", "OK");
 
         try {
             feedbackService.update(feedbackDTO);
@@ -71,11 +72,11 @@ public class FeedbackController {
             logger.info("Exception while trying to update feedback with id " + feedbackDTO.getFeedbackId() +
                     " in feedbackService.update(feedbackDTO) " + e.getMessage());
             status = HttpStatus.NOT_FOUND;
-            response.put("message", e.getMessage());
+            responseHeaders.set("message", e.getMessage());
         }
         logger.info("After feedbackService.update(feedbackDTO)");
         notificationService.updateFeedback(feedbackDTO);
-        return new ResponseEntity(response, status);
+        return new ResponseEntity(responseHeaders, status);
     }
 
     @PreAuthorize(MODERATOR)
@@ -83,7 +84,7 @@ public class FeedbackController {
     ResponseEntity deleteFeedback(@PathVariable Long feedbackId) {
         logger.info("Before feedbackService.delete(feedbackId)");
         status = HttpStatus.OK;
-        response.put("message", "OK");
+        responseHeaders.set("message", "OK");
 
         try {
             feedbackService.delete(feedbackId);
@@ -91,10 +92,10 @@ public class FeedbackController {
             logger.info("Exception while trying to delete feedback with id " + feedbackId +
                     " in feedbackService.delete(feedbackDTO) " + e.getMessage());
             status = HttpStatus.NOT_FOUND;
-            response.put("message", e.getMessage());
+            responseHeaders.set("message", e.getMessage());
         }
         logger.info("After feedbackService.delete(feedbackDTO)");
 
-        return new ResponseEntity(response, status);
+        return new ResponseEntity(responseHeaders, status);
     }
 }

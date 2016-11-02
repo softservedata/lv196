@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.dto;
 
 import java.util.Objects;
 
+import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
 
 public class UserProfileDto {
@@ -187,5 +188,18 @@ public class UserProfileDto {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
+
+	public Role getUserRole() {
+		switch (role) {
+			case "Admin":
+				return Role.ADMIN;
+			case "Moderator":
+				return Role.MODERATOR;
+			case "Driver":
+				return Role.DRIVER;
+			default:
+				return Role.CUSTOMER;
+		}
+	}
 
 }

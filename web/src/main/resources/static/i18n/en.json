@@ -86,7 +86,22 @@
 	"track": "track",
 	"add_feedback": "add feedback",
 	"statistics": "Statistics",
-	"cancel_offer": "cancel offer"
-  	
-
+	"cancel_offer": "cancel offer",
+	"photo": "Photo",
+	"add_a_new_vehicle": "Add a new vehicle",
+	"change_password": "Change password",
+	"enter_new_password": "Enter new password",
+	"repeat_new_password": "Repeat new password",
+	"password_prompt": "Passwords must not be empty and must match!",
+	"personal_data": "Personal data",
+	"cars": "Cars",
+	"delete_car": "Delete car",
+	"vehicle_name": "Vehicle name",
+	"vehicle_number": "Vehicle number",
+	"vehicle_VIN": "Vehicle VIN",
+	"vehicle_weight": "Cargo weight",
+	"vehicle_width": "Cargo width",
+	"vehicle_length": "Cargo length",
+	"vehicle_height": "Cargo height",
+	"click_to_upload_a_photo": "click to upload a photo"
 }
