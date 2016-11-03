@@ -13,11 +13,12 @@
 
     <spring:url value="css/welcome.css" var="style"/>
     <spring:url value="js/welcome.js" var="script"/>
+    <spring:url value="video/registration.mp4" var="video"/>
 
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
 
-    <title>Delivery.com | welcome</title>
+    <title>Delivery.com | Registration</title>
 </head>
 <body>
 <ul class="topnav" id="myTopnav">
@@ -36,6 +37,10 @@
     <li><a href="welcome">Home</a></li>
 </ul>
 
+<video autoplay loop>
+    <source src="${video}" type="video/mp4">
+</video>
+
 <!--Sign up box-->
 
 <div id="reg_container" class="signin centered">
@@ -48,54 +53,38 @@
             <mvc:input path="userEmail" type="email" name="userEmail" id="userEmail" class="user" placeholder="Email" maxlength="255"
                    required="required" title="email should looks like example@domain.com "/>
             <mvc:errors path="userEmail"/>
-            <span class="mess1"></span>
         </div>
         <div class="mess">
             <mvc:input path="userFirstName" type="text" class="user" id="userFirstName" pattern=".{3,15}" name="userFirstName" placeholder="First name"
                    required="required" title="First name should have from 3 to 15 characters"/>
             <mvc:errors path="userFirstName"/>
-            <span class="mess2"></span>
         </div>
         <div class="mess">
             <mvc:input path="userLastName" type="text" class="user" id="userLastName" pattern=".{3,15}" name="userLastName" placeholder="Last name"
                    required="required" title="First name should have from 3 to 15 characters"/>
             <mvc:errors path="userLastName"/>
-            <span class="mess2"></span>
         </div>
         <div class="mess">
             <mvc:input path="userPassword" type="password" name="userPassword" id="userPassword" pattern=".{4,20}" class="lock" placeholder="Password"
                    required="required" title="Password should be from 4 to 20 symbols"/>
             <mvc:errors path="userPassword"/>
-            <span class="mess2"></span>
         </div>
         <div class="mess">
             <mvc:input path="userConfirmPassword" type="password" name="userConfirmPassword" id="userConfirmPassword"
-                       pattern=".{4,20}" class="lock" placeholder="Retype userPassword" required="required" title="Password should be from 4 to 20 symbols"/>
+                       pattern=".{4,20}" class="lock" placeholder="Password again" required="required" title="Password should be from 4 to 20 symbols"/>
             <mvc:errors path="userConfirmPassword"/>
-            <span class="mess2"></span>
         </div>
         <div class="mess">
             <mvc:input path="userPhoneNumber" type="text" class="user" id="userPhoneNumber" pattern=".\d+" name="userPhoneNumber"
                    placeholder="Phone number" required="required" title="only digits"/>
             <mvc:errors path="userPhoneNumber"/>
-            <span class="mess2"></span>
         </div>
-        <%--<div class="mess">
-            <mvc:input path="userPassport" type="text" class="user" id="userPassport" pattern=".{8, 30}" name="userPassport"
-                       placeholder="Passport" required="required" title="Passport should be from 8 to 30 symbols"/>
-            <mvc:errors path="userPassport"/>
-            <span class="mess2"></span>
-        </div>
-        <div class="mess">
-            <mvc:input path="userPhotoUrl" type="text" class="user" id="userPhotoUrl" pattern=".{1, 255}" name="userPhotoUrl"
-                   placeholder="Your photo url" required="required" title="Length of URL should be less than 255 characters"/>
-            <mvc:errors path="userPhotoUrl"/>
-            <span class="mess2"></span>
-        </div>--%>
         <input type="submit" value="register">
         <div class="lost">
             <div class="lost-userPassword">
-                <a href="driverRegistration">I'm driver</a>
+                <h5>
+                    <a href="driverRegistration">I'm driver</a>
+                </h5>
             </div>
             <div class="clear"></div>
         </div>

@@ -25,7 +25,8 @@ public class SecurityConstraints {
             "/bower_components/**",
             "/css/**",
             "/i18n/**",
-            "/img/**"
+            "/img/**",
+            "/video/**"
     };
 
     public static final String WELCOME_PAGE = "/welcome";

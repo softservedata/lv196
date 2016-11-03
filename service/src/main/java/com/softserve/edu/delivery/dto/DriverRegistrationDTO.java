@@ -35,12 +35,8 @@ public class DriverRegistrationDTO {
     @Pattern(regexp = PHONE_REGEX)
     private String driverPhoneNumber;
 
-    /*@NotNull(message = NOT_NULL_VALID_MASSAGE)
-    @Size(min = PASSPORT_MIN_LENGTH, max = PASS_MAX_LENGTH)*/
     private String driverPassport;
 
-    /*@NotNull(message = NOT_NULL_VALID_MASSAGE)
-    @Size(min = DEFAULT_MIN_LENGTH, max = DEFAULT_MAX_LENGTH)*/
     private String driverPhotoUrl;
 
     @NotNull(message = NOT_NULL_VALID_MASSAGE)
@@ -55,24 +51,16 @@ public class DriverRegistrationDTO {
     @Size(min = 1, max = CAR_VIN_LENGTH)
     private String vehicleVIN;
 
-    @NotNull(message = NOT_NULL_VALID_MASSAGE)
-    @Size(min = DEFAULT_MIN_LENGTH, max = DEFAULT_MAX_LENGTH)
     private String vehicleFrontPhotoURL;
 
-    @NotNull(message = NOT_NULL_VALID_MASSAGE)
-    @Size(min = DEFAULT_MIN_LENGTH, max = DEFAULT_MAX_LENGTH)
     private String vehicleBackPhotoURL;
 
-    @NotNull(message = NOT_NULL_VALID_MASSAGE)
     private BigDecimal vehicleWeight;
 
-    @NotNull(message = NOT_NULL_VALID_MASSAGE)
     private BigDecimal vehicleLength;
 
-    @NotNull(message = NOT_NULL_VALID_MASSAGE)
     private BigDecimal vehicleWidth;
 
-    @NotNull(message = NOT_NULL_VALID_MASSAGE)
     private BigDecimal vehicleHeight;
 
 

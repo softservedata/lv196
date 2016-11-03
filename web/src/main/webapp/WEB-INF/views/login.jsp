@@ -13,6 +13,7 @@
 
     <spring:url value="css/welcome.css" var="style"/>
     <spring:url value="js/welcome.js" var="script"/>
+    <spring:url value="video/login.mp4" var="video"/>
 
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
@@ -36,6 +37,10 @@
     <li><a href="welcome">Home</a></li>
 </ul>
 
+<video autoplay loop>
+    <source src="${video}" type="video/mp4">
+</video>
+
 <!--Sign in box-->
 <div id="signin_container" class="signin centered">
     <h3>Sign in</h3>
@@ -47,18 +52,18 @@
             <mvc:input path="email" name="email" type="email"  class="user" placeholder="Email" maxlength="255"
                        required="required"/>
             <mvc:errors path="email"/>
-            <span class="mess1"></span>
         </div>
         <div class="mess">
             <mvc:input path="password" type="password" class="lock" placeholder="Password" pattern=".{4,20}"
                        title="From 4 to 20 characters" required="required"/>
             <mvc:errors path="password"/>
-            <span class="mess2"></span>
         </div>
         <input type="submit" value="Log in">
         <div class="lost">
             <div class="lost-userPassword">
-                <a href="registration">I don't have an account</a>
+                <h5>
+                    <a href="registration">I don't have an account</a>
+                </h5>
             </div>
             <div class="clear"></div>
         </div>

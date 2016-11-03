@@ -12,7 +12,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <spring:url value="css/welcome.css" var="style"/>
-    <spring:url value="js/welcome.js" var="script"/>
+    <spring:url value="video/welcome.mp4" var="video"/>
 
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
@@ -52,6 +52,9 @@
 </ul>
 
 <!--Tracking box-->
+<video autoplay loop>
+    <source src="${video}" type="video/mp4">
+</video>
 
 <div id="track_container" class="signin centered">
     <h3>Track your baggage</h3>
@@ -62,8 +65,7 @@
         <div class="mess">
             <mvc:input path="orderId" type="number" class="user" min="1" max="9000000000000000000" placeholder="type here your order id" required="required"/>
             <mvc:errors path="orderId"/>
-            <span class="mess1"></span>
-        </div>
+`        </div>
         <input id="track" type="submit" value="Track">
         <div class="lost">
             <div class="clear"></div>
