@@ -47,8 +47,9 @@
 display:block; margin:auto;">
                     </div>
                     <div class="user-name" style="text-align:center">{{loggedUser.firstName}} {{loggedUser.lastName}}
-                        <i class="fa fa-bell" ng-controller="notificationAmountController" ng-cloak aria-hidden="true"
-                           data-ng-click="open()" data-notifications="{{amountNewNotification}}"></i>
+                        <div style="display:inline" ng-controller="notificationAmountController" class="{{circleStyle(amountNewNotification)}}">
+                            <i class="fa fa-bell"  ui-sref="notification" ng-cloak aria-hidden="true" data-notifications="{{amountNewNotification}}"></i>
+                        </div>
                     </div>
                 </div>
             </div>

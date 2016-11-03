@@ -53,6 +53,15 @@ angular
         function ($scope, $http, Notification, $rootScope, $uibModal) {
             $scope.countNewNotification = () => {
                 $scope.amountNewNotification = sessionStorage.getItem('last');
+                $scope.circleStyle = function (amount){
+                    if (amount == 0) {
+                        console.info('return hideCircle-style');
+                        return "hideCircle";
+                    } else {
+                        console.info('return circle-style');
+                        return "circle";
+                    }
+                };
                 console.info('begin count method, for now Amount = ' + sessionStorage.getItem('last'));
 
                 $http.get('/notification/count').then(response => {
@@ -74,14 +83,6 @@ angular
                 })
             };
             $scope.countNewNotification();
-
-            $scope.open = function () {
-                const modalInstance = $uibModal.open({
-                    animation: true,
-                    templateUrl: '/app/notification/views/show.notification.html',
-                    controller: 'notificationController'
-                });
-            };
         }]);
 
 

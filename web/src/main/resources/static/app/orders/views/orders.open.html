@@ -5,7 +5,7 @@
     <div class="panel-body">
         <div class="order-actions">
             <i class="fa fa-pencil" ng-click="showOrderCreation(order)" aria-hidden="true"></i>
-            <i class="fa fa-car" ng-click="showOffers(order)" data-notifications="{{order.amountOfOffers}}"
+            <i type="button" class="fa fa-car" uib-popover-template="templateForOffers.templateUrl" popover-placement="bottom-right" ng-click="showOffers(order)" data-notifications="{{order.amountOfOffers}}"
                aria-hidden="true"></i>
             <i class="fa fa-trash" ng-click="deleteOrder(order.id)" aria-hidden="true"></i>
         </div>

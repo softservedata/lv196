@@ -79,6 +79,11 @@ angular
                 url: '/statistics',
                 templateUrl: '/app/statistics/views/statistics.html',
                 controller: 'statisticsController'
+            })
+            .state('notification', {
+                url: '/notification',
+                templateUrl: '/app/notification/views/show.notification.html',
+                controller: 'notificationController'
             });
 
   	  	$translateProvider

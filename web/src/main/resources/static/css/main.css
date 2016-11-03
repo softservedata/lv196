@@ -111,19 +111,19 @@ html, body {
 .notification{
     font-size: 16px;
     padding-left: 10px;
-    padding: 80px;
 }
 .notification .fa:hover{
     color: rgba(85, 85, 85, 0.74);
     cursor: pointer;
 }
-.user-avatar .fa{
-    font-size: 40px;
+.circle .fa{
+    font-size: 25px;
+    cursor: pointer;
 }
-.user-name [data-notifications] {
+.circle [data-notifications] {
     position: relative;
 }
-.user-name [data-notifications]:after {
+.circle [data-notifications]:after {
     content: attr(data-notifications);
     position: absolute;
     font-size: 14px;
@@ -135,6 +135,16 @@ html, body {
     top: -6px;
     width: 16px;
     height: 16px;
+}
+.hideCircle .fa{
+    font-size: 25px;
+    cursor: pointer;
+}
+.hideCircle [data-notifications] {
+    height: 0px;
+}
+.hideCircle [data-notifications]:after {
+    height: 0px;
 }
 .Success{
     color: #fff;
@@ -172,5 +182,8 @@ html, body {
 .ngrateit-star{
     background-size: 32px;
 }
-
+.popover{
+    max-width: 800px;
+    width: 600px;
+}
 

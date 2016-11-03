@@ -6,6 +6,10 @@ angular
                 open: []
             };
 
+            $scope.templateForOffers = {
+                templateUrl: '/app/orders/views/show.offers.html'
+            };
+
             $scope.retrieveOpenOrders = () => {
                 $orders.findOpen().then(response => {
                     $scope.orders.open = response.data;
@@ -55,14 +59,7 @@ angular
                     $scope.primary();
                 }
                 else {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: '/app/orders/views/show.offers.html',
-                        controller: 'showOffersController',
-                        resolve:{
-                            order: ()=> orderWithOffers
-                        }
-                    });
+                    $scope.orderIdWithOffers = orderWithOffers.id;
                 }
             };
         }])
@@ -202,17 +199,17 @@ angular
             }
         }
     ])
-    .controller('showOffersController',['$scope', '$http', 'Notification','$rootScope', 'order',
-        function ($scope, $http, Notification, $rootScope, order) {
+    .controller('showOffersController',['$scope', '$http', 'Notification','$rootScope',
+        function ($scope, $http, Notification, $rootScope) {
         $scope.offers = {
-            offers: []
+            offers:[]
         };
 
         $scope.retrieveOffers = () => {
-            $http.get('/order/offers/' + order.id).then(response => {
-                $scope.offers = response.data;
-                for (var i=0;i<$scope.offers.length;i++){
-                    $scope.offers[i].rate = $scope.offers[i].rate/10;
+            $http.get('/order/offers/' + $scope.orderIdWithOffers).then(response => {
+                $scope.offers.offers = response.data;
+                for (var i=0; i<$scope.offers.offers.length; i++){
+                    $scope.offers.offers[i].rate = $scope.offers.offers[i].rate/10;
                 }
             })
         };
@@ -227,16 +224,16 @@ angular
         };
 
         $scope.GetApprovedOffers = function () {
-            for (var i=0;i<$scope.offers.length;i++) {
-                if ($scope.offers[i].approved) {
-                   return $scope.offers[i]
+            for (var i=0;i<$scope.offers.offers.length;i++) {
+                if ($scope.offers.offers[i].approved) {
+                   return $scope.offers.offers[i]
                 }
             }
         };
 
         $scope.update = function(offer) {
-            for (var i=0;i<$scope.offers.length;i++) {
-                    $scope.offers[i].approved = false;
+            for (var i=0;i<$scope.offers.offers.length;i++) {
+                    $scope.offers.offers[i].approved = false;
             }
             offer.approved = true;
         };
