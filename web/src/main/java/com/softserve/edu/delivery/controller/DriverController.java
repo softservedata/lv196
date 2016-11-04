@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.dto.FeedbackDTO;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OfferService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -115,5 +117,13 @@ public class DriverController {
         logger.info("Method DriverController.customerFedback()");
         logger.info("order id = " + id);
         feedbackService.getCustomerFeedback(id);
+    }
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
+    void addFeedback(@PathVariable FeedbackDTO dto) {
+        logger.info("Method DriverController.addFeedback()");
+        String email = authenticationDetails.getAuthenticatedUserEmail();
+        orderService.addFeedback(dto, email);
     }
 }

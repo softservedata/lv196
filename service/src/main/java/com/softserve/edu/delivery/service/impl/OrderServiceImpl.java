@@ -181,9 +181,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public FeedbackDTO getFeedback(Long orderId) {
+    public FeedbackDTO getFeedback(Long orderId, String email) {
         Feedback feedback = feedbackRepository
-                .getFeedbackByOrderId(orderId)
+                .getFeedbackByOrderIdAndEmail(orderId, email)
                 .stream()
                 .findFirst()
                 .orElse(null);

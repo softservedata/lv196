@@ -100,7 +100,7 @@
             </div>
         </div>
     </uib-accordion>
-<!--</div>-->
+</div>
 
 <div class="my-offers">
     <uib-accordion close-others="true">
@@ -205,7 +205,7 @@
                 <div ng-repeat="order in orders.closed track by $index" class="panel panel-default order-open">
                     <div class="panel-body">
                         <div class="order-actions">
-                            <button type="button" class="btn btn-default btn-sm" ng-click="addFeedback()">{{ 'add_feedback' | translate }}</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="addFeedback(order)">{{ 'add_feedback' | translate }}</button>
                         </div>
                         <div class="order-city" ng-click="status.open = !status.open">
                             {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}

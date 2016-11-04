@@ -83,9 +83,9 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "getFeedback/{id}", method = RequestMethod.GET)
-    FeedbackDTO getFeedback(@PathVariable Long id) {
+    FeedbackDTO getFeedback(@PathVariable Long id, Principal principal) {
         logger.info("Method OrderController.getFeedback()");
-        return orderService.getFeedback(id);
+        return orderService.getFeedback(id, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)

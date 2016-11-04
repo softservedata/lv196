@@ -26,8 +26,10 @@ public interface FeedbackRepository extends BaseRepository<Feedback, Long>, JpaR
             "where ord.id = :id and off.approved = true")
     Optional<String> getApprovedDriverEmail(@Param("id") Long id);
 
-    @Query("select f from Feedback f where f.order.id = :id")
-    List<Feedback> getFeedbackByOrderId(@Param("id") Long id);
+    @Query("select f from Feedback f where f.order.id = :id " +
+            "and f.user.email = :email")
+    List<Feedback> getFeedbackByOrderIdAndEmail(@Param("id") Long id,
+                                                @Param("email") String email);
 
     @Query("select f from Feedback f where f.order.id = :id " +
             "and f.user.userRole = 'CUSTOMER'")

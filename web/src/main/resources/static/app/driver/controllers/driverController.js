@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('driverController', ['$scope', '$locations', '$orderProperty', '$http', 'Notification',
-        function ($scope, $locations, $orderProperty, $http, Notification) {
+    .controller('driverController', ['$scope', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal',
+        function ($scope, $locations, $orderProperty, $http, Notification, $uibModal) {
             $scope.orders = {
                 open: []
             };
@@ -117,6 +117,18 @@ angular
                 })
             };
             $scope.retrieveMyOrdersClosed();
+
+            $scope.addFeedback = function (orderForFeedback) {
+                const modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/feedbacks/views/add.feedback.html',
+                    controller: 'addFeedbackController',
+                    resolve:{
+                        order: ()=> orderForFeedback
+                    }
+                });
+
+            };
         }])
 
     .controller('customerFeedbackController', ['$scope', '$orderProperty', '$http',

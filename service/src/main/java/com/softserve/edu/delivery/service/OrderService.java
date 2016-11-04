@@ -59,7 +59,7 @@ public interface OrderService {
     //Method for user story - "As customer I want to change offer status."
     void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
 
-    FeedbackDTO getFeedback (Long orderId);
+    FeedbackDTO getFeedback (Long orderId, String email);
 
     void updateFeedback(FeedbackDTO dto, String email);
 
