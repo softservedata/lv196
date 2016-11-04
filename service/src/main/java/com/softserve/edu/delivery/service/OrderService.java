@@ -75,4 +75,16 @@ public interface OrderService {
     List<OrderDto> getMyOrdersClosed(String email);
 
     OrderDto getOrderById(Long orderId);
+    
+    List<Long> countOrdersByTime();
+    
+    List<String> getHoursToThisMoment();
+    
+    List<Long> countOrdersByDay();
+    
+    List<String> getDaysToThisMoment();
+    
+    List<Long> countOrdersByMonth();
+    
+    List<String> getMonthsToThisMoment();
 }

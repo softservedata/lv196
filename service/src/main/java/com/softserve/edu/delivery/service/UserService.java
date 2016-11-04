@@ -41,5 +41,11 @@ public interface UserService extends UserDetailsService {
     User findOne(String email);
 
     void save(User user);
+    
+    List<Long> countUsersByRole();
+    
+    List<Long> countUsersByRate();
+    
+    List<UserProfileDto> findTopFiveDriversByRate();
 
 }

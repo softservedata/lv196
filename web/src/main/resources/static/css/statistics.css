@@ -2,10 +2,118 @@
 	background-color: #148b73;
 	color: 			  #ffffff;
 }
-.data-row {
-    width: 33%;
+
+.md-subhead {
+	color: #757575;
 }
 
-.data-track {
-	width: 100%;
+.data-ctions {
+	width: 80px;
+	height: 80px;
 }
+.data-pie {
+	padding-bottom: 7px;
+}
+
+.dayline {
+	padding: 16px;
+}
+
+.data-users {
+	height: 40%;
+}
+
+.users-pie {
+	width: 60%;
+	padding: 20px;
+	float: left;
+}
+
+.users-pie-info {
+	float: left;
+	width: 40%;
+	padding: 25px;
+	margin-top: 20px;
+}
+
+.users-info-name {
+	font-size: 14px;
+	margin-top: 0px;
+	margin-down: 0px;
+}
+
+.cus-icon {
+	color: #97bbcd;
+	padding-right: 10px;
+}
+
+.dr-icon {
+	color: #dcdcdc;
+	padding-right: 10px;
+}
+
+.mod-icon {
+	color: #f7464a;
+	padding-right: 10px;
+}
+
+.adm-icon {
+	color: #46bfbd;
+	padding-right: 10px;
+}
+
+.five-icon {
+	color: #fdb45c;
+	padding-right: 10px;
+}
+
+.refresh-btn {
+	margin-left: 71px;
+	margin-top: 3px;
+	color: #757575;
+}
+
+.data-rate {
+	font-weight: bold;
+    font-size: 15px;
+}
+
+.users-rate-info {
+	float: left;
+	width: 40%;
+	padding: 20px;
+	margin-top: 20px;
+}
+
+.img-driver {
+	width: 120px;
+	height: 120px;
+	margin-right: 10px;
+}
+
+.driver-name {
+	font-size: 15px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+.driver-info {
+	font-size: 13px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	color: #757575;
+}
+
+.ic-driver {
+	font-size: 11px;
+	padding-right: 2px;
+}
+
+.icon-driver {
+	font-size: 11px;
+	padding-right: 2px;
+	margin-left: 7px;
+}
+
+
+

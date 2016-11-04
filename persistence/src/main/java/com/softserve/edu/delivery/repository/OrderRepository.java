@@ -70,4 +70,8 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     List<Order> getMyOrdersClosed(@Param("email") String email);
 
     Page<Order> findAllByOrderStatus(OrderStatus orderStatus, Pageable pageable);
+    
+    @Query("select count(o.id) from Order o where o.orderStatus = 'CLOSED'" +
+ 	       "and o.arrivalDate between ?1 and ?2")
+     Long countByArrivalDate(@Param("arrivalDate")Timestamp dateFrom, @Param("arrivalDate")Timestamp dateTo);
 }

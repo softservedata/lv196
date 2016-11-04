@@ -160,15 +160,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserProfileDto> findUsers(UserProfileDto filter) {
-        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(filter.getSortReverse() == true ? "ASC" : "DESC"),
-                filter.getSortType());
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(
+        		           filter.getSortReverse() == true ? "ASC" : "DESC"),
+                           filter.getSortType());
     	Page<User> resultPage = userRepository
                 .findUsers(filter.getFirstName(),
-                        filter.getLastName(),
-                        filter.getEmail(),
-                        filter.getRole().isEmpty() ? null : Role.valueOf(filter.getRole().toUpperCase()),
-                        filter.getBlocked(), new PageRequest(filter.getCurrentPage() - 1,
-                                filter.getRows(), new Sort(sortOrder)));
+                           filter.getLastName(),
+                           filter.getEmail(),
+                           filter.getRole().isEmpty() ? null : Role.valueOf(filter.getRole().toUpperCase()),
+                           filter.getBlocked(), new PageRequest(filter.getCurrentPage() - 1,
+                           filter.getRows(), new Sort(sortOrder)));
     	totalItems = resultPage.getTotalElements();
 		return resultPage
 				.getContent()
@@ -180,6 +181,33 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Long countItems() {
 		return totalItems;
+	}
+	
+	@Override
+	public List<Long> countUsersByRole(){
+		List<Long> usersData = new ArrayList<>();
+	       usersData.add(userRepository.countByUserRole(Role.CUSTOMER));
+	       usersData.add(userRepository.countByUserRole(Role.DRIVER));
+	       usersData.add(userRepository.countByUserRole(Role.MODERATOR));
+	       usersData.add(userRepository.countByUserRole(Role.ADMIN));
+		return usersData;
+	}
+	
+	@Override
+	public List<Long> countUsersByRate(){
+		List<Long> users = new ArrayList<>();
+		for(int i = 1; i < 50; i = i + 10 )
+			users.add(userRepository.countByRate(i, i + 9));
+		return users;
+	}
+	
+	@Override
+	public List<UserProfileDto> findTopFiveDriversByRate(){
+		return userRepository
+				.findTop5ByUserRoleOrderByRateDesc(Role.DRIVER)
+				.stream()
+				.map(UserProfileDto::create)
+                .collect(Collectors.toList());		
 	}
 
     private User createUser(UserRegistrationDTO userRegDTO) {

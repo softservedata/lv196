@@ -40,7 +40,7 @@
                 </a>
             </div>
 
-            <div ng-controller="currentUserController">
+            <div ng-controller="currentUserController" ng-cloak>
                 <div class="sidebar-header hidden-xs">
                     <div class="user-avatar">
                         <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" style="height:100px; border-radius: 50px;
@@ -135,6 +135,8 @@ display:block; margin:auto;">
 <script src="./bower_components/angular-aria/angular-aria.min.js"></script>
 <script src="./bower_components/angular-messages/angular-messages.min.js"></script>
 <script src="./bower_components/angular-material/angular-material.min.js"></script>
+<script src="./bower_components/chart.js/dist/Chart.min.js"></script>
+<script src="./bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
 
 <script src="./app/orders/services/orderService.js"></script>
 <script src="./app/common/services/commonServices.js"></script>

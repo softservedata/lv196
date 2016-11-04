@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +22,10 @@ public interface UserRepository extends BaseRepository<User, String> {
     					 @Param("email")String email, @Param("userRole") Role userRole, 
     					 @Param("blocked") Boolean blocked, Pageable pageable);
 	
+    Long countByUserRole(Role userRole);
+    
+    List<User> findTop5ByUserRoleOrderByRateDesc(Role userRole);
+    
+    @Query("select count(u) from User u where u.rate between ?1 and ?2")
+    Long countByRate(@Param("rate")Integer rateFrom, @Param("rate")Integer rateTo);
 }

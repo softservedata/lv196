@@ -4,76 +4,124 @@
          </div>
 </md-toolbar>
 
-<md-content class="md-padding" layout="row" class="row">
-    <div flex="auto" layout="row">
+<md-content class="md-padding" layout-xs="column" layout="row" class="row">
+    <div flex-xs flex-gt-xs="55" layout="column">
 
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
-        <md-card-title>
+      	<md-card-title>
           <md-card-title-text>
             <span class="md-headline">TODAY'S STATS</span>
-            <span class="md-subhead">Total deliveries and average rate today</span>
+            <span class="md-subhead">Total deliveries today</span>
           </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-md card-media"></div>
-          </md-card-title-media>
         </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
-        </md-card-actions>
+		<div>		
+			<canvas id="line" class="chart chart-line dayline" chart-data="dayData"
+				chart-labels="dayLabels" chart-series="chartParams.series" chart-options="chartParams.dayOptions"
+				chart-dataset-override="dayDatasetOverride" chart-click="onClick" chart-colours="chartParams.colours">
+			</canvas>
+		</div>
       </md-card>
 
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text>
             <span class="md-headline">MONTHLY STATS</span>
-            <span class="md-subhead">Monthly deliveries and average rate</span>
+            <span class="md-subhead">Monthly deliveries by day</span>
           </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-md card-media"></div>
-          </md-card-title-media>
         </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
-        </md-card-actions>
+		<div>		
+			<canvas id="bar" class="chart chart-bar dayline"
+  					chart-data="monthData" chart-labels="monthLabels" chart-series="series">
+			</canvas>
+		</div>
       </md-card>
 
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">ALLTIME STATS</span>
-            <span class="md-subhead">All deliveries and average rate</span>
+            <span class="md-headline">ANNUAL STATS</span>
+            <span class="md-subhead">Total deliveries of this year</span>
           </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-md card-media"></div>
-          </md-card-title-media>
         </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
-        </md-card-actions>
+		<div>		
+			<canvas id="line" class="chart chart-line dayline" chart-data="yearData"
+				chart-labels="yearLabels" chart-series="series" chart-options="options"
+				chart-dataset-override="datasetOverride" chart-click="onClick">
+			</canvas>
+		</div>
       </md-card>
+      
     </div>
-
-  </md-content>
-  
-  
-  <md-content class="md-padding" layout-xs="column" layout="row">
-    <div flex="auto" layout="row">
-      <md-card md-theme="{{'default'}}" md-theme-watch class="data-track">
+ 	<div flex-xs flex-gt-xs="45" layout="column">
+ 		<md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Tracking</span>
-            <span class="md-subhead">All routs</span>
+          <md-card-title-text class="data-users-title">
+            <span class="md-headline">USERS QUANTITY</span>
+            <span class="md-subhead">Number of users by role</span>
           </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-lg card-media"></div>
-          </md-card-title-media>
         </md-card-title>
-        <md-card-content class="admin-track"></md-card-content>
-		<md-card-actions layout="row" layout-align="end center">
-          <md-button ng-click="redirect()">TRACK</md-button>
-        </md-card-actions>
+        	<div class="data-pie">
+        		<div class="users-pie">
+					<canvas id="doughnut" class="chart chart-doughnut"
+  							chart-data="userData" chart-labels="userLabels" height="100" width="100">
+					</canvas> 
+				</div>
+				<div class="users-pie-info">
+ 					<h1 class="users-info-name"><i class="fa fa-square cus-icon" aria-hidden="true"></i>Customers</h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square dr-icon" aria-hidden="true"></i>Drivers</h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square mod-icon" aria-hidden="true"></i>Moderators</h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square adm-icon" aria-hidden="true"></i>Admins</h1>
+				</div>
+			</div>
       </md-card>
-  </md-content>
+      
+      <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
+        <md-card-title>
+          <md-card-title-text class="data-users-title">
+            <span class="md-headline">BEST DRIVERS</span>
+            <span class="md-subhead">Top 5 best drivers</span>
+          </md-card-title-text>
+        </md-card-title>
+        	<div>
+        		<md-list-item ng-repeat="user in drivers.topFive" ng-click="goToPerson(person.name, $event)" class="noright">
+    				<img title="{{user.firstName}} {{user.lastName}}" src="./img/user-photo.png" class="md-avatar img-driver">
+    					  <div class="md-list-item-text" layout="column">
+            					<h1 class="driver-name">{{ user.firstName }} {{user.lastName}}</h1>
+            					<h1 class="driver-info"><i class="fa fa-envelope ic-driver" aria-hidden="true"></i> {{ user.email }}
+            											<i class="fa fa-phone icon-driver" aria-hidden="true"></i> {{ user.phone }}</h1>
+         				  </div>
+    					<p></p>
+  				</md-list-item>
+			</div>
+      </md-card>
+      
+      <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
+        <md-card-title>
+          <md-card-title-text class="data-users-title">
+            <span class="md-headline">USERS QUANTITY</span>
+            <span class="md-subhead">Number of users by role</span>
+          </md-card-title-text>
+        </md-card-title>
+        	<div class="data-pie">
+        		<div class="users-pie">
+					<canvas id="doughnut" class="chart chart-doughnut"
+  							chart-data="rateData" chart-labels="rateLabels" chart-options="options" height="120" width="120">
+					</canvas> 
+				</div>
+				<div class="users-rate-info">
+ 					<h1 class="users-info-name"><i class="fa fa-square cus-icon" aria-hidden="true"></i><span uib-rating class="rating data-rate" ng-model="1"
+                 								   aria-labelledby="default-rating" readonly="isReadonly" ></span></h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square dr-icon" aria-hidden="true"></i><span uib-rating class="rating data-rate" ng-model="2"
+                 								   aria-labelledby="default-rating" readonly="isReadonly" ></span></h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square mod-icon" aria-hidden="true"></i><span uib-rating class="rating data-rate" ng-model="3"
+                 								   aria-labelledby="default-rating" readonly="isReadonly" ></span></h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square adm-icon" aria-hidden="true"></i><span uib-rating class="rating data-rate" ng-model="4"
+                 								   aria-labelledby="default-rating" readonly="isReadonly" ></span></h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square five-icon" aria-hidden="true"></i><span uib-rating class="rating data-rate" ng-model="5"
+                 								   aria-labelledby="default-rating" readonly="isReadonly" ></span></h1>
+				</div>
+			</div>
+      </md-card>
+ 	</div>
+
+</md-content>
