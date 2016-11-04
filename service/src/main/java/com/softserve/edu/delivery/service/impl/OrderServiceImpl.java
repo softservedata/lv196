@@ -1,5 +1,17 @@
 package com.softserve.edu.delivery.service.impl;
 
+import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.LocationDto;
+import com.softserve.edu.delivery.dto.OfferDtoForList;
+import com.softserve.edu.delivery.dto.OrderDto;
+import com.softserve.edu.delivery.repository.*;
+import com.softserve.edu.delivery.service.FeedbackService;
+import com.softserve.edu.delivery.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -7,35 +19,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.softserve.edu.delivery.domain.City;
-import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.Offer;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.OrderStatus;
-import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
-import com.softserve.edu.delivery.dto.LocationDto;
-import com.softserve.edu.delivery.dto.OfferDtoForList;
-import com.softserve.edu.delivery.dto.OrderDto;
-import com.softserve.edu.delivery.repository.CityRepository;
-import com.softserve.edu.delivery.repository.FeedbackRepository;
-import com.softserve.edu.delivery.repository.OfferRepository;
-import com.softserve.edu.delivery.repository.OrderRepository;
-import com.softserve.edu.delivery.repository.UserRepository;
-import com.softserve.edu.delivery.service.FeedbackService;
-import com.softserve.edu.delivery.service.OrderService;
+import static javafx.scene.input.KeyCode.F;
+import static javafx.scene.input.KeyCode.L;
 
 @Service
 @Transactional
@@ -287,9 +276,9 @@ public class OrderServiceImpl implements OrderService {
 		LocalTime end = LocalTime.now();
 		LocalTime start = LocalTime.MIDNIGHT.plusHours(1);
 		return Stream.iterate(start, date -> date.plusHours(1))
-		        .limit(ChronoUnit.HOURS.between(start, end.plusMinutes(59).plusSeconds(59)))
-		        .map(Object::toString)
-		        .collect(Collectors.toList());
+		             .limit(ChronoUnit.HOURS.between(start, end.plusMinutes(59).plusSeconds(59)))
+		             .map(Object::toString)
+		             .collect(Collectors.toList());
     }
     
     @Override
@@ -309,9 +298,9 @@ public class OrderServiceImpl implements OrderService {
 		LocalDate end = LocalDate.now();
 		LocalDate start = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
 		return Stream.iterate(start, date -> date.plusDays(1))
-		        .limit(ChronoUnit.DAYS.between(start, end))
-		        .map(Object::toString)
-		        .collect(Collectors.toList());
+		             .limit(ChronoUnit.DAYS.between(start, end))
+		             .map(Object::toString)
+		             .collect(Collectors.toList());
     }
     
     @Override
@@ -331,9 +320,9 @@ public class OrderServiceImpl implements OrderService {
 		LocalDateTime end = LocalDateTime.now();
 		LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfYear());
 		return Stream.iterate(start, date -> date.plusMonths(1))
-		        .limit(ChronoUnit.MONTHS.between(start, end))
-		        .map(LocalDateTime::getMonth)
-		        .map(Object::toString)
-		        .collect(Collectors.toList());
+		             .limit(ChronoUnit.MONTHS.between(start, end))
+		             .map(LocalDateTime::getMonth)
+		             .map(Object::toString)
+		             .collect(Collectors.toList());
     }
 }
