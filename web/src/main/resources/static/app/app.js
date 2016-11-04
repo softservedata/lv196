@@ -37,11 +37,6 @@ angular
                 templateUrl: '/app/driver/views/driver.html',
                 controller: 'driverController'
             })
-            .state('findOrder', {
-                url: '/find-order',
-                templateUrl: '/app/driver/views/findOrder.html',
-                controller: 'findOrdersController'
-            })
             .state('feedbacks', {
                 url: '/feedbacks',
                 templateUrl: '/app/feedbacks/views/feedbacks.html',

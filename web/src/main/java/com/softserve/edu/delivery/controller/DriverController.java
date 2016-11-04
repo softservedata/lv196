@@ -9,13 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -38,7 +37,45 @@ public class DriverController {
     @Autowired
     private UserAuthenticationDetails authenticationDetails;
 
-    private final Logger logger = LoggerFactory.getLogger(FindOrderController.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(DriverController.class.getName());
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping(path = "open", method = RequestMethod.GET)
+    List<OrderDto> open() {
+        logger.info("Method DriverController.open()");
+        return orderService.getAllOpenOrder();
+    }
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping (path = "filtered-orders", method = RequestMethod.GET)
+    List<OrderDto> filter (@RequestParam (required = false) Long cityFromId,
+                           @RequestParam (required = false) Long cityToId,
+                           @RequestParam (required = false) BigDecimal weight,
+                           @RequestParam (required = false) String date) {
+
+        Timestamp arrivalDate = null;
+        if (date != null && !date.isEmpty()) {
+            try {
+                arrivalDate = new Timestamp(Long.parseLong(date));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Incorrect date");
+            }
+        }
+        logger.info("Method DriverController.filter()");
+        logger.info("cityFromId = " + cityFromId);                          //will delete it later!!!
+        logger.info("cityToId = " + cityToId);                              //will delete it later!!!
+        logger.info("weight = " + weight);                                  //will delete it later!!!
+        logger.info("arrivalDate = " + arrivalDate);                        //will delete it later!!!
+        return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate);
+    }
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)
+    void addOffer(@PathVariable Long id) {
+        logger.info("Method DriverController.addOffer()");
+        String email = authenticationDetails.getAuthenticatedUserEmail();
+        offerService.addOffer(id, email);
+    }
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-offers", method = RequestMethod.GET)
