@@ -3,7 +3,7 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
@@ -89,8 +89,8 @@ public class FeedbackServiceImpl implements FeedbackService {
         return "asc";
     }
 
-    public FeedbackDTO copyFeedbackToDTO(Feedback feedback) {
-        FeedbackDTO feedbackDTO = new FeedbackDTO();
+    public FeedbackDto copyFeedbackToDTO(Feedback feedback) {
+        FeedbackDto feedbackDTO = new FeedbackDto();
         feedbackDTO.setFeedbackId(feedback.getFeedbackId());
         feedbackDTO.setOrderId(feedback.getOrder().getId());
         feedbackDTO.setText(feedback.getText());
@@ -114,15 +114,15 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDTO;
     }
 
-    private List<FeedbackDTO> copyFeedbackListToDTOList(List<Feedback> feedbackList) {
-        List<FeedbackDTO> listFeedbackDTO = new ArrayList<>();
+    private List<FeedbackDto> copyFeedbackListToDTOList(List<Feedback> feedbackList) {
+        List<FeedbackDto> listFeedbackDTO = new ArrayList<>();
         feedbackList.forEach(f ->
                 listFeedbackDTO.add(copyFeedbackToDTO(f))
         );
         return listFeedbackDTO;
     }
 
-    public Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO) {
+    public Feedback copyDTOToFeedback(FeedbackDto feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setFeedbackId(feedbackDTO.getFeedbackId());
         Optional<User> oUser = userRepository.findOneOpt(feedbackDTO.getUserEmail());
@@ -161,14 +161,14 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public void save(FeedbackDTO feedbackDTO) {
+    public void save(FeedbackDto feedbackDTO) {
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
         feedbackRepository.save(feedback);
     }
 
     @Override
     @Transactional
-    public void update(FeedbackDTO feedbackDTO) {
+    public void update(FeedbackDto feedbackDTO) {
         Feedback feedback = copyDTOToFeedback(feedbackDTO);
         if (feedbackRepository.exists(feedback.getFeedbackId())) {
             feedbackRepository.save(feedback);
@@ -192,7 +192,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public FeedbackDTO findOne(Long id) {
+    public FeedbackDto findOne(Long id) {
 
         Feedback feedback;
 
@@ -231,7 +231,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public FeedbackDTO findByFeedbackId(Long id) {
+    public FeedbackDto findByFeedbackId(Long id) {
         Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
         if (oFeedback.isPresent()) {
             return copyFeedbackToDTO(oFeedback.get());
@@ -242,13 +242,13 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public List<FeedbackDTO> findAll() {
+    public List<FeedbackDto> findAll() {
         return copyFeedbackListToDTOList(feedbackRepository.findAll());
     }
 
     @Override
     @Transactional
-    public List<FeedbackDTO> findFiltered(String text, String rateString, String userName, String transporterName,
+    public List<FeedbackDto> findFiltered(String text, String rateString, String userName, String transporterName,
                                           String createdOnString, String approvedString, String sortBy,
                                           String sortOrder, int currentPage, int itemsPerPage) {
 
@@ -282,7 +282,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public FeedbackDTO getCustomerFeedback(Long id) {
+    public FeedbackDto getCustomerFeedback(Long id) {
         Feedback feedback = feedbackRepository.getCustomerFeedback(id);
         if (feedback != null) {
             return copyFeedbackToDTO(feedback);

@@ -3,7 +3,7 @@ package com.softserve.edu.delivery.service.feedback;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.stereotype.Component;
 
@@ -76,8 +76,8 @@ public class FeedbackServiceImplTest{
      *
      * creates a mock object of FeedbackDTO.class - for testing
      */
-    FeedbackDTO createMockFeedbackDTO() {
-        FeedbackDTO feedbackDTO = new FeedbackDTO();
+    FeedbackDto createMockFeedbackDTO() {
+        FeedbackDto feedbackDTO = new FeedbackDto();
         feedbackDTO.setFeedbackId(MOCK_FEEDBACK_ID);
         feedbackDTO.setRate(MOCK_RATE);
         feedbackDTO.setApproved(MOCK_APPROVED);
@@ -134,7 +134,7 @@ public class FeedbackServiceImplTest{
      *
      * changes data of an object of FeedbackDTO.class and sends it back
      */
-    void  changeData(FeedbackDTO feedbackDTO) {
+    void  changeData(FeedbackDto feedbackDTO) {
         String randomUserEmail = getRandomUserEmail();
         feedbackDTO.setApproved(getRandomApproved());
         feedbackDTO.setRate(getRandomRate());

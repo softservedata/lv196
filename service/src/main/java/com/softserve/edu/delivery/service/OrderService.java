@@ -1,13 +1,11 @@
 package com.softserve.edu.delivery.service;
 
-import java.util.List;
-
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 public interface OrderService {
 
@@ -55,20 +53,20 @@ public interface OrderService {
 * Author - Taras Kurdiukov
 */
     //Method for user story - "As customer I want to write transporter feedback."
-    void addFeedback (FeedbackDTO dto, String email);
+    void addFeedback (FeedbackDto dto, String email);
     //Method for user story - "As customer I want to change offer status."
     void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
 
-    FeedbackDTO getFeedback (Long orderId, String email);
+    FeedbackDto getFeedback (Long orderId, String email);
 
-    void updateFeedback(FeedbackDTO dto, String email);
+    void updateFeedback(FeedbackDto dto, String email);
 
     List<OrderDto> findAllClosedOrders(String email);
 /**
 * Author - Ivan Synyshyn
 */
     //As transporter I want to choose orders by filter
-    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, BigDecimal weight, Timestamp arrivalDate);
+    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, Double weight, Timestamp arrivalDate);
     List<OrderDto> getAllOpenOrder();
     List<OrderDto> getOpenOrdersWithMyOffers(String email);
     List<OrderDto> getMyOrdersInProgress(String email);

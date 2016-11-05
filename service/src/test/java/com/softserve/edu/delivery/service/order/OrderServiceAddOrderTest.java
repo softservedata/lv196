@@ -104,8 +104,8 @@ public class OrderServiceAddOrderTest {
                 .setArrivalDate(dummyTimestamp)
                 .setLocationFrom(new LocationDto().setCityId(1L))
                 .setLocationTo(new LocationDto().setCityId(2L))
-                .setHeight(new BigDecimal(23)).setLength(new BigDecimal(15))
-                .setWeight(new BigDecimal(45)).setWidth(new BigDecimal(13))
+                .setHeight(new Double(23)).setLength(new Double(15))
+                .setWeight(new Double(45)).setWidth(new Double(13))
                 .setDescription("dummy desc");
     }
 

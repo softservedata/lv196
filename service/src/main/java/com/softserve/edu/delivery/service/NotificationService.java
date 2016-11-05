@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.service;
 
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.NotificationDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 
@@ -22,6 +22,6 @@ public interface NotificationService {
 
     void removeOrder(Long orderId);
     void changeOfferStatus(OfferDtoForList offerDto);
-    void updateFeedback(FeedbackDTO feedbackDTO);
+    void updateFeedback(FeedbackDto feedbackDTO);
     void changeUserStatus(String email, Boolean status);
 }

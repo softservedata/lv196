@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
  * serves as a transport object between persistence and service layers
  */
 
-public class FeedbackDTO {
+public class FeedbackDto {
 
-    public FeedbackDTO() {
+    public FeedbackDto() {
     }
 
     private Long feedbackId;
@@ -115,9 +115,9 @@ public class FeedbackDTO {
                 '}';
     }
 
-    public static List<FeedbackDTO> of(List<Feedback> feedbacks) {
+    public static List<FeedbackDto> of(List<Feedback> feedbacks) {
         return feedbacks.stream().map(feedback -> {
-            FeedbackDTO feedbackDTO = new FeedbackDTO();
+            FeedbackDto feedbackDTO = new FeedbackDto();
             feedbackDTO.setFeedbackId(feedback.getFeedbackId());
             feedbackDTO.setOrderId(feedback.getOrder().getId());
             feedbackDTO.setText(feedback.getText());

@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +13,11 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private BigDecimal height;
-    private BigDecimal width;
-    private BigDecimal length;
-    private BigDecimal weight;
-    private BigDecimal price;
+    private Double height;
+    private Double width;
+    private Double length;
+    private Double weight;
+    private Double price;
     private Timestamp registrationDate;
     private Timestamp arrivalDate;
     private String description;
@@ -53,47 +52,47 @@ public class Order {
         return this;
     }
 
-    public BigDecimal getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public Order setHeight(BigDecimal height) {
+    public Order setHeight(Double height) {
         this.height = height;
         return this;
     }
 
-    public BigDecimal getWidth() {
+    public Double getWidth() {
         return width;
     }
 
-    public Order setWidth(BigDecimal width) {
+    public Order setWidth(Double width) {
         this.width = width;
         return this;
     }
 
-    public BigDecimal getLength() {
+    public Double getLength() {
         return length;
     }
 
-    public Order setLength(BigDecimal length) {
+    public Order setLength(Double length) {
         this.length = length;
         return this;
     }
 
-    public BigDecimal getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public Order setWeight(BigDecimal weight) {
+    public Order setWeight(Double weight) {
         this.weight = weight;
         return this;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public Order setPrice(BigDecimal price) {
+    public Order setPrice(Double price) {
         this.price = price;
         return this;
     }

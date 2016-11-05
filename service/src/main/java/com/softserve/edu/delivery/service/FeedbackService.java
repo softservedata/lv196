@@ -3,27 +3,27 @@ package com.softserve.edu.delivery.service;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 
 import java.util.List;
 
 public interface FeedbackService {
 
-    FeedbackDTO copyFeedbackToDTO(Feedback feedback);
+    FeedbackDto copyFeedbackToDTO(Feedback feedback);
 
-    Feedback copyDTOToFeedback(FeedbackDTO feedbackDTO);
+    Feedback copyDTOToFeedback(FeedbackDto feedbackDTO);
 
-    List<FeedbackDTO> findAll();
+    List<FeedbackDto> findAll();
 
     void changeFeedbackStatus(Long id, boolean status);
 
-    void save(FeedbackDTO feedbackDTO);
+    void save(FeedbackDto feedbackDTO);
 
-    void update(FeedbackDTO feedbackDTO);
+    void update(FeedbackDto feedbackDTO);
 
     void delete(Long id);
 
-    FeedbackDTO findOne(Long id);
+    FeedbackDto findOne(Long id);
 
     User getUser(String email);
 
@@ -31,7 +31,7 @@ public interface FeedbackService {
 
     /*------------- Find all feedbacks -----------------------*/
 
-    List<FeedbackDTO> findFiltered(String text, String rateString, String userName, String transporterName,
+    List<FeedbackDto> findFiltered(String text, String rateString, String userName, String transporterName,
                                    String createdOnString, String approvedString, String sortBy, String sort,
                                    int currentPage, int itemsPerPage);
 
@@ -39,7 +39,7 @@ public interface FeedbackService {
 
     /*------------- Find feedbacks by id -----------------------*/
 
-    FeedbackDTO findByFeedbackId(Long id);
+    FeedbackDto findByFeedbackId(Long id);
 
-    FeedbackDTO getCustomerFeedback(Long id);
+    FeedbackDto getCustomerFeedback(Long id);
 }

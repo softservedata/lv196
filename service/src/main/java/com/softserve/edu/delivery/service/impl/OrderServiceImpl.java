@@ -1,7 +1,7 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.domain.*;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,9 +21,6 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static javafx.scene.input.KeyCode.F;
-import static javafx.scene.input.KeyCode.L;
 
 @Service
 @Transactional
@@ -47,10 +43,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public List<OrderDto> findInProgressOrders(String email) {
         return orderRepository
-                .findOrderInProgressByCustomerEmail(email)
-                .stream()
-                .map(OrderDto::ofContainer)
-                .collect(Collectors.toList());
+                .findOrderInProgressByCustomerEmail(email);
     }
 
     @Override
@@ -58,11 +51,10 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDto> findOpenOrders(String email) {
         return Stream.of(
                 orderRepository
-                .findOrderOpenWithOffersByCustomerEmail(email),
+                        .findOrderOpenWithOffersByCustomerEmail(email),
                 orderRepository
-                .findOrderOpenWithoutOffersByCustomerEmail(email))
+                        .findOrderOpenWithoutOffersByCustomerEmail(email))
                 .flatMap(Collection::stream)
-                .map(OrderDto::ofContainer)
                 .collect(Collectors.toList());
     }
 
@@ -121,7 +113,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addFeedback(FeedbackDTO dto, String email) {
+    public void addFeedback(FeedbackDto dto, String email) {
         if (dto == null) {
             throw new IllegalArgumentException("Feedback dto must not be null");
         }
@@ -155,10 +147,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public List<OrderDto> findAllClosedOrders(String email) {
         return orderRepository
-                .getAllClosedOrderByCustomerEmail(email)
-                .stream()
-                .map(OrderDto::ofContainer)
-                .collect(Collectors.toList());
+                .getAllClosedOrderByCustomerEmail(email);
     }
 
     @Override
@@ -172,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateFeedback(FeedbackDTO dto, String email) {
+    public void updateFeedback(FeedbackDto dto, String email) {
         Feedback feedback = feedbackRepository.findOneOpt(dto.getFeedbackId())
                 .orElseThrow(() -> new IllegalArgumentException("No such feedback with id: " + dto.getFeedbackId()));
         feedback.setRate(dto.getRate());
@@ -181,13 +170,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public FeedbackDTO getFeedback(Long orderId, String email) {
+    public FeedbackDto getFeedback(Long orderId, String email) {
         Feedback feedback = feedbackRepository
                 .getFeedbackByOrderIdAndEmail(orderId, email)
                 .stream()
                 .findFirst()
                 .orElse(null);
-        FeedbackDTO feedbackDTO = new FeedbackDTO();
+        FeedbackDto feedbackDTO = new FeedbackDto();
         feedbackDTO.setCreatedOn(feedback.getCreatedOn());
         feedbackDTO.setApproved(feedback.getApproved());
         feedbackDTO.setText(feedback.getText());
@@ -199,7 +188,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, BigDecimal weight, Timestamp arrivalDate) {
+    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate) {
         return orderRepository
                 .getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate)
                 .stream()
@@ -242,10 +231,9 @@ public class OrderServiceImpl implements OrderService {
         for (Order order : listOrders) {
             Feedback feedBack = feedbackRepository.getCustomerFeedback(order.getId());
             if (feedBack != null) {
-                FeedbackDTO feedbackDTO = feedbackService.copyFeedbackToDTO(feedBack);
+                FeedbackDto feedbackDTO = feedbackService.copyFeedbackToDTO(feedBack);
                 result.add(OrderDto.orderAndFeedbackOf(order, feedbackDTO));
-            }
-            else result.add(OrderDto.of(order));
+            } else result.add(OrderDto.of(order));
         }
         return result;
     }
@@ -253,76 +241,76 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto getOrderById(Long orderId) {
         Order order = orderRepository.findOne(orderId);
-        if(order == null ) {
+        if (order == null) {
             return null;
         }
         return OrderDto.of(order);
     }
-    
+
     @Override
-    public List<Long> countOrdersByTime(){
-    	List<Long> ordersQuantity = new ArrayList<>();
-    	LocalDateTime end = LocalDateTime.now();
-    	LocalDateTime start = LocalDate.now().atStartOfDay();
-    	for (LocalDateTime date = start; date.isBefore(end); date = date.plusHours(1)) {
-    		ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date), Timestamp.valueOf(date.plusHours(1))));
-    	}
-    	return ordersQuantity;
+    public List<Long> countOrdersByTime() {
+        List<Long> ordersQuantity = new ArrayList<>();
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDate.now().atStartOfDay();
+        for (LocalDateTime date = start; date.isBefore(end); date = date.plusHours(1)) {
+            ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date), Timestamp.valueOf(date.plusHours(1))));
+        }
+        return ordersQuantity;
     }
-    
+
     @Override
     public List<String> getHoursToThisMoment() {
-		LocalTime.now();
-		LocalTime end = LocalTime.now();
-		LocalTime start = LocalTime.MIDNIGHT.plusHours(1);
-		return Stream.iterate(start, date -> date.plusHours(1))
-		             .limit(ChronoUnit.HOURS.between(start, end.plusMinutes(59).plusSeconds(59)))
-		             .map(Object::toString)
-		             .collect(Collectors.toList());
+        LocalTime.now();
+        LocalTime end = LocalTime.now();
+        LocalTime start = LocalTime.MIDNIGHT.plusHours(1);
+        return Stream.iterate(start, date -> date.plusHours(1))
+                .limit(ChronoUnit.HOURS.between(start, end.plusMinutes(59).plusSeconds(59)))
+                .map(Object::toString)
+                .collect(Collectors.toList());
     }
-    
+
     @Override
-    public List<Long> countOrdersByDay(){
-    	List<Long> ordersQuantity = new ArrayList<>();
-    	LocalDateTime end = LocalDate.now().atStartOfDay();
-    	LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfMonth());
-    	for (LocalDateTime date = start; date.isBefore(end); date = date.plusDays(1)) {
-    		ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date), 
-    				                                              Timestamp.valueOf(date.plusHours(23).plusMinutes(59).plusSeconds(59))));
-    	}
-    	return ordersQuantity;
+    public List<Long> countOrdersByDay() {
+        List<Long> ordersQuantity = new ArrayList<>();
+        LocalDateTime end = LocalDate.now().atStartOfDay();
+        LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfMonth());
+        for (LocalDateTime date = start; date.isBefore(end); date = date.plusDays(1)) {
+            ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date),
+                    Timestamp.valueOf(date.plusHours(23).plusMinutes(59).plusSeconds(59))));
+        }
+        return ordersQuantity;
     }
-    
+
     @Override
     public List<String> getDaysToThisMoment() {
-		LocalDate end = LocalDate.now();
-		LocalDate start = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-		return Stream.iterate(start, date -> date.plusDays(1))
-		             .limit(ChronoUnit.DAYS.between(start, end))
-		             .map(Object::toString)
-		             .collect(Collectors.toList());
+        LocalDate end = LocalDate.now();
+        LocalDate start = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        return Stream.iterate(start, date -> date.plusDays(1))
+                .limit(ChronoUnit.DAYS.between(start, end))
+                .map(Object::toString)
+                .collect(Collectors.toList());
     }
-    
+
     @Override
-    public List<Long> countOrdersByMonth(){
-    	List<Long> ordersQuantity = new ArrayList<>();
-    	LocalDateTime end = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfMonth());
-    	LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfYear());
-    	for (LocalDateTime date = start; date.isBefore(end); date = date.plusMonths(1)) {
-    		ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date), 
-    				                                              Timestamp.valueOf(date.with(TemporalAdjusters.lastDayOfMonth()))));
-    	}
-    	return ordersQuantity;
+    public List<Long> countOrdersByMonth() {
+        List<Long> ordersQuantity = new ArrayList<>();
+        LocalDateTime end = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfMonth());
+        LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfYear());
+        for (LocalDateTime date = start; date.isBefore(end); date = date.plusMonths(1)) {
+            ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date),
+                    Timestamp.valueOf(date.with(TemporalAdjusters.lastDayOfMonth()))));
+        }
+        return ordersQuantity;
     }
-    
+
     @Override
     public List<String> getMonthsToThisMoment() {
-		LocalDateTime end = LocalDateTime.now();
-		LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfYear());
-		return Stream.iterate(start, date -> date.plusMonths(1))
-		             .limit(ChronoUnit.MONTHS.between(start, end))
-		             .map(LocalDateTime::getMonth)
-		             .map(Object::toString)
-		             .collect(Collectors.toList());
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfYear());
+        return Stream.iterate(start, date -> date.plusMonths(1))
+                .limit(ChronoUnit.MONTHS.between(start, end))
+                .map(LocalDateTime::getMonth)
+                .map(Object::toString)
+                .collect(Collectors.toList());
     }
 }

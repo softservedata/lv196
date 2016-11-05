@@ -3,7 +3,7 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.domain.Notification;
 import com.softserve.edu.delivery.domain.NotificationStatus;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.NotificationDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.repository.NotificationRepository;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -152,7 +151,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void updateFeedback(FeedbackDTO feedbackDTO) {
+    public void updateFeedback(FeedbackDto feedbackDTO) {
         addNotification("Info",
                 " Dear " + feedbackDTO.getUserName() + " your feedback for Driver " + feedbackDTO.getTransporterName() +
                         " was moderated. For now, your feedback status - approved = " + feedbackDTO.getApproved() + ";<br>" +

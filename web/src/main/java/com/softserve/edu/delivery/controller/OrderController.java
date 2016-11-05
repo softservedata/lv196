@@ -1,11 +1,10 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OfferDtoForList;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.service.NotificationService;
 import com.softserve.edu.delivery.service.OrderService;
-import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,6 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private NotificationService notification;
-    @Autowired
-    private UserAuthenticationDetails authenticationDetails;
 
     Logger logger = LoggerFactory.getLogger(OrderController.class.getName());
 
@@ -69,21 +66,21 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
-    void addFeedback(@RequestBody FeedbackDTO dto, Principal principal) {
+    void addFeedback(@RequestBody FeedbackDto dto, Principal principal) {
         logger.info("Method OrderController.addFeedback()");
         orderService.addFeedback(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.PUT)
-    void updateFeedback(@RequestBody FeedbackDTO dto, Principal principal) {
+    void updateFeedback(@RequestBody FeedbackDto dto, Principal principal) {
         logger.info("Method OrderController.updateFeedback()");
         orderService.updateFeedback(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "getFeedback/{id}", method = RequestMethod.GET)
-    FeedbackDTO getFeedback(@PathVariable Long id, Principal principal) {
+    FeedbackDto getFeedback(@PathVariable Long id, Principal principal) {
         logger.info("Method OrderController.getFeedback()");
         return orderService.getFeedback(id, principal.getName());
     }

@@ -55,4 +55,9 @@ public class OfferServiceImpl implements OfferService{
     public void cancelOffer(Long orderId, String email) {
         offerRepository.delete(offerRepository.findOfferByOrderIdAndDrverId(orderId, email));
     }
+
+    @Override
+    public Long findOfferId(Long orderId, String email) {
+        return offerRepository.findOfferIdByOrderIdAndDriverEmail(orderId, email);
+    }
 }

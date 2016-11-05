@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.NotificationService;
 import org.slf4j.Logger;
@@ -9,18 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-
-import static com.softserve.edu.delivery.config.SecurityConstraints.*;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.MODERATOR;
 
 @RestController
 @RequestMapping(path = "feedbacks")
@@ -36,7 +31,7 @@ public class FeedbackController {
 
     @PreAuthorize(MODERATOR)
     @RequestMapping(path = "all", method = RequestMethod.POST)
-    List<FeedbackDTO> getAllFeedbacks(@RequestParam("text") String text,
+    List<FeedbackDto> getAllFeedbacks(@RequestParam("text") String text,
                                       @RequestParam("rate") String rateString,
                                       @RequestParam("userName") String userName,
                                       @RequestParam("transporterName") String transporterName,
@@ -61,7 +56,7 @@ public class FeedbackController {
 
     @PreAuthorize(MODERATOR)
     @RequestMapping(path = {"updateFeedback"}, method = RequestMethod.PUT)
-    ResponseEntity updateFeedback(@RequestBody FeedbackDTO feedbackDTO) {
+    ResponseEntity updateFeedback(@RequestBody FeedbackDto feedbackDTO) {
         logger.info("Before feedbackService.update(feedbackDTO)");
         status = HttpStatus.OK;
         responseHeaders.set("message", "OK");

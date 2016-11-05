@@ -1,15 +1,9 @@
 package com.softserve.edu.delivery.dto;
 
-import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.domain.container.OrderContainer;
-import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Objects;
 
 public class OrderDto {
@@ -19,50 +13,61 @@ public class OrderDto {
     private LocationDto locationFrom;
     private LocationDto locationTo;
     private String driverName;
-    private BigDecimal height;
-    private BigDecimal width;
-    private BigDecimal length;
-    private BigDecimal weight;
+    private Long approvedOfferId;
+    private Double height;
+    private Double width;
+    private Double length;
+    private Double weight;
     private String description;
     private Long amountOfOffers;
     private String carPhoto;
-    private FeedbackDTO feedbackDTO;
+    private FeedbackDto feedbackDto;
 
-
-    public OrderDto() {
+    public OrderDto(Order order, Long offersAmount) {
+        this(order);
+        this.amountOfOffers = offersAmount;
     }
 
-    public static OrderDto ofContainer(OrderContainer container) {
-        return of(container.getOrder())
-                .setDriverName(container.getDriverName())
-                .setAmountOfOffers(container.getOffersAmount())
-                .setCarPhoto(container.getCarPhoto());
+    public OrderDto(Order order, String driverName, Long approvedOfferId) {
+        this(order);
+        this.driverName = driverName;
+        this.approvedOfferId = approvedOfferId;
     }
 
-    public static OrderDto of(Order order) {
-        OrderDto dto = new OrderDto()
-                .setId(order.getId())
-                .setArrivalDate(order.getArrivalDate())
-                .setLocationFrom(order.getCityFrom() == null ? null : LocationDto.of(order.getCityFrom()))
-                .setLocationTo(order.getCityTo() == null ? null : LocationDto.of(order.getCityTo()))
-                .setWeight(order.getWeight())
-                .setHeight(order.getHeight())
-                .setWidth(order.getWidth())
-                .setLength(order.getLength())
-                .setDescription(order.getDescription());
+    public OrderDto(Order order, String driverName, String carPhoto) {
+        this(order);
+        this.driverName = driverName;
+        this.carPhoto = carPhoto;
+    }
+
+    public OrderDto(Order order) {
+        this.id = order.getId();
+        this.arrivalDate = order.getArrivalDate();
+        this.locationFrom = order.getCityFrom() == null ? null : LocationDto.of(order.getCityFrom());
+        this.locationTo = order.getCityTo() == null ? null : LocationDto.of(order.getCityTo());
+        this.weight = order.getWeight();
+        this.height = order.getHeight();
+        this.width = order.getWidth();
+        this.length = order.getLength();
+        this.description = order.getDescription();
 
         User customer = order.getCustomer();
         if (customer != null) {
-            dto.setCustomerName(customer.getFirstName() + " " + customer.getLastName());
+            this.customerName = customer.getFirstName() + " " + customer.getLastName();
         }
-
-        return dto;
     }
 
-    public static OrderDto orderAndFeedbackOf(Order order, FeedbackDTO feedback) {
-        OrderDto dto = OrderDto.of(order);
-        dto.setFeedbackDTO(feedback);
-        return dto;
+    public OrderDto() {
+
+    }
+
+    public static OrderDto of(Order order) {
+        return new OrderDto(order);
+    }
+
+    public static OrderDto orderAndFeedbackOf(Order order, FeedbackDto feedback) {
+        return new OrderDto(order)
+                .setFeedbackDto(feedback);
     }
 
     public Long getId() {
@@ -128,38 +133,47 @@ public class OrderDto {
         return this;
     }
 
-    public BigDecimal getWeight() {
+    public Long getApprovedOfferId() {
+        return approvedOfferId;
+    }
+
+    public OrderDto setApprovedOfferId(Long offerId) {
+        this.approvedOfferId = offerId;
+        return this;
+    }
+
+    public Double getWeight() {
         return weight;
     }
 
-    public OrderDto setWeight(BigDecimal weight) {
+    public OrderDto setWeight(Double weight) {
         this.weight = weight;
         return this;
     }
 
-    public BigDecimal getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public OrderDto setHeight(BigDecimal height) {
+    public OrderDto setHeight(Double height) {
         this.height = height;
         return this;
     }
 
-    public BigDecimal getWidth() {
+    public Double getWidth() {
         return width;
     }
 
-    public OrderDto setWidth(BigDecimal width) {
+    public OrderDto setWidth(Double width) {
         this.width = width;
         return this;
     }
 
-    public BigDecimal getLength() {
+    public Double getLength() {
         return length;
     }
 
-    public OrderDto setLength(BigDecimal length) {
+    public OrderDto setLength(Double length) {
         this.length = length;
         return this;
     }
@@ -182,12 +196,13 @@ public class OrderDto {
         return this;
     }
 
-    public FeedbackDTO getFeedbackDTO() {
-        return feedbackDTO;
+    public FeedbackDto getFeedbackDto() {
+        return feedbackDto;
     }
 
-    public void setFeedbackDTO(FeedbackDTO feedbackDTO) {
-        this.feedbackDTO = feedbackDTO;
+    public OrderDto setFeedbackDto(FeedbackDto feedbackDto) {
+        this.feedbackDto = feedbackDto;
+        return this;
     }
 
     @Override

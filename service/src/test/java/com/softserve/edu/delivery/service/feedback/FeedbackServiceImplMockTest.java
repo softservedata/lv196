@@ -3,7 +3,7 @@ package com.softserve.edu.delivery.service.feedback;
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
@@ -71,7 +71,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
     public void testCopyFeedbackToDTO() {
         Feedback feedback = feedbackServiceImplTest.createMockFeedback();
 
-        FeedbackDTO feedbackDTO = feedbackService.copyFeedbackToDTO(feedback);
+        FeedbackDto feedbackDTO = feedbackService.copyFeedbackToDTO(feedback);
 
         Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
                 feedback.getOrder().getId().equals(feedbackDTO.getOrderId()) &&
@@ -92,7 +92,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      */
     public void testCopyDTOToFeedback() {
 
-        FeedbackDTO feedbackDTO = feedbackServiceImplTest.createMockFeedbackDTO();
+        FeedbackDto feedbackDTO = feedbackServiceImplTest.createMockFeedbackDTO();
         Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO);
 
         Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
@@ -122,11 +122,11 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         when(mockFeedbackRepo.findAll()).thenReturn(feedbackList);
 
-        List<FeedbackDTO> feedbackDTOList = feedbackService.findAll();
+        List<FeedbackDto> feedbackDTOList = feedbackService.findAll();
 
         boolean passed = true;
 
-        for (FeedbackDTO f : feedbackDTOList) {
+        for (FeedbackDto f : feedbackDTOList) {
             if (f == null) {
                 passed = false;
             }
@@ -145,13 +145,13 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      */
     public void testGetFeedbackById() {
 
-        FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
+        FeedbackDto feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
 
         Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO0);
 
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(Optional.of(feedback));
 
-        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
+        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
@@ -165,7 +165,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      */
     public void testChangeFeedbackStatus() {
 
-        FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
+        FeedbackDto feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
 
         long feedbackId = feedbackDTO0.getFeedbackId();
 
@@ -179,7 +179,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         feedbackService.changeFeedbackStatus(feedbackDTO0.getFeedbackId(), feedbackDTO0.getApproved());
 
-        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(feedbackId);
+        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(feedbackId);
 
         Assert.assertFalse(previousStatus.equals(feedbackDTO1.getApproved()));
     }
@@ -191,7 +191,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      */
     public void testSave() {
 
-        FeedbackDTO feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
+        FeedbackDto feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
 
         Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
 
@@ -203,7 +203,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         long id = feedbackDTO0.getFeedbackId();
 
-        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(id);
+        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(id);
 
         Assert.assertTrue(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&
@@ -222,13 +222,13 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(oFeedback);
 
-        FeedbackDTO feedbackDTO0 = feedbackService.findByFeedbackId(FEEDBACK_ID);
+        FeedbackDto feedbackDTO0 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
         feedbackServiceImplTest.changeData(feedbackDTO0);
 
         feedbackService.update(feedbackDTO0);
 
-        FeedbackDTO feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
+        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
         Assert.assertFalse(feedbackDTO0.getFeedbackId().equals(feedbackDTO1.getFeedbackId()) &&
                 feedbackDTO0.getText().equals(feedbackDTO1.getText()) &&

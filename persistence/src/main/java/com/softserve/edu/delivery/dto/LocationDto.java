@@ -1,11 +1,11 @@
 package com.softserve.edu.delivery.dto;
 
-import java.util.Objects;
-import java.util.Optional;
-
 import com.softserve.edu.delivery.domain.City;
 import com.softserve.edu.delivery.domain.Region;
 import com.softserve.edu.delivery.domain.State;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class LocationDto {
     private Long cityId;

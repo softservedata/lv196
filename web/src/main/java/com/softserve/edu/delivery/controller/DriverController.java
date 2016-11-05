@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.FeedbackDTO;
+import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OfferService;
@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.*;
-
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.List;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.DRIVER;
 
 /**
  * Created by Ivan Synyshyn on 25.10.2016.
@@ -52,7 +51,7 @@ public class DriverController {
     @RequestMapping (path = "filtered-orders", method = RequestMethod.GET)
     List<OrderDto> filter (@RequestParam (required = false) Long cityFromId,
                            @RequestParam (required = false) Long cityToId,
-                           @RequestParam (required = false) BigDecimal weight,
+                           @RequestParam (required = false) Double weight,
                            @RequestParam (required = false) String date) {
 
         Timestamp arrivalDate = null;
@@ -121,9 +120,14 @@ public class DriverController {
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
-    void addFeedback(@PathVariable FeedbackDTO dto) {
+    void addFeedback(@PathVariable FeedbackDto dto) {
         logger.info("Method DriverController.addFeedback()");
         String email = authenticationDetails.getAuthenticatedUserEmail();
         orderService.addFeedback(dto, email);
+    }
+
+    @RequestMapping(path = "offer-id/{orderId}", method = RequestMethod.GET)
+    public Long getOfferId(@PathVariable Long orderId, Principal principal) {
+        return offerService.findOfferId(orderId, principal.getName());
     }
 }
