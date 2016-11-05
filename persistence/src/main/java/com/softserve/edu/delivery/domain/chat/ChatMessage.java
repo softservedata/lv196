@@ -15,8 +15,8 @@ public class ChatMessage {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "conversation_id")
-    private Conversation conversation;
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
 
     public ChatMessage() {
     }
@@ -57,12 +57,12 @@ public class ChatMessage {
         return this;
     }
 
-    public Conversation getConversation() {
-        return conversation;
+    public Chat getChat() {
+        return chat;
     }
 
-    public ChatMessage setConversation(Conversation conversation) {
-        this.conversation = conversation;
+    public ChatMessage setChat(Chat chat) {
+        this.chat = chat;
         return this;
     }
 

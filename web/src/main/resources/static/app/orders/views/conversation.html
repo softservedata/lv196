@@ -1,0 +1,20 @@
+<div class="order-creation">
+    <div class="modal-header ">
+        <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5 class="modal-title">Conversation</h5>
+    </div>
+    <div ng-repeat="offer in offers track by $index" class="order-in-progress">
+        <div class="panel-body">
+            <div class="order-actions chat">
+                <i ng-click="showChat(offer.offerId)" class="fa fa-envelope" aria-hidden="true"></i>
+            </div>
+            <ul class="conversation driver">
+                <li class="message left appeared">
+                    <div class="avatar"></div>
+                    <div class="text">{{offer.driverName}}</div>
+                </li>
+            </ul>
+            <hr/>
+        </div>
+    </div>
+</div>

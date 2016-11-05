@@ -111,6 +111,7 @@
                     <div class="panel-body">
                         <div class="order-actions">
                             <button type="button" class="btn btn-danger btn-sm" ng-click="cancelOffer(order.id)">{{ 'cancel_offer' | translate }}</button>
+                            <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
                         </div>
                         <div class="order-city" ng-click="status.open = !status.open">
                             {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
@@ -156,10 +157,8 @@
                 <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
                     <div class="panel-body">
                         <div class="order-actions">
-                            <button type="button" class="btn btn-default btn-sm" ng-click="chatRedirect()">{{ 'chat' | translate }}</button>
-                        </div>
-                        <div class="order-actions">
                             <button type="button" class="btn btn-default btn-sm" ng-click="trackingRedirect()">{{ 'track' | translate }}</button>
+                            <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
                         </div>
                         <div class="order-city" ng-click="status.open = !status.open">
                             {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}

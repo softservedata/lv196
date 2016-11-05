@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 public class ChatMessageDto {
     private Long id;
-    private Long conversationId;
+    private Long chatId;
     private String authorEmail;
     private Timestamp timestamp;
     private String text;
@@ -22,12 +22,12 @@ public class ChatMessageDto {
         return this;
     }
 
-    public Long getConversationId() {
-        return conversationId;
+    public Long getChatId() {
+        return chatId;
     }
 
-    public ChatMessageDto setConversationId(Long conversationId) {
-        this.conversationId = conversationId;
+    public ChatMessageDto setChatId(Long chatId) {
+        this.chatId = chatId;
         return this;
     }
 
@@ -61,7 +61,7 @@ public class ChatMessageDto {
     @Override
     public String toString() {
         return "ChatMessageDto{" +
-                "conversationId=" + conversationId +
+                "chatId=" + chatId +
                 ", authorEmail='" + authorEmail + '\'' +
                 ", timestamp=" + timestamp +
                 ", text='" + text + '\'' +

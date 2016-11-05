@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('driverController', ['$scope', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal',
-        function ($scope, $locations, $orderProperty, $http, Notification, $uibModal) {
+    .controller('driverController', ['$scope', '$chat', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal',
+        function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal) {
             $scope.orders = {
                 open: []
             };
@@ -86,6 +86,16 @@ angular
                 })
             };
             $scope.retrieveOpenOrdersWithMyOffers();
+
+            $scope.showChatByOrder = orderId => {
+                $http.get('driver/offer-id/' + orderId).then(response => {
+                    $scope.showChat(response.data)
+                })
+            }
+
+            $scope.showChat = id => {
+                $chat.open(id);
+            }
 
             $scope.cancelOffer = (id) => {
                 $orderProperty.setId(id);

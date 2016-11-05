@@ -62,6 +62,17 @@ angular
                     $scope.orderIdWithOffers = orderWithOffers.id;
                 }
             };
+
+            $scope.showConversation = (orderWithOffers) => {
+                    $uibModal.open({
+                        animation: true,
+                        templateUrl: '/app/orders/views/conversation.html',
+                        controller: 'showConversationController',
+                        resolve:{
+                            order: ()=> orderWithOffers
+                        }
+                    });
+            }
         }])
     .controller('addOrderController', ['$scope', '$timeout', '$uibModalInstance', '$orders', '$locations', 'Notification', 'order',
         function ($scope, $timeout, $uibModalInstance, $orders, $locations, Notification, order) {
@@ -71,7 +82,7 @@ angular
                     formatYear: 'yyyy',
                     formatMonth: 'MMMM',
                     formatDay: 'dd',
-                    maxDate: new Date(2016, 12, 31),
+                    maxDate: new Date(2017, 12, 31),
                     minDate: new Date(),
                     startingDay: 1,
                     showWeeks: false
@@ -249,4 +260,21 @@ angular
             };
             $scope.info();
         };
-    }]);
+    }])
+    .controller('showConversationController',['$scope', '$http', '$chat', 'order',
+        function ($scope, $http, $chat, order) {
+            $scope.offers = [];
+
+            $scope.showChat = (offerId) => {
+                $chat.open(offerId);
+            }
+            $scope.retrieveOffers = () => {
+                $http.get('/order/offers/' + order.id).then(response => {
+                    $scope.offers = response.data;
+                    for (var i=0; i<$scope.offers.length; i++){
+                        $scope.offers[i].rate = $scope.offers[i].rate/10;
+                    }
+                })
+            };
+            $scope.retrieveOffers();
+        }]);

@@ -1,7 +1,7 @@
 angular
-    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate', 
+    .module('delivery', ['ui.router', 'ui.bootstrap', 'ngAnimate','ui-notification', 'pascalprecht.translate',
                          'ngCookies', 'ngRateIt', 'ngMaterial', 'chart.js'])
-    .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', '$mdThemingProvider', function ($stateProvider, 
+    .config(['$stateProvider', '$urlRouterProvider', '$translateProvider', '$mdThemingProvider', function ($stateProvider,
     		  $urlRouterProvider, $translateProvider, $mdThemingProvider) {
         $urlRouterProvider.otherwise('/orders/in-progress');
         $urlRouterProvider.when('/orders', '/orders/in-progress');
@@ -48,12 +48,12 @@ angular
                 controller: 'usersController'
             })
             .state('tracking', {
-            url: '/tracking',
-            templateUrl: '/app/tracking/view/tracking.html',
-            controller: 'pleaceController',
-            params: {
-                id: null,
-             }
+                url: '/tracking',
+                templateUrl: '/app/tracking/view/tracking.html',
+                controller: 'pleaceController',
+                params: {
+                    id: null,
+                }
             })
             .state('dialog', {
                 url: '/dialog',
@@ -61,15 +61,15 @@ angular
                 controller: 'pleaceController'
             })
             .state('adminMaps', {
-            url: '/adminMaps',
-            templateUrl: '/app/tracking/view/adminMaps.html',
-            controller: 'adminMapsController'
+                url: '/adminMaps',
+                templateUrl: '/app/tracking/view/adminMaps.html',
+                controller: 'adminMapsController'
             })
-	        .state('orders-tracking', {
-	            url: '/orders-tracking',
-	            templateUrl: '/app/tracking/view/orders-tracking.html',
-	            controller: 'ordersTrackingController'
-	        })
+            .state('orders-tracking', {
+                url: '/orders-tracking',
+                templateUrl: '/app/tracking/view/orders-tracking.html',
+                controller: 'ordersTrackingController'
+            })
             .state('statistics', {
                 url: '/statistics',
                 templateUrl: '/app/statistics/views/statistics.html',
@@ -81,14 +81,19 @@ angular
                 controller: 'notificationController'
             });
 
-  	  	$translateProvider
-	  		.useStaticFilesLoader({
-	  			prefix: '/i18n/',
-	  			suffix: '.json'
-	  		})
-	  		.preferredLanguage('en')
-	  		.useLocalStorage()
-	  		.useMissingTranslationHandlerLog();
+        $translateProvider
+            .useStaticFilesLoader({
+                prefix: '/i18n/',
+                suffix: '.json'
+            })
+            .preferredLanguage('en')
+            .useLocalStorage()
+            .useMissingTranslationHandlerLog();
 
-  	  $translateProvider.useSanitizeValueStrategy('escapeParameters');
+        $translateProvider.useSanitizeValueStrategy('escapeParameters');
+    }])
+    .run(['$http', function ($http) {
+        $http.get('user/email').then(response => {
+            localStorage.setItem('email', response.data)
+        });
     }]);

@@ -34,7 +34,7 @@ angular
                         ($rootScope.lang === 'en') ? Notification('Now all your notifications are readed'):
                             Notification('Всі ваші сповіщення зараз прочитані');
                         sessionStorage.setItem('last',0);
-                        console.info("all notif are readed = " + sessionStorage.getItem('last'));
+                        //console.info("all notif are readed = " + sessionStorage.getItem('last'));
                     }
                     
                 });
@@ -55,29 +55,29 @@ angular
                 $scope.amountNewNotification = sessionStorage.getItem('last');
                 $scope.circleStyle = function (amount){
                     if (amount == 0) {
-                        console.info('return hideCircle-style');
+                        //console.info('return hideCircle-style');
                         return "hideCircle";
                     } else {
-                        console.info('return circle-style');
+                        //console.info('return circle-style');
                         return "circle";
                     }
                 };
-                console.info('begin count method, for now Amount = ' + sessionStorage.getItem('last'));
+                //console.info('begin count method, for now Amount = ' + sessionStorage.getItem('last'));
 
                 $http.get('/notification/count').then(response => {
                     $scope.amountNewNotification = response.data;
-                    console.info('in get method $scope.amountNewNotification = '+$scope.amountNewNotification);
+                    //console.info('in get method $scope.amountNewNotification = '+$scope.amountNewNotification);
 
                     if ($scope.amountNewNotification > sessionStorage.getItem('last')) {
                         ($rootScope.lang === 'en') ? Notification('You have new Notification'):
                             Notification('У вас нове сповіщення');
 
                         sessionStorage.setItem('last', $scope.amountNewNotification);
-                        console.info("if amount > 0 sessionStorage = " + sessionStorage.getItem('last'));
+                        //console.info("if amount > 0 sessionStorage = " + sessionStorage.getItem('last'));
                     }
                     else if ($scope.amountNewNotification == 0) {
                         sessionStorage.setItem('last', 0);
-                        console.info("if amount = 0 sessionStorage = " + sessionStorage.getItem('last'));
+                        //console.info("if amount = 0 sessionStorage = " + sessionStorage.getItem('last'));
                     }
                     $scope.countNewNotification();
                 })

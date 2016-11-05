@@ -1,7 +1,7 @@
 <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
     <div class="panel-body">
         <div class="order-actions">
-        <i class="fa fa-map"  aria-hidden="true" ui-sref="tracking({id: order.id})"></i>
+            <i ng-click="showChat(order.approvedOfferId)" class="fa fa-envelope" aria-hidden="true"></i>
         </div>
         <div ng-click="status.open = !status.open" class="order-city">
             {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
@@ -36,8 +36,8 @@
         </div>
         <div class="order-subinfo">
             <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
-            <span class="order-sub"><i class="fa fa-map-marker" aria-hidden="true"></i>Ternopil</span>
-            <span class="order-sub"><i class="fa fa-car" aria-hidden="true"></i>{{order.driverName}}</span>
+            <span class="order-sub location" ui-sref="tracking({id: order.id})"><i class="fa fa-map-marker" aria-hidden="true"></i>Location</span>
+            <span class="order-sub" ng-click="showChat()"><i class="fa fa-car" aria-hidden="true"></i>{{order.driverName}}</span>
         </div>
     </div>
 </div>

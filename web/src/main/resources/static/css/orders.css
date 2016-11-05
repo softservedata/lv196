@@ -58,6 +58,11 @@
     margin-left: 60px;
 }
 
+.order-in-progress .panel-body hr {
+    margin-top: 23px;
+    margin-bottom: -20px;
+}
+
 .order-in-progress .panel-body, .order-open .panel-body {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -69,6 +74,10 @@
 }
 
 .order-in-progress .order-city:hover, .order-open .order-city:hover {
+    color: rgba(85, 85, 85, 0.74);
+}
+
+.order-subinfo .order-sub.location:hover {
     color: rgba(85, 85, 85, 0.74);
 }
 
@@ -84,6 +93,10 @@
     padding-left: 5px;
     padding-right: 5px;
     cursor: pointer;
+}
+
+.order-actions.chat {
+    margin-top: 0px;
 }
 
 .order-actions .fa-car {

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
@@ -165,6 +166,12 @@ public class AuthController {
         mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("welcome");
         return mv;
+    }
+
+    @RequestMapping(path = "/user/email", produces = "text/plain")
+    @ResponseBody
+    public String userEmail(Principal principal) {
+        return principal.getName();
     }
 
     private String roleRedirect() {
