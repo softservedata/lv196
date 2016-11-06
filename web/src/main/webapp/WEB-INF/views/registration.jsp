@@ -18,23 +18,24 @@
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
 
-    <title>Delivery.com | Registration</title>
+    <title>Delivery.com | <spring:message code="registration"/></title>
 </head>
 <body>
 <ul class="topnav" id="myTopnav">
+    <li><a href="?mylocale=en">EN</a>|<a href="?mylocale=uk">UA</a></li>
     <security:authorize access="isAuthenticated()">
-        <li><a href="logout">Sign out</a></li>
+        <li><a href="logout"><spring:message code="signout"/></a></li>
     </security:authorize>
     <security:authorize access="isAnonymous()">
-        <li><a href="registration">Sign up</a></li>
+        <li><a href="registration"><spring:message code="signup"/></a></li>
     </security:authorize>
     <security:authorize access="isAnonymous()">
-        <li><a href="login">Sign in</a></li>
+        <li><a href="login"><spring:message code="sigin"/></a></li>
     </security:authorize>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#">News</a></li>
-    <li><a href="welcome">Home</a></li>
+    <li><a href="#"><spring:message code="about"/></a></li>
+    <li><a href="#"><spring:message code="contact"/></a></li>
+    <li><a href="#"><spring:message code="news"/></a></li>
+    <li><a href="welcome"><spring:message code="home"/></a></li>
 </ul>
 
 <video autoplay loop>
@@ -44,46 +45,60 @@
 <!--Sign up box-->
 
 <div id="reg_container" class="signin centered">
-    <h3>Registration</h3>
-    <c:if test="${msg != null}">
-        <h4>${msg}</h4>
+    <h3><spring:message code="registration"/></h3>
+    <spring:message code='tooltip.wrong_register' var="wrong_register"/>
+    <spring:message code='tooltip.success_register' var="success_register"/>
+    <c:if test="${wrong_register != null}">
+        <h4>${success_register}</h4>
     </c:if>
+    <spring:message code='email' var="email"/>
+    <spring:message code='password' var="password"/>
+    <spring:message code='password_again' var="password_again"/>
+    <spring:message code='fname' var="fname"/>
+    <spring:message code='lname' var="lname"/>
+    <spring:message code='phone' var="phone"/>
+    <spring:message code='tooltip.email' var="tooltip1"/>
+    <spring:message code='tooltip.fname' var="tooltip2"/>
+    <spring:message code='tooltip.lname' var="tooltip3"/>
+    <spring:message code='tooltip.password2' var="tooltip4"/>
+    <spring:message code='tooltip.phone' var="tooltip5"/>
+    <spring:message code='register' var="register"/>
     <mvc:form modelAttribute="userRegistration" id="register_form" action="register" method = "post" enctype="utf-8">
         <div class="mess">
-            <mvc:input path="userEmail" type="email" name="userEmail" id="userEmail" class="user" placeholder="Email" maxlength="255"
-                   required="required" title="email should looks like example@domain.com "/>
+            <mvc:input path="userEmail" type="email" name="userEmail" id="userEmail" class="user" placeholder="${email}" maxlength="255"
+                   required="required" title="${tooltip1}"/>
             <mvc:errors path="userEmail"/>
         </div>
         <div class="mess">
-            <mvc:input path="userFirstName" type="text" class="user" id="userFirstName" pattern=".{3,15}" name="userFirstName" placeholder="First name"
-                   required="required" title="First name should have from 3 to 15 characters"/>
+            <mvc:input path="userFirstName" type="text" class="user" id="userFirstName" pattern=".{3,15}" name="userFirstName" placeholder="${fname}"
+                   required="required" title="${tooltip2}"/>
             <mvc:errors path="userFirstName"/>
         </div>
         <div class="mess">
-            <mvc:input path="userLastName" type="text" class="user" id="userLastName" pattern=".{3,15}" name="userLastName" placeholder="Last name"
-                   required="required" title="First name should have from 3 to 15 characters"/>
+            <mvc:input path="userLastName" type="text" class="user" id="userLastName" pattern=".{3,15}" name="userLastName" placeholder="${lname}"
+                   required="required" title="${tooltip3}"/>
             <mvc:errors path="userLastName"/>
         </div>
         <div class="mess">
-            <mvc:input path="userPassword" type="password" name="userPassword" id="userPassword" pattern=".{4,20}" class="lock" placeholder="Password"
-                   required="required" title="Password should be from 4 to 20 symbols"/>
+            <mvc:input path="userPassword" type="password" name="userPassword" id="userPassword" pattern=".{4,20}" class="lock" placeholder="${password}"
+                   required="required" title="${tooltip4}"/>
             <mvc:errors path="userPassword"/>
         </div>
         <div class="mess">
             <mvc:input path="userConfirmPassword" type="password" name="userConfirmPassword" id="userConfirmPassword"
-                       pattern=".{4,20}" class="lock" placeholder="Password again" required="required" title="Password should be from 4 to 20 symbols"/>
+                       pattern=".{4,20}" class="lock" placeholder="${password_again}" required="required" title="${tooltip4}"/>
             <mvc:errors path="userConfirmPassword"/>
         </div>
         <div class="mess">
             <mvc:input path="userPhoneNumber" type="text" class="user" id="userPhoneNumber" pattern=".\d+" name="userPhoneNumber"
-                   placeholder="Phone number" required="required" title="only digits"/>
+                   placeholder="${phone}" required="required" title="${tooltip5}"/>
             <mvc:errors path="userPhoneNumber"/>
         </div>
-        <input type="submit" value="register">
+        <input type="submit" value="${register}">
         <div class="lost">
             <div class="lost-userPassword">
                 <h5>
-                    <a href="driverRegistration">I'm driver</a>
+                    <a href="driverRegistration"><spring:message code="idriver"/></a>
                 </h5>
             </div>
             <div class="clear"></div>

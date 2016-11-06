@@ -17,38 +17,39 @@
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
 
-    <title>Delivery.com | welcome</title>
+    <title>Delivery.com | <spring:message code="welcome"/></title>
 </head>
 <body>
 <ul class="topnav" id="myTopnav">
+    <li><a href="?mylocale=en">EN</a>|<a href="?mylocale=uk">UA</a></li>
     <security:authorize access="isAuthenticated()">
-        <li><a href="logout">Sign out</a></li>
+        <li><a href="logout"><spring:message code="signout"/></a></li>
     </security:authorize>
     <security:authorize access="isAnonymous()">
-        <li><a href="registration">Sign up</a></li>
+        <li><a href="registration"><spring:message code="signup"/></a></li>
     </security:authorize>
     <security:authorize access="isAnonymous()">
-        <li><a href="login">Sign in</a></li>
+        <li><a href="login"><spring:message code="sigin"/></a></li>
     </security:authorize>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#">News</a></li>
+    <li><a href="#"><spring:message code="about"/></a></li>
+    <li><a href="#"><spring:message code="contact"/></a></li>
+    <li><a href="#"><spring:message code="news"/></a></li>
     <security:authentication property="authorities" var="roles" scope="page" />
     <c:forEach var="role" items="${roles}">
         <c:if test="${role == 'Customer'}">
-            <li><a href="/#/orders/open">Orders</a></li>
+            <li><a href="/#/orders/open"><spring:message code="orders"/></a></li>
         </c:if>
         <c:if test="${role == 'Driver'}">
-            <li><a href="/#/find-order/open">Find Orders</a></li>
+            <li><a href="/#/find-order/open"><spring:message code="find_orders"/></a></li>
         </c:if>
         <c:if test="${role == 'Admin'}">
-            <li><a href="/#/users">Users</a></li>
+            <li><a href="/#/users"><spring:message code="users"/></a></li>
         </c:if>
         <c:if test="${role == 'Moderator'}">
-            <li><a href="/#/feedbacks">Feedbacks</a></li>
+            <li><a href="/#/feedbacks"><spring:message code="feedbacks"/></a></li>
         </c:if>
     </c:forEach>
-    <li><a href="welcome">Home</a></li>
+    <li><a href="welcome"><spring:message code="home"/></a></li>
 </ul>
 
 <!--Tracking box-->
@@ -57,16 +58,18 @@
 </video>
 
 <div id="track_container" class="signin centered">
-    <h3>Track your baggage</h3>
+    <h3><spring:message code="track_baggage"/></h3>
     <c:if test="${msg != null}">
         <h4>${msg}</h4>
     </c:if>
+    <spring:message code='tooltip.track' var="tooltip"/>
+    <spring:message code='track' var="track"/>
     <mvc:form modelAttribute="orderIdDto" action="tracking" method="post" enctype="utf-8">
         <div class="mess">
-            <mvc:input path="orderId" type="number" class="user" min="1" max="9000000000000000000" placeholder="type here your order id" required="required"/>
+            <mvc:input path="orderId" type="number" class="user" min="1" max="9000000000000000000" placeholder="${tooltip}" required="required"/>
             <mvc:errors path="orderId"/>
 `        </div>
-        <input id="track" type="submit" value="Track">
+        <input id="track" type="submit" value="${track}">
         <div class="lost">
             <div class="clear"></div>
         </div>

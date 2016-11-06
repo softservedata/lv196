@@ -43,10 +43,10 @@ public class AuthController {
                                @RequestParam(value = "logout", required = false) String logout){
         ModelAndView mv = new ModelAndView();
         if (auth != null && auth.equals("false")) {
-            mv.addObject("msg", "You fill wrong credentials or email wasn't verified");
+            mv.addObject("wrong_login", "You fill wrong credentials or email wasn't verified");
             logger.warn("User entered wrong credentials");
         }else if (logout != null) {
-            mv.addObject("msg", "You've successfully logout");
+            mv.addObject("success_login", "You've successfully logout");
             logger.info("Logout");
         }
         mv.addObject("userAuthDto", new UserAuthDTO());
@@ -107,13 +107,13 @@ public class AuthController {
         if (result.hasErrors()) {
             logger.error("Registration binding process has errors, returning registration form back");
             ModelAndView mv = new ModelAndView("registration", "userRegistration", userRegDTO);
-            mv.addObject("msg", "Please fill correct registration form");
+            mv.addObject("wrong_register", "Please fill correct registration form");
             return mv;
         } else {
             String url = request.getRequestURL().toString();
             service.register(userRegDTO, url);
             ModelAndView mv = new ModelAndView();
-            mv.addObject("msg", "Please check your mail box and verify your email");
+            mv.addObject("success_register", "Please check your mail box and verify your email");
             mv.addObject("userAuthDto", new UserAuthDTO());
             mv.setViewName("login");
             logger.info("Return login page");
@@ -132,7 +132,7 @@ public class AuthController {
             service.register(driverRegDTO, url);
             ModelAndView mv = new ModelAndView();
             mv.addObject("userAuthDto", new UserAuthDTO());
-            mv.addObject("msg", "Please check your mail box and verify your email");
+            mv.addObject("success_register", "Please check your mail box and verify your email");
             mv.setViewName("login");
             logger.info("Return login page");
             return mv;

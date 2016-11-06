@@ -22,23 +22,24 @@
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
 
-    <title>Delivery.com | welcome</title>
+    <title>Delivery.com | <spring:message code="welcome"/></title>
 </head>
 <body>
 <ul class="topnav" id="myTopnav">
+    <li><a href="?mylocale=en">EN</a>|<a href="?mylocale=uk">UA</a></li>
     <security:authorize access="isAuthenticated()">
-        <li><a href="logout">Sign out</a></li>
+        <li><a href="logout"><spring:message code="signout"/></a></li>
     </security:authorize>
     <security:authorize access="isAnonymous()">
-        <li><a href="registration">Sign up</a></li>
+        <li><a href="registration"><spring:message code="signup"/></a></li>
     </security:authorize>
     <security:authorize access="isAnonymous()">
-        <li><a href="login">Sign in</a></li>
+        <li><a href="login"><spring:message code="sigin"/></a></li>
     </security:authorize>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#">News</a></li>
-    <li><a href="welcome">Home</a></li>
+    <li><a href="#"><spring:message code="about"/></a></li>
+    <li><a href="#"><spring:message code="contact"/></a></li>
+    <li><a href="#"><spring:message code="news"/></a></li>
+    <li><a href="welcome"><spring:message code="home"/></a></li>
 </ul>
 
 <video autoplay loop>
@@ -47,25 +48,31 @@
 
 <!--Sign in box-->
 <div id="signin_container" class="signin centered">
-    <h3>Sign in</h3>
-    <c:if test="${msg != null}">
-        <h4>${msg}</h4>
+    <h3><spring:message code="sigin"/></h3>
+    <spring:message code='tooltip.wrong_login' var="wrong_login"/>
+    <spring:message code='tooltip.success_login' var="success_login"/>
+    <c:if test="${wrong_login != null}">
+        <h4>${success_login}</h4>
     </c:if>
+    <spring:message code='email' var="email"/>
+    <spring:message code='password' var="password"/>
+    <spring:message code='tooltip.pasword' var="tooltip_password"/>
+    <spring:message code='login' var="login"/>
     <mvc:form modelAttribute="userAuthDto" id="login_form" action="loginProcess" method="post" enctype="utf-8">
         <div class="mess">
-            <mvc:input path="email" name="email" type="email"  class="user" placeholder="Email" maxlength="255"
+            <mvc:input path="email" name="email" type="email"  class="user" placeholder="${email}" maxlength="255"
                        required="required"/>
             <mvc:errors path="email"/>
         </div>
         <div class="mess">
-            <mvc:input path="password" type="password" class="lock" placeholder="Password" pattern=".{4,20}"
-                       title="From 4 to 20 characters" required="required"/>
+            <mvc:input path="password" type="password" class="lock" placeholder="${password}" pattern=".{4,20}"
+                       title="${tooltip_password}" required="required"/>
             <mvc:errors path="password"/>
         </div>
-        <input type="submit" value="Log in">
+        <input type="submit" value="${login}">
         <div class="lost">
             <div class="lost-userPassword">
-                <h5>Sign in as:</h5>
+                <h5><spring:message code="signin_as"/>:</h5>
                 <a href="login/linkedin"><img src="${linkedIn}"></a>
                 <a href="#"><img src="${google}"></a>
                 <a href="#"><img src="${twitter}"></a>
