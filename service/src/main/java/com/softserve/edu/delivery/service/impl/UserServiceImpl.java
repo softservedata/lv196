@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
 	public Long countItems() {
 		return totalItems;
 	}
-	
+
 	@Override
 	public List<Long> countUsersByRole(){
 		List<Long> usersData = new ArrayList<>();
@@ -185,7 +185,7 @@ public class UserServiceImpl implements UserService {
 	       usersData.add(userRepository.countByUserRole(Role.ADMIN));
 		return usersData;
 	}
-	
+
 	@Override
 	public List<Long> countUsersByRate(){
 		List<Long> users = new ArrayList<>();
@@ -193,14 +193,14 @@ public class UserServiceImpl implements UserService {
 			users.add(userRepository.countByRate(i, i + 9));
 		return users;
 	}
-	
+
 	@Override
 	public List<UserProfileDto> findTopFiveDriversByRate(){
 		return userRepository
 				.findTop5ByUserRoleOrderByRateDesc(Role.DRIVER)
 				.stream()
 				.map(UserProfileDto::create)
-                .collect(Collectors.toList());		
+                .collect(Collectors.toList());
 	}
 
     private User createUser(UserRegistrationDTO userRegDTO) {
@@ -260,5 +260,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public boolean checkPassword(String email, CharSequence password) {
+        return passwordEncoder.matches(password, findOne(email).getPassword());
+    }
+
+    @Override
+    public void changePassword(String email, CharSequence newPassword) {
+
+        User currentUser = findOne(email);
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        save(currentUser);
+
     }
 }

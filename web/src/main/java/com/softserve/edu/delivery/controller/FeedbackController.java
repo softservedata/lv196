@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.FeedbackDto;
+import com.softserve.edu.delivery.dto.FeedbackFilterDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.NotificationService;
 import org.slf4j.Logger;
@@ -27,24 +28,16 @@ public class FeedbackController {
     private FeedbackService feedbackService;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private FeedbackFilterDTO feedbackFilterDTO;
     private HttpStatus status;
 
     @PreAuthorize(MODERATOR)
     @RequestMapping(path = "all", method = RequestMethod.POST)
-    List<FeedbackDto> getAllFeedbacks(@RequestParam("text") String text,
-                                      @RequestParam("rate") String rateString,
-                                      @RequestParam("userName") String userName,
-                                      @RequestParam("transporterName") String transporterName,
-                                      @RequestParam("createdOn") String createdOnString,
-                                      @RequestParam("approved") String approvedString,
-                                      @RequestParam("sortBy") String sortBy,
-                                      @RequestParam("sortDesc") String sortDesc,
-                                      @RequestParam("currentPage") int currentPage,
-                                      @RequestParam("itemsPerPage") int itemsPerPage) {
+    List<FeedbackDto> getAllFeedbacks(@RequestBody FeedbackFilterDTO feedbackFilterDTO) {
 
         logger.info("Before feedbackService.findFiltered()");
-        return feedbackService.findFiltered(text, rateString, userName, transporterName, createdOnString,
-                approvedString, sortBy, sortDesc, currentPage, itemsPerPage);
+        return feedbackService.findFiltered(feedbackFilterDTO);
     }
 
     @PreAuthorize(MODERATOR)

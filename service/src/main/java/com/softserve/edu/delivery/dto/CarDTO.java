@@ -1,7 +1,5 @@
 package com.softserve.edu.delivery.dto;
 
-import java.math.BigDecimal;
-
 public class CarDTO {
 
     private Long id;
@@ -10,11 +8,14 @@ public class CarDTO {
     private String vehicleVIN;
     private String vehicleFrontPhotoURL;
     private String vehicleBackPhotoURL;
-    private BigDecimal vehicleWeight;
-    private BigDecimal vehicleLength;
-    private BigDecimal vehicleWidth;
-    private BigDecimal vehicleHeight;
+    private Float vehicleWeight;
+    private Float vehicleLength;
+    private Float vehicleWidth;
+    private Float vehicleHeight;
     private String driverEmail;
+    private float progress;
+    private boolean showProgressFront;
+    private boolean showProgressBack;
     
     public CarDTO() {
     }
@@ -39,19 +40,19 @@ public class CarDTO {
         return vehicleBackPhotoURL;
     }
 
-    public BigDecimal getVehicleWeight() {
+    public Float getVehicleWeight() {
         return vehicleWeight;
     }
 
-    public BigDecimal getVehicleLength() {
+    public Float getVehicleLength() {
         return vehicleLength;
     }
 
-    public BigDecimal getVehicleWidth() {
+    public Float getVehicleWidth() {
         return vehicleWidth;
     }
 
-    public BigDecimal getVehicleHeight() {
+    public Float getVehicleHeight() {
         return vehicleHeight;
     }
 
@@ -75,19 +76,19 @@ public class CarDTO {
         this.vehicleBackPhotoURL = vehicleBackPhotoURL;
     }
 
-    public void setVehicleWeight(BigDecimal vehicleWeight) {
+    public void setVehicleWeight(Float vehicleWeight) {
         this.vehicleWeight = vehicleWeight;
     }
 
-    public void setVehicleLength(BigDecimal vehicleLength) {
+    public void setVehicleLength(Float vehicleLength) {
         this.vehicleLength = vehicleLength;
     }
 
-    public void setVehicleWidth(BigDecimal vehicleWidth) {
+    public void setVehicleWidth(Float vehicleWidth) {
         this.vehicleWidth = vehicleWidth;
     }
 
-    public void setVehicleHeight(BigDecimal vehicleHeight) {
+    public void setVehicleHeight(Float vehicleHeight) {
         this.vehicleHeight = vehicleHeight;
     }
 
@@ -105,5 +106,29 @@ public class CarDTO {
 
     public void setDriverEmail(String driverEmail) {
         this.driverEmail = driverEmail;
+    }
+
+    public float getProgress() {
+        return progress;
+    }
+
+    public void setProgress(float progress) {
+        this.progress = progress;
+    }
+
+    public boolean isShowProgressFront() {
+        return showProgressFront;
+    }
+
+    public void setShowProgressFront(boolean showProgressFront) {
+        this.showProgressFront = showProgressFront;
+    }
+
+    public boolean isShowProgressBack() {
+        return showProgressBack;
+    }
+
+    public void setShowProgressBack(boolean showProgressBack) {
+        this.showProgressBack = showProgressBack;
     }
 }

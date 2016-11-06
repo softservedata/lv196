@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,10 +17,10 @@ public class Car {
     private String vehicleVIN;
     private String vehicleFrontPhotoURL;
     private String vehicleBackPhotoURL;
-    private BigDecimal vehicleWeight;
-    private BigDecimal vehicleLength;
-    private BigDecimal vehicleWidth;
-    private BigDecimal vehicleHeight;
+    private Float vehicleWeight;
+    private Float vehicleLength;
+    private Float vehicleWidth;
+    private Float vehicleHeight;
     @ManyToOne
     @JoinColumn(name = "driver_id", referencedColumnName = "email")
     private User driver;
@@ -83,38 +82,38 @@ public class Car {
         return this;
     }
 
-    public BigDecimal getVehicleWeight() {
+    public Float getVehicleWeight() {
         return vehicleWeight;
     }
 
-    public Car setVehicleWeight(BigDecimal vehicleWeight) {
+    public Car setVehicleWeight(Float vehicleWeight) {
         this.vehicleWeight = vehicleWeight;
         return this;
     }
 
-    public BigDecimal getVehicleLength() {
+    public Float getVehicleLength() {
         return vehicleLength;
     }
 
-    public Car setVehicleLength(BigDecimal vehicleLength) {
+    public Car setVehicleLength(Float vehicleLength) {
         this.vehicleLength = vehicleLength;
         return this;
     }
 
-    public BigDecimal getVehicleWidth() {
+    public Float getVehicleWidth() {
         return vehicleWidth;
     }
 
-    public Car setVehicleWidth(BigDecimal vehicleWidth) {
+    public Car setVehicleWidth(Float vehicleWidth) {
         this.vehicleWidth = vehicleWidth;
         return this;
     }
 
-    public BigDecimal getVehicleHeight() {
+    public Float getVehicleHeight() {
         return vehicleHeight;
     }
 
-    public Car setVehicleHeight(BigDecimal vehicleHeight) {
+    public Car setVehicleHeight(Float vehicleHeight) {
         this.vehicleHeight = vehicleHeight;
         return this;
     }

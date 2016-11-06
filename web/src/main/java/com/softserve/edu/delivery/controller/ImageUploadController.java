@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.service.CarService;
@@ -12,10 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +37,10 @@ public class ImageUploadController {
     private final Map<String, String> response = new HashMap<>();
     private final String SERVER_PATH_TO_USERS_UPLOAD = "/uploads/users/";
     private final String SERVER_PATH_TO_CARS_UPLOAD = "/uploads/cars/";
+    private final Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "lv196java",
+            "api_key", "111615263263157",
+            "api_secret", "-HA9u2XJmgIOQTyf0VYNhBgA-fE"));
 
     @Autowired
     private UserService userService;
@@ -174,4 +177,21 @@ public class ImageUploadController {
         response.put("carPhotoPath", carPhotoPath);
         return new ResponseEntity(response, responseHeaders, status);
     }
+
+    @RequestMapping(path = "deleteCloudPhoto/{path}/{publicId}", method = RequestMethod.DELETE)
+    ResponseEntity deleteCloudPhoto(@PathVariable String path,
+                                    @PathVariable String publicId) {
+
+        try {
+            cloudinary.uploader().destroy(path + "/" + publicId, ObjectUtils.emptyMap());
+        } catch (IOException e) {
+            errorDetails = "Exception while trying to delete cloud photo with id " + publicId +
+                    " in imageUploadController.deleteCloudPhoto() ";
+            return handleException(errorDetails, e.getMessage());
+        }
+
+        return new ResponseEntity(responseHeaders, status);
+    }
+
+
 }

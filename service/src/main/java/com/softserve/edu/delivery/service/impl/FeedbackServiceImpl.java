@@ -1,9 +1,11 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.FeedbackFilter;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDto;
+import com.softserve.edu.delivery.dto.FeedbackFilterDTO;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
@@ -32,6 +34,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private FeedbackFilter feedbackFilter;
 
     private long totalItemsNumber;
     private Boolean approved1;
@@ -72,13 +76,13 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private Boolean processRequestApproved(String approved) {
         if (approved.toLowerCase().contains("tru")) {
-            approved1 = true;
+            feedbackFilter.setApproved1(true);
             return true;
         } else if (approved.toLowerCase().contains("fal")) {
-            approved1 = false;
+            feedbackFilter.setApproved1(false);
             return false;
         }
-        approved1 = false;
+        feedbackFilter.setApproved1(false);
         return true;
     }
 
@@ -87,6 +91,15 @@ public class FeedbackServiceImpl implements FeedbackService {
             return "desc";
         }
         return "asc";
+    }
+
+    private int processRequestSortType(String sortBy) {
+        if (sortBy.equals("userName")) {
+            return 1;
+        } else if (sortBy.equals("transporterName")) {
+            return 2;
+        }
+        return 0;
     }
 
     public FeedbackDto copyFeedbackToDTO(Feedback feedback) {
@@ -248,28 +261,21 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public List<FeedbackDto> findFiltered(String text, String rateString, String userName, String transporterName,
-                                          String createdOnString, String approvedString, String sortBy,
-                                          String sortOrder, int currentPage, int itemsPerPage) {
+    public List<FeedbackDto> findFiltered(FeedbackFilterDTO feedbackFilterDTO) {
 
-        text = processRequestText(text);
-        Integer rate = processRequestRate(rateString);
-        userName = processRequestText(userName);
-        transporterName = processRequestText(transporterName);
-        Timestamp createdOn = processRequestCreatedOn(createdOnString);
-        Boolean approved = processRequestApproved(approvedString);
-        sortOrder = processRequestSortOrder(sortOrder);
+        feedbackFilter.setText(processRequestText(feedbackFilterDTO.getText()));
+        feedbackFilter.setRate(processRequestRate(feedbackFilterDTO.getRate()));
+        feedbackFilter.setUserName(processRequestText(feedbackFilterDTO.getUserName()));
+        feedbackFilter.setTransporterName(processRequestText(feedbackFilterDTO.getTransporterName()));
+        feedbackFilter.setCreatedOn(processRequestCreatedOn(feedbackFilterDTO.getCreatedOn()));
+        feedbackFilter.setApproved0(processRequestApproved(feedbackFilterDTO.getApproved()));
+        feedbackFilter.setSortOrder(processRequestSortOrder(feedbackFilterDTO.getSortOrder()));
+        feedbackFilter.setSortBy(feedbackFilterDTO.getSortBy());
+        feedbackFilter.setSortType(processRequestSortType(feedbackFilterDTO.getSortBy()));
+        feedbackFilter.setCurrentPage(feedbackFilterDTO.getCurrentPage());
+        feedbackFilter.setItemsPerPage(feedbackFilterDTO.getItemsPerPage());
 
-        int sortType = 0;
-
-        if (sortBy.equals("userName")) {
-            sortType = 1;
-        } else if (sortBy.equals("transporterName")) {
-            sortType = 2;
-        }
-
-        List<Feedback> feedbackList = feedbackRepositoryCustom.findFiltered(text, rate, userName,
-                transporterName, createdOn, approved, approved1, currentPage, itemsPerPage, sortType, sortBy, sortOrder);
+        List<Feedback> feedbackList = feedbackRepositoryCustom.findFiltered(feedbackFilter);
 
         totalItemsNumber = feedbackRepositoryCustom.getTotalItemsNumber();
 
@@ -286,7 +292,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         Feedback feedback = feedbackRepository.getCustomerFeedback(id);
         if (feedback != null) {
             return copyFeedbackToDTO(feedback);
-        }
-        else return null;
+        } else return null;
     }
 }

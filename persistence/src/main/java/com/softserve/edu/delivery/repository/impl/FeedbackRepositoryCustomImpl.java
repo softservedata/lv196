@@ -1,6 +1,8 @@
 package com.softserve.edu.delivery.repository.impl;
 
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.FeedbackFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -40,6 +42,9 @@ public class FeedbackRepositoryCustomImpl {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private FeedbackFilter feedbackFilter;
+
     private String countQuery;
     private String resultQuery;
 
@@ -63,32 +68,30 @@ public class FeedbackRepositoryCustomImpl {
         return totalItemsNumber;
     }
 
-    public List<Feedback> findFiltered(String text, Integer rate, String userName, String transporterName,
-                                       Timestamp createdOn, Boolean approved0, Boolean approved1, int currentPage,
-                                       int itemsPerPage, int sortType, String sortBy, String sortOrder) {
+    public List<Feedback> findFiltered(FeedbackFilter feedbackFilter) {
 
-        setQueries(sortType, sortBy, sortOrder);
+        setQueries(feedbackFilter.getSortType(), feedbackFilter.getSortBy(), feedbackFilter.getSortOrder());
 
         totalItemsNumber = (long) entityManager.createQuery(countQuery)
-                .setParameter("text", text)
-                .setParameter("rate", rate)
-                .setParameter("userName", userName)
-                .setParameter("transporterName", transporterName)
-                .setParameter("createdOn", createdOn)
-                .setParameter("approved0", approved0)
-                .setParameter("approved1", approved1)
+                .setParameter("text", feedbackFilter.getText())
+                .setParameter("rate", feedbackFilter.getRate())
+                .setParameter("userName", feedbackFilter.getUserName())
+                .setParameter("transporterName", feedbackFilter.getTransporterName())
+                .setParameter("createdOn", feedbackFilter.getCreatedOn())
+                .setParameter("approved0", feedbackFilter.getApproved0())
+                .setParameter("approved1", feedbackFilter.getApproved1())
                 .getSingleResult();
 
         return entityManager.createQuery(resultQuery)
-                .setParameter("text", text)
-                .setParameter("rate", rate)
-                .setParameter("userName", userName)
-                .setParameter("transporterName", transporterName)
-                .setParameter("createdOn", createdOn)
-                .setParameter("approved0", approved0)
-                .setParameter("approved1", approved1)
-                .setFirstResult((currentPage - 1) * itemsPerPage)
-                .setMaxResults(itemsPerPage)
+                .setParameter("text", feedbackFilter.getText())
+                .setParameter("rate", feedbackFilter.getRate())
+                .setParameter("userName", feedbackFilter.getUserName())
+                .setParameter("transporterName", feedbackFilter.getTransporterName())
+                .setParameter("createdOn", feedbackFilter.getCreatedOn())
+                .setParameter("approved0", feedbackFilter.getApproved0())
+                .setParameter("approved1", feedbackFilter.getApproved1())
+                .setFirstResult((feedbackFilter.getCurrentPage() - 1) * feedbackFilter.getItemsPerPage())
+                .setMaxResults(feedbackFilter.getItemsPerPage())
                 .getResultList();
     }
 }

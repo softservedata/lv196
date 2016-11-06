@@ -48,4 +48,8 @@ public interface UserService extends UserDetailsService {
     
     List<UserProfileDto> findTopFiveDriversByRate();
 
+    boolean checkPassword(String email, CharSequence password);
+
+    void changePassword(String email, CharSequence newPassword);
+
 }

@@ -42,9 +42,8 @@
 
             <div ng-controller="currentUserController" ng-cloak>
                 <div class="sidebar-header hidden-xs">
-                    <div class="user-avatar">
-                        <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" style="height:100px; border-radius: 50px;
-display:block; margin:auto;">
+                    <div>
+                        <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" class="user-avatar">
                     </div>
                     <div class="user-name">{{loggedUser.firstName}} {{loggedUser.lastName}}
                         <div style="display:inline" ng-controller="notificationAmountController" class="{{circleStyle(amountNewNotification)}}">
@@ -138,6 +137,11 @@ display:block; margin:auto;">
 <script src="./bower_components/angular-material/angular-material.min.js"></script>
 <script src="./bower_components/chart.js/dist/Chart.min.js"></script>
 <script src="./bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+<script src="./bower_components/lodash/lodash.js"></script>
+<script src="./bower_components/cloudinary-core/cloudinary-core.js"></script>
+<script src="./bower_components/ng-file-upload/ng-file-upload-shim.js"></script>
+<script src="./bower_components/cloudinary_ng/js/angular.cloudinary.js"></script>
+<script src="./bower_components/ng-file-upload/ng-file-upload.js"></script>
 
 <script src="./app/orders/services/orderService.js"></script>
 <script src="./app/common/services/commonServices.js"></script>
@@ -157,13 +161,13 @@ display:block; margin:auto;">
 <script src="./app/tracking/controller/trackingForDriver.js"></script>
 <script src="./app/tracking/controller/trackingForAdmin.js"></script>
 <script src="app/tracking/controller/ordersTrackingController.js"></script>
-<script src="./app/common/controllers/imageUploadController.js"></script>
+<script src="./app/common/controllers/userImageUploadController.js"></script>
+<script src="./app/common/controllers/carImageUploadController.js"></script>
 <script src="./app/notification/controller/notificationController.js"></script>
 <script src="./app/statistics/controllers/statisticsController.js"></script>
 <script src="app/users/controllers/roleController.js"></script>
 <script src="./app/users/controllers/userProfileController.js"></script>
 <script src="./app/users/controllers/currentUserController.js"></script>
-<script src="./app/users/controllers/addCarController.js"></script>
 
 </body>
 </html>

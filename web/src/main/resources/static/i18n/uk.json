@@ -96,6 +96,7 @@
     "personal_data": "Особисті дані",
     "cars": "Авто",
     "delete_car": "Видалити авто",
+    "delete_car_warn": "Ви впевнені, що хочете видалити це авто?",
     "vehicle_name": "Ім'я авто",
     "vehicle_number": "Номер авто",
     "vehicle_VIN": "VIN авто",
@@ -106,5 +107,7 @@
     "click_to_upload_a_photo": "Клікніть, щоб завантажити фото",
     "customer_rate": "Рейтинг замовника",
     "customer_feedback": "Відгук замовника",
-    "driver_feedback": "Відгук водія"
+    "driver_feedback": "Відгук водія",
+    "update": "Оновити",
+    "enter_current_password": "Введіть Ваш пароль"
 }

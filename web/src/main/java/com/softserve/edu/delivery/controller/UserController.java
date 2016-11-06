@@ -17,7 +17,7 @@ import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN;
 @RestController
 @RequestMapping(path = "users")
 public class UserController {
-	
+
 	   @Autowired
 	   UserService userService;
 	   @Autowired

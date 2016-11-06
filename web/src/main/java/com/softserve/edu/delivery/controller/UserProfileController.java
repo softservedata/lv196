@@ -26,6 +26,8 @@ public class UserProfileController {
 
     private final HttpHeaders responseHeaders = new HttpHeaders();
     private final Logger logger = LoggerFactory.getLogger(UserProfileController.class.getName());
+    private final int MIN_PASSWORD_LENGTH = 4;
+    private final int MAX_PASSWORD_LENGTH = 20;
 
     @Autowired
     private UserService userService;
@@ -67,6 +69,17 @@ public class UserProfileController {
         car.setDriver(userService.findOne(carDTO.getDriverEmail()));
 
         return car;
+    }
+
+    private boolean isPasswordValid(CharSequence password0, CharSequence password1) {
+        if (password0.length() >= MIN_PASSWORD_LENGTH && password0.length() <= MAX_PASSWORD_LENGTH) {
+            if (password1.length() >= MIN_PASSWORD_LENGTH && password1.length() <= MAX_PASSWORD_LENGTH) {
+                if (password0.equals(password1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private ResponseEntity handleException(String errorDetails, String message) {
@@ -140,7 +153,7 @@ public class UserProfileController {
         status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
 
-        CarDTO carDTOsaved = null;
+        CarDTO carDTOsaved;
         try {
             carDTOsaved = carService.save(carDTOToCar(carDTO));
         } catch (Exception e) {
@@ -186,5 +199,48 @@ public class UserProfileController {
         }
         logger.info("After UserProfileController.deleteCar(long carId)");
         return new ResponseEntity(responseHeaders, status);
+    }
+
+    @RequestMapping(path = "updateUserPassword", method = RequestMethod.POST)
+    ResponseEntity <String> changePassword(@RequestParam("current") CharSequence currentPassword,
+                                  @RequestParam("new0") CharSequence newPassword0,
+                                  @RequestParam("new1") CharSequence newPassword1) {
+
+        String currentUserEmail = authenticationDetails.getAuthenticatedUserEmail();
+
+        logger.info("Before UserProfileController.changePassword()");
+        status = HttpStatus.BAD_REQUEST;
+
+        try {
+            if (userService.checkPassword(currentUserEmail, currentPassword)) {
+                if (isPasswordValid(newPassword0, newPassword1)) {
+                    userService.changePassword(currentUserEmail, newPassword0);
+                    status = HttpStatus.OK;
+                    responseHeaders.set("message", "Your password was successfully changed");
+                } else {
+                    responseHeaders.set("message", "Entered passwords do NOT match");
+                    return ResponseEntity
+                            .status(status)
+                            .headers(responseHeaders)
+                            .body("{\"message\": \"Entered passwords do NOT match\"}");
+                }
+            } else {
+                responseHeaders.set("message", "Error");
+                return ResponseEntity
+                        .status(status)
+                        .headers(responseHeaders)
+                        .body("{\"message\": \"You have entered the WRONG password\"}");
+            }
+        } catch (Exception e) {
+            errorDetails = "Exception while trying to change password for user " + currentUserEmail +
+                    " in UserProfileController.changePassword() ";
+            //noinspection unchecked
+            return handleException(errorDetails, e.getMessage());
+        }
+        logger.info("After UserProfileController.changePassword()");
+        return ResponseEntity
+                .status(status)
+                .headers(responseHeaders)
+                .body("{\"message\": \"Your password was successfully changed\"}");
     }
 }

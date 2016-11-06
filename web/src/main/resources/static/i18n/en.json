@@ -96,6 +96,7 @@
 	"personal_data": "Personal data",
 	"cars": "Cars",
 	"delete_car": "Delete car",
+	"delete_car_warn": "Are you sure you want to delete the car?",
 	"vehicle_name": "Vehicle name",
 	"vehicle_number": "Vehicle number",
 	"vehicle_VIN": "Vehicle VIN",
@@ -106,5 +107,7 @@
 	"click_to_upload_a_photo": "click to upload a photo",
 	"customer_rate": "Customer rate",
   	"customer_feedback": "Customer feedback",
-  	"driver_feedback": "Driver feedback"
+  	"driver_feedback": "Driver feedback",
+	"update": "Update",
+	"enter_current_password": "Enter your password"
 }

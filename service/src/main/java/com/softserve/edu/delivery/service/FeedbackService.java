@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDto;
+import com.softserve.edu.delivery.dto.FeedbackFilterDTO;
 
 import java.util.List;
 
@@ -31,9 +32,7 @@ public interface FeedbackService {
 
     /*------------- Find all feedbacks -----------------------*/
 
-    List<FeedbackDto> findFiltered(String text, String rateString, String userName, String transporterName,
-                                   String createdOnString, String approvedString, String sortBy, String sort,
-                                   int currentPage, int itemsPerPage);
+    List<FeedbackDto> findFiltered(FeedbackFilterDTO feedbackFilterDTO);
 
     long getTotalItemsNumber();
 

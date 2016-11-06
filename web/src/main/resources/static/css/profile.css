@@ -2,11 +2,11 @@
     padding-top: 70px;
 }
 
-.form-group.center{
+.profile.center{
     text-align: center;
 }
 
-.form-group.left{
+.profile.left{
     text-align: left;
 }
 
@@ -43,4 +43,19 @@
 
 .profile.button, .profile.well {
     margin: 5px;
+}
+
+.profile-vertical-margin {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.profile.popover{
+    max-width: 200px;
+}
+
+.profile.button.small-padding {
+    margin: 5px;
+    padding-left:5px;
+    padding-right:5px;
 }

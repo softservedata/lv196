@@ -20,59 +20,72 @@
 </div>
 <div class="main profile container-fluid">
     <div class="col-sm-1" ng-show="!isDriver"></div>
-    <div class="col-sm-3 form-group center">
+    <div class="col-sm-3 profile center">
         <h4>{{ 'photo' | translate }}</h4>
-        <div class="form-group" ng-controller="imageUploadController">
-            <input type="image" class="profile useravatar" uib-popover="{{ 'click_to_upload_a_photo' | translate }}"
-                   popover-trigger="'mouseenter'" ng-click="clickImage('userPhoto')"
-                   popover-popup-delay="1000" popover-append-to-body=true ng-src="{{loggedUser.photoUrl}}"
-                   alt="User avatar">
-            <input type="file" class="profile hiddenInput" accept="image/*" id="userPhotoUpload"
-                   custom-on-change="uploadUserPhoto">
-        </div>
-        <div class="form-group">
-            <label for="rate">{{ 'rate' | translate }}:</label>
-            <span uib-rating class="rating" id="rate" ng-model="rate" read-only="true"
-                  aria-labelledby="default-rating"></span>
-        </div>
-        <br>
-        <button type="button" class="btn btn-default col-sm-12 profile button"
-                ng-click="changePassword = !changePassword">{{ 'change_password' | translate }}
-        </button>
-        <div uib-collapse="!changePassword">
-            <form name="pwdForm" novalidate style="text-align:center;">
-                <div class="form-group" ng-model-options="{ updateOn: 'blur' }"
-                     ng-class="{ 'has-error': pwdForm.password0.$invalid && !pwdForm.password0.$pristine }">
+        <form name="pwdForm" novalidate>
+            <div class="form-group" ng-controller="userImageUploadController">
+                <input type="image" class="profile useravatar" uib-popover="{{ 'click_to_upload_a_photo' | translate }}"
+                       popover-trigger="'mouseenter'" popover-class="profile" ng-click="clickImage('userPhoto')"
+                       popover-popup-delay="1000" popover-append-to-body=true ng-src="{{loggedUser.photoUrl}}"
+                       alt="User avatar">
+                <input type="file" class="profile hiddenInput" accept="image/*" id="userPhotoUpload"
+                       custom-on-change="uploadUserPhotoCloud">
+                <uib-progressbar max="100" class="progress-striped active" value="progress" style="height: 16px;"
+                                 ng-if="showProgressBar"><span style="color:white; white-space:nowrap;"></span>
+                </uib-progressbar>
+            </div>
+            <div class="form-group">
+                <label for="rate">{{ 'rate' | translate }}:</label>
+                <span uib-rating class="rating" id="rate" ng-model="rate" read-only="true"
+                      aria-labelledby="default-rating"></span>
+            </div>
+            <br>
+            <button type="button" class="btn btn-default col-sm-12 profile-vertical-margin"
+                    ng-click="changePassword = !changePassword">{{ 'change_password' | translate }}
+            </button>
+            <div uib-collapse="!changePassword">
+                <div class="form-group"
+                     ng-class="{ 'has-error': pwdForm.current_password.$invalid || pwdForm.current_password.$pristine }">
+                    <label for="current_password">{{ 'enter_current_password' | translate }}:</label>
+                    <input type="password" class="form-control" name="current_password" id="current_password"
+                           ng-model="password.current" required ng-minlength="4" ng-maxlength="20"
+                           placeholder="Current password"/>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error': pwdForm.password0.$invalid || pwdForm.password0.$pristine ||
+                      password.new0 != password.new1 }">
                     <label for="password0">{{ 'enter_new_password' | translate }}:</label>
-                    <input type="password" class="form-control" name="password0" id="password0" ng-model="password0"
+                    <input type="password" class="form-control" name="password0" id="password0" ng-model="password.new0"
                            required ng-minlength="4" ng-maxlength="20" placeholder="Password"/>
                 </div>
                 <div class="form-group"
-                     ng-class="{ 'has-error': pwdForm.password1.$invalid && !pwdForm.password1.$pristine }">
+                     ng-class="{ 'has-error': pwdForm.password1.$invalid || pwdForm.password1.$pristine
+                     || password.new0 != password.new1}">
                     <label for="password1">{{ 'repeat_new_password' | translate }}:</label>
-                    <input type="password" class="form-control" name="password1" id="password1" ng-model="password1"
+                    <input type="password" class="form-control" name="password1" id="password1" ng-model="password.new1"
                            required ng-minlength="4" ng-maxlength="20" placeholder="Repeat password"/>
+                    <label ng-show="pwdForm.$invalid || pwdForm.$pristine || password.new0 != password.new1">
+                        {{ 'password_prompt' | translate }}</label>
                 </div>
-                <label ng-show="pwdForm.$invalid || pwdForm.$pristine || password0 != password1">
-                    {{ 'password_prompt' | translate }}</label>
-                <button type="button" class="btn btn-danger col-sm-5 profile button"
-                        ng-click="changePassword = !changePassword">{{ 'cancel' | translate }}
+                <div class="form-group">
+                    <button type="button" class="btn btn-danger profile-vertical-margin col-sm-5"
+                            ng-click="clearPasswordForm()">{{ 'cancel' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-primary profile-vertical-margin pull-right col-sm-5"
+                            ng-disabled="pwdForm.$invalid || password.new0 != password.new1"
+                            ng-click="updateUserPassword()">{{ 'save' | translate }}
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary profile-vertical-margin col-sm-12" ng-show="isDriver"
+                        ng-click="addCar()">{{ 'add_a_new_vehicle' | translate }}
                 </button>
-                <div class="col-sm-1"></div>
-                <button type="button" class="btn btn-primary col-sm-5 profile button"
-                        ng-disabled="pwdForm.$invalid || password0 != password1"
-                        ng-click="updateUserPassword()">{{ 'save' | translate }}
-                </button>
-            </form>
-        </div>
-        <div class="form-group">
-            <button type="button" class="btn btn-primary col-sm-12 profile button" ng-show="isDriver"
-                    ng-click="addCar()">{{ 'add_a_new_vehicle' | translate }}
-            </button>
-        </div>
+            </div>
+        </form>
     </div>
     <div class="col-sm-1" ng-show="!isDriver"></div>
-    <form class="col-sm-3 form-group left" name="userDataForm">
+    <form class="col-sm-3 left" name="userDataForm">
         <h4>{{ 'personal_data' | translate }}</h4>
         <div class="form-group">
             <label for="email">{{ 'email' | translate }}:</label>
@@ -90,13 +103,13 @@
             <label for="phone">{{ 'phone' | translate }}:</label>
             <input type="text" class="form-control" id="phone" ng-model="loggedUser.phone"/>
         </div>
-        <div class="form-group col-sm-5">
-            <button type="button" ng-show="!userDataForm.$pristine" class="btn btn-warning profile button"
+        <div class="form-group">
+            <button type="button" ng-show="!userDataForm.$pristine" class="btn btn-warning  col-sm-5"
                     ng-click="cancelUpdateUser(userDataForm)">{{ 'cancel' | translate }}
             </button>
         </div>
-        <div class="form-group col-sm-5">
-            <button type="button" ng-show="!userDataForm.$pristine" class="btn btn-primary profile button"
+        <div class="form-group">
+            <button type="button" ng-show="!userDataForm.$pristine" class="btn btn-primary col-sm-5 pull-right"
                     ng-click="updateUser(userDataForm)">{{ 'save' | translate }}
             </button>
         </div>
@@ -111,10 +124,10 @@
             <hr>
             <div uib-collapse="isCollapsed[$index]">
                 <form name="userCarDataForm">
-                    <div class="well well-sm col-sm-12 profile well" ng-controller="imageUploadController">
+                    <div class="well well-sm col-sm-12 profile well">
                         <div car-data></div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-danger profile button  col-sm-3"
+                            <button type="button" class="btn btn-danger profile button small-padding  col-sm-3"
                                     ng-click="deleteCar(car.id)"> {{ 'delete_car' | translate }}
                             </button>
                             <span class="col-sm-1"></span>
@@ -124,8 +137,9 @@
                             </button>
                             <span class="col-sm-1"></span>
                             <button type="button" ng-show="!userCarDataForm.$pristine"
-                                    class="btn btn-primary profile button col-sm-3" ng-click="updateCar(car, userCarDataForm)">
-                                {{ 'save' | translate }}
+                                    class="btn btn-primary profile button col-sm-3"
+                                    ng-click="updateCar(car, userCarDataForm, true)">
+                                {{ 'update' | translate }}
                             </button>
                         </div>
                     </div>

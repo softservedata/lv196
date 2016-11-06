@@ -2,8 +2,8 @@
 
 angular
     .module('delivery')
-    .controller('currentUserController', ['$scope', '$http', 'shareUserProfileDTOService',
-        function ($scope, $http, shareUserProfileDTOService) {
+    .controller('currentUserController', ['$scope', '$http', 'shareUserService',
+        function ($scope, $http, shareUserService) {
 
             $scope.loggedUser;
 
@@ -12,16 +12,12 @@ angular
                 $http.get("/userProfile/loggedUser")
                     .then(function (response) {
                         $scope.loggedUser = response.data;
-                        shareUserProfileDTOService.setLoggedUser($scope.loggedUser);
+                        shareUserService.setLoggedUser($scope.loggedUser);
                     });
             };
 
             $scope.$on('user data changed for main view', function () {
-                $scope.getLoggedUser();
-            });
-
-            $scope.$on('user data changed', function () {
-                $scope.getLoggedUser();
+                shareUserService.getLoggedUser();
             });
 
             $scope.getLoggedUser();

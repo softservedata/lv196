@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 
 import static com.softserve.edu.delivery.dto.valid.PatternConstraints.*;
 
@@ -55,13 +54,13 @@ public class DriverRegistrationDTO {
 
     private String vehicleBackPhotoURL;
 
-    private BigDecimal vehicleWeight;
+    private Float vehicleWeight;
 
-    private BigDecimal vehicleLength;
+    private Float vehicleLength;
 
-    private BigDecimal vehicleWidth;
+    private Float vehicleWidth;
 
-    private BigDecimal vehicleHeight;
+    private Float vehicleHeight;
 
 
     public String getDriverEmail() {
@@ -116,19 +115,19 @@ public class DriverRegistrationDTO {
         return vehicleBackPhotoURL;
     }
 
-    public BigDecimal getVehicleWeight() {
+    public Float getVehicleWeight() {
         return vehicleWeight;
     }
 
-    public BigDecimal getVehicleLength() {
+    public Float getVehicleLength() {
         return vehicleLength;
     }
 
-    public BigDecimal getVehicleWidth() {
+    public Float getVehicleWidth() {
         return vehicleWidth;
     }
 
-    public BigDecimal getVehicleHeight() {
+    public Float getVehicleHeight() {
         return vehicleHeight;
     }
 
@@ -197,22 +196,22 @@ public class DriverRegistrationDTO {
         return this;
     }
 
-    public DriverRegistrationDTO setVehicleWeight(BigDecimal vehicleWeight) {
+    public DriverRegistrationDTO setVehicleWeight(Float vehicleWeight) {
         this.vehicleWeight = vehicleWeight;
         return this;
     }
 
-    public DriverRegistrationDTO setVehicleLength(BigDecimal vehicleLength) {
+    public DriverRegistrationDTO setVehicleLength(Float vehicleLength) {
         this.vehicleLength = vehicleLength;
         return this;
     }
 
-    public DriverRegistrationDTO setVehicleWidth(BigDecimal vehicleWidth) {
+    public DriverRegistrationDTO setVehicleWidth(Float vehicleWidth) {
         this.vehicleWidth = vehicleWidth;
         return this;
     }
 
-    public DriverRegistrationDTO setVehicleHeight(BigDecimal vehicleHeight) {
+    public DriverRegistrationDTO setVehicleHeight(Float vehicleHeight) {
         this.vehicleHeight = vehicleHeight;
         return this;
     }

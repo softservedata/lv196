@@ -291,3 +291,10 @@ html, body {
     width: 600px;
 }
 
+.user-avatar {
+    height:100px;
+    border-radius: 50px;
+    display:block;
+    margin:auto;
+}
+

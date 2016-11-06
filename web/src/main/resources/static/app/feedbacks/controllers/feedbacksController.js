@@ -11,20 +11,25 @@ angular
             $scope.feedbackSortIcons = [];
             $scope.sortFeedbacksOrderDesc = [];
 
-            $scope.feedbackFilter = {
+            $scope.feedbackFilterDTO = {
                 text: '',
                 rate: '',
                 userName: '',
                 transporterName: '',
                 createdOn: '',
-                approved: ''
+                approved: '',
+                sortBy: '',
+                sortOrder: '',
+                currentPage: 1,
+                itemsPerPage: 5
             };
-            $scope.currentPage = 1;
-            $scope.itemsPerPage = 5;
             $scope.totalItems = 0;
             $scope.popupDatePicker = {
                 opened: false
             };
+
+            $scope.rate;
+            $scope.createdOn;
 
             var rateFactor = 10;
             var columnNumber = 7;
@@ -53,7 +58,7 @@ angular
             };
 
             var recalcRate = function () {
-                for (var i = 0, len = $scope.feedbacks.length; i < len; i++) {
+                for (var i = 0; i < $scope.feedbacks.length; i++) {
                     $scope.feedbacks[i].rate = $scope.feedbacks[i].rate / rateFactor;
                 }
             };
@@ -64,7 +69,6 @@ angular
                 }
                 $scope.toggleFilterApprovedClass();
                 $scope.toggleFilterApprovedStyle();
-                $scope.filterFeedbacks();
             };
 
             $scope.toggleFilterApprovedClass = function () {
@@ -79,13 +83,13 @@ angular
             $scope.toggleFilterApprovedStyle = function () {
                 switch (toggleFilterApprovedPos) {
                     case 1:
-                        $scope.feedbackFilter.approved = "false";
+                        $scope.feedbackFilterDTO.approved = "false";
                         return "color: red;";
                     case 2:
-                        $scope.feedbackFilter.approved = "true";
+                        $scope.feedbackFilterDTO.approved = "true";
                         return "color: green;";
                     default:
-                        $scope.feedbackFilter.approved = "";
+                        $scope.feedbackFilterDTO.approved = "";
                         return "color: lightgray;";
                 }
             };
@@ -114,6 +118,14 @@ angular
                 return text;
             };
 
+            var prepareFeedbackFilterDTO = function(){
+                $scope.feedbackFilterDTO.text = replacePlus($scope.feedbackFilterDTO.text);
+                $scope.feedbackFilterDTO.rate  = ($scope.rate - rateStep) * rateFactor;
+                $scope.feedbackFilterDTO.createdOn = Date.parse($scope.createdOn);
+                $scope.feedbackFilterDTO.sortBy = sortBy(columnPos);
+                $scope.feedbackFilterDTO.sortOrder = $scope.sortFeedbacksOrderDesc[columnPos];
+            };
+
             $scope.checkInputLength = function (contents) {
                 if (contents.length > 2 || contents.length == 0) {
                     $scope.filterFeedbacks();
@@ -138,15 +150,11 @@ angular
             };
 
             $scope.filterFeedbacks = function () {
-                var requestText = "/feedbacks/all?text=" + replacePlus($scope.feedbackFilter.text) + "&rate=" +
-                    ($scope.feedbackFilter.rate - rateStep) * rateFactor + "&userName=" +
-                    $scope.feedbackFilter.userName + "&transporterName=" + $scope.feedbackFilter.transporterName +
-                    "&createdOn=" + Date.parse($scope.feedbackFilter.createdOn) + "&approved=" +
-                    $scope.feedbackFilter.approved + "&sortBy=" + sortBy(columnPos) + "&sortDesc=" +
-                    $scope.sortFeedbacksOrderDesc[columnPos] + "&currentPage=" + $scope.currentPage + "&itemsPerPage=" +
-                    $scope.itemsPerPage;
 
-                $http.post(requestText)
+                prepareFeedbackFilterDTO();
+                console.log($scope.feedbackFilterDTO);
+
+                $http.post("/feedbacks/all", $scope.feedbackFilterDTO)
                     .then(function (response0) {
                             $http.get("/feedbacks/totalItems")
                                 .then(function (response1) {
@@ -241,14 +249,15 @@ angular
             });
 
             $scope.clearAllFilters = function () {
-                $scope.feedbackFilter.text = '';
-                $scope.feedbackFilter.rate = '';
-                $scope.feedbackFilter.userName = '';
-                $scope.feedbackFilter.transporterName = '';
-                $scope.feedbackFilter.createdOn = '';
-                $scope.feedbackFilter.approved = '';
+                $scope.feedbackFilterDTO.text = '';
+                $scope.rate = '';
+                $scope.feedbackFilterDTO.userName = '';
+                $scope.feedbackFilterDTO.transporterName = '';
+                $scope.createdOn = '';
+                $scope.feedbackFilterDTO.approved = '';
                 toggleFilterApprovedPos = 2;
                 $scope.changeFilterApprovedClass();
+                $scope.filterFeedbacks();
             };
 
             $scope.getUser = function (email) {
