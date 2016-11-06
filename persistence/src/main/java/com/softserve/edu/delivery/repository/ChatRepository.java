@@ -11,4 +11,7 @@ public interface ChatRepository extends BaseRepository<Chat, Long> {
 
     @Query("select c from Chat c join c.participants p where c.id = :id and p.email = :email")
     Optional<Chat> findByIdAndParticipantEmail(@Param("id") Long id, @Param("email") String email);
+
+    @Query("select p.email from Chat c join c.participants p where c.id = :chatId and p.email <> :senderEmail")
+    String findReceiverEmail(@Param("chatId") Long chatId, @Param("senderEmail") String senderEmail);
 }

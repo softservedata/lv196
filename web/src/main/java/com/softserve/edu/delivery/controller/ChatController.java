@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.*;
-
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATED;
 
 @Controller
 public class ChatController {
@@ -29,15 +29,21 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    @PreAuthorize(AUTHENTICATED)
-    @MessageMapping("/chat/{chatId}")
-    public ChatMessageDto handleMessage(@DestinationVariable("chatId") Long chatId,
-                                        @Payload ChatMessageDto dto, Principal principal) {
-        dto.setChatId(chatId)
-                .setAuthorEmail(principal.getName())
-                .setTimestamp(new Timestamp(new Date().getTime()));
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
-        return chatService.saveMessage(dto);
+    @MessageMapping("/chat/{chatId}")
+    public void handleMessage(@DestinationVariable("chatId") Long chatId,
+                              @Payload ChatMessageDto dto, Principal principal) {
+
+        dto = chatService.saveMessage(dto.setChatId(chatId)
+                .setAuthorEmail(principal.getName())
+                .setTimestamp(new Timestamp(new Date().getTime())));
+        messagingTemplate.convertAndSend("/topic/chat/" + chatId, dto);
+
+
+        String receiver = chatService.findReceiverEmail(chatId, dto.getAuthorEmail());
+        messagingTemplate.convertAndSendToUser(receiver, "/queue/chat-notifications", dto.getChatId().toString());
     }
 
     @PreAuthorize(AUTHENTICATED)

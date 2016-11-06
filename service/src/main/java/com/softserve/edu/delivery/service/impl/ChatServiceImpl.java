@@ -56,6 +56,11 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public String findReceiverEmail(Long chatId, String senderEmail) {
+        return chatRepository.findReceiverEmail(chatId, senderEmail);
+    }
+
+    @Override
     public List<ChatMessageDto> findMessagesHistory(Long chatId) {
         List<ChatMessage> messages = chatMessageRepository.findByChatId(chatId);
 

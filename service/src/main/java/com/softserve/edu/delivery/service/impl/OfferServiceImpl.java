@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.dto.OfferInfoDto;
 import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
@@ -49,6 +50,14 @@ public class OfferServiceImpl implements OfferService{
         offer.setOrder(order);
         offer.setCar(car);
         offerRepository.save(offer);
+    }
+
+    @Transactional
+    public OfferInfoDto findOfferInfo(Long offerId, String email) {
+       return offerRepository
+               .findOfferInfo(offerId)
+               .filter(info -> info.getCustomerEmail().equals(email) || info.getDriverEmail().equals(email))
+               .orElseThrow(() -> new IllegalArgumentException("Couldn't find offer info"));
     }
 
     @Override

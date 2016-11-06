@@ -45,4 +45,13 @@ public interface ChatService {
      * @throws AccessDeniedException if user doesn' have access to this chat
      */
     void initChat(Long offerId, String email);
+
+    /**
+     * Finds chat companion
+     *
+     * @param chatId id of chat
+     * @param senderEmail another chat companion, the sender email
+     * @return receiver email
+     */
+    String findReceiverEmail(Long chatId, String senderEmail);
 }

@@ -2,8 +2,10 @@ package com.softserve.edu.delivery.controller;
 
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OfferDto;
+import com.softserve.edu.delivery.dto.OfferInfoDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.service.NotificationService;
+import com.softserve.edu.delivery.service.OfferService;
 import com.softserve.edu.delivery.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,10 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private OfferService offerService;
+
     @Autowired
     private NotificationService notification;
 
@@ -100,5 +106,11 @@ public class OrderController {
     @RequestMapping(path = "offers/{id}", method = RequestMethod.GET)
     List<OfferDto> getOffersByOrderId(@PathVariable Long id) {
         return orderService.getOffersByOrderId(id);
+    }
+
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
+    @RequestMapping(path = "offer-info/{offerId}", method = RequestMethod.GET)
+    OfferInfoDto offerInfo(@PathVariable Long offerId, Principal principal) {
+        return offerService.findOfferInfo(offerId, principal.getName());
     }
 }
