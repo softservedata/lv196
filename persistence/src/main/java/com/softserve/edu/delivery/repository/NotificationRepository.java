@@ -20,7 +20,7 @@ public interface NotificationRepository extends BaseRepository<Notification, Lon
 
     Long removeByNotificationId(Long notificationId);
 
-    @Query("select n from Notification n where n.user.email = :email")
+    @Query("select n from Notification n where n.user.email = :email order by n.time desc")
     List<Notification> findNotificationByEmail(@Param("email") String email);
 
     @Query("select n from Notification n where n.user.email = :email and n.notificationStatus = :status")

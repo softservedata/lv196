@@ -234,10 +234,13 @@ angular
             }
         };
 
-        $scope.GetApprovedOffers = function () {
-            for (var i=0;i<$scope.offers.offers.length;i++) {
+        $scope.GetApprovedOffer = function () {
+            for (var i=0; i<$scope.offers.offers.length; i++) {
                 if ($scope.offers.offers[i].approved) {
                    return $scope.offers.offers[i]
+                }
+                else {
+
                 }
             }
         };
@@ -250,15 +253,27 @@ angular
         };
 
         $scope.changeStatus = () => {
-            $http.put('/order/change/', $scope.GetApprovedOffers()).then(response => {
-                $scope.retrieveOffers();
-            });
-            $scope.info = function() {
-                ($rootScope.lang === 'en') ?
-                    Notification.success('Success : Succesful change Offer status'):
-                    Notification.success('Успіх : Успішно змінено статус заявки');
-            };
-            $scope.info();
+            $scope.offer = $scope.GetApprovedOffer();
+            if (angular.isUndefined($scope.offer)){
+                $scope.info = function() {
+                    ($rootScope.lang === 'en') ?
+                        Notification.warning('Warning : You didnt chose any Offer'):
+                        Notification.warning('Увага : Ви не вибрали ніякої заявки');
+                };
+                $scope.info();
+            }
+            else{
+                $http.put('/order/change/', $scope.offer).then(response => {
+                    $scope.retrieveOffers();
+                });
+                $scope.info = function() {
+                    ($rootScope.lang === 'en') ?
+                        Notification.success('Success : Succesful change Offer status'):
+                        Notification.success('Успіх : Успішно змінено статус заявки');
+                };
+                $scope.info();
+            }
+
         };
     }])
     .controller('showConversationController',['$scope', '$http', '$chat', 'order',

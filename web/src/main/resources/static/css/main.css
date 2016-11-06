@@ -225,9 +225,19 @@ html, body {
     cursor: pointer;
 }
 .circle [data-notifications] {
-    position: relative;
+    height: 0px;
 }
 .circle [data-notifications]:after {
+    height: 0px;
+}
+.showCircle .fa{
+    font-size: 25px;
+    cursor: pointer;
+}
+.showCircle [data-notifications] {
+    position: relative;
+}
+.showCircle [data-notifications]:after {
     content: attr(data-notifications);
     position: absolute;
     font-size: 14px;
@@ -239,16 +249,6 @@ html, body {
     top: -6px;
     width: 16px;
     height: 16px;
-}
-.hideCircle .fa{
-    font-size: 25px;
-    cursor: pointer;
-}
-.hideCircle [data-notifications] {
-    height: 0px;
-}
-.hideCircle [data-notifications]:after {
-    height: 0px;
 }
 .Success{
     color: #fff;
@@ -289,6 +289,10 @@ html, body {
 .popover{
     max-width: 800px;
     width: 600px;
+}
+.ngrateit:not(.ngrateit-readonly) .ngrateit-rating:hover span{
+    cursor:pointer;
+    background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxhYWdfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTYgMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGxpbmVhckdyYWRpZW50IGlkPSJTVkdJRF8zXyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSIwLjIwNyIgeTE9IjgiIHgyPSIxNS43OTIiIHkyPSI4Ij4NCgk8c3RvcCAgb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjojRkJCMDNCIi8+DQoJPHN0b3AgIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6I0ZGOTQyRCIvPg0KPC9saW5lYXJHcmFkaWVudD4NCjxwYXRoIGZpbGw9InVybCgjU1ZHSURfM18pIiBkPSJNOC4zNjcsMC44MTRsMS45ODQsNC42OTFsNS4wNzQsMC40MzRjMC4zNTIsMC4wMzEsMC40OTYsMC40NzMsMC4yMjcsMC43MDNsLTMuODQ4LDMuMzM2bDEuMTUyLDQuOTYxDQoJYzAuMDgyLDAuMzQ0LTAuMjkzLDAuNjE3LTAuNTk0LDAuNDM0TDgsMTIuNzRsLTQuMzYzLDIuNjMzYy0wLjMwMSwwLjE4LTAuNjc2LTAuMDktMC41OTQtMC40MzRsMS4xNTItNC45NjFMMC4zNDQsNi42NDINCglDMC4wNzgsNi40MDgsMC4yMjMsNS45NywwLjU3NCw1LjkzOWw1LjA3NC0wLjQzNGwxLjk4NS00LjY5MUM3Ljc2OSwwLjQ4Niw4LjIzLDAuNDg2LDguMzY3LDAuODE0TDguMzY3LDAuODE0eiBNOC4zNjcsMC44MTQiLz4NCjwvc3ZnPg==)
 }
 
 .user-avatar {

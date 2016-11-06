@@ -5,6 +5,7 @@ import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OfferService;
 import com.softserve.edu.delivery.service.OrderService;
+import com.softserve.edu.delivery.service.NotificationService;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,9 @@ public class DriverController {
 
     @Autowired
     private UserAuthenticationDetails authenticationDetails;
+
+    @Autowired
+    private NotificationService notification;
 
     private final Logger logger = LoggerFactory.getLogger(DriverController.class.getName());
 
@@ -76,6 +80,7 @@ public class DriverController {
         logger.info("Method DriverController.addOffer()");
         String email = authenticationDetails.getAuthenticatedUserEmail();
         offerService.addOffer(id, email);
+        notification.addOffer(id, email);
     }
 
     @PreAuthorize(DRIVER)

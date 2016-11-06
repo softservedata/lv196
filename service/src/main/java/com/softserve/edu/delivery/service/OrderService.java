@@ -1,7 +1,7 @@
 package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.dto.FeedbackDto;
-import com.softserve.edu.delivery.dto.OfferDtoForList;
+import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 
 import java.sql.Timestamp;
@@ -47,7 +47,7 @@ public interface OrderService {
 
     void removeOrder(Long id);
 
-    List<OfferDtoForList> getOffersByOrderId(Long id);
+    List<OfferDto> getOffersByOrderId(Long id);
 
 /**
 * Author - Taras Kurdiukov

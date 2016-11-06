@@ -20,10 +20,10 @@
     padding: 0;
 }
 .offerfalse {
-    background: antiquewhite;
+    background: white;
 }
 .offertrue {
-    background: mediumspringgreen;
+    background: #18bc9c;
 }
 .modal-body .panel-group {
     margin-bottom: 0;

@@ -20,7 +20,7 @@ public class NotificationController {
     @Autowired
     private NotificationService notificationService;
 
-    Logger logger = LoggerFactory.getLogger(NotificationController.class.getName());
+//    Logger logger = LoggerFactory.getLogger(NotificationController.class.getName());
     Integer lastAmountNewNotification = null;
 
     @PreAuthorize(AUTHENTICATED)
@@ -42,13 +42,9 @@ public class NotificationController {
         do{
             Thread.sleep(2000);
             amountNewNotification = this.notificationService.countNewNotification(principal.getName());
-            logger.info("amountNewNotification = " + amountNewNotification);
-            logger.info("lastAmountNewNotification = " + lastAmountNewNotification);
         }
         while (amountNewNotification == lastAmountNewNotification);
         lastAmountNewNotification = amountNewNotification;
-        logger.info("return = " + amountNewNotification);
-
         return amountNewNotification;
 
     }

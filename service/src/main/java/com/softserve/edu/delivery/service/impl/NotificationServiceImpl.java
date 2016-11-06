@@ -2,12 +2,14 @@ package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.domain.Notification;
 import com.softserve.edu.delivery.domain.NotificationStatus;
+import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.NotificationDto;
-import com.softserve.edu.delivery.dto.OfferDtoForList;
+import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.repository.NotificationRepository;
 import com.softserve.edu.delivery.repository.OfferRepository;
+import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private OfferRepository offerRepository;
     @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
     private Environment env;
     @Autowired
     TemplateEngine templateEngine;
@@ -65,13 +69,16 @@ public class NotificationServiceImpl implements NotificationService {
                 .setTime(new Timestamp(new Date().getTime()));
 
         notificationRepository.save(notification);
+        sendEmail(notification);
+    }
 
+    private void sendEmail(Notification notification){
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom(env.getProperty("spring.mail.username"));
-            messageHelper.setTo(email);
+            messageHelper.setTo(notification.getUser().getEmail());
             messageHelper.setSubject("Notification from Delivery");
-            String text = buildHtmlTemplate(message);
+            String text = buildHtmlTemplate(notification.getMessage());
             messageHelper.setText(text, true);
         };
         mailSender.send(messagePreparator);
@@ -108,44 +115,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<NotificationDto> findNotificationByEmailAndInfoStatus(String email) {
-        return notificationRepository
-                .findNotificationByEmailAndStatus(email, NotificationStatus.INFO.getName())
-                .stream()
-                .map(NotificationDto::notificationToNotificationDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<NotificationDto> findNotificationByEmailAndWarningStatus(String email) {
-        return notificationRepository
-                .findNotificationByEmailAndStatus(email, NotificationStatus.WARNING.getName())
-                .stream()
-                .map(NotificationDto::notificationToNotificationDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<NotificationDto> findNotificationByEmailAndSuccessStatus(String email) {
-        return notificationRepository
-                .findNotificationByEmailAndStatus(email, NotificationStatus.SUCCESS.getName())
-                .stream()
-                .map(NotificationDto::notificationToNotificationDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void removeOrder(Long orderId) {
         offerRepository.getAllOffersByOrderId(orderId)
                 .stream()
-                .map(OfferDtoForList::offerToOfferDto)
+                .map(OfferDto::offerToOfferDto)
                 .forEach(offer ->
                         addNotification("Warning",
                                 " Dear " + offer.getDriverName() + " We are sorry, but Customer " + offer.getCustomerName() + " cancel Order №" + offer.getOrderId() + ";<br>" +
-                                " Дорогий " + offer.getDriverName() + " ми перепрошуємо, але користувач " + offer.getCustomerName() + " відмінив Ордер №" + offer.getOrderId(),
+                                " Шановний " + offer.getDriverName() + " ми перепрошуємо, але користувач " + offer.getCustomerName() + " відмінив Ордер №" + offer.getOrderId(),
                                 offer.getDriverEmail())
                 );
     }
@@ -155,13 +132,13 @@ public class NotificationServiceImpl implements NotificationService {
         addNotification("Info",
                 " Dear " + feedbackDTO.getUserName() + " your feedback for Driver " + feedbackDTO.getTransporterName() +
                         " was moderated. For now, your feedback status - approved = " + feedbackDTO.getApproved() + ";<br>" +
-                " Дорогий " + feedbackDTO.getUserName() + " Ваш відгук на водія " + feedbackDTO.getTransporterName() +
+                " Шановний " + feedbackDTO.getUserName() + " Ваш відгук на водія " + feedbackDTO.getTransporterName() +
                         " був змодерований. На данний момент, статус вашого відгука - approved = " + feedbackDTO.getApproved()
                 ,feedbackDTO.getUserEmail());
     }
 
     @Override
-    public void changeOfferStatus(OfferDtoForList offerDto){
+    public void changeOfferStatus(OfferDto offerDto){
         addNotification("Info",
                 " Customer " + offerDto.getCustomerName() + " approved your offer for his Order" + ";<br>" +
                 " Користувач " + offerDto.getCustomerName() + " затвердив вашу заявку на цей Ордер"
@@ -178,6 +155,18 @@ public class NotificationServiceImpl implements NotificationService {
                 " Дорогий " + user.getFirstName() + " " + user.getLastName() +
                         " ваш статус був змуненний Адміном чи Модератором. На данний момент ваш статус - Заблокованний = " + user.getBlocked()
                 , email);
+    }
+
+    @Override
+    public void addOffer(Long orderId, String email){
+        User user = userRepository.findOneOpt(email)
+                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+        Order order = orderRepository.findOneOpt(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+        addNotification("Info",
+                " Driver " + user.getFirstName() + " " + user.getLastName() + " sends offer for your Order" + ";<br>" +
+                        " Водій " + user.getFirstName() + " " + user.getLastName() + " відправив заявку на ваш Ордер"
+                , order.getCustomer().getEmail());
     }
 
 }

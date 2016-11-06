@@ -19,7 +19,7 @@ angular
                         ($rootScope.lang === 'en') ? $scope.notifications.notifications[i].message = $scope.notifications.notifications[i].message.substring(0, $scope.notifications.notifications[i].message.indexOf(';')):
                                                      $scope.notifications.notifications[i].message = $scope.notifications.notifications[i].message.substring($scope.notifications.notifications[i].message.indexOf(';')+5);
                     }
-                    for (var i = 0; i < $scope.notifications.notifications.length; i++){
+                    for ( i = 0; i < $scope.notifications.notifications.length; i++){
                         if ($scope.notifications.notifications[i].notificationStatus === 'Info'){
                             $scope.notifications.info.push($scope.notifications.notifications[i]);
                         }
@@ -34,7 +34,6 @@ angular
                         ($rootScope.lang === 'en') ? Notification('Now all your notifications are readed'):
                             Notification('Всі ваші сповіщення зараз прочитані');
                         sessionStorage.setItem('last',0);
-                        //console.info("all notif are readed = " + sessionStorage.getItem('last'));
                     }
                     
                 });
@@ -49,35 +48,30 @@ angular
                 })
             };
         }])
-    .controller('notificationAmountController',['$scope', '$http', 'Notification', '$rootScope', '$uibModal',
-        function ($scope, $http, Notification, $rootScope, $uibModal) {
+    .controller('notificationAmountController',['$scope', '$http', 'Notification', '$rootScope',
+        function ($scope, $http, Notification, $rootScope) {
             $scope.countNewNotification = () => {
                 $scope.amountNewNotification = sessionStorage.getItem('last');
                 $scope.circleStyle = function (amount){
-                    if (amount == 0) {
-                        //console.info('return hideCircle-style');
-                        return "hideCircle";
+                    if (amount > 0) {
+                        return "showCircle";
                     } else {
-                        //console.info('return circle-style');
                         return "circle";
                     }
                 };
-                //console.info('begin count method, for now Amount = ' + sessionStorage.getItem('last'));
+                //begin count method, for now Amount = sessionStorage.getItem('last'))
 
                 $http.get('/notification/count').then(response => {
                     $scope.amountNewNotification = response.data;
-                    //console.info('in get method $scope.amountNewNotification = '+$scope.amountNewNotification);
-
                     if ($scope.amountNewNotification > sessionStorage.getItem('last')) {
                         ($rootScope.lang === 'en') ? Notification('You have new Notification'):
                             Notification('У вас нове сповіщення');
-
                         sessionStorage.setItem('last', $scope.amountNewNotification);
-                        //console.info("if amount > 0 sessionStorage = " + sessionStorage.getItem('last'));
+                        //if amount > 0 sessionStorage = amount
                     }
                     else if ($scope.amountNewNotification == 0) {
                         sessionStorage.setItem('last', 0);
-                        //console.info("if amount = 0 sessionStorage = " + sessionStorage.getItem('last'));
+                        //if amount = 0 sessionStorage = 0
                     }
                     $scope.countNewNotification();
                 })
