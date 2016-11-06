@@ -20,14 +20,6 @@ public class SecurityConstraints {
     public static final String ADMIN = "hasAuthority('Admin')";
     public static final String MODERATOR = "hasAuthority('Moderator')";
 
-    public static final String[] STATIC_RESOURCES = {
-            "/app/**",
-            "/bower_components/**",
-            "/css/**",
-            "/i18n/**",
-            "/img/**",
-            "/video/**"
-    };
 
     public static final String WELCOME_PAGE = "/welcome";
     public static final String LOGIN_PAGE = "/login";
@@ -45,4 +37,21 @@ public class SecurityConstraints {
     public static final String DRIVER_PAGE = "/#/driver";
     public static final String ADMIN_PAGE = "/#/users";
     public static final String MODERATOR_PAGE = "/#/feedbacks";
+
+    public static final String LINKED_IN_LOGIN = "/login/linkedin";
+    public static final String LINKED_IN_CALLBACK = "/login/linkedin/callback";
+
+    public static final String[] SOCIAL_URL = {
+            LINKED_IN_LOGIN,
+            LINKED_IN_CALLBACK
+    };
+
+    public static final String[] STATIC_RESOURCES = {
+            "/app/**",
+            "/bower_components/**",
+            "/css/**",
+            "/i18n/**",
+            "/img/**",
+            "/video/**"
+    };
 }

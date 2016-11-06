@@ -31,52 +31,47 @@ public class AuthController {
 
     @RequestMapping(value = {"/welcome"})
     public ModelAndView welcome() {
-        logger.info("In method AuthController.welcome()");
         ModelAndView mv = new ModelAndView();
         mv.addObject("orderIdDto", new OrderIdDto());
-        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("welcome");
-        logger.info("Out of method AuthController.welcome()");
+        logger.info("Return welcome page");
         return mv;
     }
 
     @RequestMapping(value = "/login")
     public ModelAndView signIn(@RequestParam(value = "auth", required = false) String auth,
                                @RequestParam(value = "logout", required = false) String logout){
-        logger.info("In method AuthController.signIn()");
-
         ModelAndView mv = new ModelAndView();
         if (auth != null && auth.equals("false")) {
             mv.addObject("msg", "You fill wrong credentials or email wasn't verified");
+            logger.warn("User entered wrong credentials");
         }else if (logout != null) {
             mv.addObject("msg", "You've successfully logout");
+            logger.info("Logout");
         }
         mv.addObject("userAuthDto", new UserAuthDTO());
-        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
         mv.setViewName("login");
 
-        logger.info("Out of method AuthController.signIn()");
+        logger.info("Return login page");
         return mv;
     }
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(@ModelAttribute("userAuthDto") @Valid UserAuthDTO userAuthDTO,
                                      BindingResult result) {
-        logger.info("In method AuthController.loginProcess()");
         if (result.hasErrors()) {
-            logger.error("Binding error in AuthController().loginProcess(), user: " + userAuthDTO.getEmail());
+            logger.error("Binding error, user: " + userAuthDTO.getEmail());
             return new ModelAndView("login", "userAuthDto", userAuthDTO);
         }
-        logger.info("Out of method AuthController.loginProcess()");
+        logger.info("Return welcome page");
         return new ModelAndView("redirect:/welcome");
     }
 
     @RequestMapping(value = "/authRedirect", method = RequestMethod.GET)
     public ModelAndView authRedirect() {
-        logger.info("In method AuthController.authRedirect()");
         ModelAndView mv = new ModelAndView();
         mv.setViewName(roleRedirect());
-        logger.info("Out of method AuthController.authRedirect()");
+        logger.info("Return redirecting page");
         return mv;
     }
 
@@ -84,17 +79,16 @@ public class AuthController {
     @RequestMapping(value = "role")
     public @ResponseBody StringResponse getRole() {
         String role = authenticationDetails.getAuthenticatedUserRole();
-        logger.info("AuthController.getRole(), return: " + role);
+        logger.info("Return user role: " + role);
         return new StringResponse(role);
     }
 
     @RequestMapping(value = "/registration")
     public ModelAndView registration() {
-        logger.info("In method AuthController.registration()");
         ModelAndView mv = new ModelAndView();
         mv.addObject("userRegistration", new UserRegistrationDTO());
         mv.setViewName("registration");
-        logger.info("Out of method AuthController.registration");
+        logger.info("Return registration page");
         return mv;
     }
 
@@ -103,28 +97,26 @@ public class AuthController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("driverRegistration", new DriverRegistrationDTO());
         mv.setViewName("driverRegistration");
+        logger.info("Return registration page");
         return mv;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView reg(@ModelAttribute("userRegistration") @Valid UserRegistrationDTO userRegDTO,
                             BindingResult result, HttpServletRequest request) {
-        logger.info("In method AuthController.reg()");
         if (result.hasErrors()) {
-            logger.error("Registration binding process has some error");
+            logger.error("Registration binding process has errors, returning registration form back");
             ModelAndView mv = new ModelAndView("registration", "userRegistration", userRegDTO);
             mv.addObject("msg", "Please fill correct registration form");
             return mv;
         } else {
             String url = request.getRequestURL().toString();
-            logger.info("Before service.register()");
             service.register(userRegDTO, url);
-            logger.info("After service.register()");
             ModelAndView mv = new ModelAndView();
             mv.addObject("msg", "Please check your mail box and verify your email");
             mv.addObject("userAuthDto", new UserAuthDTO());
             mv.setViewName("login");
-            logger.info("Out of method AuthController.reg()");
+            logger.info("Return login page");
             return mv;
         }
     }
@@ -132,9 +124,8 @@ public class AuthController {
     @RequestMapping(value = "/driverRegister", method = RequestMethod.POST)
     public ModelAndView regDriver(@ModelAttribute("driverRegistration") @Valid DriverRegistrationDTO driverRegDTO,
                                   BindingResult result, HttpServletRequest request) {
-        logger.info("In method AuthController.regDriver()");
         if (result.hasErrors()) {
-            logger.error("Registration binding process has some error");
+            logger.error("Registration binding process has errors, returning registration form back");
             return new ModelAndView("registration", "driverRegistration", driverRegDTO);
         } else {
             String url = request.getRequestURL().toString();
@@ -143,6 +134,7 @@ public class AuthController {
             mv.addObject("userAuthDto", new UserAuthDTO());
             mv.addObject("msg", "Please check your mail box and verify your email");
             mv.setViewName("login");
+            logger.info("Return login page");
             return mv;
         }
     }
@@ -154,16 +146,17 @@ public class AuthController {
         mv.addObject("userAuthDto", new UserAuthDTO());
         mv.addObject("msg", "You've successful verified your email. Please sign in.");
         mv.setViewName("login");
+        logger.info("Email was verified. Return login page");
         return mv;
     }
 
     @RequestMapping(value = "/accessDenied")
     public ModelAndView accessDenied() {
-        logger.error("Access Denied. Role isn't allow to get this resource. Method AuthController.accessDenied()");
+        logger.warn("Access Denied. Role isn't allow to get this resource.");
         ModelAndView mv = new ModelAndView();
         mv.addObject("msg", "Access denied");
         mv.addObject("orderIdDto", new OrderIdDto());
-        mv.addObject("userPrincipal", authenticationDetails.getAuthenticatedUserEmail());
+        logger.info("Return welcome page");
         mv.setViewName("welcome");
         return mv;
     }
@@ -175,23 +168,22 @@ public class AuthController {
     }
 
     private String roleRedirect() {
-        logger.info("In method AuthController.roleRedirect()");
         String authRole = this.authenticationDetails.getAuthenticatedUserRole();
         logger.info("Role of user is: " + authRole);
         if (authRole.equals(CUSTOMER_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + CUSTOMER_PAGE);
+            logger.info("Return customer page: " + CUSTOMER_PAGE);
             return "redirect:" + CUSTOMER_PAGE;
         } else if (authRole.equals(DRIVER_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + DRIVER_PAGE);
+            logger.info("Return driver page: " + DRIVER_PAGE);
             return "redirect:" + DRIVER_PAGE;
         } else if (authRole.equals(ADMIN_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + ADMIN_PAGE);
+            logger.info("Return admin page: " + ADMIN_PAGE);
             return "redirect:" + ADMIN_PAGE;
         } else if (authRole.equals(MODERATOR_ROLE)) {
-            logger.info("AuthController.roleRedirect() return: " + MODERATOR_PAGE);
+            logger.info("Return moderator page: " + MODERATOR_PAGE);
             return "redirect:" + MODERATOR_PAGE;
         } else {
-            logger.info("AuthController.roleRedirect() return: " + WELCOME_PAGE);
+            logger.info("Return welcome page: " + WELCOME_PAGE);
             return "redirect:" + WELCOME_PAGE;
         }
     }

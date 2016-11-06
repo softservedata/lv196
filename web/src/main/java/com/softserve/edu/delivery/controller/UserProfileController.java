@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 import java.util.List;
 
@@ -73,6 +76,7 @@ public class UserProfileController {
         return new ResponseEntity(responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "loggedUser", method = RequestMethod.GET)
     ResponseEntity<UserProfileDto> getLoggedUser() {
 
@@ -108,6 +112,7 @@ public class UserProfileController {
         return new ResponseEntity(responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "loggedUser/cars", method = RequestMethod.GET)
     ResponseEntity<CarDTO> getLoggedUserCars(@RequestParam("email") String email) {
 
@@ -128,6 +133,7 @@ public class UserProfileController {
         return new ResponseEntity(cars, responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "addNewCar", method = RequestMethod.PUT)
     ResponseEntity<CarDTO> addNewCar(@RequestBody CarDTO carDTO) {
         logger.info("Before UserProfileController.addNewCar(CarDTO carDTO)");
@@ -148,6 +154,7 @@ public class UserProfileController {
         return new ResponseEntity(carDTOsaved, responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "updateCar", method = RequestMethod.PUT)
     ResponseEntity updateCar(@RequestBody CarDTO carDTO) {
         logger.info("Before UserProfileController.updateCar(CarDTO carDTO)");
@@ -164,6 +171,7 @@ public class UserProfileController {
         return new ResponseEntity(responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "deleteCar/{carId}", method = RequestMethod.DELETE)
     ResponseEntity deleteCar(@PathVariable long carId) {
         logger.info("Before UserProfileController.deleteCar(long carId)");

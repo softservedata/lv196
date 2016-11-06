@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 @RestController
 @RequestMapping(path = "upload")
@@ -109,6 +112,7 @@ public class ImageUploadController {
         return new ResponseEntity(responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "userPhoto", method = RequestMethod.POST)
     ResponseEntity uploadUserPhoto(@RequestParam("file") MultipartFile file) {
         responseHeaders.set("message", "OK");
@@ -138,6 +142,7 @@ public class ImageUploadController {
         return new ResponseEntity(responseHeaders, status);
     }
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @SuppressWarnings("unchecked")
     @RequestMapping(path = "carPhoto", method = RequestMethod.POST)
     ResponseEntity uploadCarPhoto(@RequestParam("file") MultipartFile file,

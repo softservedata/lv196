@@ -8,11 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 import java.security.Principal;
 import java.sql.Timestamp;
@@ -25,6 +29,7 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
+    @PreAuthorize(AUTHENTICATED)
     @MessageMapping("/chat/{chatId}")
     public ChatMessageDto handleMessage(@DestinationVariable("chatId") Long chatId,
                                         @Payload ChatMessageDto dto, Principal principal) {
@@ -35,6 +40,7 @@ public class ChatController {
         return chatService.saveMessage(dto);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "/chat/{chatId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<ChatMessageDto>> chatHistory(@PathVariable Long chatId, Principal principal) {
@@ -44,6 +50,7 @@ public class ChatController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED));
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "/chat/{chatId}", method = RequestMethod.POST)
     @ResponseBody
     public void createConversation(@PathVariable Long chatId, Principal principal) {

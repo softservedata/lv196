@@ -14,6 +14,10 @@
     <spring:url value="css/welcome.css" var="style"/>
     <spring:url value="js/welcome.js" var="script"/>
     <spring:url value="video/login.mp4" var="video"/>
+    <spring:url value="img/linkedin.png" var="linkedIn"/>
+    <spring:url value="img/google.png" var="google"/>
+    <spring:url value="img/twitter.png" var="twitter"/>
+    <spring:url value="img/outlook.png" var="outlook"/>
 
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
@@ -61,9 +65,11 @@
         <input type="submit" value="Log in">
         <div class="lost">
             <div class="lost-userPassword">
-                <h5>
-                    <a href="registration">I don't have an account</a>
-                </h5>
+                <h5>Sign in as:</h5>
+                <a href="login/linkedin"><img src="${linkedIn}"></a>
+                <a href="#"><img src="${google}"></a>
+                <a href="#"><img src="${twitter}"></a>
+                <a href="#"><img src="${outlook}"></a>
             </div>
             <div class="clear"></div>
         </div>

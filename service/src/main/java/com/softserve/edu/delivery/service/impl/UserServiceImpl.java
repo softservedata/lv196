@@ -7,8 +7,6 @@ import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
-import com.softserve.edu.delivery.exception.EmailExistsException;
-import com.softserve.edu.delivery.exception.TokenNotFoundException;
 import com.softserve.edu.delivery.repository.CarRepository;
 import com.softserve.edu.delivery.repository.EmailTokenRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
@@ -27,10 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("userService")
@@ -73,9 +68,7 @@ public class UserServiceImpl implements UserService {
         boolean credentialsNotExpired = true;
         boolean accountNonLocked = !user.getBlocked();
         String role = user.getUserRole().getName();
-        List<GrantedAuthority> listUserRoles = new ArrayList<>();
-        listUserRoles.add(new SimpleGrantedAuthority(role));
-
+        List<GrantedAuthority> listUserRoles = Arrays.asList(new SimpleGrantedAuthority(role));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), user.getPassword(), enabled, accountNonExpired,
@@ -90,7 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserRegistrationDTO userRegDTO, String url) {
         if (this.exists(userRegDTO.getUserEmail())) {
-            throw new EmailExistsException(userRegDTO.getUserEmail());
+            throw new IllegalArgumentException("Email already exist: " + userRegDTO.getUserEmail());
         } else {
             User newUser = createUser(userRegDTO);
 
@@ -108,7 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(DriverRegistrationDTO driverRegDTO, String url) {
         if (this.exists(driverRegDTO.getDriverEmail())) {
-            throw new EmailExistsException(driverRegDTO.getDriverEmail());
+            throw new IllegalArgumentException("Email already exist: " + driverRegDTO.getDriverEmail());
         } else {
             User newDriver = createDriver(driverRegDTO);
             userRepository.save(newDriver);
@@ -129,7 +122,7 @@ public class UserServiceImpl implements UserService {
     public void verifyRegistration(String token) {
         EmailVerificationToken verificationToken = tokenRepository.findByToken(token);
         if (verificationToken == null) {
-            throw new TokenNotFoundException();
+            throw new IllegalArgumentException("Token isn't exist");
         } else {
             verificationToken.getUser().setApproved(true);
             tokenRepository.delete(verificationToken);

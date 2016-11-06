@@ -71,7 +71,7 @@
         </div>
         <div class="mess">
             <mvc:input path="driverConfirmPassword" type="password" name="driverConfirmPassword" id="dr_confirmPassword" pattern=".{4,20}" class="lock"
-                   placeholder="Retype userPassword" required="required" title="Password should will be from 4 to 20 symbols"/>
+                   placeholder="Retype password" required="required" title="Password should will be from 4 to 20 symbols"/>
             <mvc:errors path="driverConfirmPassword"/>
         </div>
         <div class="mess">
