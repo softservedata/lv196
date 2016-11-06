@@ -185,6 +185,8 @@ angular
             };
 
             if (order) {
+                $scope.isEdit = true;
+                $scope.orderStatusTitle = 'Edit';
                 $scope.form.id = order.id;
                 $scope.form.locationFrom = order.locationFrom;
                 $scope.form.locationTo = order.locationTo;

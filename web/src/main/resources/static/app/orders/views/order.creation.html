@@ -2,7 +2,7 @@
     <div class="modal-header">
         <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="modal-title">
-           {{ 'new_order' | translate }}
+           {{ isEdit ? ('edit_order' | translate) : ('new_order' | translate) }}
         </h4>
         <div class="order-date">
             <label for="arrivalDateInput">{{ 'deliver_in' | translate }} <i class="fa fa-calendar" aria-hidden="true"></i></label>
