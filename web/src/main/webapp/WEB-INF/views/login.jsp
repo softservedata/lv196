@@ -49,10 +49,12 @@
 <!--Sign in box-->
 <div id="signin_container" class="signin centered">
     <h3><spring:message code="sigin"/></h3>
-    <spring:message code='tooltip.wrong_login' var="wrong_login"/>
-    <spring:message code='tooltip.success_login' var="success_login"/>
+    
     <c:if test="${wrong_login != null}">
-        <h4>${success_login}</h4>
+        <h4><spring:message code="tooltip.wrong_login"/></h4>
+    </c:if>
+    <c:if test="${success_login != null}">
+        <h4><spring:message code="tooltip.success_login"/></h4>
     </c:if>
     <spring:message code='email' var="email"/>
     <spring:message code='password' var="password"/>

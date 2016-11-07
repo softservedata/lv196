@@ -46,10 +46,12 @@
 
 <div id="reg_container" class="signin centered">
     <h3><spring:message code="registration"/></h3>
-    <spring:message code='tooltip.wrong_register' var="wrong_register"/>
-    <spring:message code='tooltip.success_register' var="success_register"/>
+
     <c:if test="${wrong_register != null}">
-        <h4>${success_register}</h4>
+        <h4><spring:message code="tooltip.wrong_register"/></h4>
+    </c:if>
+    <c:if test="${success_register != null}">
+        <h4><spring:message code="tooltip.success_register"/></h4>
     </c:if>
     <spring:message code='email' var="email"/>
     <spring:message code='password' var="password"/>
