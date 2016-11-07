@@ -53,8 +53,14 @@
     <c:if test="${wrong_login != null}">
         <h4><spring:message code="tooltip.wrong_login"/></h4>
     </c:if>
-    <c:if test="${success_login != null}">
+    <c:if test="${success_logout != null}">
         <h4><spring:message code="tooltip.success_login"/></h4>
+    </c:if>
+    <c:if test="${success_register != null}">
+        <h4><spring:message code="tooltip.success_register"/></h4>
+    </c:if>
+    <c:if test="${email_verified != null}">
+        <h4><spring:message code="tooltip.email_verified"/></h4>
     </c:if>
     <spring:message code='email' var="email"/>
     <spring:message code='password' var="password"/>

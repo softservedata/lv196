@@ -59,8 +59,8 @@
 
 <div id="track_container" class="signin centered">
     <h3><spring:message code="track_baggage"/></h3>
-    <c:if test="${msg != null}">
-        <h4>${msg}</h4>
+    <c:if test="${access_denied != null}">
+        <h4><spring:message code="tooltip.access_denied"/></h4>
     </c:if>
     <spring:message code='tooltip.track' var="tooltip"/>
     <spring:message code='track' var="track"/>

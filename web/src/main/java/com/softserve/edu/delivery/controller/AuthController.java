@@ -43,10 +43,9 @@ public class AuthController {
                                @RequestParam(value = "logout", required = false) String logout){
         ModelAndView mv = new ModelAndView();
         if (auth != null && auth.equals("false")) {
-            mv.addObject("wrong_login", "You fill wrong credentials or email wasn't verified");
-            logger.warn("User entered wrong credentials");
+            mv.addObject("wrong_login", "");
         }else if (logout != null) {
-            mv.addObject("success_login", "You've successfully logout");
+            mv.addObject("success_logout", "");
             logger.info("Logout");
         }
         mv.addObject("userAuthDto", new UserAuthDTO());
@@ -113,7 +112,7 @@ public class AuthController {
             String url = request.getRequestURL().toString();
             service.register(userRegDTO, url);
             ModelAndView mv = new ModelAndView();
-            mv.addObject("success_register", "Please check your mail box and verify your email");
+            mv.addObject("success_register", "");
             mv.addObject("userAuthDto", new UserAuthDTO());
             mv.setViewName("login");
             logger.info("Return login page");
@@ -132,7 +131,7 @@ public class AuthController {
             service.register(driverRegDTO, url);
             ModelAndView mv = new ModelAndView();
             mv.addObject("userAuthDto", new UserAuthDTO());
-            mv.addObject("success_register", "Please check your mail box and verify your email");
+            mv.addObject("success_register", "");
             mv.setViewName("login");
             logger.info("Return login page");
             return mv;
@@ -144,7 +143,7 @@ public class AuthController {
         service.verifyRegistration(token);
         ModelAndView mv = new ModelAndView();
         mv.addObject("userAuthDto", new UserAuthDTO());
-        mv.addObject("msg", "You've successful verified your email. Please sign in.");
+        mv.addObject("email_verified", "");
         mv.setViewName("login");
         logger.info("Email was verified. Return login page");
         return mv;
@@ -154,7 +153,7 @@ public class AuthController {
     public ModelAndView accessDenied() {
         logger.warn("Access Denied. Role isn't allow to get this resource.");
         ModelAndView mv = new ModelAndView();
-        mv.addObject("msg", "Access denied");
+        mv.addObject("access_denied", "");
         mv.addObject("orderIdDto", new OrderIdDto());
         logger.info("Return welcome page");
         mv.setViewName("welcome");

@@ -50,9 +50,6 @@
     <c:if test="${wrong_register != null}">
         <h4><spring:message code="tooltip.wrong_register"/></h4>
     </c:if>
-    <c:if test="${success_register != null}">
-        <h4><spring:message code="tooltip.success_register"/></h4>
-    </c:if>
     <spring:message code='email' var="email"/>
     <spring:message code='password' var="password"/>
     <spring:message code='password_again' var="password_again"/>
