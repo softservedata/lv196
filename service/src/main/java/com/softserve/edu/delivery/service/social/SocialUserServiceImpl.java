@@ -7,42 +7,18 @@ import com.softserve.edu.delivery.service.UserService;
 import com.softserve.edu.delivery.service.social.auth.SocialAuthentication;
 import com.softserve.edu.delivery.service.social.auth.SocialAuthenticationManager;
 import com.softserve.edu.delivery.service.social.dto.SocialUserDTO;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class LinkedInUserService implements SocialUserService{
+public class SocialUserServiceImpl implements SocialUserService{
 
-    private final String ID_KEY = "id";
-    private final String EMAIL_KEY = "emailAddress";
-    private final String FIRST_NAME_KEY = "firstName";
-    private final String LAST_NAME_KEY = "lastName";
-    private final String PHOTO_URL_KEY = "pictureUrl";
-
-    private final Logger logger = LoggerFactory.getLogger(LinkedInUserService.class);
+    private final Logger logger = LoggerFactory.getLogger(SocialUserServiceImpl.class);
 
     @Autowired
     UserService userService;
-
-    @Override
-    public SocialUserDTO parseResponse(String responseBody) {
-        logger.info("Creating JSONObject from response body. Response body: " + responseBody);
-        JSONObject jsonObject = new JSONObject(responseBody);
-
-        SocialUserDTO socialUser = new SocialUserDTO();
-        socialUser.setId(jsonObject.getString(ID_KEY));
-        socialUser.setEmail(jsonObject.getString(EMAIL_KEY));
-        socialUser.setFirstName(jsonObject.getString(FIRST_NAME_KEY));
-        socialUser.setLastName(jsonObject.getString(LAST_NAME_KEY));
-        socialUser.setPhotoUrl(jsonObject.getString(PHOTO_URL_KEY));
-
-        logger.info("Return SocialUserDTO instance");
-        return socialUser;
-    }
 
     @Override
     public void signIn(SocialUserDTO socialUser) {

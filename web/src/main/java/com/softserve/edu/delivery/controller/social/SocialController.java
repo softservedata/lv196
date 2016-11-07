@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.controller.social;
 import com.softserve.edu.delivery.service.social.SocialUserService;
 import com.softserve.edu.delivery.service.social.dto.SocialUserDTO;
 import com.softserve.edu.delivery.service.social.provider.SocialServiceProvider;
+import com.softserve.edu.delivery.service.social.provider.api.util.ResponseParser;
 import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
@@ -31,10 +32,7 @@ public class SocialController {
     private SocialServiceProvider googleServiceProvider;
 
     @Autowired
-    private SocialUserService linkedInUserService;
-
-    @Autowired
-    private SocialUserService googleUserService;
+    private SocialUserService socialUserService;
 
 
     @RequestMapping(value = "/login/linkedin")
@@ -54,6 +52,8 @@ public class SocialController {
         }
     }
 
+    private static final String LINKEDIN_RESOURCE = "https://api.linkedin.com/v1/people/~:(id,email-address,firstName,lastName,picture-url)?format=json";
+
     @RequestMapping(value = "/login/linkedin/callback")
     public ModelAndView linkedInCallback(@RequestParam(value="oauth_verifier", required=false) String oauthVerifier, WebRequest webRequest) {
         OAuthService oAuthService = this.linkedInServiceProvider.getService();
@@ -64,7 +64,7 @@ public class SocialController {
 
         webRequest.setAttribute(SOCIAL_ACCESS_TOKEN, accessToken, SCOPE_SESSION);
 
-        OAuthRequest oAuthRequest = new OAuthRequest(Verb.GET, this.linkedInServiceProvider.getScope());
+        OAuthRequest oAuthRequest = new OAuthRequest(Verb.GET, LINKEDIN_RESOURCE);
         oAuthService.signRequest(accessToken, oAuthRequest);
 
         logger.info("Sending application request to linkedIn.");
@@ -76,8 +76,8 @@ public class SocialController {
 
         logger.info("Got response body from linked in");
 
-        SocialUserDTO socialUser = this.linkedInUserService.parseResponse(responseBody);
-        this.linkedInUserService.signIn(socialUser);
+        SocialUserDTO socialUser = ResponseParser.fromLinkedIn(responseBody);
+        this.socialUserService.signIn(socialUser);
 
         return new ModelAndView("redirect:/authRedirect");
     }
@@ -105,8 +105,8 @@ public class SocialController {
         String responseBody = response.getBody();
         logger.info("Google response body: " + responseBody);
 
-        SocialUserDTO socialUser = this.googleUserService.parseResponse(responseBody);
-        this.googleUserService.signIn(socialUser);
+        SocialUserDTO socialUser = ResponseParser.fromGoogle(responseBody);
+        this.socialUserService.signIn(socialUser);
 
         return new ModelAndView("redirect:/authRedirect");
     }

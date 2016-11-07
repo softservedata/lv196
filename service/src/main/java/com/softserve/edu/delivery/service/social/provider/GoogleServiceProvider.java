@@ -35,9 +35,4 @@ public class GoogleServiceProvider implements SocialServiceProvider {
                 .provider(this.provider)
                 .build();
     }
-
-    @Override
-    public String getScope() {
-        return this.scope;
-    }
 }

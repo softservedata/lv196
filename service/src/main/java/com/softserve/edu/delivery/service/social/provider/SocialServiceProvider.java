@@ -7,6 +7,4 @@ public interface SocialServiceProvider {
 
     OAuthService getService();
 
-    String getScope();
-
 }
