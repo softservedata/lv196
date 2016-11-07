@@ -57,13 +57,18 @@ public class FeedbackController {
         try {
             feedbackService.update(feedbackDTO);
         } catch (NoSuchElementException e) {
-            logger.info("Exception while trying to update feedback with id " + feedbackDTO.getFeedbackId() +
+            logger.error("Exception while trying to update feedback with id " + feedbackDTO.getFeedbackId() +
                     " in feedbackService.update(feedbackDTO) " + e.getMessage());
             status = HttpStatus.NOT_FOUND;
             responseHeaders.set("message", e.getMessage());
         }
         logger.info("After feedbackService.update(feedbackDTO)");
-        notificationService.updateFeedback(feedbackDTO);
+        try {
+            //notificationService.updateFeedback(feedbackDTO);
+        } catch (Exception e){
+            logger.error("Exception while trying to send mail notification in update feedback with id " + feedbackDTO.getFeedbackId() +
+                    " in feedbackService.update(feedbackDTO) " + e.getMessage());
+        }
         return new ResponseEntity(responseHeaders, status);
     }
 
@@ -77,7 +82,7 @@ public class FeedbackController {
         try {
             feedbackService.delete(feedbackId);
         } catch (NoSuchElementException e) {
-            logger.info("Exception while trying to delete feedback with id " + feedbackId +
+            logger.error("Exception while trying to delete feedback with id " + feedbackId +
                     " in feedbackService.delete(feedbackDTO) " + e.getMessage());
             status = HttpStatus.NOT_FOUND;
             responseHeaders.set("message", e.getMessage());

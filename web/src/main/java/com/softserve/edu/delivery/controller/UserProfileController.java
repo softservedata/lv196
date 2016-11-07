@@ -218,7 +218,7 @@ public class UserProfileController {
                     status = HttpStatus.OK;
                     responseHeaders.set("message", "Your password was successfully changed");
                 } else {
-                    responseHeaders.set("message", "Entered passwords do NOT match");
+                    responseHeaders.set("message", "Error");
                     return ResponseEntity
                             .status(status)
                             .headers(responseHeaders)

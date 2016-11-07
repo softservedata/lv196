@@ -86,6 +86,7 @@
 	"chat": "chat",
 	"track": "track",
 	"add_feedback": "add feedback",
+	"delete_feedback_warn": "Are you sure you want to delete the feedback?",
 	"statistics": "Statistics",
 	"cancel_offer": "cancel offer",
 	"photo": "Photo",

@@ -29,7 +29,8 @@ angular
             };
 
             $scope.rate;
-            $scope.createdOn;
+            $scope.text = '';
+            $scope.createdOn = '';
 
             var rateFactor = 10;
             var columnNumber = 7;
@@ -69,6 +70,7 @@ angular
                 }
                 $scope.toggleFilterApprovedClass();
                 $scope.toggleFilterApprovedStyle();
+                $scope.filterFeedbacks();
             };
 
             $scope.toggleFilterApprovedClass = function () {
@@ -111,15 +113,7 @@ angular
                 }
             };
 
-            var replacePlus = function (text) {
-                if (text != null && text != '' && text.indexOf("+") != -1) {
-                    return text.split("+").join("%2B");
-                }
-                return text;
-            };
-
             var prepareFeedbackFilterDTO = function(){
-                $scope.feedbackFilterDTO.text = replacePlus($scope.feedbackFilterDTO.text);
                 $scope.feedbackFilterDTO.rate  = ($scope.rate - rateStep) * rateFactor;
                 $scope.feedbackFilterDTO.createdOn = Date.parse($scope.createdOn);
                 $scope.feedbackFilterDTO.sortBy = sortBy(columnPos);
@@ -152,7 +146,6 @@ angular
             $scope.filterFeedbacks = function () {
 
                 prepareFeedbackFilterDTO();
-                console.log($scope.feedbackFilterDTO);
 
                 $http.post("/feedbacks/all", $scope.feedbackFilterDTO)
                     .then(function (response0) {

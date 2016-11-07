@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN;
+import static com.softserve.edu.delivery.config.SecurityConstraints.MODERATOR;
 
 @RestController
 @RequestMapping(path = "users")
@@ -28,7 +29,7 @@ public class UserController {
 
 		Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
-		@PreAuthorize(ADMIN)
+		@PreAuthorize(ADMIN + "||" + MODERATOR)
 		@RequestMapping(path = "email", method = RequestMethod.GET)
 	    UserProfileDto getUser(@RequestParam("email") String email) {
 			logger.info("Method UserController.getUser()");
