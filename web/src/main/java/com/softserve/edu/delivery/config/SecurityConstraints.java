@@ -40,10 +40,14 @@ public class SecurityConstraints {
 
     public static final String LINKED_IN_LOGIN = "/login/linkedin";
     public static final String LINKED_IN_CALLBACK = "/login/linkedin/callback";
+    public static final String GOOGLE_LOGIN = "/login/google";
+    public static final String GOOGLE_CALLBACK = "/login/google/callback";
 
     public static final String[] SOCIAL_URL = {
             LINKED_IN_LOGIN,
-            LINKED_IN_CALLBACK
+            LINKED_IN_CALLBACK,
+            GOOGLE_LOGIN,
+            GOOGLE_CALLBACK
     };
 
     public static final String[] STATIC_RESOURCES = {

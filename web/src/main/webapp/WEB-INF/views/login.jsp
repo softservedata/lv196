@@ -74,7 +74,7 @@
             <div class="lost-userPassword">
                 <h5><spring:message code="signin_as"/>:</h5>
                 <a href="login/linkedin"><img src="${linkedIn}"></a>
-                <a href="#"><img src="${google}"></a>
+                <a href="login/google"><img src="${google}"></a>
                 <a href="#"><img src="${twitter}"></a>
                 <a href="#"><img src="${outlook}"></a>
             </div>

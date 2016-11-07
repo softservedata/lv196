@@ -12,21 +12,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class LinkedInUserService implements SocialUserService{
+@Service("googleUserService")
+public class GoogleUserService implements SocialUserService {
 
     private final String ID_KEY = "id";
-    private final String EMAIL_KEY = "emailAddress";
-    private final String FIRST_NAME_KEY = "firstName";
-    private final String LAST_NAME_KEY = "lastName";
-    private final String PHOTO_URL_KEY = "pictureUrl";
+    private final String EMAIL_KEY = "email";
+    private final String FIRST_NAME_KEY = "given_name";
+    private final String LAST_NAME_KEY = "family_name";
+    private final String PHOTO_URL_KEY = "picture";
 
-    private final Logger logger = LoggerFactory.getLogger(LinkedInUserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(GoogleUserService.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
 
     @Override
     public SocialUserDTO parseResponse(String responseBody) {
@@ -64,4 +64,5 @@ public class LinkedInUserService implements SocialUserService{
         SocialAuthentication auth = new SocialAuthentication(socialUser.getEmail(), socialUser.getId(), userRole);
         SocialAuthenticationManager.authenticate(auth);
     }
+
 }
