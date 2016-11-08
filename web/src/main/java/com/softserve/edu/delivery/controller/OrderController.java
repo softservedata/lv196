@@ -1,9 +1,11 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OfferInfoDto;
 import com.softserve.edu.delivery.dto.OrderDto;
+import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.NotificationService;
 import com.softserve.edu.delivery.service.OfferService;
 import com.softserve.edu.delivery.service.OrderService;
@@ -27,6 +29,9 @@ public class OrderController {
 
     @Autowired
     private OfferService offerService;
+
+    @Autowired
+    private FeedbackService feedbackService;
 
     @Autowired
     private NotificationService notification;
@@ -73,39 +78,33 @@ public class OrderController {
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
     void addFeedback(@RequestBody FeedbackDto dto, Principal principal) {
-        logger.info("Method OrderController.addFeedback()");
-        orderService.addFeedback(dto, principal.getName());
+        feedbackService.addFeedback(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.PUT)
     void updateFeedback(@RequestBody FeedbackDto dto, Principal principal) {
-        orderService.updateFeedback(dto, principal.getName());
+        feedbackService.updateFeedback(dto, principal.getName());
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "getFeedback/{id}", method = RequestMethod.GET)
     FeedbackDto getFeedback(@PathVariable Long id, Principal principal) {
-        FeedbackDto dto = orderService.getFeedback(id, principal.getName());
-        if (dto != null){
+        FeedbackDto dto = feedbackService.getFeedback(id, principal.getName());
             return dto;
-        }
-        else {
-            return new FeedbackDto();
-        }
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "change", method = RequestMethod.PUT)
     void changeOfferStatus(@RequestBody OfferDto offerDto) {
-        orderService.changeStatus(offerDto.getOfferId(),offerDto.isApproved(),offerDto.getOrderId());
+        offerService.changeStatus(offerDto.getOfferId(),offerDto.isApproved(),offerDto.getOrderId());
         notification.changeOfferStatus(offerDto);
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "offers/{id}", method = RequestMethod.GET)
     List<OfferDto> getOffersByOrderId(@PathVariable Long id) {
-        return orderService.getOffersByOrderId(id);
+        return offerService.getOffersByOrderId(id);
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)

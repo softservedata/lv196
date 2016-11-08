@@ -51,12 +51,9 @@ angular
 
             $scope.showOffers = (orderWithOffers) => {
                 if (orderWithOffers.amountOfOffers == 0) {
-                    $scope.primary = function () {
                         ($rootScope.lang === 'en') ?
                             Notification('Info : Sorry there are no offers for your Order at this time'):
                             Notification('Інформація : Вибачте, але на данний момент немає жодної заявки');
-                    };
-                    $scope.primary();
                 }
                 else {
                     $scope.orderIdWithOffers = orderWithOffers.id;
@@ -241,9 +238,6 @@ angular
                 if ($scope.offers.offers[i].approved) {
                    return $scope.offers.offers[i]
                 }
-                else {
-
-                }
             }
         };
 
@@ -257,23 +251,15 @@ angular
         $scope.changeStatus = () => {
             $scope.offer = $scope.GetApprovedOffer();
             if (angular.isUndefined($scope.offer)){
-                $scope.info = function() {
-                    ($rootScope.lang === 'en') ?
-                        Notification.warning('Warning : You didnt chose any Offer'):
+                    ($rootScope.lang === 'en') ? Notification.warning('Warning : You didnt chose any Offer'):
                         Notification.warning('Увага : Ви не вибрали ніякої заявки');
-                };
-                $scope.info();
             }
             else{
                 $http.put('/order/change/', $scope.offer).then(response => {
                     $scope.retrieveOffers();
                 });
-                $scope.info = function() {
-                    ($rootScope.lang === 'en') ?
-                        Notification.success('Success : Succesful change Offer status'):
-                        Notification.success('Успіх : Успішно змінено статус заявки');
-                };
-                $scope.info();
+                ($rootScope.lang === 'en') ? Notification.success('Success : Succesful change Offer status'):
+                    Notification.success('Успіх : Успішно змінено статус заявки');
             }
 
         };

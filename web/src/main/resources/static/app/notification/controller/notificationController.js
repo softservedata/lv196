@@ -42,7 +42,7 @@ angular
 
             $scope.delete = id => {
                 $http.delete('/notification/'+id).then(response =>{
-                    ($rootScope.lang === 'en') ? Notification.success('Delete notification successfull'):
+                    ($rootScope.lang === 'en') ? Notification.success('Notification successfully deleted'):
                         Notification.success('Видалення сповіщення успішне');
                     $scope.retrieveNotifications();
                 })
@@ -52,6 +52,7 @@ angular
         function ($scope, $http, Notification, $rootScope) {
             $scope.countNewNotification = () => {
                 $scope.amountNewNotification = sessionStorage.getItem('last');
+                
                 $scope.circleStyle = function (amount){
                     if (amount > 0) {
                         return "showCircle";

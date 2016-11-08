@@ -113,83 +113,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addFeedback(FeedbackDto dto, String email) {
-        if (dto == null) {
-            throw new IllegalArgumentException("Feedback dto must not be null");
-        }
-
-        User user = userRepository.findOneOpt(email)
-                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-
-        Order order = orderRepository.findOneOpt(dto.getOrderId())
-                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + dto.getOrderId()));
-
-        Feedback feedback = new Feedback();
-        feedback.setOrder(order);
-        feedback.setUser(user);
-        feedback.setRate(dto.getRate());
-        feedback.setText(dto.getText());
-        feedback.setApproved(false);
-        feedback.setCreatedOn(new Timestamp(new Date().getTime()));
-        feedbackRepository.save(feedback);
-    }
-
-    @Override
-    public void changeStatus(Long offerId, Boolean offerStatus, Long orderId) {
-        offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
-        Offer offer = offerRepository.findOneOpt(offerId)
-                .orElseThrow(() -> new IllegalArgumentException("No such offer with id: " + offerId));
-        offer.setApproved(offerStatus);
-        offerRepository.save(offer);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<OrderDto> findAllClosedOrders(String email) {
         return orderRepository
                 .getAllClosedOrderByCustomerEmail(email);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<OfferDto> getOffersByOrderId(Long orderId) {
-        return offerRepository
-                .getAllOffersByOrderId(orderId)
-                .stream()
-                .map(OfferDto::offerToOfferDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void updateFeedback(FeedbackDto dto, String email) {
-        Feedback feedback = feedbackRepository.findOneOpt(dto.getFeedbackId())
-                .orElseThrow(() -> new IllegalArgumentException("No such feedback with id: " + dto.getFeedbackId()));
-        feedback.setRate(dto.getRate());
-        feedback.setText(dto.getText());
-        feedbackRepository.save(feedback);
-    }
-
-    @Override
-    public FeedbackDto getFeedback(Long orderId, String email) {
-        Feedback feedback = feedbackRepository
-                .getFeedbackByOrderIdAndEmail(orderId, email)
-                .stream()
-                .findFirst()
-                .orElse(null);
-        if (feedback == null) {
-            return null;
-        }
-        else {
-            FeedbackDto feedbackDTO = new FeedbackDto();
-            feedbackDTO.setCreatedOn(feedback.getCreatedOn());
-            feedbackDTO.setApproved(feedback.getApproved());
-            feedbackDTO.setText(feedback.getText());
-            feedbackDTO.setRate(feedback.getRate());
-            feedbackDTO.setFeedbackId(feedback.getFeedbackId());
-            feedbackDTO.setOrderId(feedback.getOrder().getId());
-            feedbackDTO.setUserEmail(feedback.getUser().getEmail());
-            return feedbackDTO;
-        }
     }
 
     @Override

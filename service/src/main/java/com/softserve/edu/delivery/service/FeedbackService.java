@@ -41,4 +41,14 @@ public interface FeedbackService {
     FeedbackDto findByFeedbackId(Long id);
 
     FeedbackDto getCustomerFeedback(Long id);
+
+    /**
+     * Author - Taras Kurdiukov
+     */
+    /*-- Method for user story - "As customer I want to write transporter feedback." --*/
+    void addFeedback (FeedbackDto dto, String email);
+
+    FeedbackDto getFeedback (Long orderId, String email);
+
+    void updateFeedback(FeedbackDto dto, String email);
 }

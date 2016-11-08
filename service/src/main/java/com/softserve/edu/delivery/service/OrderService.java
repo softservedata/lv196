@@ -47,21 +47,12 @@ public interface OrderService {
 
     void removeOrder(Long id);
 
-    List<OfferDto> getOffersByOrderId(Long id);
-
 /**
 * Author - Taras Kurdiukov
 */
-    //Method for user story - "As customer I want to write transporter feedback."
-    void addFeedback (FeedbackDto dto, String email);
-    //Method for user story - "As customer I want to change offer status."
-    void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
-
-    FeedbackDto getFeedback (Long orderId, String email);
-
-    void updateFeedback(FeedbackDto dto, String email);
 
     List<OrderDto> findAllClosedOrders(String email);
+
 /**
 * Author - Ivan Synyshyn
 */

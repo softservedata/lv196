@@ -1,5 +1,5 @@
 <div ng-controller="showOffersController">
-<h4 style="padding-left: 10px;"> Approved driver: {{GetApprovedOffers().driverName}} <a style="float:right;margin-right:10px;" class="btn btn-primary btn-xs" role="button" data-ng-click="changeStatus()">Apply</a></h4>
+<h4 style="padding-left: 10px;"> Approved driver: {{GetApprovedOffer().driverName}} <a style="float:right;margin-right:10px;" class="btn btn-primary btn-xs" role="button" data-ng-click="changeStatus()">Apply</a></h4>
 
 <div data-ng-repeat="offer in offers.offers track by offer.offerId"  class="panel panel-default">
     <div class="{{btnApprovedStyle(offer.approved)}}">

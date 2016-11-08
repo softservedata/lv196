@@ -21,7 +21,7 @@ public class NotificationController {
     private NotificationService notificationService;
 
 //    Logger logger = LoggerFactory.getLogger(NotificationController.class.getName());
-    Integer lastAmountNewNotification = null;
+    Integer lastAmount = null;
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(method = RequestMethod.GET)
@@ -38,13 +38,13 @@ public class NotificationController {
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "count", method = RequestMethod.GET)
     Integer countNotification(Principal principal) throws InterruptedException {
-        Integer amountNewNotification = null;
+        Integer amountNewNotification;
         do{
             Thread.sleep(2000);
             amountNewNotification = this.notificationService.countNewNotification(principal.getName());
         }
-        while (amountNewNotification == lastAmountNewNotification);
-        lastAmountNewNotification = amountNewNotification;
+        while (amountNewNotification == lastAmount);
+        lastAmount = amountNewNotification;
         return amountNewNotification;
 
     }

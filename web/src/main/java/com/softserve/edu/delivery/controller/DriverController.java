@@ -128,7 +128,7 @@ public class DriverController {
     void addFeedback(@PathVariable FeedbackDto dto) {
         logger.info("Method DriverController.addFeedback()");
         String email = authenticationDetails.getAuthenticatedUserEmail();
-        orderService.addFeedback(dto, email);
+        feedbackService.addFeedback(dto, email);
     }
 
     @RequestMapping(path = "offer-id/{orderId}", method = RequestMethod.GET)

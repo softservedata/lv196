@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OfferInfoDto;
 import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
@@ -13,6 +14,9 @@ import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Ivan Synyshyn on 11.10.2016.
@@ -68,5 +72,24 @@ public class OfferServiceImpl implements OfferService{
     @Override
     public Long findOfferId(Long orderId, String email) {
         return offerRepository.findOfferIdByOrderIdAndDriverEmail(orderId, email);
+    }
+
+    @Override
+    public void changeStatus(Long offerId, Boolean offerStatus, Long orderId) {
+        offerRepository.findOfferByOrderIdAndChangeStatus(orderId);
+        Offer offer = offerRepository.findOneOpt(offerId)
+                .orElseThrow(() -> new IllegalArgumentException("No such offer with id: " + offerId));
+        offer.setApproved(offerStatus);
+        offerRepository.save(offer);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OfferDto> getOffersByOrderId(Long orderId) {
+        return offerRepository
+                .getAllOffersByOrderId(orderId)
+                .stream()
+                .map(OfferDto::offerToOfferDto)
+                .collect(Collectors.toList());
     }
 }
