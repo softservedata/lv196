@@ -34,6 +34,10 @@ public class RouteCityServiceImpl implements RouteCityService{
             routeCityDTOs.add(routeCityDTO);
         }
         return routeCityDTOs;
-    }
+}
 
+    @Override
+    public void saveRouteCity(RouteCities routeCities) {
+        routeCitiesRepository.save(routeCities);
+    }
 }

@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.config.SecurityConstraints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class OrderTrackingController {
     @Autowired
     private OrderTrackingService orderTrackingService;
 
-    @PreAuthorize(DRIVER)
+    @PreAuthorize(CUSTOMER)
     @RequestMapping(path = "{orderId}", method = RequestMethod.GET)
     public OrderTrackingDTO getOrderTracking(@PathVariable("orderId") Long orderId) {
         

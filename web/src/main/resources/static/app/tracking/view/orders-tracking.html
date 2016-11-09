@@ -1,8 +1,18 @@
-<div class="container" ng-controller="ordersTrackingController" >
+<div class="container" ng-controller="ordersTrackingController" ng-init="mapInit()">
+
+    <div id="trackingMap" style="width: 1050px; height: 800px;"/>
+<div id="def">
     <input type = "text" ng-model = "orderId" ng-change="trackOrder(orderId)"/>
- 
-    <p ng-repeat="routeCity in ordersTracking.routeCityDTOs">
-  {{routeCity.cityDto.cityName}} 
-  {{routeCity.date}}
- <p>
+    <p>Customer name: {{ordersTracking.orderDto.customerName}}</p>
+    <p>From: {{ordersTracking.orderDto.locationFrom.cityName}}</p>
+    <p>To: {{ordersTracking.orderDto.locationTo.cityName}}</p>
+    <p> Description: {{ordersTracking.orderDto.description}},<br/></p>
+    <p> h/w/l: {{ordersTracking.orderDto.height | number:1}},
+               {{ordersTracking.orderDto.width | number:1}},
+               {{ordersTracking.orderDto.length | number:1}},
+        weight: {{ordersTracking.orderDto.weight | number:1}}</p>
 </div>
+
+</div>
+
+
