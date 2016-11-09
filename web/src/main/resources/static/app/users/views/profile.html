@@ -53,18 +53,18 @@
                 </div>
                 <div class="form-group"
                      ng-class="{ 'has-error': pwdForm.password0.$invalid || pwdForm.password0.$pristine ||
-                      password.new0 != password.new1 }">
+                      password.newPassword != password.confirmPassword }">
                     <label for="password0">{{ 'enter_new_password' | translate }}:</label>
-                    <input type="password" class="form-control" name="password0" id="password0" ng-model="password.new0"
+                    <input type="password" class="form-control" name="password0" id="password0" ng-model="password.newPassword"
                            required ng-minlength="4" ng-maxlength="20" placeholder="Password"/>
                 </div>
                 <div class="form-group"
                      ng-class="{ 'has-error': pwdForm.password1.$invalid || pwdForm.password1.$pristine
-                     || password.new0 != password.new1}">
+                     || password.newPassword != password.confirmPassword}">
                     <label for="password1">{{ 'repeat_new_password' | translate }}:</label>
-                    <input type="password" class="form-control" name="password1" id="password1" ng-model="password.new1"
+                    <input type="password" class="form-control" name="password1" id="password1" ng-model="password.confirmPassword"
                            required ng-minlength="4" ng-maxlength="20" placeholder="Repeat password"/>
-                    <label ng-show="pwdForm.$invalid || pwdForm.$pristine || password.new0 != password.new1">
+                    <label ng-show="pwdForm.$invalid || pwdForm.$pristine || password.newPassword != password.confirmPassword">
                         {{ 'password_prompt' | translate }}</label>
                 </div>
                 <div class="form-group">
@@ -72,7 +72,7 @@
                             ng-click="clearPasswordForm()">{{ 'cancel' | translate }}
                     </button>
                     <button type="button" class="btn btn-primary profile-vertical-margin pull-right col-sm-5"
-                            ng-disabled="pwdForm.$invalid || password.new0 != password.new1"
+                            ng-disabled="pwdForm.$invalid || password.newPassword != password.confirmPassword"
                             ng-click="updateUserPassword()">{{ 'save' | translate }}
                     </button>
                 </div>

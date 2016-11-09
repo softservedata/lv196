@@ -3,8 +3,8 @@
 angular
     .module('delivery')
     .controller('userProfileController', ['$scope', '$http', 'Notification', 'shareUserService', '$uibModal',
-        'shareCarService',
-        function ($scope, $http, Notification, shareUserService, $uibModal, shareCarService) {
+        'shareCarService', '$filter',
+        function ($scope, $http, Notification, shareUserService, $uibModal, shareCarService, $filter) {
 
             const rateFactor = 10;
             const carsFolder = 'cars';
@@ -19,8 +19,8 @@ angular
             $scope.changePassword = false;
             $scope.password = {
                 current: '',
-                new0: '',
-                new1: ''
+                newPassword: '',
+                confirmPassword: ''
             };
             $scope.loggedUser = shareUserService.getLoggedUser();
             $scope.initialUser = angular.copy($scope.loggedUser);
@@ -119,14 +119,16 @@ angular
                 if (form != null) {
                     form.$setPristine();
                 }
+
                 $http.put("/userProfile/updateUser", $scope.loggedUser)
                     .then(function (response) {
-                            Notification.success('Your data was successfully updated');
+                            Notification.success($filter('translate')('user_update_success'));
+                            $scope.initialUser = angular.copy($scope.loggedUser);
                             shareUserService.setLoggedUser($scope.loggedUser);
                             shareUserService.userDataChangedForMainView();
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')('user_update_error'), title: "Error!"});
                         });
             };
 
@@ -164,7 +166,7 @@ angular
                             shareCarService.setSelectedCar($scope.car);
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')('user_update_error'), title: "Error!"});
                         });
             };
 
@@ -188,11 +190,11 @@ angular
                             shareCarService.setSelectedCar(car);
                             $scope.getCars();
                             if (notification) {
-                                Notification.success('Your data was successfully updated');
+                                Notification.success($filter('translate')('user_update_success'));
                             }
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')('user_update_error'), title: "Error!"});
                         }
                     );
             };
@@ -257,12 +259,12 @@ angular
 
                                 if (showNotification) {
                                     modalInstance.close();
-                                    Notification.success('Your car was successfully deleted');
+                                    Notification.success($filter('translate')('car_delete_success'));
                                 }
                             },
                             function (response) {
                                 if (showNotification) {
-                                    Notification.error({message: response.data.message, title: "Error!"});
+                                    Notification.error({message: $filter('translate')('car_delete_error'), title: "Error!"});
                                 }
                             });
                 }
@@ -275,19 +277,20 @@ angular
             $scope.clearPasswordForm = function () {
                 $scope.changePassword = false;
                 $scope.password.current = '';
-                $scope.password.new0 = '';
-                $scope.password.new1 = '';
+                $scope.password.newPassword = '';
+                $scope.password.confirmPassword = '';
             };
 
             $scope.updateUserPassword = function () {
-                $http.post("/userProfile/updateUserPassword?" + 'current=' + $scope.password.current +
-                '&new0=' + $scope.password.new0 + '&new1=' + $scope.password.new1)
+                console.log($scope.password);
+                $http.post("/userProfile/updateUserPassword?" + 'currentPassword=' + $scope.password.current +
+                    '&newPassword=' + $scope.password.newPassword + '&confirmPassword=' + $scope.password.confirmPassword)
                     .then(function (response) {
-                            Notification.success(response.data.message);
+                            Notification.success($filter('translate')(response.data.message));
                             $scope.clearPasswordForm();
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
                         }
                     );
             };

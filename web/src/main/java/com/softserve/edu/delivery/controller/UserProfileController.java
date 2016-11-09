@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.CarDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
+import com.softserve.edu.delivery.dto.valid.PatternConstraints;
 import com.softserve.edu.delivery.service.CarService;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
@@ -26,8 +27,6 @@ public class UserProfileController {
 
     private final HttpHeaders responseHeaders = new HttpHeaders();
     private final Logger logger = LoggerFactory.getLogger(UserProfileController.class.getName());
-    private final int MIN_PASSWORD_LENGTH = 4;
-    private final int MAX_PASSWORD_LENGTH = 20;
 
     @Autowired
     private UserService userService;
@@ -71,10 +70,12 @@ public class UserProfileController {
         return car;
     }
 
-    private boolean isPasswordValid(CharSequence password0, CharSequence password1) {
-        if (password0.length() >= MIN_PASSWORD_LENGTH && password0.length() <= MAX_PASSWORD_LENGTH) {
-            if (password1.length() >= MIN_PASSWORD_LENGTH && password1.length() <= MAX_PASSWORD_LENGTH) {
-                if (password0.equals(password1)) {
+    private boolean isNewPasswordValid(CharSequence newPassword, CharSequence confirmPassword) {
+        if (newPassword.length() >= PatternConstraints.PASS_MIN_LENGTH && newPassword.length() <=
+                PatternConstraints.PASS_MAX_LENGTH) {
+            if (confirmPassword.length() >= PatternConstraints.PASS_MIN_LENGTH && confirmPassword.length() <=
+                    PatternConstraints.PASS_MAX_LENGTH) {
+                if (newPassword.equals(confirmPassword)) {
                     return true;
                 }
             }
@@ -202,9 +203,9 @@ public class UserProfileController {
     }
 
     @RequestMapping(path = "updateUserPassword", method = RequestMethod.POST)
-    ResponseEntity <String> changePassword(@RequestParam("current") CharSequence currentPassword,
-                                  @RequestParam("new0") CharSequence newPassword0,
-                                  @RequestParam("new1") CharSequence newPassword1) {
+    ResponseEntity <String> changePassword(@RequestParam("currentPassword") CharSequence currentPassword,
+                                  @RequestParam("newPassword") CharSequence newPassword,
+                                  @RequestParam("confirmPassword") CharSequence confirmPassword) {
 
         String currentUserEmail = authenticationDetails.getAuthenticatedUserEmail();
 
@@ -213,23 +214,23 @@ public class UserProfileController {
 
         try {
             if (userService.checkPassword(currentUserEmail, currentPassword)) {
-                if (isPasswordValid(newPassword0, newPassword1)) {
-                    userService.changePassword(currentUserEmail, newPassword0);
+                if (isNewPasswordValid(newPassword, confirmPassword)) {
+                    userService.changePassword(currentUserEmail, newPassword);
                     status = HttpStatus.OK;
-                    responseHeaders.set("message", "Your password was successfully changed");
+                    responseHeaders.set("message", "OK");
                 } else {
                     responseHeaders.set("message", "Error");
                     return ResponseEntity
                             .status(status)
                             .headers(responseHeaders)
-                            .body("{\"message\": \"Entered passwords do NOT match\"}");
+                            .body("{\"message\": \"passwords_dont_match\"}");
                 }
             } else {
                 responseHeaders.set("message", "Error");
                 return ResponseEntity
                         .status(status)
                         .headers(responseHeaders)
-                        .body("{\"message\": \"You have entered the WRONG password\"}");
+                        .body("{\"message\": \"wrong_password\"}");
             }
         } catch (Exception e) {
             errorDetails = "Exception while trying to change password for user " + currentUserEmail +
@@ -241,6 +242,6 @@ public class UserProfileController {
         return ResponseEntity
                 .status(status)
                 .headers(responseHeaders)
-                .body("{\"message\": \"Your password was successfully changed\"}");
+                .body("{\"message\": \"password_change_success\"}");
     }
 }

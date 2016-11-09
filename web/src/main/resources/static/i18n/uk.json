@@ -111,5 +111,17 @@
     "customer_feedback": "Відгук замовника",
     "driver_feedback": "Відгук водія",
     "update": "Оновити",
-    "enter_current_password": "Введіть Ваш пароль"
+    "enter_current_password": "Введіть Ваш пароль",
+    "user_update_success": "Ваші дані успішно оновлено",
+    "user_update_error": "Сталася помилка при оновленні даних",
+    "car_delete_success": "Ваше авто успішно видалено",
+    "car_delete_error": "Сталася помилка при видаленні авто",
+    "wrong_password": "Ви ввели неправильний пароль",
+    "passwords_dont_match": "Введені паролі не співпадають",
+    "password_change_success": "Ваш пароль успішно оновлено",
+    "delete_feedback_success": "Відгук успішно видалено",
+    "delete_feedback_error": "Сталася помилка при видаленні відгуку",
+    "edit_feedback_success": "Відгук успішно оновлено",
+    "edit_feedback_error": "Сталася помилка при оновленні відгуку",
+    "photo_upload_error": "Сталася помилка при завантаженні фото"
 }

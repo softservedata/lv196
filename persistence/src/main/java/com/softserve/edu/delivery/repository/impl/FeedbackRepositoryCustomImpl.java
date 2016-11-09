@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -23,6 +22,7 @@ public class FeedbackRepositoryCustomImpl {
                     "(select u.email from User u where concat(u.firstName, ' ', u.lastName) like :userName) " +
                     "and concat(u.firstName, ' ', u.lastName) like :transporterName " +
                     "and f.createdOn >= :createdOn and (f.approved =:approved0 or f.approved =:approved1) ";
+
     private final String GET_COUNT =
             "select count(f) from Feedback f " +
                     "join f.order ord " +
@@ -33,17 +33,13 @@ public class FeedbackRepositoryCustomImpl {
                     "(select u.email from User u where concat(u.firstName, ' ', u.lastName) like :userName) " +
                     "and concat(u.firstName, ' ', u.lastName) like :transporterName " +
                     "and f.createdOn >= :createdOn and (f.approved =:approved0 or f.approved =:approved1) ";
+
     private final String ORDER_BY = " order by f.";
-    private final String ORDER_BY_USERNAME =
-            "order by concat(f.user.firstName, ' ', f.user.lastName) ";
-    private final String ORDER_BY_TRANSPORTER_NAME =
-            "order by concat(u.firstName, ' ', u.lastName) ";
-    private long totalItemsNumber;
+    private final String ORDER_BY_USERNAME = "order by concat(f.user.firstName, ' ', f.user.lastName) ";
+    private final String ORDER_BY_TRANSPORTER_NAME = "order by concat(u.firstName, ' ', u.lastName) ";
+
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Autowired
-    private FeedbackFilter feedbackFilter;
 
     private String countQuery;
     private String resultQuery;
@@ -64,15 +60,8 @@ public class FeedbackRepositoryCustomImpl {
         }
     }
 
-    public long getTotalItemsNumber() {
-        return totalItemsNumber;
-    }
-
-    public List<Feedback> findFiltered(FeedbackFilter feedbackFilter) {
-
-        setQueries(feedbackFilter.getSortType(), feedbackFilter.getSortBy(), feedbackFilter.getSortOrder());
-
-        totalItemsNumber = (long) entityManager.createQuery(countQuery)
+    public long getTotalItemsNumber(FeedbackFilter feedbackFilter) {
+        return (long) entityManager.createQuery(countQuery)
                 .setParameter("text", feedbackFilter.getText())
                 .setParameter("rate", feedbackFilter.getRate())
                 .setParameter("userName", feedbackFilter.getUserName())
@@ -81,6 +70,11 @@ public class FeedbackRepositoryCustomImpl {
                 .setParameter("approved0", feedbackFilter.getApproved0())
                 .setParameter("approved1", feedbackFilter.getApproved1())
                 .getSingleResult();
+    }
+
+    public List<Feedback> findFiltered(FeedbackFilter feedbackFilter) {
+
+        setQueries(feedbackFilter.getSortType(), feedbackFilter.getSortBy(), feedbackFilter.getSortOrder());
 
         return entityManager.createQuery(resultQuery)
                 .setParameter("text", feedbackFilter.getText())

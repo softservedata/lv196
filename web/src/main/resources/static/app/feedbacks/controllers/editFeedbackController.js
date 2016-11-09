@@ -2,8 +2,8 @@
 
 angular
     .module('delivery')
-    .controller('editFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackDTO', 'Notification',
-        function ($scope, $http, $uibModalInstance, feedbackDTO, Notification) {
+    .controller('editFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackDTO', 'Notification', '$filter',
+        function ($scope, $http, $uibModalInstance, feedbackDTO, Notification, $filter) {
 
             $scope.feedbackText = feedbackDTO.text;
 
@@ -13,11 +13,11 @@ angular
                 $http.put("/feedbacks/updateFeedback", feedbackDTO)
                     .then(function (response) {
                             if (response.status == 200) {
-                                Notification.success('The feedbacks was successfully updated');
+                                Notification.success($filter('translate')('edit_feedback_success'));
                             }
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')('edit_feedback_error'), title: "Error!"});
                         });
             };
 

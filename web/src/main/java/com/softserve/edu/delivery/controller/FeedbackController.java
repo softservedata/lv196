@@ -28,8 +28,6 @@ public class FeedbackController {
     private FeedbackService feedbackService;
     @Autowired
     private NotificationService notificationService;
-    @Autowired
-    private FeedbackFilterDTO feedbackFilterDTO;
     private HttpStatus status;
 
     @PreAuthorize(MODERATOR)
@@ -62,13 +60,15 @@ public class FeedbackController {
             status = HttpStatus.NOT_FOUND;
             responseHeaders.set("message", e.getMessage());
         }
-        logger.info("After feedbackService.update(feedbackDTO)");
+
         try {
-            //notificationService.updateFeedback(feedbackDTO);
+            notificationService.updateFeedback(feedbackDTO);
         } catch (Exception e){
             logger.error("Exception while trying to send mail notification in update feedback with id " + feedbackDTO.getFeedbackId() +
                     " in feedbackService.update(feedbackDTO) " + e.getMessage());
         }
+        logger.info("After feedbackService.update(feedbackDTO)");
+
         return new ResponseEntity(responseHeaders, status);
     }
 

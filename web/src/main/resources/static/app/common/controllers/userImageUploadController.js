@@ -3,8 +3,8 @@
 angular
     .module('delivery')
     .controller('userImageUploadController', ['$scope', '$http', 'Notification', 'shareUserService', 'Upload',
-        'cloudinary',
-        function ($scope, $http, Notification, shareUserService, $upload, cloudinary) {
+        'cloudinary', '$filter',
+        function ($scope, $http, Notification, shareUserService, $upload, cloudinary, $filter) {
 
             $scope.progress = 0;
             $scope.showProgressBar = false;
@@ -40,7 +40,7 @@ angular
                             shareUserService.getLoggedUser().photoUrl = data.secure_url;
                             shareUserService.userPhotoUploaded(existingUserPhotoUrl);
                         }).error(function (data, status, headers, config) {
-                            Notification.error('Photo was NOT uploaded ' + status.data);
+                            Notification.error($filter('translate')('photo_upload_error'));
                         });
                 }
             };

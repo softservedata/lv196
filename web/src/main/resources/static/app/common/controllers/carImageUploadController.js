@@ -3,8 +3,8 @@
 angular
     .module('delivery')
     .controller('carImageUploadController', ['$scope', '$http', 'Notification', 'shareCarService', 'Upload',
-        'cloudinary',
-        function ($scope, $http, Notification, shareCarService, $upload, cloudinary) {
+        'cloudinary', '$filter',
+        function ($scope, $http, Notification, shareCarService, $upload, cloudinary, $filter) {
 
             var carPhotoUrl = '';
 
@@ -51,7 +51,7 @@ angular
                             }
                             shareCarService.carPhotoUploaded(carPhotoUrl);
                         }).error(function (data, status, headers, config) {
-                            Notification.error('Photo was NOT uploaded ' + status.data);
+                            Notification.error($filter('translate')('photo_upload_error'));
                         });
                 }
             };

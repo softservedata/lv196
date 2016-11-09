@@ -3,9 +3,9 @@
 angular
     .module('delivery')
     .controller('feedbacksController', ['$scope', '$http', 'shareFeedbackDataService', '$uibModal', '$location',
-        '$anchorScroll', 'Notification',
+        '$anchorScroll', 'Notification', '$filter',
         function ($scope, $http, shareFeedbackDataService, $uibModal, $location, $anchorScroll,
-                  Notification) {
+                  Notification, $filter) {
 
             $scope.feedbacks = [];
             $scope.feedbackSortIcons = [];
@@ -157,7 +157,7 @@ angular
                             recalcRate();
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
                         });
             };
 
@@ -167,7 +167,7 @@ angular
                     .then(function (response) {
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
                         });
             };
 
@@ -259,7 +259,7 @@ angular
                             $scope.showUser(response.data);
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
                         });
             };
 

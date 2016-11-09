@@ -40,14 +40,16 @@
                 </a>
             </div>
 
-            <div ng-controller="currentUserController" ng-cloak>
+            <div ng-controller="currentUserController">
                 <div class="sidebar-header hidden-xs">
                     <div>
-                        <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" class="user-avatar">
+                        <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" class="user-avatar" ng-cloak>
                     </div>
-                    <div class="user-name">{{loggedUser.firstName}} {{loggedUser.lastName}}
-                        <div style="display:inline" ng-controller="notificationAmountController" class="{{circleStyle(amountNewNotification)}}">
-                            <i class="fa fa-bell"  ui-sref="notification" ng-cloak aria-hidden="true" data-notifications="{{amountNewNotification}}"></i>
+                    <div class="user-name" ng-cloak>{{loggedUser.firstName}} {{loggedUser.lastName}}
+                        <div style="display:inline" ng-controller="notificationAmountController"
+                             class="{{circleStyle(amountNewNotification)}}">
+                            <i class="fa fa-bell" ui-sref="notification" ng-cloak aria-hidden="true"
+                               data-notifications="{{amountNewNotification}}"></i>
                         </div>
                     </div>
                 </div>

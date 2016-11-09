@@ -3,20 +3,20 @@
 angular
     .module('delivery')
     .controller('deleteFeedbackController', ['$scope', '$http', '$uibModalInstance', 'feedbackId',
-        'shareFeedbackDataService', 'Notification',
-        function ($scope, $http, $uibModalInstance, feedbackId, shareFeedbackDataService, Notification) {
+        'shareFeedbackDataService', 'Notification', '$filter',
+        function ($scope, $http, $uibModalInstance, feedbackId, shareFeedbackDataService, Notification, $filter) {
 
             $scope.confirmDeleteFeedback = function () {
                 $uibModalInstance.close();
                 $http.delete("/feedbacks/deleteFeedback/" + feedbackId)
                     .then(function (response) {
                             if (response.status == 200) {
-                                Notification.success('The feedbacks was succesfully deleted');
+                                Notification.success($filter('translate')('delete_feedback_success'));
                                 shareFeedbackDataService.itemDeleted();
                             }
                         },
                         function (response) {
-                            Notification.error({message: response.data.message, title: "Error!"});
+                            Notification.error({message: $filter('translate')('delete_feedback_error'), title: "Error!"});
                         });
             };
 

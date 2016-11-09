@@ -17,7 +17,7 @@ angular
             };
 
             $scope.$on('user data changed for main view', function () {
-                shareUserService.getLoggedUser();
+                $scope.loggedUser = shareUserService.getLoggedUser();
             });
 
             $scope.getLoggedUser();

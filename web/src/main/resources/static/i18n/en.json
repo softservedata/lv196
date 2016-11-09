@@ -111,5 +111,16 @@
   	"customer_feedback": "Customer feedback",
   	"driver_feedback": "Driver feedback",
 	"update": "Update",
-	"enter_current_password": "Enter your password"
+	"enter_current_password": "Enter your password",
+	"user_update_success": "Your data was successfully updated",
+	"user_update_error": "An error occured during data update",
+	"car_delete_success": "Your car was successfully deleted",
+	"wrong_password": "You have entered the wrong password",
+	"passwords_dont_match": "Entered passwords do NOT match",
+	"password_change_success": "Your password was successfully changed",
+	"delete_feedback_success": "The feedback was successfully deleted",
+	"delete_feedback_error": "An error occured during deleting the feedback",
+	"edit_feedback_success": "The feedback was successfully updated",
+	"edit_feedback_error": "An error occured during updating the feedback",
+	"photo_upload_error": "An error occured during uploading the photo"
 }

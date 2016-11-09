@@ -278,7 +278,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         List<Feedback> feedbackList = feedbackRepositoryCustom.findFiltered(feedbackFilter);
 
-        totalItemsNumber = feedbackRepositoryCustom.getTotalItemsNumber();
+        totalItemsNumber = feedbackRepositoryCustom.getTotalItemsNumber(feedbackFilter);
 
         return copyFeedbackListToDTOList(feedbackList);
     }
