@@ -44,7 +44,7 @@ public class AuthController {
         ModelAndView mv = new ModelAndView();
         if (auth != null && auth.equals("false")) {
             mv.addObject("wrong_login", "");
-        }else if (logout != null) {
+        } else if (logout != null) {
             mv.addObject("success_logout", "");
             logger.info("Logout");
         }
@@ -72,14 +72,6 @@ public class AuthController {
         mv.setViewName(roleRedirect());
         logger.info("Return redirecting page");
         return mv;
-    }
-
-    @PreAuthorize(AUTHENTICATED)
-    @RequestMapping(value = "role")
-    public @ResponseBody StringResponse getRole() {
-        String role = authenticationDetails.getAuthenticatedUserRole();
-        logger.info("Return user role: " + role);
-        return new StringResponse(role);
     }
 
     @RequestMapping(value = "/registration")
@@ -166,24 +158,28 @@ public class AuthController {
         return principal.getName();
     }
 
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(value = "role")
+    public @ResponseBody StringResponse getRole() {
+        String role = authenticationDetails.getAuthenticatedUserRole();
+        logger.info("Return user role: " + role);
+        return new StringResponse(role);
+    }
+
     private String roleRedirect() {
-        String authRole = this.authenticationDetails.getAuthenticatedUserRole();
-        logger.info("Role of user is: " + authRole);
-        if (authRole.equals(CUSTOMER_ROLE)) {
-            logger.info("Return customer page: " + CUSTOMER_PAGE);
-            return "redirect:" + CUSTOMER_PAGE;
-        } else if (authRole.equals(DRIVER_ROLE)) {
-            logger.info("Return driver page: " + DRIVER_PAGE);
-            return "redirect:" + DRIVER_PAGE;
-        } else if (authRole.equals(ADMIN_ROLE)) {
-            logger.info("Return admin page: " + ADMIN_PAGE);
-            return "redirect:" + ADMIN_PAGE;
-        } else if (authRole.equals(MODERATOR_ROLE)) {
-            logger.info("Return moderator page: " + MODERATOR_PAGE);
-            return "redirect:" + MODERATOR_PAGE;
-        } else {
-            logger.info("Return welcome page: " + WELCOME_PAGE);
-            return "redirect:" + WELCOME_PAGE;
+        String role = this.authenticationDetails.getAuthenticatedUserRole();
+        String redirect = "redirect:";
+        switch (role) {
+            case "Customer":
+                return redirect += CUSTOMER_PAGE;
+            case "Driver":
+                return redirect += DRIVER_PAGE;
+            case "Admin" :
+                return redirect += ADMIN_PAGE;
+            case "Moderator":
+                return redirect += MODERATOR_PAGE;
+            default:
+                return redirect += WELCOME_PAGE;
         }
     }
 }

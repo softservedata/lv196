@@ -1,24 +1,20 @@
 package com.softserve.edu.delivery.dto;
 
-import com.softserve.edu.delivery.dto.valid.PatternConstraints;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-/**
- * Data transport object which service layer gets
- * from controller(login page)
- *@author Petro Shtenovych
- */
+import static com.softserve.edu.delivery.dto.valid.PatternConstraints.*;
+
 public class UserAuthDTO {
 
-    @NotNull(message = PatternConstraints.EMAIL_NOT_VALID_MESSAGE)
-    @Pattern( regexp = PatternConstraints.EMAIL_REGEX)
+    @NotNull(message = EMAIL_NOT_VALID_MESSAGE)
+    @Email(message = EMAIL_NOT_VALID_MESSAGE)
     private String email;
 
-    @NotNull(message = PatternConstraints.PASS_NOT_VALID_MESSAGE)
-    @Size(min = PatternConstraints.PASS_MIN_LENGTH, max = PatternConstraints.PASS_MAX_LENGTH)
+    @NotNull(message = PASS_NOT_VALID_MESSAGE)
+    @Size(min = PASS_MIN_LENGTH, max = PASS_MAX_LENGTH, message = PASS_NOT_VALID_MESSAGE)
     private String password;
 
     public UserAuthDTO(String email, String password) {
