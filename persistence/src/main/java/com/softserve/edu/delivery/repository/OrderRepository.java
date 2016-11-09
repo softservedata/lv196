@@ -38,7 +38,10 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     List<OrderDto> findOrderOpenWithoutOffersByCustomerEmail(@Param("email") String email);
 
     @Query("select o from Order o where o.orderStatus = 'OPEN'")
-    List<Order> getAllOpenOrder();
+    List<Order> getAllOpenOrder(Pageable pageable);
+
+    @Query("select count(o) from Order o where o.orderStatus = 'OPEN'")
+    long getCountOfOrders();
 
     @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
             "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName), off.car.vehicleFrontPhotoURL) " +
@@ -51,10 +54,10 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
             "and (:cityToId is null or o.cityTo.id = :cityToId) " +
             "and (:weight is null or o.weight <= :weight) " +
             "and (:arrivalDate is null or o.arrivalDate >= :arrivalDate)")
-    List<Order> getOrdersFiltered(@Param("cityFromId") Long cityFromId,
+    Page<Order> getOrdersFiltered(@Param("cityFromId") Long cityFromId,
                                   @Param("cityToId") Long cityToId,
                                   @Param("weight") Double weight,
-                                  @Param("arrivalDate") Timestamp arrivalDate);
+                                  @Param("arrivalDate") Timestamp arrivalDate, Pageable pageable);
 
     @Query("select off.order from Offer off where off.car.driver.email = :email " +
             "and off.order.orderStatus = 'OPEN'")

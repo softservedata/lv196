@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.service;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OrderDto;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -57,8 +58,10 @@ public interface OrderService {
 * Author - Ivan Synyshyn
 */
     //As transporter I want to choose orders by filter
-    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, Double weight, Timestamp arrivalDate);
-    List<OrderDto> getAllOpenOrder();
+    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, Double weight, Timestamp arrivalDate, Pageable pageable);
+    long getCountOfFilteredOrders();
+    List<OrderDto> getAllOpenOrder(Pageable pageable);
+    long getCountOfOrders();
     List<OrderDto> getOpenOrdersWithMyOffers(String email);
     List<OrderDto> getMyOrdersInProgress(String email);
     List<OrderDto> getMyOrdersClosed(String email);

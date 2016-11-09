@@ -1,14 +1,53 @@
 angular
     .module('delivery')
-    .controller('driverController', ['$scope', '$chat', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal',
-        function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal) {
+    .controller('driverController', ['$scope', '$chat', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal', '$location', '$anchorScroll',
+        function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal, $location, $anchorScroll) {
+
+            $scope.filterObject = {
+                filterByCityFrom: '',
+                filterByCityTo: '',
+                filterByWeight: '',
+                filterByArrivalDate: ''
+            };
+
+            $scope.paginationObject = {
+                itemsPerPage: 10,
+                currentPage: 1
+            };
+
             $scope.orders = {
                 open: []
             };
 
-            $scope.retrieveOpenOrders = () => {
-                $http.get('/driver/open').then(response => {
-                    $scope.orders.open = response.data;
+            $scope.setItemsPerPage = function () {
+                $scope.paginationObject.currentPage = 1;
+                $scope.retrieveOpenOrders();
+            };
+
+            $scope.scroll = function (dir) {
+                $location.hash(dir);
+                $anchorScroll();
+            };
+
+            $scope.pageChanged = function () {
+                $scope.scroll('top');
+                $scope.retrieveOpenOrders();
+            };
+
+            $scope.retrieveOpenOrders = function () {
+                $http({
+                    url: '/driver/open/',
+                    method: 'GET',
+                    params: {
+                        itemsPerPage: $scope.paginationObject.itemsPerPage,
+                        currentPage: $scope.paginationObject.currentPage
+                    }
+                }).then(function (response0) {
+                    $http.get("/driver/count-items/")
+                        .then(function (response1) {
+                            $scope.totalItems = response1.data;
+                        });
+                    $scope.orders.open = response0.data;
                 })
             };
             $scope.retrieveOpenOrders();
@@ -20,30 +59,30 @@ angular
             $scope.filter = () => {
                 console.log('In method filter');
                 var cityFromId = '';
-                if ($scope.filterByCityFrom && $scope.filterByCityFrom.cityId) {
-                    cityFromId = $scope.filterByCityFrom.cityId;
-                } else if ($scope.filterByCityFrom) {
+                if ($scope.filterObject.filterByCityFrom && $scope.filterObject.filterByCityFrom.cityId) {
+                    cityFromId = $scope.filterObject.filterByCityFrom.cityId;
+                } else if ($scope.filterObject.filterByCityFrom) {
                     Notification.error('Sorry, you write incorrect city from name. You can use the hint');
                 }
 
                 var cityToId = '';
-                if ($scope.filterByCityTo && $scope.filterByCityTo.cityId) {
-                    cityToId = $scope.filterByCityTo.cityId;
-                } else if ($scope.filterByCityTo) {
+                if ($scope.filterObject.filterByCityTo && $scope.filterObject.filterByCityTo.cityId) {
+                    cityToId = $scope.filterObject.filterByCityTo.cityId;
+                } else if ($scope.filterObject.filterByCityTo) {
                     Notification.error('Sorry, you write incorrect city to name. You can use the hint');
                 }
 
                 var filterByWeight = '';
-                if ($scope.filterByWeight > 0) {
-                    filterByWeight = $scope.filterByWeight;
-                } else if ($scope.filterByWeight) {
+                if ($scope.filterObject.filterByWeight > 0) {
+                    filterByWeight = $scope.filterObject.filterByWeight;
+                } else if ($scope.filterObject.filterByWeight) {
                     Notification.error('Sorry, you write incorrect weight. Please, write a positive number');
                 }
 
                 var filterByArrivalDate = '';
-                if (Date.parse($scope.filterByArrivalDate) > Date.now()) {
-                    filterByArrivalDate = Date.parse($scope.filterByArrivalDate);
-                } else if ($scope.filterByArrivalDate) {
+                if (Date.parse($scope.filterObject.filterByArrivalDate) > Date.now()) {
+                    filterByArrivalDate = Date.parse($scope.filterObject.filterByArrivalDate);
+                } else if ($scope.filterObject.filterByArrivalDate) {
                     Notification.error('Sorry, you write incorrect date. You can use the calendar');
                 }
 
@@ -54,12 +93,33 @@ angular
                         cityFromId: cityFromId,
                         cityToId: cityToId,
                         weight: filterByWeight,
-                        date: filterByArrivalDate
+                        date: filterByArrivalDate,
+                        itemsPerPage: $scope.paginationObject.itemsPerPage,
+                        currentPage: $scope.paginationObject.currentPage
                     }
-                }).then(response => {
-                    console.log(response.data),
-                        $scope.orders.open = response.data
-                });
+                }).then(function (response0) {
+                    $http.get("/driver/count-items-filter/")
+                        .then(function (response1) {
+                            $scope.totalItems = response1.data;
+                        });
+                    $scope.orders.open = response0.data;
+                })
+            };
+
+            $scope.datePicker = {
+                format: 'dd/MM/yyyy',
+                options: {
+                    formatDay: 'dd',
+                    formatMonth: 'MMMM',
+                    formatYear: 'yyyy',
+                    maxDate: new Date(2017, 12, 31),
+                    minDate: new Date(),
+                    startingDay: 1,
+                    showWeeks: false
+                },
+                open: () => {
+                    $scope.datePicker.opened = true;
+                }
             };
 
             $scope.addOffer = (id) => {
@@ -67,13 +127,14 @@ angular
                 $http.post('/driver/offer/' + $orderProperty.getId()).then(response => {
                     console.log("addOffer");
                     Notification.success('Thank you, your offer added successfully');
+                    $scope.retrieveOpenOrdersWithMyOffers();
                 }).catch(function () {
                     Notification.error('Sorry, you can not create more than one offer for this order');
                 })
             }
 
-            $scope.redirect = function () {
-                $location.url('/find-order');
+            $scope.trackingRedirect = function () {
+                $location.url('/tracking');
             };
 
             $scope.orders = {
@@ -137,26 +198,5 @@ angular
                         order: ()=> orderForFeedback
                     }
                 });
-
-            };
-        }])
-
-    .controller('customerFeedbackController', ['$scope', '$orderProperty', '$http',
-        function ($scope, $orderProperty, $http) {
-
-            $scope.feedbacks = {
-                feedback: []
-            };
-
-            $scope.customerFeedback = (id) => {
-                console.log("customerFeedback");
-                console.log(id);
-                console.log($orderProperty);
-                console.log($orderProperty.getId());
-                $orderProperty.setId(id);
-                $http.get('/driver/customer-feedback/' + $orderProperty.getId()).then(response => {
-                    console.log(response.data)
-                    $scope.feedbacks.feedback = response.data;
-                })
             };
         }])

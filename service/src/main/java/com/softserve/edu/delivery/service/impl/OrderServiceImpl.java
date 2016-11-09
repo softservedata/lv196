@@ -9,6 +9,8 @@ import com.softserve.edu.delivery.repository.*;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import java.util.stream.Stream;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
+    private long totalItems;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -120,21 +123,34 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate) {
-        return orderRepository
-                .getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate)
+    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate, Pageable pageable) {
+        Page<Order> result = orderRepository
+                .getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate,pageable);
+        totalItems = result.getTotalElements();
+        return result
+                .getContent()
                 .stream()
                 .map(OrderDto::of)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<OrderDto> getAllOpenOrder() {
+    public long getCountOfFilteredOrders() {
+        return totalItems;
+    }
+
+    @Override
+    public List<OrderDto> getAllOpenOrder(Pageable pageable) {
         return orderRepository
-                .getAllOpenOrder()
+                .getAllOpenOrder(pageable)
                 .stream()
                 .map(OrderDto::of)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public long getCountOfOrders() {
+        return orderRepository.getCountOfOrders();
     }
 
     @Override
@@ -157,7 +173,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getMyOrdersClosed(String email) {
-
         List<Order> listOrders = orderRepository.getMyOrdersClosed(email);
         List<OrderDto> result = new ArrayList<>();
         for (Order order : listOrders) {

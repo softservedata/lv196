@@ -10,6 +10,8 @@ import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,9 +48,18 @@ public class DriverController {
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "open", method = RequestMethod.GET)
-    List<OrderDto> open() {
+    List<OrderDto> open( @RequestParam Integer currentPage,
+                         @RequestParam Integer itemsPerPage) {
         logger.info("Method DriverController.open()");
-        return orderService.getAllOpenOrder();
+        Pageable pageable = new PageRequest(currentPage - 1, itemsPerPage);
+        return orderService.getAllOpenOrder(pageable);
+    }
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping(path = "count-items", method = RequestMethod.GET)
+    long countItems() {
+        logger.info("Method DriverController.countItems()");
+        return orderService.getCountOfOrders();
     }
 
     @PreAuthorize(DRIVER)
@@ -56,7 +67,9 @@ public class DriverController {
     List<OrderDto> filter (@RequestParam (required = false) Long cityFromId,
                            @RequestParam (required = false) Long cityToId,
                            @RequestParam (required = false) Double weight,
-                           @RequestParam (required = false) String date) {
+                           @RequestParam (required = false) String date,
+                           @RequestParam Integer currentPage,
+                           @RequestParam Integer itemsPerPage) {
 
         Timestamp arrivalDate = null;
         if (date != null && !date.isEmpty()) {
@@ -67,11 +80,15 @@ public class DriverController {
             }
         }
         logger.info("Method DriverController.filter()");
-        logger.info("cityFromId = " + cityFromId);                          //will delete it later!!!
-        logger.info("cityToId = " + cityToId);                              //will delete it later!!!
-        logger.info("weight = " + weight);                                  //will delete it later!!!
-        logger.info("arrivalDate = " + arrivalDate);                        //will delete it later!!!
-        return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate);
+        Pageable pageable = new PageRequest(currentPage - 1, itemsPerPage);
+        return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate, pageable);
+    }
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping(path = "count-items-filter", method = RequestMethod.GET)
+    long countItemsFilter() {
+        logger.info("Method DriverController.countItems()");
+        return orderService.getCountOfFilteredOrders();
     }
 
     @PreAuthorize(DRIVER)
@@ -113,14 +130,6 @@ public class DriverController {
         logger.info("Method DriverController.cancelOffer()");
         String email = authenticationDetails.getAuthenticatedUserEmail();
         offerService.cancelOffer(id, email);
-    }
-
-    @PreAuthorize(DRIVER)
-    @RequestMapping(path = "customer-feedback/{id}", method = RequestMethod.GET)
-    void customerFedback(@PathVariable Long id) {
-        logger.info("Method DriverController.customerFedback()");
-        logger.info("order id = " + id);
-        feedbackService.getCustomerFeedback(id);
     }
 
     @PreAuthorize(DRIVER)

@@ -6,7 +6,7 @@
     </div>
 </div>
 
-<div style="margin-top: 20mm">
+<div style="margin-top: 20mm" id="top">
     <uib-accordion close-others="true">
         <div uib-accordion-group class="panel-default" heading="{{ 'find_newOrder' | translate }}"
              is-open="false">
@@ -24,7 +24,7 @@
                         <td>
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="{{ 'city_from' | translate }}"
-                                       ng-model="filterByCityFrom"
+                                       ng-model="filterObject.filterByCityFrom"
                                        uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
                                        for location in findLocations($viewValue)"
                                        typeahead-loading="loadingCityFrom" typeahead-no-results="noResultsCityFrom"/>
@@ -33,7 +33,7 @@
                         <td>
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="{{ 'city_to' | translate }}"
-                                       ng-model="filterByCityTo"
+                                       ng-model="filterObject.filterByCityTo"
                                        uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
                                        for location in findLocations($viewValue)"
                                        typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"/>
@@ -42,13 +42,16 @@
                         <td>
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="{{ 'weight' | translate }}"
-                                       ng-model="filterByWeight"/>
+                                       ng-model="filterObject.filterByWeight"/>
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input type="date" class="form-control" placeholder="{{ 'arrival_in' | translate }}"
-                                       ng-model="filterByArrivalDate"/>
+                                <input ng-focus="datePicker.open()" ng-model="filterObject.filterByArrivalDate"
+                                       placeholder="{{ 'arrival_in' | translate }}"
+                                       is-open="datePicker.opened" uib-datepicker-popup="{{datePicker.format}}"
+                                       datepicker-options="datePicker.options" close-text="Close"
+                                       id="arrivalDateInput" class="form-control"/>
                             </div>
                         </td>
                     </table>
@@ -59,6 +62,9 @@
                 </div>
             </div>
             <div class="main" style="margin-top: 4mm">
+                <button class="btn btn-success btn-sm btn-round down" ng-click="scroll('down')" style="float: right; margin-top: -5mm" aria-hidden="true">
+                    <i class="fa fa-angle-double-down"></i>
+                </button>
                 <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
                     <div class="panel-body">
                         <div class="order-actions">
@@ -97,6 +103,25 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <button class="btn btn-success btn-sm btn-round up" ng-click="scroll('top')" style="float: right" aria-hidden="true">
+                <i class="fa fa-angle-double-up"></i>
+            </button>
+            <div>
+                <footer>
+                    <ul uib-pagination class="pagination" id="down" items-per-page="paginationObject.itemsPerPage" total-items="totalItems" ng-click="scroll('top')"
+                        ng-model="paginationObject.currentPage" max-size="5" ng-change="pageChanged()" boundary-links="true" force-ellipses="true"></ul>
+                    <span class="col-xs-2">
+                        <label for="ordersItemsPerPage">{{ 'items_page' | translate }}</label>
+                            <select dir="rtl" id="ordersItemsPerPage" class="form-control col-xs-2" ng-model="paginationObject.itemsPerPage" ng-change="setItemsPerPage()">
+                                <option value="5">5</option>
+                                <option value="10" ng-selected="true">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                     </span>
+                </footer>
             </div>
         </div>
     </uib-accordion>
@@ -157,7 +182,7 @@
                 <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
                     <div class="panel-body">
                         <div class="order-actions">
-                            <button type="button" class="btn btn-default btn-sm" ng-click="trackingRedirect()">{{ 'track' | translate }}</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="trackingRedirect(order.id)">{{ 'track' | translate }}</button>
                             <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
                         </div>
                         <div class="order-city" ng-click="status.open = !status.open">
@@ -228,11 +253,11 @@
                                         </div>
                                         <div class="col-sm-12 form-group">
                                             <i class="fa fa-star" aria-hidden="true"></i><label class="control-label">{{ 'customer_rate' | translate }}: </label>
-                                            <span uib-rating read-only="true" ng-model="order.feedbackDTO.rate/10"></span>
+                                            <span uib-rating class="customer rating" read-only="true" ng-model="order.feedbackDto.rate/10" aria-labelledby="default-rating"></span>
                                         </div>
                                         <div class="col-sm-12 form-group">
                                             <label class="order-sub"><i class="fa fa-comment" aria-hidden="true"></i>{{ 'customer_feedback' | translate }}:
-                                                {{ order.feedbackDTO.text }}</label>
+                                                {{ order.feedbackDto.text }}</label>
                                         </div>
                                     </div>
                                 </div>
