@@ -1,13 +1,13 @@
 angular
 .module('delivery')
-	.run(['$rootScope', function($rootScope) {
-	  $rootScope.lang = 'en';
+	.run(['$rootScope', '$cookies', function($rootScope, $cookies) {
+	  $rootScope.lang = $cookies.get('myLocaleCookie');
 }]);
 
 angular
 .module('delivery')
-	.controller('LanguageSwitchController', ['$scope','$rootScope', '$translate',
-	  function($scope, $rootScope, $translate) {
+	.controller('LanguageSwitchController', ['$scope','$rootScope', '$translate', '$cookies',
+	  function($scope, $rootScope, $translate, $cookies) {
 	    $scope.changeLanguage = function(langKey) {
 	      $translate.use(langKey);
 	    };
@@ -16,7 +16,7 @@ angular
 	      var language = data.language;
 
 	      $rootScope.lang = language;
+	      $cookies.put('myLocaleCookie', $rootScope.lang);
 
 	    });
 	}]);
-
