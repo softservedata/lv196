@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersOpenController', ['$scope', '$uibModal', '$orders', '$utils', 'Notification', '$rootScope',
-        function ($scope, $uibModal, $orders, $utils, Notification, $rootScope) {
+    .controller('ordersOpenController', ['$scope', '$uibModal', '$orders', '$utils', 'Notification', '$filter',
+        function ($scope, $uibModal, $orders, $utils, Notification, $filter) {
             $scope.orders = {
                 open: []
             };
@@ -44,16 +44,14 @@ angular
                     if (answer) {
                         $orders.remove(id).then(
                             () => $scope.retrieveOpenOrders(),
-                            () => Notification('Could not delete order'));
+                            () => Notification($filter('translate')('could_not_delete_order')));
                     }
                 })
             };
 
             $scope.showOffers = (orderWithOffers) => {
                 if (orderWithOffers.amountOfOffers == 0) {
-                        ($rootScope.lang === 'en') ?
-                            Notification('Info : Sorry there are no offers for your Order at this time'):
-                            Notification('Інформація : Вибачте, але на данний момент немає жодної заявки');
+                        Notification($filter('translate')('no_offers'));
                 }
                 else {
                     $scope.orderIdWithOffers = orderWithOffers.id;
@@ -71,8 +69,8 @@ angular
                     });
             }
         }])
-    .controller('addOrderController', ['$scope', '$timeout', '$uibModalInstance', '$orders', '$locations', 'Notification', 'order',
-        function ($scope, $timeout, $uibModalInstance, $orders, $locations, Notification, order) {
+    .controller('addOrderController', ['$scope', '$timeout', '$uibModalInstance', '$orders', '$locations', 'Notification', 'order', '$filter',
+        function ($scope, $timeout, $uibModalInstance, $orders, $locations, Notification, order, $filter) {
             $scope.datePicker = {
                 format: 'yyyy/MM/dd',
                 options: {
@@ -121,7 +119,7 @@ angular
                     $orders.save(data).then(response => {
                         $uibModalInstance.close(true)
                     }, response => {
-                        Notification('failed to add order')
+                        Notification($filter('translate')('failed_to_add_order'))
                     });
                 }
             };
@@ -202,15 +200,15 @@ angular
                 if (location) {
                     info.valid = Number.isFinite(location.latitude) && Number.isFinite(location.latitude);
                     if (!info.valid) {
-                        info.message = 'Location is not defined for ' + $scope.locationLabel(location);
+                        info.message = $filter('translate')('location_is_not_defined') + $scope.locationLabel(location);
                     }
                 }
                 return info;
             }
         }
     ])
-    .controller('showOffersController',['$scope', '$http', 'Notification','$rootScope',
-        function ($scope, $http, Notification, $rootScope) {
+    .controller('showOffersController',['$scope', '$http', 'Notification','$filter',
+        function ($scope, $http, Notification, $filter) {
         $scope.offers = {
             offers:[]
         };
@@ -251,15 +249,13 @@ angular
         $scope.changeStatus = () => {
             $scope.offer = $scope.GetApprovedOffer();
             if (angular.isUndefined($scope.offer)){
-                    ($rootScope.lang === 'en') ? Notification.warning('Warning : You didnt chose any Offer'):
-                        Notification.warning('Увага : Ви не вибрали ніякої заявки');
+                    Notification.warning($filter('translate')('did_not_chose_offer'));
             }
             else{
                 $http.put('/order/change/', $scope.offer).then(response => {
                     $scope.retrieveOffers();
                 });
-                ($rootScope.lang === 'en') ? Notification.success('Success : Succesful change Offer status'):
-                    Notification.success('Успіх : Успішно змінено статус заявки');
+                    Notification.success($filter('translate')('change_offer_status'));
             }
 
         };

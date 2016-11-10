@@ -19,14 +19,19 @@ public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
-
 //    Logger logger = LoggerFactory.getLogger(NotificationController.class.getName());
-    Integer lastAmount = null;
+    private static Integer lastAmount = null;
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(method = RequestMethod.GET)
     List<NotificationDto> all(Principal principal) {
         return notificationService.findAllNotificationByEmail(principal.getName());
+    }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(method = RequestMethod.PUT)
+    void setLanguage(@RequestBody String language) {
+        notificationService.setLanguage(language);
     }
 
     @PreAuthorize(AUTHENTICATED)

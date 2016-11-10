@@ -22,4 +22,6 @@ public interface NotificationService {
     void updateFeedback(FeedbackDto feedbackDTO);
     void changeUserStatus(String email, Boolean status);
     void addOffer(Long orderId, String email);
+    void setLanguage(String mylocale);
+
 }

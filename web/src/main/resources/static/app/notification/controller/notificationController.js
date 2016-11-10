@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('notificationController',['$scope', '$http', 'Notification', '$rootScope',
-        function ($scope, $http, Notification, $rootScope) {
+    .controller('notificationController',['$scope', '$http', 'Notification', '$filter',
+        function ($scope, $http, Notification, $filter) {
             $scope.notifications = {
                 notifications: [],
                 info: [],
@@ -16,10 +16,6 @@ angular
                     $scope.notifications.success.length = 0;
                     $scope.notifications.warning.length = 0;
                     for (var i = 0; i < $scope.notifications.notifications.length; i++){
-                        ($rootScope.lang === 'en') ? $scope.notifications.notifications[i].message = $scope.notifications.notifications[i].message.substring(0, $scope.notifications.notifications[i].message.indexOf(';')):
-                                                     $scope.notifications.notifications[i].message = $scope.notifications.notifications[i].message.substring($scope.notifications.notifications[i].message.indexOf(';')+5);
-                    }
-                    for ( i = 0; i < $scope.notifications.notifications.length; i++){
                         if ($scope.notifications.notifications[i].notificationStatus === 'Info'){
                             $scope.notifications.info.push($scope.notifications.notifications[i]);
                         }
@@ -31,8 +27,7 @@ angular
                         }
                     }
                     if (sessionStorage.getItem('last') > 0) {
-                        ($rootScope.lang === 'en') ? Notification('Now all your notifications are readed'):
-                            Notification('Всі ваші сповіщення зараз прочитані');
+                        Notification($filter('translate')('notifications_are_readed'));
                         sessionStorage.setItem('last',0);
                     }
                     
@@ -42,14 +37,13 @@ angular
 
             $scope.delete = id => {
                 $http.delete('/notification/'+id).then(response =>{
-                    ($rootScope.lang === 'en') ? Notification.success('Notification successfully deleted'):
-                        Notification.success('Видалення сповіщення успішне');
+                    Notification.success($filter('translate')('notification_deleted'));
                     $scope.retrieveNotifications();
                 })
             };
         }])
-    .controller('notificationAmountController',['$scope', '$http', 'Notification', '$rootScope',
-        function ($scope, $http, Notification, $rootScope) {
+    .controller('notificationAmountController',['$scope', '$http', 'Notification', '$filter',
+        function ($scope, $http, Notification, $filter) {
             $scope.countNewNotification = () => {
                 $scope.amountNewNotification = sessionStorage.getItem('last');
                 
@@ -65,8 +59,7 @@ angular
                 $http.get('/notification/count').then(response => {
                     $scope.amountNewNotification = response.data;
                     if ($scope.amountNewNotification > sessionStorage.getItem('last')) {
-                        ($rootScope.lang === 'en') ? Notification('You have new Notification'):
-                            Notification('У вас нове сповіщення');
+                        Notification($filter('translate')('new_notification'));
                         sessionStorage.setItem('last', $scope.amountNewNotification);
                         //if amount > 0 sessionStorage = amount
                     }

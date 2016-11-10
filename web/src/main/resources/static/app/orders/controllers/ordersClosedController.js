@@ -27,8 +27,8 @@
         };
         }]
     )
-    .controller('addFeedbackController', ['$scope','$orders', '$http', '$uibModalInstance', 'Notification', '$rootScope', 'order',
-        function ($scope, $orders, $http, $uibModalInstance, Notification, $rootScope, order) {
+    .controller('addFeedbackController', ['$scope','$orders', '$http', '$uibModalInstance', 'Notification', '$filter', 'order',
+        function ($scope, $orders, $http, $uibModalInstance, Notification, $filter, order) {
             $scope.idForFeedback = order.id;
 
             $scope.form = {
@@ -42,12 +42,10 @@
                     };
 
                     $orders.saveFeedback(data).then(response => {
-                        ($rootScope.lang === 'en') ? Notification.success('Success : Your feedback have been saved'):
-                            Notification.success('Успіх : Ваш відгук збережено');
+                        Notification.success($filter('translate')('saved_feedback'));
                         $uibModalInstance.close(true)
                     }, response => {
-                        ($rootScope.lang === 'en') ? Notification.error('Error : Failed to add feedback'):
-                            Notification.error('Увага : Збереження відгуку провалено');
+                        Notification.error($filter('translate')('failed_add_feedback'));
                     });
                 }
             };

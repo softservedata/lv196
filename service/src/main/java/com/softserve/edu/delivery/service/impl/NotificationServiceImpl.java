@@ -12,6 +12,8 @@ import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.NotificationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,6 +27,11 @@ import org.thymeleaf.context.Context;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +56,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private JavaMailSender mailSender;
 
+//    Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class.getName());
+    private static Locale currentLocal;
+    private static ResourceBundle res;
+
     @Override
     public void addNotification(String status,String message,String email) {
         User user = userRepository.findOneOpt(email)
@@ -69,7 +80,25 @@ public class NotificationServiceImpl implements NotificationService {
                 .setTime(new Timestamp(new Date().getTime()));
 
         notificationRepository.save(notification);
-        sendEmail(notification);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> sendEmail(notification));
+        try {
+            System.out.println("shutdown executor for sendEmail");
+            executor.shutdown();
+            executor.awaitTermination(10, TimeUnit.SECONDS);
+        }
+        catch (InterruptedException e) {
+            System.err.println("tasks sendEmail interrupted");
+        }
+        finally {
+            if (!executor.isTerminated()) {
+                System.err.println("cancel non-finished tasks sendEmail");
+            }
+            executor.shutdownNow();
+            System.out.println("shutdown finished");
+        }
+
+
     }
 
     private void sendEmail(Notification notification){
@@ -115,33 +144,35 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public void setLanguage(String mylocale) {
+        currentLocal = new Locale(mylocale);
+        res = ResourceBundle.getBundle("notification", currentLocal);
+    }
+
+    @Override
     public void removeOrder(Long orderId) {
         offerRepository.getAllOffersByOrderId(orderId)
                 .stream()
                 .map(OfferDto::offerToOfferDto)
                 .forEach(offer ->
                         addNotification("Warning",
-                                " Dear " + offer.getDriverName() + " We are sorry, but Customer " + offer.getCustomerName() + " cancel Order №" + offer.getOrderId() + ";<br>" +
-                                " Шановний " + offer.getDriverName() + " ми перепрошуємо, але користувач " + offer.getCustomerName() + " відмінив Ордер №" + offer.getOrderId(),
-                                offer.getDriverEmail())
+                                res.getString("dear") + " " + offer.getDriverName() +  res.getString("we_are_sorry") + " " + offer.getCustomerName() + res.getString("cancel_order") + " " + offer.getOrderId()
+                                ,offer.getDriverEmail())
                 );
     }
 
     @Override
     public void updateFeedback(FeedbackDto feedbackDTO) {
         addNotification("Info",
-                " Dear " + feedbackDTO.getUserName() + " your feedback for Driver " + feedbackDTO.getTransporterName() +
-                        " was moderated. For now, your feedback status - approved = " + feedbackDTO.getApproved() + ";<br>" +
-                " Шановний " + feedbackDTO.getUserName() + " Ваш відгук на водія " + feedbackDTO.getTransporterName() +
-                        " був змодерований. На данний момент, статус вашого відгука - approved = " + feedbackDTO.getApproved()
+                res.getString("dear") + " " + feedbackDTO.getUserName() + res.getString("your_feedback") + " " + feedbackDTO.getTransporterName() +
+                        res.getString("feedback_status") + " " + feedbackDTO.getApproved()
                 ,feedbackDTO.getUserEmail());
     }
 
     @Override
     public void changeOfferStatus(OfferDto offerDto){
         addNotification("Info",
-                " Customer " + offerDto.getCustomerName() + " approved your offer for his Order" + ";<br>" +
-                " Користувач " + offerDto.getCustomerName() + " затвердив вашу заявку на цей Ордер"
+                res.getString("customer") + " " + offerDto.getCustomerName() + res.getString("approved_your_offer")
                 , offerDto.getDriverEmail());
     }
 
@@ -150,10 +181,8 @@ public class NotificationServiceImpl implements NotificationService {
         User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
         addNotification("Warning",
-                " Dear " + user.getFirstName() + " " + user.getLastName() +
-                " your status was changed by admin or moderator. For now your status - is blocked = " + user.getBlocked() + ";<br>" +
-                " Дорогий " + user.getFirstName() + " " + user.getLastName() +
-                        " ваш статус був змуненний Адміном чи Модератором. На данний момент ваш статус - Заблокованний = " + user.getBlocked()
+                res.getString("dear") + " " + user.getFirstName() + " " + user.getLastName() +
+                res.getString("your_user_status") + " " + user.getBlocked()
                 , email);
     }
 
@@ -164,8 +193,7 @@ public class NotificationServiceImpl implements NotificationService {
         Order order = orderRepository.findOneOpt(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
         addNotification("Info",
-                " Driver " + user.getFirstName() + " " + user.getLastName() + " sends offer for your Order" + ";<br>" +
-                        " Водій " + user.getFirstName() + " " + user.getLastName() + " відправив заявку на ваш Ордер"
+                res.getString("driver") + " " + user.getFirstName() + " " + user.getLastName() + res.getString("send_offer")
                 , order.getCustomer().getEmail());
     }
 

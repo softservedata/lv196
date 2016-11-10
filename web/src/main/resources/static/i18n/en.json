@@ -122,5 +122,16 @@
 	"delete_feedback_error": "An error occured during deleting the feedback",
 	"edit_feedback_success": "The feedback was successfully updated",
 	"edit_feedback_error": "An error occured during updating the feedback",
-	"photo_upload_error": "An error occured during uploading the photo"
+	"photo_upload_error": "An error occured during uploading the photo",
+	"no_offers": "Info : Sorry there are no offers for your Order at this time",
+	"did_not_chose_offer": "Warning : You did not chose any Offer",
+	"change_offer_status": "Success : Successful change Offer status",
+	"could_not_delete_order": "Could not delete order",
+	"failed_to_add_order": "Failed to add order",
+	"location_is_not_defined": "Location is not defined for ",
+	"saved_feedback": "Success : Your feedback have been saved",
+	"failed_add_feedback": "Error : Failed to add feedback",
+	"notifications_are_readed": "Now all your notifications are readed",
+	"notification_deleted": "Notification successfully deleted",
+	"new_notification": "You have new Notification"
 }
