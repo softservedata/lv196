@@ -58,13 +58,15 @@ public interface OrderService {
 * Author - Ivan Synyshyn
 */
     //As transporter I want to choose orders by filter
-    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, Double weight, Timestamp arrivalDate, Pageable pageable);
+//    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, Double weight, Timestamp arrivalDate, Pageable pageable);
+    List<OrderDto> getOrdersFiltered (OrderDto orderDto, Pageable pageable);
     long getCountOfFilteredOrders();
     List<OrderDto> getAllOpenOrder(Pageable pageable);
     long getCountOfOrders();
     List<OrderDto> getOpenOrdersWithMyOffers(String email);
     List<OrderDto> getMyOrdersInProgress(String email);
     List<OrderDto> getMyOrdersClosed(String email);
+    void approveDelivery(Long orderId);
 
     OrderDto getOrderById(Long orderId);
     

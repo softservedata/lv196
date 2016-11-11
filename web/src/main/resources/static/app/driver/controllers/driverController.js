@@ -56,44 +56,45 @@ angular
                 return $locations.find(val).then(response => response.data);
             };
 
-            $scope.filter = () => {
-                console.log('In method filter');
-                var cityFromId = '';
+
+            var prepareFilterObject = function () {
+                
                 if ($scope.filterObject.filterByCityFrom && $scope.filterObject.filterByCityFrom.cityId) {
-                    cityFromId = $scope.filterObject.filterByCityFrom.cityId;
+                    $scope.filterObject.filterByCityFrom = $scope.filterObject.filterByCityFrom.cityId;
                 } else if ($scope.filterObject.filterByCityFrom) {
                     Notification.error('Sorry, you write incorrect city from name. You can use the hint');
                 }
 
-                var cityToId = '';
                 if ($scope.filterObject.filterByCityTo && $scope.filterObject.filterByCityTo.cityId) {
-                    cityToId = $scope.filterObject.filterByCityTo.cityId;
+                    $scope.filterObject.filterByCityTo.cityId;
                 } else if ($scope.filterObject.filterByCityTo) {
                     Notification.error('Sorry, you write incorrect city to name. You can use the hint');
                 }
 
-                var filterByWeight = '';
                 if ($scope.filterObject.filterByWeight > 0) {
-                    filterByWeight = $scope.filterObject.filterByWeight;
+                    $scope.filterObject.filterByWeight;
                 } else if ($scope.filterObject.filterByWeight) {
                     Notification.error('Sorry, you write incorrect weight. Please, write a positive number');
                 }
 
-                var filterByArrivalDate = '';
-                if (Date.parse($scope.filterObject.filterByArrivalDate) > Date.now()) {
-                    filterByArrivalDate = Date.parse($scope.filterObject.filterByArrivalDate);
-                } else if ($scope.filterObject.filterByArrivalDate) {
+                var currentTime = Date.now();
+                if (Date.parse($scope.filterObject.filterByArrivalDate) > currentTime) {
+                    Date.parse($scope.filterObject.filterByArrivalDate);
+                }
+                else if ($scope.filterObject.filterByArrivalDate) {
                     Notification.error('Sorry, you write incorrect date. You can use the calendar');
                 }
+            };
 
+
+
+            $scope.filter = () => {
+                prepareFilterObject();
                 $http({
                     url: '/driver/filtered-orders/',
                     method: 'GET',
                     params: {
-                        cityFromId: cityFromId,
-                        cityToId: cityToId,
-                        weight: filterByWeight,
-                        date: filterByArrivalDate,
+                        orderDto: $scope.filterObject,
                         itemsPerPage: $scope.paginationObject.itemsPerPage,
                         currentPage: $scope.paginationObject.currentPage
                     }

@@ -1,6 +1,7 @@
 <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
     <div class="panel-body">
         <div class="order-actions">
+            <i ng-click="approveDelivery(order.id)" class="fa fa-exchange" aria-hidden="true"></i>
             <i ng-click="showChat(order.approvedOfferId)" class="fa fa-envelope" aria-hidden="true"></i>
         </div>
         <div ng-click="status.open = !status.open" class="order-city">

@@ -133,5 +133,7 @@
 	"failed_add_feedback": "Error : Failed to add feedback",
 	"notifications_are_readed": "Now all your notifications are readed",
 	"notification_deleted": "Notification successfully deleted",
-	"new_notification": "You have new Notification"
+	"new_notification": "You have new Notification",
+	"approve_delivery": "Approve delivery",
+	"approve_delivery_message": "Are you sure, that you are ready to approve delivery?"
 }

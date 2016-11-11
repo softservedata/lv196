@@ -122,10 +122,27 @@ public class OrderServiceImpl implements OrderService {
                 .getAllClosedOrderByCustomerEmail(email);
     }
 
+//    @Override
+//    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate, Pageable pageable) {
+//        Page<Order> result = orderRepository
+//                .getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate,pageable);
+//        totalItems = result.getTotalElements();
+//        return result
+//                .getContent()
+//                .stream()
+//                .map(OrderDto::of)
+//                .collect(Collectors.toList());
+//    }
+
     @Override
-    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate, Pageable pageable) {
+    public List<OrderDto> getOrdersFiltered(OrderDto orderDto, Pageable pageable) {
         Page<Order> result = orderRepository
-                .getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate,pageable);
+                .getOrdersFiltered(
+                        orderDto.getLocationFrom().getCityId(),
+                        orderDto.getLocationTo().getCityId(),
+                        orderDto.getWeight(),
+                        orderDto.getArrivalDate(),
+                        pageable);
         totalItems = result.getTotalElements();
         return result
                 .getContent()
@@ -183,6 +200,12 @@ public class OrderServiceImpl implements OrderService {
             } else result.add(OrderDto.of(order));
         }
         return result;
+    }
+
+    @Override
+    public void approveDelivery(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+        orderRepository.save(order.setOrderStatus(OrderStatus.CLOSED));
     }
 
     @Override

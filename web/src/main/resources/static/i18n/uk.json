@@ -134,5 +134,7 @@
     "failed_add_feedback": "Увага : Збереження відгуку провалено",
     "notifications_are_readed": "Всі ваші сповіщення зараз прочитані",
     "notification_deleted": "Видалення сповіщення успішне",
-    "new_notification": "У вас нове сповіщення"
+    "new_notification": "У вас нове сповіщення",
+    "approve_delivery": "Підтвердження доставки",
+    "approve_delivery_message": "Ви впевненені, що хочете підтвердити доставку вантажу?"
 }

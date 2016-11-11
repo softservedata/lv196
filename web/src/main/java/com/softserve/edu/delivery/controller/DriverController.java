@@ -64,24 +64,27 @@ public class DriverController {
 
     @PreAuthorize(DRIVER)
     @RequestMapping (path = "filtered-orders", method = RequestMethod.GET)
-    List<OrderDto> filter (@RequestParam (required = false) Long cityFromId,
-                           @RequestParam (required = false) Long cityToId,
-                           @RequestParam (required = false) Double weight,
-                           @RequestParam (required = false) String date,
+    List<OrderDto> filter (//@RequestParam (required = false) Long cityFromId,
+//                           @RequestParam (required = false) Long cityToId,
+//                           @RequestParam (required = false) Double weight,
+//                           @RequestParam (required = false) String date,
+                           @RequestParam OrderDto orderDto,
                            @RequestParam Integer currentPage,
                            @RequestParam Integer itemsPerPage) {
 
-        Timestamp arrivalDate = null;
-        if (date != null && !date.isEmpty()) {
-            try {
-                arrivalDate = new Timestamp(Long.parseLong(date));
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Incorrect date");
-            }
-        }
+//        Timestamp arrivalDate = null;
+//        if (date != null && !date.isEmpty()) {
+//            try {
+//                arrivalDate = new Timestamp(Long.parseLong(date));
+//            } catch (IllegalArgumentException e) {
+//                throw new IllegalArgumentException("Incorrect date");
+//            }
+//        }
         logger.info("Method DriverController.filter()");
+        logger.info("orderDto = " + orderDto);
         Pageable pageable = new PageRequest(currentPage - 1, itemsPerPage);
-        return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate, pageable);
+//        return orderService.getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate, pageable);
+        return orderService.getOrdersFiltered(orderDto, pageable);
     }
 
     @PreAuthorize(DRIVER)

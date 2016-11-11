@@ -112,4 +112,10 @@ public class OrderController {
     OfferInfoDto offerInfo(@PathVariable Long offerId, Principal principal) {
         return offerService.findOfferInfo(offerId, principal.getName());
     }
+
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
+    @RequestMapping(path = "approve-delivery", method = RequestMethod.PUT)
+    void approveDelivery(@RequestBody Long orderId) {
+        orderService.approveDelivery(orderId);
+    }
 }
