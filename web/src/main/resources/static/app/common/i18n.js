@@ -1,7 +1,8 @@
 angular
 .module('delivery')
-	.run(['$rootScope', '$cookies', '$http', function($rootScope, $cookies, $http) {
+	.run(['$rootScope', '$cookies', '$http', '$translate', function($rootScope, $cookies, $http, $translate) {
 	  $rootScope.lang = $cookies.get('myLocaleCookie');
+	  $translate.use($rootScope.lang);
 	  $http.put('/notification', $rootScope.lang);
 }]);
 
