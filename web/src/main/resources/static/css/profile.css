@@ -10,8 +10,9 @@
     text-align: left;
 }
 
-.profile.useravatar {
-    height: 200px;
+.profile-useravatar {
+    height: auto;
+    width: 200px;
     border-radius: 10%;
 }
 

@@ -39,7 +39,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     private FeedbackFilter feedbackFilter;
 
     private long totalItemsNumber;
-    private Boolean approved1;
 
     public FeedbackServiceImpl() {
     }
@@ -92,15 +91,6 @@ public class FeedbackServiceImpl implements FeedbackService {
             return "desc";
         }
         return "asc";
-    }
-
-    private int processRequestSortType(String sortBy) {
-        if (sortBy.equals("userName")) {
-            return 1;
-        } else if (sortBy.equals("transporterName")) {
-            return 2;
-        }
-        return 0;
     }
 
     public FeedbackDto copyFeedbackToDTO(Feedback feedback) {
@@ -260,6 +250,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return copyFeedbackListToDTOList(feedbackRepository.findAll());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Transactional
     public List<FeedbackDto> findFiltered(FeedbackFilterDTO feedbackFilterDTO) {
@@ -272,7 +263,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackFilter.setApproved0(processRequestApproved(feedbackFilterDTO.getApproved()));
         feedbackFilter.setSortOrder(processRequestSortOrder(feedbackFilterDTO.getSortOrder()));
         feedbackFilter.setSortBy(feedbackFilterDTO.getSortBy());
-        feedbackFilter.setSortType(processRequestSortType(feedbackFilterDTO.getSortBy()));
         feedbackFilter.setCurrentPage(feedbackFilterDTO.getCurrentPage());
         feedbackFilter.setItemsPerPage(feedbackFilterDTO.getItemsPerPage());
 

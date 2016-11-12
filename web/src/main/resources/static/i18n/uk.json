@@ -135,6 +135,9 @@
     "notifications_are_readed": "Всі ваші сповіщення зараз прочитані",
     "notification_deleted": "Видалення сповіщення успішне",
     "new_notification": "У вас нове сповіщення",
+    "current_password": "Поточний пароль",
+    "new_password": "Новий пароль",
+    "confirm_password": "Підтвердіть пароль",
     "approve_delivery": "Підтвердження доставки",
     "approve_delivery_message": "Ви впевненені, що хочете підтвердити доставку вантажу?"
 }

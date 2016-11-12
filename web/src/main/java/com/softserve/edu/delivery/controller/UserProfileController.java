@@ -17,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.*;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATED;
 
 @RestController
 @RequestMapping(path = "userProfile")
@@ -203,9 +205,9 @@ public class UserProfileController {
     }
 
     @RequestMapping(path = "updateUserPassword", method = RequestMethod.POST)
-    ResponseEntity <String> changePassword(@RequestParam("currentPassword") CharSequence currentPassword,
-                                  @RequestParam("newPassword") CharSequence newPassword,
-                                  @RequestParam("confirmPassword") CharSequence confirmPassword) {
+    ResponseEntity<String> changePassword(@RequestParam("currentPassword") CharSequence currentPassword,
+                                          @RequestParam("newPassword") CharSequence newPassword,
+                                          @RequestParam("confirmPassword") CharSequence confirmPassword) {
 
         String currentUserEmail = authenticationDetails.getAuthenticatedUserEmail();
 
@@ -230,7 +232,7 @@ public class UserProfileController {
                 return ResponseEntity
                         .status(status)
                         .headers(responseHeaders)
-                        .body("{\"message\": \"wrong_password\"}");
+                        .body("{\"message\": \"wrong_password\",\"title\": \"passwords_dont_match\"}");
             }
         } catch (Exception e) {
             errorDetails = "Exception while trying to change password for user " + currentUserEmail +
@@ -243,5 +245,24 @@ public class UserProfileController {
                 .status(status)
                 .headers(responseHeaders)
                 .body("{\"message\": \"password_change_success\"}");
+    }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(path = "passwordparams", method = RequestMethod.GET)
+    ResponseEntity<Map<String, Integer>> getPasswordParams() {
+        logger.info("Before UserProfileController.getPasswordParams()");
+        status = HttpStatus.OK;
+        responseHeaders.set("message", "OK");
+
+        Map<String, Integer> passwordParams = new HashMap<>();
+        passwordParams.put("minPswdLength", PatternConstraints.PASS_MIN_LENGTH);
+        passwordParams.put("maxPswdLength", PatternConstraints.PASS_MAX_LENGTH);
+
+        logger.info("After UserProfileController.getPasswordParams()");
+
+        return ResponseEntity
+                .status(status)
+                .headers(responseHeaders)
+                .body(passwordParams);
     }
 }

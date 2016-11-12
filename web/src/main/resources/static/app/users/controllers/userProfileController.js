@@ -10,6 +10,8 @@ angular
             const carsFolder = 'cars';
             const usersFolder = 'users';
             const cloudUrl = 'cloudinary';
+            const minPswdLength = 4;
+            const maxPswdLength = 20;
 
             $scope.isDriver = false;
             $scope.cars = [];
@@ -42,6 +44,9 @@ angular
                 showProgressFront: false,
                 showProgressBack: false
             };
+
+            $scope.minPswdLength = 0;
+            $scope.maxPswdLength = 0;
 
             var initialCar = $scope.car;
             var deleteCarId;
@@ -264,7 +269,10 @@ angular
                             },
                             function (response) {
                                 if (showNotification) {
-                                    Notification.error({message: $filter('translate')('car_delete_error'), title: "Error!"});
+                                    Notification.error({
+                                        message: $filter('translate')('car_delete_error'),
+                                        title: "Error!"
+                                    });
                                 }
                             });
                 }
@@ -282,7 +290,6 @@ angular
             };
 
             $scope.updateUserPassword = function () {
-                console.log($scope.password);
                 $http.post("/userProfile/updateUserPassword?" + 'currentPassword=' + $scope.password.current +
                     '&newPassword=' + $scope.password.newPassword + '&confirmPassword=' + $scope.password.confirmPassword)
                     .then(function (response) {
@@ -293,6 +300,21 @@ angular
                             Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
                         }
                     );
+            };
+
+            $scope.getPasswordParams = function () {
+                $scope.changePassword = !$scope.changePassword;
+                if ($scope.minPswdLength == 0 || $scope.maxPswdLength == 0) {
+                    $http.get("/userProfile/passwordparams")
+                        .then(function (response) {
+                                $scope.minPswdLength = response.data.minPswdLength;
+                                $scope.maxPswdLength = response.data.maxPswdLength;
+                            },
+                            function (response) {
+                                $scope.minPswdLength = minPswdLength;
+                                $scope.maxPswdLength = maxPswdLength;
+                            });
+                }
             };
 
             checkIfDriver();

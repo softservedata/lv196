@@ -61,12 +61,8 @@ public class FeedbackController {
             responseHeaders.set("message", e.getMessage());
         }
 
-        try {
-            notificationService.updateFeedback(feedbackDTO);
-        } catch (Exception e){
-            logger.error("Exception while trying to send mail notification in update feedback with id " + feedbackDTO.getFeedbackId() +
-                    " in feedbackService.update(feedbackDTO) " + e.getMessage());
-        }
+        notificationService.updateFeedback(feedbackDTO);
+
         logger.info("After feedbackService.update(feedbackDTO)");
 
         return new ResponseEntity(responseHeaders, status);

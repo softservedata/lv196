@@ -134,6 +134,9 @@
 	"notifications_are_readed": "Now all your notifications are readed",
 	"notification_deleted": "Notification successfully deleted",
 	"new_notification": "You have new Notification",
+	"current_password": "Current Password",
+	"new_password": "New Password",
+	"confirm_password": "Confirm Password",
 	"approve_delivery": "Approve delivery",
 	"approve_delivery_message": "Are you sure, that you are ready to approve delivery?"
 }

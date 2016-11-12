@@ -17,7 +17,6 @@ public class FeedbackFilter {
     private String sortOrder;
     private int currentPage;
     private int itemsPerPage;
-    private int sortType;
 
     public String getText() {
         return text;
@@ -105,13 +104,5 @@ public class FeedbackFilter {
 
     public void setItemsPerPage(int itemsPerPage) {
         this.itemsPerPage = itemsPerPage;
-    }
-
-    public int getSortType() {
-        return sortType;
-    }
-
-    public void setSortType(int sortType) {
-        this.sortType = sortType;
     }
 }

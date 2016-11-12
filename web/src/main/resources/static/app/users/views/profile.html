@@ -24,7 +24,7 @@
         <h4>{{ 'photo' | translate }}</h4>
         <form name="pwdForm" novalidate>
             <div class="form-group" ng-controller="userImageUploadController">
-                <input type="image" class="profile useravatar" uib-popover="{{ 'click_to_upload_a_photo' | translate }}"
+                <input type="image" class="profile-useravatar" uib-popover="{{ 'click_to_upload_a_photo' | translate }}"
                        popover-trigger="'mouseenter'" popover-class="profile" ng-click="clickImage('userPhoto')"
                        popover-popup-delay="1000" popover-append-to-body=true ng-src="{{loggedUser.photoUrl}}"
                        alt="User avatar">
@@ -41,29 +41,31 @@
             </div>
             <br>
             <button type="button" class="btn btn-default col-sm-12 profile-vertical-margin"
-                    ng-click="changePassword = !changePassword">{{ 'change_password' | translate }}
+                    ng-click="getPasswordParams()">{{ 'change_password' | translate }}
             </button>
             <div uib-collapse="!changePassword">
                 <div class="form-group"
                      ng-class="{ 'has-error': pwdForm.current_password.$invalid || pwdForm.current_password.$pristine }">
                     <label for="current_password">{{ 'enter_current_password' | translate }}:</label>
                     <input type="password" class="form-control" name="current_password" id="current_password"
-                           ng-model="password.current" required ng-minlength="4" ng-maxlength="20"
-                           placeholder="Current password"/>
+                           ng-model="password.current" required ng-minlength="minPswdLength" ng-maxlength="maxPswdLength"
+                           placeholder="{{ 'current_password' | translate}}"/>
                 </div>
                 <div class="form-group"
                      ng-class="{ 'has-error': pwdForm.password0.$invalid || pwdForm.password0.$pristine ||
                       password.newPassword != password.confirmPassword }">
                     <label for="password0">{{ 'enter_new_password' | translate }}:</label>
                     <input type="password" class="form-control" name="password0" id="password0" ng-model="password.newPassword"
-                           required ng-minlength="4" ng-maxlength="20" placeholder="Password"/>
+                           required ng-minlength="minPswdLength" ng-maxlength="maxPswdLength"
+                           placeholder="{{ 'new_password' | translate}}"/>
                 </div>
                 <div class="form-group"
                      ng-class="{ 'has-error': pwdForm.password1.$invalid || pwdForm.password1.$pristine
                      || password.newPassword != password.confirmPassword}">
                     <label for="password1">{{ 'repeat_new_password' | translate }}:</label>
                     <input type="password" class="form-control" name="password1" id="password1" ng-model="password.confirmPassword"
-                           required ng-minlength="4" ng-maxlength="20" placeholder="Repeat password"/>
+                           required ng-minlength="minPswdLength" ng-maxlength="maxPswdLength"
+                           placeholder="{{ 'confirm_password' | translate}}"/>
                     <label ng-show="pwdForm.$invalid || pwdForm.$pristine || password.newPassword != password.confirmPassword">
                         {{ 'password_prompt' | translate }}</label>
                 </div>

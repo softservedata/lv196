@@ -2,7 +2,6 @@ package com.softserve.edu.delivery.repository.impl;
 
 import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.FeedbackFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class FeedbackRepositoryCustomImpl {
+public class FeedbackRepositoryCustomImpl <T>{
 
     private final String FIND_BY =
             "select f from Feedback f " +
@@ -44,13 +43,13 @@ public class FeedbackRepositoryCustomImpl {
     private String countQuery;
     private String resultQuery;
 
-    private void setQueries(int sortType, String sortBy, String sortOrder) {
-        switch (sortType) {
-            case 1:
+    private void setQueries(String sortBy, String sortOrder) {
+        switch (sortBy) {
+            case "userName":
                 countQuery = GET_COUNT + ORDER_BY_USERNAME + sortOrder;
                 resultQuery = FIND_BY + ORDER_BY_USERNAME + sortOrder;
                 break;
-            case 2:
+            case "transporterName":
                 countQuery = GET_COUNT + ORDER_BY_TRANSPORTER_NAME + sortOrder;
                 resultQuery = FIND_BY + ORDER_BY_TRANSPORTER_NAME + sortOrder;
                 break;
@@ -72,9 +71,10 @@ public class FeedbackRepositoryCustomImpl {
                 .getSingleResult();
     }
 
+    @SuppressWarnings("unchecked")
     public List<Feedback> findFiltered(FeedbackFilter feedbackFilter) {
 
-        setQueries(feedbackFilter.getSortType(), feedbackFilter.getSortBy(), feedbackFilter.getSortOrder());
+        setQueries(feedbackFilter.getSortBy(), feedbackFilter.getSortOrder());
 
         return entityManager.createQuery(resultQuery)
                 .setParameter("text", feedbackFilter.getText())
@@ -88,4 +88,5 @@ public class FeedbackRepositoryCustomImpl {
                 .setMaxResults(feedbackFilter.getItemsPerPage())
                 .getResultList();
     }
+
 }
