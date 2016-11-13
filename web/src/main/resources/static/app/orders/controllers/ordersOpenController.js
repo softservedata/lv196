@@ -253,9 +253,10 @@ angular
             }
             else{
                 $http.put('/order/change/', $scope.offer).then(response => {
-                    $scope.retrieveOffers();
-                });
+                    $scope.retrieveOpenOrders();
                     Notification.success($filter('translate')('change_offer_status'));
+                });
+
             }
 
         };

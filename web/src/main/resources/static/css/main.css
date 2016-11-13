@@ -305,3 +305,13 @@ i.fa, div {
     margin:auto;
 }
 
+.tabsDynamicHeight md-content {
+    background-color: transparent !important; }
+.tabsDynamicHeight md-content md-tabs {
+    background: #f6f6f6;
+    border: 1px solid #e1e1e1; }
+.tabsDynamicHeight md-content md-tabs md-tabs-wrapper {
+    background: white; }
+.tabsDynamicHeight md-content {
+    margin-top: 0; }
+

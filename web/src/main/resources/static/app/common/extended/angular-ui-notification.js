@@ -1,4 +1,4 @@
-/**
+﻿/**
  * angular-ui-notification - Angular.js service providing simple notifications using Bootstrap 3 styles with css transitions for animating
  * @author Alex_Crack
  * @version v0.2.0

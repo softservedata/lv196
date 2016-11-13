@@ -46,9 +46,9 @@
                         <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" class="user-avatar" ng-cloak>
                     </div>
                     <div class="user-name" ng-cloak>{{loggedUser.firstName}} {{loggedUser.lastName}}
-                        <div style="display:inline" ng-controller="notificationAmountController"
+                        <div style="display:inline" ng-controller="notificationController"
                              class="{{circleStyle(amountNewNotification)}}">
-                            <i class="fa fa-bell" ui-sref="notification" ng-cloak aria-hidden="true"
+                            <i class="fa fa-bell" popover-append-to-body="true" popover-trigger="'outsideClick'" uib-popover-template="templateForNotification.templateUrl" popover-placement="right-top" ng-click="retrieveNotifications()" ng-cloak aria-hidden="true"
                                data-notifications="{{amountNewNotification}}"></i>
                         </div>
                     </div>

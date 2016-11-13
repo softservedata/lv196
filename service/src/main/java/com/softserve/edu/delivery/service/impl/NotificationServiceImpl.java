@@ -12,7 +12,6 @@ import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.NotificationService;
-import com.softserve.edu.delivery.service.utf8control.UTF8Control;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,7 +146,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void setLanguage(String mylocale) {
         currentLocal = new Locale(mylocale);
-        res = ResourceBundle.getBundle("notification", currentLocal, new UTF8Control());
+        res = ResourceBundle.getBundle("notification", currentLocal);
     }
 
     @Override

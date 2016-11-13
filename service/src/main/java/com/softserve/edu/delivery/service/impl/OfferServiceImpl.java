@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.Car;
 import com.softserve.edu.delivery.domain.Offer;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OfferInfoDto;
 import com.softserve.edu.delivery.repository.OfferRepository;
@@ -81,6 +82,11 @@ public class OfferServiceImpl implements OfferService{
                 .orElseThrow(() -> new IllegalArgumentException("No such offer with id: " + offerId));
         offer.setApproved(offerStatus);
         offerRepository.save(offer);
+
+        Order order = orderRepository.findOneOpt(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("No order found"));
+        order.setOrderStatus(OrderStatus.IN_PROGRESS);
+        orderRepository.save(order);
     }
 
     @Override
