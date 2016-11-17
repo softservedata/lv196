@@ -51,8 +51,9 @@
 }
 
 .chat-details {
+    padding-right: 10px;
     float: right;
-    font-size: 14px;
+    font-size: 13px;
     margin: 0;
 }
 
@@ -63,12 +64,32 @@
     font-size: 20px
 }
 
-.conversations .panel-body {
-    padding-bottom: 0px;
-}
-
 .conversations .panel-body hr {
     margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.messages .load-more {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dialog {
+    background-color: #fff;
+    color: #555555;
+}
+
+.dialog .panel-body {
+    padding: 10px 30px 0px 30px;
+}
+
+.dialog:hover {
+    background-color: #f5f5f5;
+}
+
+.conversations .panel {
+    overflow-y: scroll;
+    height: 560px;
     margin-bottom: 0px;
 }
 

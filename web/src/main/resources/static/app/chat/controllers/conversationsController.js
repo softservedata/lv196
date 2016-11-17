@@ -2,7 +2,7 @@ angular
     .module('delivery')
     .factory('$conversations', ['$http', $http => {
         return {
-            findAll: () => $http.get('conversation')
+            findAll: () => $http.get('conversations')
         };
     }])
     .controller('conversationsController', ['$scope', '$conversations', '$chat',

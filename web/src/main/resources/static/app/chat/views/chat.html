@@ -5,7 +5,7 @@
     </div>
     <div class="modal-body chat">
         <ul class="messages">
-            <li ng-if="havingMore" style="text-align: center; margin-bottom: 20px;">
+            <li ng-if="havingMore" class="load-more">
                 <a ng-click="loadMore()">LOAD MORE</a>
             </li>
             <li class="message appeared" ng-class="classByMsg(msg)" id="message-{{msg.id}}"

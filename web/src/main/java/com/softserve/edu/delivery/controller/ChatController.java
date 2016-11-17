@@ -50,9 +50,9 @@ public class ChatController {
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
-    @RequestMapping(path = "/conversation", method = RequestMethod.GET)
+    @RequestMapping(path = "/conversations", method = RequestMethod.GET)
     @ResponseBody
-    List<ChatDto> conversation(Principal principal) {
+    List<ChatDto> conversations(Principal principal) {
         return chatService.findByParticipant(principal.getName());
     }
 

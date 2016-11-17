@@ -14,8 +14,8 @@ public interface ChatRepository extends BaseRepository<Chat, Long> {
     @Query("select new com.softserve.edu.delivery.dto.ChatDto(" +
             "concat(off.car.driver.firstName, ' ', off.car.driver.lastName), msg) " +
             "from ChatMessage msg join msg.chat c join c.participants p join c.offer off " +
-            "where p.email = :email and msg.timestamp = " +
-            "(select max(timestamp) from ChatMessage m2 where m2.chat = msg.chat)")
+            "where p.email = :email and msg.timestamp = (select max(timestamp) " +
+            "from ChatMessage m2 where m2.chat = msg.chat) order by msg.timestamp desc")
     List<ChatDto> findChatsByParticipantEmail(@Param("email") String email);
 
     @Query("select c from Chat c join c.participants p where c.id = :id and p.email = :email")
