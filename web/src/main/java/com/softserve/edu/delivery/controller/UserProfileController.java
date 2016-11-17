@@ -68,6 +68,7 @@ public class UserProfileController {
         car.setVehicleWidth(carDTO.getVehicleWidth());
         car.setVehicleHeight(carDTO.getVehicleHeight());
         car.setDriver(userService.findOne(carDTO.getDriverEmail()));
+        car.setActive(carDTO.getActive());
 
         return car;
     }

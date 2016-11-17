@@ -27,6 +27,8 @@ angular
             $scope.loggedUser = shareUserService.getLoggedUser();
             $scope.initialUser = angular.copy($scope.loggedUser);
             $scope.rate = $scope.loggedUser.rate / rateFactor;
+            $scope.isActiveAccordionOpen = true;
+            $scope.isInactiveAccordionOpen = false;
 
             $scope.car = {
                 id: -1,
@@ -40,6 +42,7 @@ angular
                 vehicleWidth: '',
                 vehicleHeight: '',
                 driverEmail: '',
+                active: true,
                 progress: 0,
                 showProgressFront: false,
                 showProgressBack: false
@@ -47,9 +50,11 @@ angular
 
             $scope.minPswdLength = 0;
             $scope.maxPswdLength = 0;
+            $scope.deactivate_car_warn;
 
             var initialCar = $scope.car;
             var deleteCarId;
+            var deactivateCarId;
             var modalInstance;
 
             var getPublicId = function (fileUrl, folder) {
@@ -133,7 +138,10 @@ angular
                             shareUserService.userDataChangedForMainView();
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')('user_update_error'), title: "Error!"});
+                            Notification.error({
+                                message: $filter('translate')('user_update_error'),
+                                title: $filter('translate')("error")
+                            });
                         });
             };
 
@@ -171,7 +179,10 @@ angular
                             shareCarService.setSelectedCar($scope.car);
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')('user_update_error'), title: "Error!"});
+                            Notification.error({
+                                message: $filter('translate')('user_update_error'),
+                                title: $filter('translate')("error")
+                            });
                         });
             };
 
@@ -186,9 +197,13 @@ angular
                 $scope.updateCar(shareCarService.getSelectedCar());
             });
 
-            $scope.updateCar = function (car, form, notification) {
+            $scope.updateCar = function (car, form, notification, deactivate) {
                 if (form != null) {
                     form.$setPristine();
+                }
+                if (deactivate == true) {
+                    modalInstance.close();
+                    car.active = !car.active;
                 }
                 $http.put("/userProfile/updateCar", car)
                     .then(function (response) {
@@ -199,7 +214,10 @@ angular
                             }
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')('user_update_error'), title: "Error!"});
+                            Notification.error({
+                                message: $filter('translate')('user_update_error'),
+                                title: $filter('translate')("error")
+                            });
                         }
                     );
             };
@@ -248,12 +266,33 @@ angular
                 });
             };
 
+            $scope.deactivateCar = function (car, cant_del) {
+                if (cant_del){
+                    $scope.deactivate_car_warn = 'cant_del_deactivate_car_warn';
+                } else if (car.active) {
+                    $scope.deactivate_car_warn = 'deactivate_car_warn';
+                } else {
+                    $scope.deactivate_car_warn = 'activate_car_warn';
+                }
+
+                $scope.car = car;
+
+                modalInstance = $uibModal.open({
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: '/app/users/views/deactivateCar.html',
+                    scope: $scope
+                });
+            };
+
             $scope.confirmDeleteCar = function (showNotification) {
+                modalInstance.close();
                 if (deleteCarId > 0) {
                     $http.delete("/userProfile/deleteCar/" + deleteCarId)
                         .then(function (response) {
                                 for (var i = 0; i < $scope.cars.length; i++) {
                                     if ($scope.cars[i].id == deleteCarId) {
+                                        $scope.car = $scope.cars[i].id;
                                         deleteExistingPhoto($scope.cars[i].vehicleFrontPhotoURL, carsFolder);
                                         deleteExistingPhoto($scope.cars[i].vehicleBackPhotoURL, carsFolder);
                                         $scope.cars.splice(i, 1);
@@ -263,22 +302,20 @@ angular
                                 $scope.isCollapsed[0] = false;
 
                                 if (showNotification) {
-                                    modalInstance.close();
                                     Notification.success($filter('translate')('car_delete_success'));
                                 }
                             },
                             function (response) {
-                                if (showNotification) {
-                                    Notification.error({
-                                        message: $filter('translate')('car_delete_error'),
-                                        title: "Error!"
-                                    });
+                                for (var i = 0; i < $scope.cars.length; i++) {
+                                    if ($scope.cars[i].id == deleteCarId) {
+                                        $scope.deactivateCar($scope.cars[i], true);
+                                    }
                                 }
                             });
                 }
             };
 
-            $scope.cancelDeleteCar = function () {
+            $scope.closeModal = function () {
                 modalInstance.dismiss('cancel');
             };
 
@@ -297,7 +334,10 @@ angular
                             $scope.clearPasswordForm();
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
+                            Notification.error({
+                                message: $filter('translate')(response.data.message),
+                                title: $filter('translate')("error")
+                            });
                         }
                     );
             };
@@ -317,6 +357,13 @@ angular
                 }
             };
 
+            $scope.deactivateCarText = function (car) {
+              if (car.active){
+                  return $filter('translate')('deactivate_car_info');
+              }
+              return $filter('translate')('activate_car_info');
+            };
+
             checkIfDriver();
 
         }])
@@ -324,5 +371,10 @@ angular
         return {
             controller: 'carImageUploadController',
             templateUrl: '/app/users/views/carData.html'
+        };
+    })
+    .directive('cars', function () {
+        return {
+            templateUrl: '/app/users/views/cars.html'
         };
     });

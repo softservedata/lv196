@@ -13,6 +13,7 @@ public class CarDTO {
     private Float vehicleWidth;
     private Float vehicleHeight;
     private String driverEmail;
+    private Boolean active;
     private float progress;
     private boolean showProgressFront;
     private boolean showProgressBack;
@@ -130,5 +131,13 @@ public class CarDTO {
 
     public void setShowProgressBack(boolean showProgressBack) {
         this.showProgressBack = showProgressBack;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

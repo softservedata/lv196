@@ -13,10 +13,15 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(columnDefinition="Double(10,2)")
     private Double height;
+    @Column(columnDefinition="Double(10,2)")
     private Double width;
+    @Column(columnDefinition="Double(10,2)")
     private Double length;
+    @Column(columnDefinition="Double(10,2)")
     private Double weight;
+    @Column(columnDefinition="Double(10,2)")
     private Double price;
     private Timestamp registrationDate;
     private Timestamp arrivalDate;

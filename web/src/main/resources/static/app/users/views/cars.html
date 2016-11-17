@@ -1,0 +1,35 @@
+<button type="button" class="btn btn-default col-sm-12 form-group profile button"
+        ng-click="isCollapsed[$index] = !isCollapsed[$index]">
+    {{car.vehicleName}}<img ng-src="{{car.vehicleFrontPhotoURL}}" style="height:24px;"
+                            align="right">
+</button>
+<hr>
+<div uib-collapse="isCollapsed[$index]">
+    <form name="userCarDataForm">
+        <div class="well well-sm col-sm-12 profile well">
+            <div car-data></div>
+            <div class="form-group">
+                <button type="button" class="btn btn-danger profile button small-padding  col-sm-2"
+                        ng-click="deleteCar(car.id)"> {{ 'delete_car' | translate }}
+                </button>
+                <span class="col-sm-1"></span>
+                <button type="button" class="btn btn-default profile button small-padding  col-sm-2"
+                        uib-popover="{{deactivateCarText(car)}}"
+                        popover-trigger="'mouseenter'" popover-class="profile"
+                        ng-click="deactivateCar(car)"> {{ 'deactivate_car' | translate }}
+                </button>
+                <span class="col-sm-1"></span>
+                <button type="button" ng-show="!userCarDataForm.$pristine"
+                        class="btn btn-warning profile button small-padding col-sm-2"
+                        ng-click="restoreCar(car.id, $index, userCarDataForm)"> {{ 'cancel' | translate }}
+                </button>
+
+                <button type="button" ng-show="!userCarDataForm.$pristine"
+                        class="btn btn-primary profile button small-padding col-sm-2 pull-right"
+                        ng-click="updateCar(car, userCarDataForm, true)">
+                    {{ 'update' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

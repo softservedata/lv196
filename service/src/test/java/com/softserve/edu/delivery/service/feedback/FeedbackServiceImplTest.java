@@ -24,6 +24,8 @@ public class FeedbackServiceImplTest{
     private  final String MOCK_USER_EMAIL= "emai0@gmail.com";
     private  final String MOCK_USER_FIRST_NAME= "Firstname";
     private  final String MOCK_USER_LAST__NAME= "Lastname";
+    private final String MOCK_APPROVED_DRIVER_NAME = "Approved Driver";
+    private final String MOCK_APPROVED_DRIVER_EMAIL = "email0@gmail.com";
     private  final Timestamp MOCK_CREATED_ON= Timestamp.valueOf("2016-10-02 04:15:06");
     private  final Long MOCK_ORDER_ID = 1L;
     private  final Long START_ORDER_ID = 1L;
@@ -84,6 +86,8 @@ public class FeedbackServiceImplTest{
         feedbackDTO.setText(MOCK_TEXT);
         feedbackDTO.setUserEmail(MOCK_USER_EMAIL);
         feedbackDTO.setUserName(MOCK_USER_FIRST_NAME + " " + MOCK_USER_LAST__NAME);
+        feedbackDTO.setTransporterName(MOCK_APPROVED_DRIVER_NAME);
+        feedbackDTO.setTransporterEmail(MOCK_APPROVED_DRIVER_EMAIL);
         feedbackDTO.setOrderId(MOCK_ORDER_ID);
         feedbackDTO.setCreatedOn(MOCK_CREATED_ON);
         return feedbackDTO;

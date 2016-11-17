@@ -32,6 +32,7 @@ public class CarServiceImpl implements CarService {
         carDTO.setVehicleNumber(car.getVehicleNumber());
         carDTO.setVehicleVIN(car.getVehicleVIN());
         carDTO.setDriverEmail(car.getDriver().getEmail());
+        carDTO.setActive(car.getActive());
 
         return carDTO;
     }

@@ -129,4 +129,40 @@ public class FeedbackDto {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FeedbackDto that = (FeedbackDto) o;
+
+        if (!feedbackId.equals(that.feedbackId)) return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (rate != null ? !rate.equals(that.rate) : that.rate != null) return false;
+        if (approved != null ? !approved.equals(that.approved) : that.approved != null) return false;
+        if (orderId != null ? !orderId.equals(that.orderId) : that.orderId != null) return false;
+        if (userEmail != null ? !userEmail.equals(that.userEmail) : that.userEmail != null) return false;
+        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+        if (transporterName != null ? !transporterName.equals(that.transporterName) : that.transporterName != null)
+            return false;
+        if (transporterEmail != null ? !transporterEmail.equals(that.transporterEmail) : that.transporterEmail != null)
+            return false;
+        return createdOn != null ? createdOn.equals(that.createdOn) : that.createdOn == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = feedbackId.hashCode();
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (rate != null ? rate.hashCode() : 0);
+        result = 31 * result + (approved != null ? approved.hashCode() : 0);
+        result = 31 * result + (orderId != null ? orderId.hashCode() : 0);
+        result = 31 * result + (userEmail != null ? userEmail.hashCode() : 0);
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (transporterName != null ? transporterName.hashCode() : 0);
+        result = 31 * result + (transporterEmail != null ? transporterEmail.hashCode() : 0);
+        result = 31 * result + (createdOn != null ? createdOn.hashCode() : 0);
+        return result;
+    }
 }

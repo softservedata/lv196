@@ -17,9 +17,13 @@ public class Car {
     private String vehicleVIN;
     private String vehicleFrontPhotoURL;
     private String vehicleBackPhotoURL;
+    @Column(columnDefinition="Float(10,2)")
     private Float vehicleWeight;
+    @Column(columnDefinition="Float(10,2)")
     private Float vehicleLength;
+    @Column(columnDefinition="Float(10,2)")
     private Float vehicleWidth;
+    @Column(columnDefinition="Float(10,2)")
     private Float vehicleHeight;
     @ManyToOne
     @JoinColumn(name = "driver_id", referencedColumnName = "email")
@@ -27,6 +31,9 @@ public class Car {
 
     @OneToMany(mappedBy = "car")
     private List<Offer> offers = new ArrayList<>();
+
+    @Column(columnDefinition="boolean default true")
+    private Boolean active;
 
     public Long getCarId() {
         return carId;
@@ -134,6 +141,14 @@ public class Car {
     public Car setOffers(List<Offer> offers) {
         this.offers = offers;
         return this;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override

@@ -1,9 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.domain.Feedback;
-import com.softserve.edu.delivery.domain.FeedbackFilter;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.FeedbackFilterDTO;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
@@ -309,7 +306,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void updateFeedback(FeedbackDto dto, String email) {
+    public void updateFeedback(FeedbackDto dto) {
         Feedback feedback = feedbackRepository.findOneOpt(dto.getFeedbackId())
                 .orElseThrow(() -> new IllegalArgumentException("No such feedback with id: " + dto.getFeedbackId()));
         feedback.setRate(dto.getRate());

@@ -157,7 +157,7 @@ angular
                             recalcRate();
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
+                            Notification.error({message: $filter('translate')(response.data.message), title: $filter('translate')("error")});
                         });
             };
 
@@ -167,7 +167,7 @@ angular
                     .then(function (response) {
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
+                            Notification.error({message: $filter('translate')(response.data.message), title: $filter('translate')("error")});
                         });
             };
 
@@ -259,7 +259,7 @@ angular
                             $scope.showUser(response.data);
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')(response.data.message), title: "Error!"});
+                            Notification.error({message: $filter('translate')(response.data.message), title: $filter('translate')("error")});
                         });
             };
 

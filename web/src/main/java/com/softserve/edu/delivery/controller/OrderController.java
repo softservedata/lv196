@@ -1,6 +1,5 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OfferInfoDto;
@@ -84,7 +83,7 @@ public class OrderController {
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "addfeedback", method = RequestMethod.PUT)
     void updateFeedback(@RequestBody FeedbackDto dto, Principal principal) {
-        feedbackService.updateFeedback(dto, principal.getName());
+        feedbackService.updateFeedback(dto);
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
