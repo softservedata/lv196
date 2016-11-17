@@ -59,14 +59,14 @@ angular
             };
 
             $scope.showConversation = (orderWithOffers) => {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: '/app/orders/views/conversation.html',
-                        controller: 'showConversationController',
-                        resolve:{
-                            order: ()=> orderWithOffers
-                        }
-                    });
+                $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/orders/views/conversation.html',
+                    controller: 'showConversationController',
+                    resolve: {
+                        order: ()=> orderWithOffers
+                    }
+                });
             }
         }])
     .controller('addOrderController', ['$scope', '$timeout', '$uibModalInstance', '$orders', '$locations', 'Notification', 'order', '$filter',
@@ -259,9 +259,9 @@ angular
 
             }
 
-        };
-    }])
-    .controller('showConversationController',['$scope', '$http', '$chat', 'order',
+            };
+        }])
+    .controller('showConversationController', ['$scope', '$http', '$chat', 'order',
         function ($scope, $http, $chat, order) {
             $scope.offers = [];
 
@@ -271,9 +271,6 @@ angular
             $scope.retrieveOffers = () => {
                 $http.get('/order/offers/' + order.id).then(response => {
                     $scope.offers = response.data;
-                    for (var i=0; i<$scope.offers.length; i++){
-                        $scope.offers[i].rate = $scope.offers[i].rate/10;
-                    }
                 })
             };
             $scope.retrieveOffers();

@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.dto.ChatDto;
+import com.softserve.edu.delivery.dto.ChatHistoryDto;
 import com.softserve.edu.delivery.dto.ChatMessageDto;
 import com.softserve.edu.delivery.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATED;
+import static com.softserve.edu.delivery.config.SecurityConstraints.CUSTOMER_OR_DRIVER;
 
 @Controller
 public class ChatController {
@@ -33,7 +36,7 @@ public class ChatController {
     private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat/{chatId}")
-    public void handleMessage(@DestinationVariable("chatId") Long chatId,
+    void handleMessage(@DestinationVariable("chatId") Long chatId,
                               @Payload ChatMessageDto dto, Principal principal) {
 
         dto = chatService.saveMessage(dto.setChatId(chatId)
@@ -46,20 +49,28 @@ public class ChatController {
         messagingTemplate.convertAndSendToUser(receiver, "/queue/chat-notifications", dto.getChatId().toString());
     }
 
-    @PreAuthorize(AUTHENTICATED)
-    @RequestMapping(path = "/chat/{chatId}", method = RequestMethod.GET)
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
+    @RequestMapping(path = "/conversation", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List<ChatMessageDto>> chatHistory(@PathVariable Long chatId, Principal principal) {
+    List<ChatDto> conversation(Principal principal) {
+        return chatService.findByParticipant(principal.getName());
+    }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(path = "/chat/{chatId}/{page}/{size}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseEntity<ChatHistoryDto> chatHistory(@PathVariable Long chatId, @PathVariable Integer page,
+                                                      @PathVariable Integer size, Principal principal) {
         return chatService
                 .findByIdAndParticipant(chatId, principal.getName())
-                .map(chat -> new ResponseEntity<>(chatService.findMessagesHistory(chatId), HttpStatus.OK))
+                .map(chat -> new ResponseEntity<>(chatService.findMessagesHistory(chatId, page, size), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED));
     }
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "/chat/{chatId}", method = RequestMethod.POST)
     @ResponseBody
-    public void createConversation(@PathVariable Long chatId, Principal principal) {
+    void createConversation(@PathVariable Long chatId, Principal principal) {
         chatService.initChat(chatId, principal.getName());
     }
 }

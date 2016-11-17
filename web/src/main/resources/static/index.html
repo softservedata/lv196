@@ -25,6 +25,7 @@
     <link href="./css/tracking.css" rel="stylesheet">
     <link href="./css/statistics.css" rel="stylesheet">
     <link href="./css/profile.css" rel="stylesheet">
+    <link href="./css/chat.css" rel="stylesheet">
 
 </head>
 <body>
@@ -68,6 +69,11 @@
                    class="sidebar-menu-item">
                     <i class="fa fa-map" aria-hidden="true"></i>
                     {{ 'orders-tracking' | translate }}
+                </a>
+                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="messages" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    {{ 'messages' | translate }}
                 </a>
                 <a ng-show="forRole('Driver')" ui-sref="driver" ui-sref-active="active-list-item"
                    class="sidebar-menu-item">
@@ -152,10 +158,11 @@
 
 <script src="./app/orders/services/orderService.js"></script>
 <script src="./app/common/services/commonServices.js"></script>
-<script src="./app/common/services/chat.js"></script>
+<script src="./app/chat/services/chat.js"></script>
 <script src="./app/orders/controllers/ordersController.js"></script>
 <script src="./app/orders/controllers/ordersInProgressController.js"></script>
 <script src="./app/orders/controllers/ordersOpenController.js"></script>
+<script src="./app/chat/controllers/conversationsController.js"></script>
 <script src="./app/orders/services/ordersProperty.js"></script>
 <script src="./app/orders/controllers/ordersClosedController.js"></script>
 <script src="./app/driver/controllers/driverController.js"></script>

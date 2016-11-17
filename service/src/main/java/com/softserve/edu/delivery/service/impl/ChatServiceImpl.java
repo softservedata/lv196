@@ -6,12 +6,18 @@ import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.domain.chat.Chat;
 import com.softserve.edu.delivery.domain.chat.ChatMessage;
+import com.softserve.edu.delivery.dto.ChatDto;
+import com.softserve.edu.delivery.dto.ChatHistoryDto;
 import com.softserve.edu.delivery.dto.ChatMessageDto;
 import com.softserve.edu.delivery.repository.ChatMessageRepository;
 import com.softserve.edu.delivery.repository.ChatRepository;
 import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +45,11 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public List<ChatDto> findByParticipant(String email) {
+        return chatRepository.findChatsByParticipantEmail(email);
+    }
+
+    @Override
     @Transactional
     public ChatMessageDto saveMessage(ChatMessageDto dto) {
         Chat chat = findByIdAndParticipant(dto.getChatId(), dto.getAuthorEmail())
@@ -61,17 +72,17 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatMessageDto> findMessagesHistory(Long chatId) {
-        List<ChatMessage> messages = chatMessageRepository.findByChatId(chatId);
+    public ChatHistoryDto findMessagesHistory(Long chatId, int page, int size) {
+        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "timestamp");
 
-        return messages.stream()
-                .map(m -> new ChatMessageDto()
-                        .setId(m.getId())
-                        .setChatId(chatId)
-                        .setAuthorEmail(m.getAuthorEmail())
-                        .setTimestamp(m.getTimestamp())
-                        .setText(m.getText()))
+        Page<ChatMessage> chatPage = chatMessageRepository.findByChatId(chatId, pageable);
+
+        List<ChatMessageDto> messages = chatPage.getContent()
+                .stream()
+                .map(ChatMessageDto::of)
                 .collect(Collectors.toList());
+
+        return new ChatHistoryDto(messages, chatPage.hasNext());
     }
 
     @Override

@@ -5,8 +5,11 @@
     </div>
     <div class="modal-body chat">
         <ul class="messages">
+            <li ng-if="havingMore" style="text-align: center; margin-bottom: 20px;">
+                <a ng-click="loadMore()">LOAD MORE</a>
+            </li>
             <li class="message appeared" ng-class="classByMsg(msg)" id="message-{{msg.id}}"
-                ng-repeat="msg in messages | orderBy:timestamp track by $index">
+                ng-repeat="msg in messages | orderBy:'timestamp' track by $index">
                 <div class="avatar"></div>
                 <div class="text_wrapper">
                     <div class="text">{{msg.text}}</div>

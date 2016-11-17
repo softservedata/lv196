@@ -38,7 +38,7 @@
         <div class="order-subinfo">
             <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
             <span class="order-sub location" ui-sref="tracking({id: order.id})"><i class="fa fa-map-marker" aria-hidden="true"></i>Location</span>
-            <span class="order-sub" ng-click="showChat()"><i class="fa fa-car" aria-hidden="true"></i>{{order.driverName}}</span>
+            <span class="order-sub"><i class="fa fa-car" aria-hidden="true"></i>{{order.driverName}}</span>
         </div>
     </div>
 </div>

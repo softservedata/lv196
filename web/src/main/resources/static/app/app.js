@@ -39,6 +39,11 @@ angular
                 templateUrl: '/app/driver/views/driver.html',
                 controller: 'driverController'
             })
+            .state('messages', {
+                url: '/messages',
+                templateUrl: '/app/chat/views/conversation.html',
+                controller: 'conversationsController'
+            })
             .state('feedbacks', {
                 url: '/feedbacks',
                 templateUrl: '/app/feedbacks/views/feedbacks.html',
@@ -143,7 +148,7 @@ angular
                                 offerInfo.customerName : offerInfo.driverName;
 
                             if ($chat.openedChatId() != offerId) {
-                                Notification.success({
+                                Notification.info({
                                     title: 'New message from ' + senderName,
                                     message: 'Regarding order: ' + offerInfo.cityNameFrom + ' - ' + offerInfo.cityNameTo +
                                     ', ' + $filter('date')(offerInfo.arrivalDate, 'dd/MM/yyyy'),

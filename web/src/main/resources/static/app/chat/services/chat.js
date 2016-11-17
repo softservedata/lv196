@@ -32,7 +32,7 @@ angular
                 opened.chatId = chatId;
                 opened.modal = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/common/views/chat.html',
+                    templateUrl: '/app/chat/views/chat.html',
                     controller: 'chatController',
                     resolve: {
                         chatId: () => chatId
@@ -48,7 +48,7 @@ angular
         };
 
         return {
-            history: chatId => $http.get('chat/' + chatId),
+            history: (chatId, page, size) => $http.get('chat/' + chatId + '/' + page + '/' + size),
             create: chatId => $http.post('chat/' + chatId, {}),
             isOpened: isOpened,
             openedChatId: () => opened.chatId,
@@ -74,12 +74,10 @@ angular
             let subscription = null;
             let userEmail = sessionStorage.getItem('email');
             $scope.messages = [];
+            $scope.page = 0;
 
-            $chat.history(chatId).then(response => {
-                $scope.messages = response.data;
-                if ($scope.messages.length > 0) {
-                    $timeout(() => scrollTo($scope.messages[$scope.messages.length - 1].id), 0, false);
-                }
+            $chat.history(chatId, $scope.page, 7).then(response => {
+                processChatHistoryResponse(response.data);
                 connectAndSend();
             });
 
@@ -95,6 +93,21 @@ angular
                     sendMessageToStomp(msg);
                 }
             };
+
+            $scope.loadMore = () => {
+                $chat
+                    .history(chatId, $scope.page, 7)
+                    .then(response => processChatHistoryResponse(response.data));
+            };
+
+            function processChatHistoryResponse(data) {
+                $scope.page += 1;
+                $scope.messages = data.messages.concat($scope.messages);
+                $scope.havingMore = data.havingMore;
+
+                const scrollInx = $scope.page == 1 ? $scope.messages.length - 1 : 0;
+                $timeout(() => scrollTo($scope.messages[scrollInx].id), 0, false);
+            }
 
             function sendMessageToStomp(message) {
                 $chat.sendMessage(chatId, message);

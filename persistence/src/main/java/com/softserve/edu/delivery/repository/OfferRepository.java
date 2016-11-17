@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public interface OfferRepository extends BaseRepository<Offer, Long> {
 
-    // rewrite but why?
     @Query("select off.id from Offer off where off.order.id = :id and off.car.driver.email = :email")
     Long findOfferIdByOrderIdAndDriverEmail(@Param("id") Long orderId, @Param("email") String email);
 
@@ -29,7 +28,6 @@ public interface OfferRepository extends BaseRepository<Offer, Long> {
 
     @Query("select o from Offer o where o.order.id = :id and o.car.driver.email = :email")
     List<Offer> findOfferByOrderIdAndDriverId(@Param("id")Long orderId, @Param("email")String email);
-
 
     @Query("select new com.softserve.edu.delivery.dto.OfferInfoDto(" +
             "off.id, off.car.driver, ord.customer, ord.cityFrom.cityName, ord.cityTo.cityName, ord.arrivalDate) " +

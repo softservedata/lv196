@@ -1,7 +1,10 @@
 package com.softserve.edu.delivery.dto;
 
 
+import com.softserve.edu.delivery.domain.chat.ChatMessage;
+
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class ChatMessageDto {
     private Long id;
@@ -11,6 +14,16 @@ public class ChatMessageDto {
     private String text;
 
     public ChatMessageDto() {
+    }
+
+    public static ChatMessageDto of(ChatMessage msg) {
+        Objects.requireNonNull(msg, "No message found");
+        return new ChatMessageDto()
+                .setId(msg.getId())
+                .setAuthorEmail(msg.getAuthorEmail())
+                .setChatId(msg.getChat() == null ? null : msg.getChat().getId())
+                .setText(msg.getText())
+                .setTimestamp(msg.getTimestamp());
     }
 
     public Long getId() {

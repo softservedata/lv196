@@ -59,7 +59,7 @@
 }
 
 .order-in-progress .panel-body hr {
-    margin-top: 23px;
+    margin-top: 18px;
     margin-bottom: -20px;
 }
 
@@ -95,10 +95,6 @@
     cursor: pointer;
 }
 
-.order-actions.chat {
-    margin-top: 0px;
-}
-
 .order-actions .fa-car {
     color: rgba(68, 68, 68, 0.83);
 }
@@ -109,6 +105,13 @@
 
 .order-actions .fa:hover {
     color: #888888;
+}
+
+.chat-actions {
+    float: right;
+    font-size: 22px;
+    margin-top: 0px;
+    margin-right: 75px;
 }
 
 .order-subinfo .order-sub {

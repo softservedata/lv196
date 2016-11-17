@@ -1,6 +1,8 @@
 package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.domain.chat.Chat;
+import com.softserve.edu.delivery.dto.ChatDto;
+import com.softserve.edu.delivery.dto.ChatHistoryDto;
 import com.softserve.edu.delivery.dto.ChatMessageDto;
 import org.springframework.security.access.AccessDeniedException;
 
@@ -19,6 +21,14 @@ public interface ChatService {
     Optional<Chat> findByIdAndParticipant(Long id, String email);
 
     /**
+     * Finds conversations by given email
+     *
+     * @param email user email
+     * @return list of chats
+     */
+    List<ChatDto> findByParticipant(String email);
+
+    /**
      * Persists message retrieved in dto
      *
      * @param dto message dto
@@ -28,13 +38,14 @@ public interface ChatService {
     ChatMessageDto saveMessage(ChatMessageDto dto);
 
     /**
-     * Finds all messages for given chat
+     * Finds portion messages for given chat and page params
      *
      * @param chatId id of chat
+     * @param page page of requested messages
+     * @param size size of a portion
      * @return list of all messages in chat
-     * @throws IllegalArgumentException if chat is not created yet or this user doesn't have access to this
      */
-    List<ChatMessageDto> findMessagesHistory(Long chatId);
+    ChatHistoryDto findMessagesHistory(Long chatId, int page, int size);
 
     /**
      * Creates chat for given offer id

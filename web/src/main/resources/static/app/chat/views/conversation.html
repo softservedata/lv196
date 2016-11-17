@@ -1,0 +1,33 @@
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand">{{ 'conversations' | translate }}</span>
+        </div>
+    </div>
+</div>
+<div class="site-content conversations">
+    <div class="panel panel-default">
+        <div ng-repeat="chat in conversations track by $index" class="order-in-progress">
+            <div class="panel-body" ng-click="showChat(chat.message.chatId)">
+                <div class="chat-details chat">
+                    <p class="text">{{chat.message.timestamp | date:'h:mm a, MMM d'}}</p>
+                </div>
+                <ul class="conversation driver">
+                    <li class="message left appeared">
+                        <div class="avatar"></div>
+                        <p class="text driver-name">{{chat.driverName}}</p>
+                        <p class="text">{{chat.message.text}}</p>
+                    </li>
+                </ul>
+                <hr/>
+            </div>
+        </div>
+    </div>
+</div>
