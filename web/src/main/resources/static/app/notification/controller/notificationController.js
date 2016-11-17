@@ -62,6 +62,7 @@ angular
 
                     if (sessionStorage.getItem('last') > 0) {
                         sessionStorage.setItem('last',0);
+                        $scope.amountNewNotification = 0;
                         Notification($filter('translate')('notifications_are_readed'));
                     }
                     

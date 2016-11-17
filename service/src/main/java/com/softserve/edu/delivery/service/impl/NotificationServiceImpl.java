@@ -59,46 +59,26 @@ public class NotificationServiceImpl implements NotificationService {
 //    Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class.getName());
     private static Locale currentLocal;
     private static ResourceBundle res;
+    private static ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Override
-    public void addNotification(String status,String message,String email) {
+    public void addNotification(NotificationStatus status, String message, String email) {
         User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
         Notification notification = new Notification();
-        if (status.equals(NotificationStatus.SUCCESS.getName())){
-                notification.setNotificationStatus(NotificationStatus.SUCCESS);
-        }
-        else if (status.equals(NotificationStatus.WARNING.getName())){
-                notification.setNotificationStatus(NotificationStatus.WARNING);
-        }
-        else {
-            notification.setNotificationStatus(NotificationStatus.INFO);
-        }
-                notification.setUser(user)
+        notification
+                .setNotificationStatus(status)
+                .setUser(user)
                 .setMessage(message)
                 .setReaded(false)
                 .setTime(new Timestamp(new Date().getTime()));
-
-        notificationRepository.save(notification);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> sendEmail(notification));
+            notificationRepository.save(notification);
         try {
-            System.out.println("shutdown executor for sendEmail");
-            executor.shutdown();
-            executor.awaitTermination(10, TimeUnit.SECONDS);
+            sendEmail(notification);
         }
-        catch (InterruptedException e) {
+        catch (RuntimeException e) {
             System.err.println("tasks sendEmail interrupted");
         }
-        finally {
-            if (!executor.isTerminated()) {
-                System.err.println("cancel non-finished tasks sendEmail");
-            }
-            executor.shutdownNow();
-            System.out.println("shutdown finished");
-        }
-
-
     }
 
     private void sendEmail(Notification notification){
@@ -151,50 +131,54 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void removeOrder(Long orderId) {
-        offerRepository.getAllOffersByOrderId(orderId)
+        executor.submit(() -> offerRepository.getAllOffersByOrderId(orderId)
                 .stream()
                 .map(OfferDto::offerToOfferDto)
                 .forEach(offer ->
-                        addNotification("Warning",
+                        addNotification(NotificationStatus.WARNING,
                                 res.getString("dear") + " " + offer.getDriverName() +  res.getString("we_are_sorry") + " " + offer.getCustomerName() + res.getString("cancel_order") + " " + offer.getOrderId()
                                 ,offer.getDriverEmail())
-                );
+                ));
     }
 
     @Override
     public void updateFeedback(FeedbackDto feedbackDTO) {
-        addNotification("Info",
+        executor.submit(() -> addNotification(NotificationStatus.INFO,
                 res.getString("dear") + " " + feedbackDTO.getUserName() + res.getString("your_feedback") + " " + feedbackDTO.getTransporterName() +
                         res.getString("feedback_status") + " " + feedbackDTO.getApproved()
-                ,feedbackDTO.getUserEmail());
+                ,feedbackDTO.getUserEmail()));
     }
 
     @Override
     public void changeOfferStatus(OfferDto offerDto){
-        addNotification("Info",
+        executor.submit(() -> addNotification(NotificationStatus.INFO,
                 res.getString("customer") + " " + offerDto.getCustomerName() + res.getString("approved_your_offer")
-                , offerDto.getDriverEmail());
+                , offerDto.getDriverEmail()));
     }
 
     @Override
     public void changeUserStatus(String email, Boolean status) {
-        User user = userRepository.findOneOpt(email)
+        executor.submit(() -> {
+            User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-        addNotification("Warning",
+            addNotification(NotificationStatus.WARNING,
                 res.getString("dear") + " " + user.getFirstName() + " " + user.getLastName() +
                 res.getString("your_user_status") + " " + user.getBlocked()
                 , email);
+        });
     }
 
     @Override
     public void addOffer(Long orderId, String email){
-        User user = userRepository.findOneOpt(email)
+        executor.submit(() -> {
+            User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-        Order order = orderRepository.findOneOpt(orderId)
+            Order order = orderRepository.findOneOpt(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-        addNotification("Info",
+            addNotification(NotificationStatus.INFO,
                 res.getString("driver") + " " + user.getFirstName() + " " + user.getLastName() + res.getString("send_offer")
                 , order.getCustomer().getEmail());
+        });
     }
 
 }

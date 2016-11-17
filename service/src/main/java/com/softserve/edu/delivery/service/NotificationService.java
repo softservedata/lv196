@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.service;
 
+import com.softserve.edu.delivery.domain.NotificationStatus;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.NotificationDto;
 import com.softserve.edu.delivery.dto.OfferDto;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface NotificationService {
 
-    void addNotification(String status, String message, String email);
+    void addNotification(NotificationStatus status, String message, String email);
     void removeNotification(Long notificationId);
     List<NotificationDto> findAllNotificationByEmail(String email);
     void changeNotificationStatus(String email);
