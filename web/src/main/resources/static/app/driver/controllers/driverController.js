@@ -4,15 +4,21 @@ angular
         function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal, $location, $anchorScroll) {
 
             $scope.filterObject = {
-                filterByCityFrom: '',
-                filterByCityTo: '',
-                filterByWeight: '',
-                filterByArrivalDate: ''
+                cityFrom: null,
+                cityTo: null,
+                weight: null,
+                arrivalDate: null,
+                currentPage: 1,
+                itemsPerPage: 10
             };
 
-            $scope.paginationObject = {
-                itemsPerPage: 10,
-                currentPage: 1
+            $scope.orderFilterDto = {
+                cityFromId: '',
+                cityToId: '',
+                weight: '',
+                arrivalDate: '',
+                currentPage: 1,
+                itemsPerPage: 10
             };
 
             $scope.orders = {
@@ -20,7 +26,7 @@ angular
             };
 
             $scope.setItemsPerPage = function () {
-                $scope.paginationObject.currentPage = 1;
+                $scope.filterObject.currentPage = 1;
                 $scope.retrieveOpenOrders();
             };
 
@@ -39,8 +45,8 @@ angular
                     url: '/driver/open/',
                     method: 'GET',
                     params: {
-                        itemsPerPage: $scope.paginationObject.itemsPerPage,
-                        currentPage: $scope.paginationObject.currentPage
+                        itemsPerPage: $scope.filterObject.itemsPerPage,
+                        currentPage: $scope.filterObject.currentPage
                     }
                 }).then(function (response0) {
                     $http.get("/driver/count-items/")
@@ -56,54 +62,47 @@ angular
                 return $locations.find(val).then(response => response.data);
             };
 
-
-            var prepareFilterObject = function () {
-                
-                if ($scope.filterObject.filterByCityFrom && $scope.filterObject.filterByCityFrom.cityId) {
-                    $scope.filterObject.filterByCityFrom = $scope.filterObject.filterByCityFrom.cityId;
-                } else if ($scope.filterObject.filterByCityFrom) {
+            $scope.filter = () => {
+                $scope.orderFilterDto.cityFromId = null;
+                if ($scope.filterObject.cityFrom && $scope.filterObject.cityFrom.cityId) {
+                    $scope.orderFilterDto.cityFromId = $scope.filterObject.cityFrom.cityId;
+                } else if ($scope.filterObject.cityFrom) {
                     Notification.error('Sorry, you write incorrect city from name. You can use the hint');
                 }
 
-                if ($scope.filterObject.filterByCityTo && $scope.filterObject.filterByCityTo.cityId) {
-                    $scope.filterObject.filterByCityTo.cityId;
-                } else if ($scope.filterObject.filterByCityTo) {
+                $scope.orderFilterDto.cityToId = null;
+                if ($scope.filterObject.cityTo && $scope.filterObject.cityTo.cityId) {
+                    $scope.orderFilterDto.cityToId = $scope.filterObject.cityTo.cityId;
+                } else if ($scope.filterObject.cityTo) {
                     Notification.error('Sorry, you write incorrect city to name. You can use the hint');
                 }
 
-                if ($scope.filterObject.filterByWeight > 0) {
-                    $scope.filterObject.filterByWeight;
-                } else if ($scope.filterObject.filterByWeight) {
+                $scope.orderFilterDto.weight = null;
+                if ($scope.filterObject.weight > 0) {
+                    $scope.orderFilterDto.weight = $scope.filterObject.weight;
+                } else if ($scope.filterObject.weight) {
                     Notification.error('Sorry, you write incorrect weight. Please, write a positive number');
                 }
 
+                $scope.orderFilterDto.arrivalDate = null;
                 var currentTime = Date.now();
-                if (Date.parse($scope.filterObject.filterByArrivalDate) > currentTime) {
-                    Date.parse($scope.filterObject.filterByArrivalDate);
+                if (Date.parse($scope.filterObject.arrivalDate) > currentTime) {
+                    $scope.orderFilterDto.arrivalDate = Date.parse($scope.filterObject.arrivalDate);
                 }
-                else if ($scope.filterObject.filterByArrivalDate) {
+                else if ($scope.filterObject.arrivalDate) {
                     Notification.error('Sorry, you write incorrect date. You can use the calendar');
                 }
-            };
 
+                $scope.orderFilterDto.currentPage = $scope.filterObject.currentPage;
+                $scope.orderFilterDto.itemsPerPage = $scope.filterObject.itemsPerPage;
 
-
-            $scope.filter = () => {
-                prepareFilterObject();
-                $http({
-                    url: '/driver/filtered-orders/',
-                    method: 'GET',
-                    params: {
-                        orderDto: $scope.filterObject,
-                        itemsPerPage: $scope.paginationObject.itemsPerPage,
-                        currentPage: $scope.paginationObject.currentPage
-                    }
-                }).then(function (response0) {
-                    $http.get("/driver/count-items-filter/")
-                        .then(function (response1) {
-                            $scope.totalItems = response1.data;
-                        });
-                    $scope.orders.open = response0.data;
+                $http.post('/driver/filtered-orders', $scope.orderFilterDto)
+                    .then(function (response0) {
+                        $http.get("/driver/count-items-filter/")
+                            .then(function (response1) {
+                                $scope.totalItems = response1.data;
+                            });
+                        $scope.orders.open = response0.data;
                 })
             };
 

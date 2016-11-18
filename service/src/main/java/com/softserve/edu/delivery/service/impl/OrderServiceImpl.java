@@ -1,15 +1,13 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.domain.*;
-import com.softserve.edu.delivery.dto.FeedbackDto;
-import com.softserve.edu.delivery.dto.LocationDto;
-import com.softserve.edu.delivery.dto.OfferDto;
-import com.softserve.edu.delivery.dto.OrderDto;
+import com.softserve.edu.delivery.dto.*;
 import com.softserve.edu.delivery.repository.*;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +31,6 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private CityRepository cityRepository;
-    @Autowired
-    private OfferRepository offerRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -122,26 +118,15 @@ public class OrderServiceImpl implements OrderService {
                 .getAllClosedOrderByCustomerEmail(email);
     }
 
-//    @Override
-//    public List<OrderDto> getOrdersFiltered(Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate, Pageable pageable) {
-//        Page<Order> result = orderRepository
-//                .getOrdersFiltered(cityFromId, cityToId, weight, arrivalDate,pageable);
-//        totalItems = result.getTotalElements();
-//        return result
-//                .getContent()
-//                .stream()
-//                .map(OrderDto::of)
-//                .collect(Collectors.toList());
-//    }
-
     @Override
-    public List<OrderDto> getOrdersFiltered(OrderDto orderDto, Pageable pageable) {
+    public List<OrderDto> getOrdersFiltered(OrderFilterDto orderFilterDto) {
+        Pageable pageable = new PageRequest(orderFilterDto.getCurrentPage() - 1, orderFilterDto.getItemsPerPage());
         Page<Order> result = orderRepository
                 .getOrdersFiltered(
-                        orderDto.getLocationFrom().getCityId(),
-                        orderDto.getLocationTo().getCityId(),
-                        orderDto.getWeight(),
-                        orderDto.getArrivalDate(),
+                        orderFilterDto.getCityFromId(),
+                        orderFilterDto.getCityToId(),
+                        orderFilterDto.getWeight(),
+                        orderFilterDto.getArrivalDate(),
                         pageable);
         totalItems = result.getTotalElements();
         return result

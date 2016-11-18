@@ -24,7 +24,7 @@
                         <td>
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="{{ 'city_from' | translate }}"
-                                       ng-model="filterObject.filterByCityFrom"
+                                       ng-model="filterObject.cityFrom"
                                        uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
                                        for location in findLocations($viewValue)"
                                        typeahead-loading="loadingCityFrom" typeahead-no-results="noResultsCityFrom"/>
@@ -33,7 +33,7 @@
                         <td>
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="{{ 'city_to' | translate }}"
-                                       ng-model="filterObject.filterByCityTo"
+                                       ng-model="filterObject.cityTo"
                                        uib-typeahead="location as (location.cityName + ', ' + location.regionName + ', ' + location.stateName)
                                        for location in findLocations($viewValue)"
                                        typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"/>
@@ -42,12 +42,12 @@
                         <td>
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="{{ 'weight' | translate }}"
-                                       ng-model="filterObject.filterByWeight"/>
+                                       ng-model="filterObject.weight"/>
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input ng-focus="datePicker.open()" ng-model="filterObject.filterByArrivalDate"
+                                <input ng-focus="datePicker.open()" ng-model="filterObject.arrivalDate"
                                        placeholder="{{ 'arrival_in' | translate }}"
                                        is-open="datePicker.opened" uib-datepicker-popup="{{datePicker.format}}"
                                        datepicker-options="datePicker.options" close-text="Close"
@@ -109,11 +109,11 @@
             </button>
             <div>
                 <footer>
-                    <ul uib-pagination class="pagination" id="down" items-per-page="paginationObject.itemsPerPage" total-items="totalItems" ng-click="scroll('top')"
-                        ng-model="paginationObject.currentPage" max-size="5" ng-change="pageChanged()" boundary-links="true" force-ellipses="true"></ul>
+                    <ul uib-pagination class="pagination" id="down" items-per-page="filterObject.itemsPerPage" total-items="totalItems" ng-click="scroll('top')"
+                        ng-model="filterObject.currentPage" max-size="5" ng-change="pageChanged()" boundary-links="true" force-ellipses="true"></ul>
                     <span class="col-xs-2">
                         <label for="ordersItemsPerPage">{{ 'items_page' | translate }}</label>
-                            <select dir="rtl" id="ordersItemsPerPage" class="form-control col-xs-2" ng-model="paginationObject.itemsPerPage" ng-change="setItemsPerPage()">
+                            <select dir="rtl" id="ordersItemsPerPage" class="form-control col-xs-2" ng-model="filterObject.itemsPerPage" ng-change="setItemsPerPage()">
                                 <option value="5">5</option>
                                 <option value="10" ng-selected="true">10</option>
                                 <option value="25">25</option>
