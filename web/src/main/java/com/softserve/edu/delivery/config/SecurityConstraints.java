@@ -8,11 +8,6 @@ public class SecurityConstraints {
     public static final String USERNAME_PARAM = "email";
     public static final String PASSWORD_PARAM = "password";
 
-    public static final String CUSTOMER_ROLE = Role.CUSTOMER.getName();
-    public static final String DRIVER_ROLE = Role.DRIVER.getName();
-    public static final String ADMIN_ROLE = Role.ADMIN.getName();
-    public static final String MODERATOR_ROLE = Role.MODERATOR.getName();
-
     public static final String AUTHENTICATED = "isAuthenticated()";
     public static final String CUSTOMER = "hasAuthority('Customer')";
     public static final String DRIVER = "hasAuthority('Driver')";
@@ -25,12 +20,13 @@ public class SecurityConstraints {
     public static final String LOGIN_PAGE = "/login";
     public static final String CUSTOMER_REG_PAGE = "/registration";
     public static final String CUSTOMER_REG_PROCESS = "/register";
-    public static final String DRIVER_REG_PAGE = "/driverRegistration";
-    public static final String DRIVER_REG_PROCESS = "/driverRegister";
     public static final String LOGIN_PROCESS_URL = "/loginProcess";
     public static final String REDIRECT_URL = "/authRedirect";
     public static final String FAILURE_LOGIN_URL = "/login?auth=false";
     public static final String LOGOUT_URL = "/login?logout";
+
+    public static final String PAGE_NOT_FOUND_URL = "/notFound";
+    public static final String INTERNAL_SERVER_ERROR_URL = "/serverError";
     public static final String ACCESS_DENIED_URL = "/accessDenied";
 
     public static final String CUSTOMER_PAGE = "/#/orders/open";
@@ -48,6 +44,12 @@ public class SecurityConstraints {
             LINKED_IN_CALLBACK,
             GOOGLE_LOGIN,
             GOOGLE_CALLBACK
+    };
+
+    public static final String[] ERROR_URL = {
+            PAGE_NOT_FOUND_URL,
+            INTERNAL_SERVER_ERROR_URL,
+            ACCESS_DENIED_URL
     };
 
     public static final String[] STATIC_RESOURCES = {

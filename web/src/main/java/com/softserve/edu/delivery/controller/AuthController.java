@@ -29,7 +29,7 @@ public class AuthController {
 
     private final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
 
-    @RequestMapping(value = {"/welcome"})
+    @GetMapping(value = "/welcome")
     public ModelAndView welcome() {
         ModelAndView mv = new ModelAndView();
         mv.addObject("orderIdDto", new OrderIdDto());
@@ -38,7 +38,7 @@ public class AuthController {
         return mv;
     }
 
-    @RequestMapping(value = "/login")
+    @GetMapping(value = "/login")
     public ModelAndView signIn(@RequestParam(value = "auth", required = false) String auth,
                                @RequestParam(value = "logout", required = false) String logout){
         ModelAndView mv = new ModelAndView();
@@ -55,7 +55,7 @@ public class AuthController {
         return mv;
     }
 
-    @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
+    @PostMapping(value = "/loginProcess")
     public ModelAndView loginProcess(@ModelAttribute("userAuthDto") @Valid UserAuthDTO userAuthDTO,
                                      BindingResult result) {
         if (result.hasErrors()) {
@@ -66,7 +66,7 @@ public class AuthController {
         return new ModelAndView("redirect:/welcome");
     }
 
-    @RequestMapping(value = "/authRedirect", method = RequestMethod.GET)
+    @GetMapping(value = "/authRedirect")
     public ModelAndView authRedirect() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName(roleRedirect());
@@ -74,7 +74,7 @@ public class AuthController {
         return mv;
     }
 
-    @RequestMapping(value = "/registration")
+    @GetMapping(value = "/registration")
     public ModelAndView registration() {
         ModelAndView mv = new ModelAndView();
         mv.addObject("userRegistration", new UserRegistrationDTO());
@@ -83,16 +83,7 @@ public class AuthController {
         return mv;
     }
 
-    @RequestMapping(value = "/driverRegistration")
-    public ModelAndView driverRegistration() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("driverRegistration", new DriverRegistrationDTO());
-        mv.setViewName("driverRegistration");
-        logger.info("Return registration page");
-        return mv;
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping(value = "/register")
     public ModelAndView reg(@ModelAttribute("userRegistration") @Valid UserRegistrationDTO userRegDTO,
                             BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
@@ -112,25 +103,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/driverRegister", method = RequestMethod.POST)
-    public ModelAndView regDriver(@ModelAttribute("driverRegistration") @Valid DriverRegistrationDTO driverRegDTO,
-                                  BindingResult result, HttpServletRequest request) {
-        if (result.hasErrors()) {
-            logger.error("Registration binding process has errors, returning registration form back");
-            return new ModelAndView("registration", "driverRegistration", driverRegDTO);
-        } else {
-            String url = request.getRequestURL().toString();
-            service.register(driverRegDTO, url);
-            ModelAndView mv = new ModelAndView();
-            mv.addObject("userAuthDto", new UserAuthDTO());
-            mv.addObject("success_register", "");
-            mv.setViewName("login");
-            logger.info("Return login page");
-            return mv;
-        }
-    }
-
-    @RequestMapping(value = {"/register", "/driverRegister"}, method = RequestMethod.GET)
+    @GetMapping(value = "/register")
     public ModelAndView reg(@RequestParam("token") String token) {
         service.verifyRegistration(token);
         ModelAndView mv = new ModelAndView();
@@ -141,17 +114,6 @@ public class AuthController {
         return mv;
     }
 
-    @RequestMapping(value = "/accessDenied")
-    public ModelAndView accessDenied() {
-        logger.warn("Access Denied. Role isn't allow to get this resource.");
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("access_denied", "");
-        mv.addObject("orderIdDto", new OrderIdDto());
-        logger.info("Return welcome page");
-        mv.setViewName("welcome");
-        return mv;
-    }
-
     @RequestMapping(path = "/user/email", produces = "text/plain")
     @ResponseBody
     public String userEmail(Principal principal) {
@@ -159,7 +121,7 @@ public class AuthController {
     }
 
     @PreAuthorize(AUTHENTICATED)
-    @RequestMapping(value = "role")
+    @GetMapping(value = "role")
     public @ResponseBody StringResponse getRole() {
         String role = authenticationDetails.getAuthenticatedUserRole();
         logger.info("Return user role: " + role);

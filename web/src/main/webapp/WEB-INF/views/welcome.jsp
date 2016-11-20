@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="mvc" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <head>
@@ -13,7 +13,9 @@
 
     <spring:url value="css/welcome.css" var="style"/>
     <spring:url value="video/welcome.mp4" var="video"/>
+    <spring:url value="img/favicon.png" var="icon"/>
 
+    <link rel="shortcut icon" href="${icon}">
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
 
@@ -59,16 +61,13 @@
 
 <div id="track_container" class="signin centered">
     <h3><spring:message code="track_baggage"/></h3>
-    <c:if test="${access_denied != null}">
-        <h4><spring:message code="tooltip.access_denied"/></h4>
-    </c:if>
     <spring:message code='tooltip.track' var="tooltip"/>
     <spring:message code='track' var="track"/>
     <mvc:form modelAttribute="orderIdDto" action="tracking" method="post" enctype="utf-8">
         <div class="mess">
             <mvc:input path="orderId" type="number" class="user" min="1" max="9000000000000000000" placeholder="${tooltip}" required="required"/>
             <mvc:errors path="orderId"/>
-`        </div>
+        </div>
         <input id="track" type="submit" value="${track}">
         <div class="lost">
             <div class="clear"></div>

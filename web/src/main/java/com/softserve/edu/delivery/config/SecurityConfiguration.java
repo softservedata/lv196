@@ -50,10 +50,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(STATIC_RESOURCES).permitAll()
-                .antMatchers(WELCOME_PAGE, REDIRECT_URL, ACCESS_DENIED_URL).permitAll()
+                .antMatchers(WELCOME_PAGE, REDIRECT_URL).permitAll()
+                .antMatchers(ERROR_URL).permitAll()
                 .antMatchers(SOCIAL_URL).permitAll()
-                .antMatchers(LOGIN_PAGE, CUSTOMER_REG_PAGE, CUSTOMER_REG_PROCESS,
-                        DRIVER_REG_PAGE, DRIVER_REG_PROCESS).anonymous()
+                .antMatchers(LOGIN_PAGE, CUSTOMER_REG_PAGE, CUSTOMER_REG_PROCESS).anonymous()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage(LOGIN_PAGE)
                 .loginProcessingUrl(LOGIN_PROCESS_URL)

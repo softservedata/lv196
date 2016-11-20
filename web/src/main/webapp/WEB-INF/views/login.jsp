@@ -16,13 +16,13 @@
     <spring:url value="video/login.mp4" var="video"/>
     <spring:url value="img/linkedin.png" var="linkedIn"/>
     <spring:url value="img/google.png" var="google"/>
-    <spring:url value="img/twitter.png" var="twitter"/>
-    <spring:url value="img/outlook.png" var="outlook"/>
+    <spring:url value="img/favicon.png" var="icon"/>
 
+    <link rel="shortcut icon" href="${icon}">
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
 
-    <title>Delivery.com | <spring:message code="welcome"/></title>
+    <title>Delivery.com | <spring:message code="sigin"/></title>
 </head>
 <body>
 <ul class="topnav" id="myTopnav">
@@ -83,8 +83,6 @@
                 <h5><spring:message code="signin_as"/>:</h5>
                 <a href="login/linkedin"><img src="${linkedIn}"></a>
                 <a href="login/google"><img src="${google}"></a>
-                <a href="#"><img src="${twitter}"></a>
-                <a href="#"><img src="${outlook}"></a>
             </div>
             <div class="clear"></div>
         </div>

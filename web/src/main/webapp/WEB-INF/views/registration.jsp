@@ -14,7 +14,9 @@
     <spring:url value="css/welcome.css" var="style"/>
     <spring:url value="js/welcome.js" var="script"/>
     <spring:url value="video/registration.mp4" var="video"/>
+    <spring:url value="img/favicon.png" var="icon"/>
 
+    <link rel="shortcut icon" href="${icon}">
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link href="${style}" rel="stylesheet" type="text/css" media="all"/>
 
@@ -94,14 +96,6 @@
             <mvc:errors path="userPhoneNumber"/>
         </div>
         <input type="submit" value="${register}">
-        <div class="lost">
-            <div class="lost-userPassword">
-                <h5>
-                    <a href="driverRegistration"><spring:message code="idriver"/></a>
-                </h5>
-            </div>
-            <div class="clear"></div>
-        </div>
     </mvc:form>
 </div>
 </body>
