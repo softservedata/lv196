@@ -93,6 +93,12 @@ public class UserProfileController {
         return new ResponseEntity(responseHeaders, status);
     }
 
+    private ResponseEntity handleException(String errorDetails, String message, HttpStatus status) {
+        logger.error(errorDetails + message);
+        responseHeaders.set("message", message);
+        return new ResponseEntity(responseHeaders, status);
+    }
+
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "loggedUser", method = RequestMethod.GET)
     ResponseEntity<UserProfileDto> getLoggedUser() {
@@ -196,6 +202,10 @@ public class UserProfileController {
         responseHeaders.set("message", "OK");
         try {
             carService.delete(carId);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            errorDetails = "Cannot delete a car, which is referenced in the db, carId= " + carId +
+                    " in UserProfileController.addNewCar(CarDTO carDTO) ";
+            return handleException(errorDetails, e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
             errorDetails = "Exception while trying to delete car with id " + carId +
                     " in UserProfileController.addNewCar(CarDTO carDTO) ";

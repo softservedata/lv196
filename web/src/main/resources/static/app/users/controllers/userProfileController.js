@@ -13,7 +13,7 @@ angular
             const minPswdLength = 4;
             const maxPswdLength = 20;
 
-            $scope.isDriver = false;
+            $scope.showCars = false;
             $scope.cars = [];
             $scope.initialCars = [];
             $scope.initialUser = {};
@@ -48,13 +48,13 @@ angular
                 showProgressBack: false
             };
 
+            $scope.deActivateCar = {};
+
             $scope.minPswdLength = 0;
             $scope.maxPswdLength = 0;
-            $scope.deactivate_car_warn;
 
             var initialCar = $scope.car;
             var deleteCarId;
-            var deactivateCarId;
             var modalInstance;
 
             var getPublicId = function (fileUrl, folder) {
@@ -84,12 +84,32 @@ angular
             };
 
             var checkIfDriver = function () {
-                if ($scope.loggedUser.role.toLowerCase() == 'driver') {
-                    $scope.isDriver = true;
+                if ($scope.loggedUser.role.toLowerCase() == 'driver' || $scope.loggedUser.role.toLowerCase() == 'customer') {
+                    $scope.showCars = true;
                     $scope.getCars();
                 } else {
-                    $scope.isDriver = false;
+                    $scope.showCars = false;
                 }
+            };
+
+            var resetCar = function () {
+                $scope.car = {
+                    id: -1,
+                    vehicleName: '',
+                    vehicleNumber: '',
+                    vehicleVIN: '',
+                    vehicleFrontPhotoURL: '',
+                    vehicleBackPhotoURL: '',
+                    vehicleWeight: '',
+                    vehicleLength: '',
+                    vehicleWidth: '',
+                    vehicleHeight: '',
+                    driverEmail: '',
+                    active: true,
+                    progress: 0,
+                    showProgressFront: false,
+                    showProgressBack: false
+                };
             };
 
             $scope.getLoggedUser = function () {
@@ -201,7 +221,7 @@ angular
                 if (form != null) {
                     form.$setPristine();
                 }
-                if (deactivate == true) {
+                if (deactivate) {
                     modalInstance.close();
                     car.active = !car.active;
                 }
@@ -211,6 +231,9 @@ angular
                             $scope.getCars();
                             if (notification) {
                                 Notification.success($filter('translate')('user_update_success'));
+                            }
+                            if (deactivate) {
+                                $scope.isInactiveAccordionOpen = true;
                             }
                         },
                         function (response) {
@@ -235,6 +258,7 @@ angular
             };
 
             $scope.addCar = function () {
+                resetCar();
                 modalInstance = $uibModal.open({
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
@@ -266,16 +290,16 @@ angular
                 });
             };
 
-            $scope.deactivateCar = function (car, cant_del) {
-                if (cant_del){
-                    $scope.deactivate_car_warn = 'cant_del_deactivate_car_warn';
+            $scope.deactivateCar = function (car, cant_del, msg) {
+                if (cant_del) {
+                    $scope.deactivate_car_warn = msg;
                 } else if (car.active) {
                     $scope.deactivate_car_warn = 'deactivate_car_warn';
                 } else {
                     $scope.deactivate_car_warn = 'activate_car_warn';
                 }
 
-                $scope.car = car;
+                $scope.deActivateCar = car;
 
                 modalInstance = $uibModal.open({
                     ariaLabelledBy: 'modal-title',
@@ -306,11 +330,17 @@ angular
                                 }
                             },
                             function (response) {
-                                for (var i = 0; i < $scope.cars.length; i++) {
-                                    if ($scope.cars[i].id == deleteCarId) {
-                                        $scope.deactivateCar($scope.cars[i], true);
-                                    }
+                                var msg = '';
+                                if (response.status == 409) {
+                                    msg = ($filter('translate')('cant_delete_referenced_car'));
+                                } else {
+                                    msg = ($filter('translate')('cant_del_deactivate_car_warn'));
                                 }
+                                    for (var i = 0; i < $scope.cars.length; i++) {
+                                        if ($scope.cars[i].id == deleteCarId) {
+                                            $scope.deactivateCar($scope.cars[i], true, msg);
+                                        }
+                                    }
                             });
                 }
             };
@@ -358,10 +388,10 @@ angular
             };
 
             $scope.deactivateCarText = function (car) {
-              if (car.active){
-                  return $filter('translate')('deactivate_car_info');
-              }
-              return $filter('translate')('activate_car_info');
+                if (car.active) {
+                    return $filter('translate')('deactivate_car_info');
+                }
+                return $filter('translate')('activate_car_info');
             };
 
             checkIfDriver();

@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.Feedback;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDto;
+import com.softserve.edu.delivery.dto.FeedbackFilterDTO;
 import com.softserve.edu.delivery.service.FeedbackService;
 import org.springframework.stereotype.Component;
 
@@ -17,22 +18,26 @@ import java.sql.Timestamp;
 @Component
 public class FeedbackServiceImplTest{
 
-    private  final Long MOCK_FEEDBACK_ID = 1L;
-    private  final int MOCK_RATE = 27;
-    private  final boolean MOCK_APPROVED = false;
-    private  final String MOCK_TEXT = "mock text";
-    private  final String MOCK_USER_EMAIL= "emai0@gmail.com";
-    private  final String MOCK_USER_FIRST_NAME= "Firstname";
-    private  final String MOCK_USER_LAST__NAME= "Lastname";
+    private final Long MOCK_FEEDBACK_ID = 1L;
+    private final int MOCK_RATE = 27;
+    private final boolean MOCK_APPROVED = false;
+    private final String MOCK_TEXT = "mock text";
+    private final String MOCK_USER_EMAIL = "emai0@gmail.com";
+    private final String MOCK_USER_FIRST_NAME = "Firstname";
+    private final String MOCK_USER_LAST__NAME = "Lastname";
     private final String MOCK_APPROVED_DRIVER_NAME = "Approved Driver";
     private final String MOCK_APPROVED_DRIVER_EMAIL = "email0@gmail.com";
-    private  final Timestamp MOCK_CREATED_ON= Timestamp.valueOf("2016-10-02 04:15:06");
-    private  final Long MOCK_ORDER_ID = 1L;
-    private  final Long START_ORDER_ID = 1L;
-    private  final Long LAST_ORDER_ID = 2L;
-    private  final Long LAST_USER_ID = 2L;
-    private  final int MAX_FEEDBACK_RATE = 50;
-    private  final int MAX_RANDOM_TEXT = 50;
+    private final String MOCK_SORT_BY = "createdOn";
+    private final String MOCK_SORT_ORDER = "desc";
+    private final Timestamp MOCK_CREATED_ON = Timestamp.valueOf("2016-10-02 04:15:06");
+    private final Long MOCK_ORDER_ID = 1L;
+    private final Long START_ORDER_ID = 1L;
+    private final Long LAST_ORDER_ID = 2L;
+    private final Long LAST_USER_ID = 2L;
+    private final int MAX_FEEDBACK_RATE = 50;
+    private final int MAX_RANDOM_TEXT = 50;
+    private final int MOCK_CURRENT_PAGE = 1;
+    private final int MOCK_ITEMS_PER_PAGE = 5;
 
     private final FeedbackService feedbackService;
 
@@ -130,6 +135,22 @@ public class FeedbackServiceImplTest{
     Order createMockOrder() {
         return new Order()
                 .setId(MOCK_ORDER_ID);
+    }
+
+    FeedbackFilterDTO createMockFeedbackFilterDTO (){
+        FeedbackFilterDTO feedbackFilterDTO = new FeedbackFilterDTO();
+        feedbackFilterDTO.setText(MOCK_TEXT);
+        feedbackFilterDTO.setRate(Integer.toString(MOCK_RATE));
+        feedbackFilterDTO.setUserName(MOCK_USER_FIRST_NAME + MOCK_USER_LAST__NAME);
+        feedbackFilterDTO.setTransporterName(MOCK_APPROVED_DRIVER_NAME);
+        feedbackFilterDTO.setCreatedOn(MOCK_CREATED_ON.toString());
+        feedbackFilterDTO.setApproved(Boolean.toString(MOCK_APPROVED));
+        feedbackFilterDTO.setSortBy(MOCK_SORT_BY);
+        feedbackFilterDTO.setSortOrder(MOCK_SORT_ORDER);
+        feedbackFilterDTO.setCurrentPage(MOCK_CURRENT_PAGE);
+        feedbackFilterDTO.setItemsPerPage(MOCK_ITEMS_PER_PAGE);
+
+        return feedbackFilterDTO;
     }
 
      /**

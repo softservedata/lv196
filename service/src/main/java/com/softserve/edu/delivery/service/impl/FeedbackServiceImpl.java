@@ -1,6 +1,9 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.FeedbackFilter;
+import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.FeedbackFilterDTO;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
@@ -14,11 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Date;
+import java.util.*;
 
 @Service("feedbackService")
 @Transactional
@@ -40,9 +39,10 @@ public class FeedbackServiceImpl implements FeedbackService {
     public FeedbackServiceImpl() {
     }
 
-    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, UserRepository userRepository,
-                               OrderRepository orderRepository) {
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, FeedbackRepositoryCustomImpl
+            feedbackRepositoryCustom, UserRepository userRepository, OrderRepository orderRepository) {
         this.feedbackRepository = feedbackRepository;
+        this.feedbackRepositoryCustom = feedbackRepositoryCustom;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
     }
@@ -90,6 +90,14 @@ public class FeedbackServiceImpl implements FeedbackService {
         return "asc";
     }
 
+    private List<FeedbackDto> copyFeedbackListToDTOList(List<Feedback> feedbackList) {
+        List<FeedbackDto> listFeedbackDTO = new ArrayList<>();
+        feedbackList.forEach(f ->
+                listFeedbackDTO.add(copyFeedbackToDTO(f))
+        );
+        return listFeedbackDTO;
+    }
+
     public FeedbackDto copyFeedbackToDTO(Feedback feedback) {
         FeedbackDto feedbackDTO = new FeedbackDto();
         feedbackDTO.setFeedbackId(feedback.getFeedbackId());
@@ -115,13 +123,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDTO;
     }
 
-    private List<FeedbackDto> copyFeedbackListToDTOList(List<Feedback> feedbackList) {
-        List<FeedbackDto> listFeedbackDTO = new ArrayList<>();
-        feedbackList.forEach(f ->
-                listFeedbackDTO.add(copyFeedbackToDTO(f))
-        );
-        return listFeedbackDTO;
-    }
 
     public Feedback copyDTOToFeedback(FeedbackDto feedbackDTO) {
         Feedback feedback = new Feedback();
@@ -143,6 +144,13 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setApproved(feedbackDTO.getApproved());
         feedback.setCreatedOn(feedbackDTO.getCreatedOn());
         return feedback;
+    }
+
+
+    @Override
+    @Transactional
+    public List<FeedbackDto> findAll() {
+        return copyFeedbackListToDTOList(feedbackRepository.findAll());
     }
 
     @Override
@@ -230,23 +238,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
     }
 
-    @Override
-    @Transactional
-    public FeedbackDto findByFeedbackId(Long id) {
-        Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
-        if (oFeedback.isPresent()) {
-            return copyFeedbackToDTO(oFeedback.get());
-        } else {
-            throw new NoSuchElementException();
-        }
-    }
-
-    @Override
-    @Transactional
-    public List<FeedbackDto> findAll() {
-        return copyFeedbackListToDTOList(feedbackRepository.findAll());
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     @Transactional
@@ -276,11 +267,24 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional
+    public FeedbackDto findByFeedbackId(Long id) {
+        Optional<Feedback> oFeedback = feedbackRepository.findOneOpt(id);
+        if (oFeedback.isPresent()) {
+            return copyFeedbackToDTO(oFeedback.get());
+        } else {
+            throw new NoSuchElementException("No feedback with id: " + id + " found.");
+        }
+    }
+
+    @Override
     public FeedbackDto getCustomerFeedback(Long id) {
         Feedback feedback = feedbackRepository.getCustomerFeedback(id);
         if (feedback != null) {
             return copyFeedbackToDTO(feedback);
-        } else return null;
+        }
+
+        return null;
     }
 
     @Override
@@ -306,15 +310,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void updateFeedback(FeedbackDto dto) {
-        Feedback feedback = feedbackRepository.findOneOpt(dto.getFeedbackId())
-                .orElseThrow(() -> new IllegalArgumentException("No such feedback with id: " + dto.getFeedbackId()));
-        feedback.setRate(dto.getRate());
-        feedback.setText(dto.getText());
-        feedbackRepository.save(feedback);
-    }
-
-    @Override
     public FeedbackDto getFeedback(Long orderId, String email) {
         Feedback feedback = feedbackRepository
                 .getFeedbackByOrderIdAndEmail(orderId, email)
@@ -323,8 +318,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .orElse(null);
         if (feedback == null) {
             return new FeedbackDto();
-        }
-        else {
+        } else {
             FeedbackDto feedbackDTO = new FeedbackDto();
             feedbackDTO.setCreatedOn(feedback.getCreatedOn());
             feedbackDTO.setApproved(feedback.getApproved());
@@ -335,6 +329,15 @@ public class FeedbackServiceImpl implements FeedbackService {
             feedbackDTO.setUserEmail(feedback.getUser().getEmail());
             return feedbackDTO;
         }
+    }
+
+    @Override
+    public void updateFeedback(FeedbackDto dto) {
+        Feedback feedback = feedbackRepository.findOneOpt(dto.getFeedbackId())
+                .orElseThrow(() -> new IllegalArgumentException("No such feedback with id: " + dto.getFeedbackId()));
+        feedback.setRate(dto.getRate());
+        feedback.setText(dto.getText());
+        feedbackRepository.save(feedback);
     }
 
 }

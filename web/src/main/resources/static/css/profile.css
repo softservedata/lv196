@@ -2,6 +2,10 @@
     padding-top: 70px;
 }
 
+.profile.navbar {
+    background-color: #148b73;
+}
+
 .profile.center{
     text-align: center;
 }
@@ -60,3 +64,8 @@
     padding-left:1px;
     padding-right:1px;
 }
+
+.profile.button.car {
+    background-color: #f0f0f0;
+}
+

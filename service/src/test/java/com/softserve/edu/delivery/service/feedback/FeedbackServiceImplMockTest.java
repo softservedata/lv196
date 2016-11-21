@@ -1,12 +1,14 @@
 package com.softserve.edu.delivery.service.feedback;
 
 import com.softserve.edu.delivery.domain.Feedback;
+import com.softserve.edu.delivery.domain.FeedbackFilter;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
+import com.softserve.edu.delivery.repository.impl.FeedbackRepositoryCustomImpl;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.impl.FeedbackServiceImpl;
 import org.mockito.Mockito;
@@ -28,16 +30,23 @@ import static org.mockito.Mockito.*;
 public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTests {
 
     private final Long FEEDBACK_ID = 1L;
+    private final Long DELETED_FEEDBACK_ID = 10000000L;
     private final int COUNT = 2;
     private final String APPROVED_DRIVER_NAME = "Approved Driver";
     private final String APPROVED_DRIVER_EMAIL = "email0@gmail.com";
 
     private final FeedbackRepository mockFeedbackRepo = Mockito.mock(com.softserve.edu.delivery.repository.FeedbackRepository.class);
+    private final FeedbackRepositoryCustomImpl mockFeedbackCustomRepo = Mockito.mock(
+            com.softserve.edu.delivery.repository.impl.FeedbackRepositoryCustomImpl.class);
     private final UserRepository mockUserRepo = Mockito.mock(com.softserve.edu.delivery.repository.UserRepository.class);
     private final OrderRepository mockOrderRepo = Mockito.mock(com.softserve.edu.delivery.repository.OrderRepository.class);
 
     private FeedbackServiceImplTest feedbackServiceImplTest;
     private FeedbackService feedbackService;
+
+    private FeedbackDto feedbackDto;
+    private Feedback feedback;
+    private Optional<Feedback> oFeedback;
 
     @Override
     @BeforeSuite
@@ -47,8 +56,12 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
     @BeforeClass
     void injectMockDAO() {
-        feedbackService = new FeedbackServiceImpl(mockFeedbackRepo, mockUserRepo, mockOrderRepo);
+        feedbackService = new FeedbackServiceImpl(mockFeedbackRepo, mockFeedbackCustomRepo, mockUserRepo, mockOrderRepo);
         feedbackServiceImplTest = new FeedbackServiceImplTest(feedbackService);
+
+        feedbackDto = feedbackServiceImplTest.createMockFeedbackDTO();
+        feedback = feedbackServiceImplTest.createMockFeedback();
+        oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
     }
 
     @BeforeMethod
@@ -71,7 +84,6 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      * to an object of feedbackDTO.class
      */
     public void testCopyFeedbackToDTO() {
-        Feedback feedback = feedbackServiceImplTest.createMockFeedback();
 
         FeedbackDto feedbackDTO = feedbackService.copyFeedbackToDTO(feedback);
 
@@ -86,7 +98,6 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
                 feedback.getCreatedOn().equals(feedbackDTO.getCreatedOn()));
     }
 
-
     @Test(groups = {"mock"})
     /**
      * tests method from FeedbackServiceImpl.class, which copies fields from an object of FeedbackDTO.class
@@ -94,18 +105,17 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      */
     public void testCopyDTOToFeedback() {
 
-        FeedbackDto feedbackDTO = feedbackServiceImplTest.createMockFeedbackDTO();
-        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO);
+        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDto);
 
-        Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDTO.getFeedbackId()) &&
-                feedback.getOrder().getId().equals(feedbackDTO.getOrderId()) &&
-                feedback.getText().equals(feedbackDTO.getText()) &&
-                feedback.getUser().getEmail().equals(feedbackDTO.getUserEmail()) &&
+        Assert.assertTrue(feedback.getFeedbackId().equals(feedbackDto.getFeedbackId()) &&
+                feedback.getOrder().getId().equals(feedbackDto.getOrderId()) &&
+                feedback.getText().equals(feedbackDto.getText()) &&
+                feedback.getUser().getEmail().equals(feedbackDto.getUserEmail()) &&
                 feedback.getUser().getFirstName() != null &&
                 feedback.getUser().getLastName() != null &&
-                feedback.getRate().equals(feedbackDTO.getRate()) &&
-                feedback.getApproved().equals(feedbackDTO.getApproved()) &&
-                feedback.getCreatedOn().equals(feedbackDTO.getCreatedOn()));
+                feedback.getRate().equals(feedbackDto.getRate()) &&
+                feedback.getApproved().equals(feedbackDto.getApproved()) &&
+                feedback.getCreatedOn().equals(feedbackDto.getCreatedOn()));
     }
 
     @Test(groups = {"mock"})
@@ -139,48 +149,27 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
 
     }
 
-
-    @Test(groups = {"mock"})
-    /**
-     * tests method from FeedbackServiceImpl.class, which gets an object of FeedbackDTO.class with a given id
-     *
-     */
-    public void testGetFeedbackById() {
-
-        FeedbackDto feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
-
-        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO0);
-
-        when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(Optional.of(feedback));
-
-        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
-
-        Assert.assertTrue(feedbackDTO0.equals(feedbackDTO1));
-    }
-
     @Test(groups = {"mock"})
     /**
      * tests method from FeedbackServiceImpl.class, which changes status of a feedback in the db
      */
     public void testChangeFeedbackStatus() {
 
-        FeedbackDto feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
+        long feedbackId = feedbackDto.getFeedbackId();
 
-        long feedbackId = feedbackDTO0.getFeedbackId();
+        Boolean previousStatus = feedbackDto.getApproved();
 
-        Boolean previousStatus = feedbackDTO0.getApproved();
+        feedbackDto.setApproved(!previousStatus);
 
-        feedbackDTO0.setApproved(!previousStatus);
-
-        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO0);
+        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDto);
 
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(Optional.of(feedback));
 
-        feedbackService.changeFeedbackStatus(feedbackDTO0.getFeedbackId(), feedbackDTO0.getApproved());
+        feedbackService.changeFeedbackStatus(feedbackDto.getFeedbackId(), feedbackDto.getApproved());
 
-        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(feedbackId);
+        FeedbackDto feedbackDto1 = feedbackService.findByFeedbackId(feedbackId);
 
-        Assert.assertFalse(previousStatus.equals(feedbackDTO1.getApproved()));
+        Assert.assertFalse(previousStatus.equals(feedbackDto1.getApproved()));
     }
 
     @Test(groups = {"mock"})
@@ -190,61 +179,51 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      */
     public void testSave() {
 
-        FeedbackDto feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
-
-        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
-
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(oFeedback);
 
-        feedbackService.save(feedbackDTO0);
+        feedbackService.save(feedbackDto);
 
-        long id = feedbackDTO0.getFeedbackId();
+        long id = feedbackDto.getFeedbackId();
 
-        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(id);
+        FeedbackDto feedbackDto1 = feedbackService.findByFeedbackId(id);
 
-        Assert.assertTrue(feedbackDTO0.equals(feedbackDTO1));
+        Assert.assertTrue(feedbackDto.equals(feedbackDto1));
     }
 
-    @Test(groups = {"mock"})
+    @Test(groups = {"mock"}, dependsOnMethods = {"testSave"})
     /**
      * tests method from FeedbackServiceImpl.class, which updates an object of FeedbackDTO.class with a given id
      * to the db
      */
     public void testUpdate() {
 
-        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
-
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(oFeedback);
         when(mockFeedbackRepo.exists(anyLong())).thenReturn(true);
 
-        FeedbackDto feedbackDTO0 = feedbackService.findByFeedbackId(FEEDBACK_ID);
+        FeedbackDto feedbackDto0 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
-        feedbackServiceImplTest.changeData(feedbackDTO0);
+        feedbackServiceImplTest.changeData(feedbackDto0);
 
-        feedbackService.update(feedbackDTO0);
+        feedbackService.update(feedbackDto0);
 
-        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
+        FeedbackDto feedbackDto1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
 
-        Assert.assertFalse(feedbackDTO0.equals(feedbackDTO1));
+        Assert.assertFalse(feedbackDto0.equals(feedbackDto1));
     }
 
-    //priority is set lower, than others, to run the test last - otherwise it throws the exceptions, which
-    //causes other tests to fail
-    @Test(groups = {"mock"}, expectedExceptions = NoSuchElementException.class, priority = 1)
+    @Test(groups = {"mock"}, expectedExceptions = NoSuchElementException.class)
     /**
      * tests method from FeedbackServiceImpl.class, which deletes an object of FeedbackDTO.class with a given id
      * from the db
      */
     public void testDelete() {
 
-        Feedback feedback = feedbackServiceImplTest.createMockFeedback();
-
         doNothing().when(mockFeedbackRepo).delete(feedback);
-        when(mockFeedbackRepo.findOneOpt(anyLong())).thenThrow(new NoSuchElementException());
+        when(mockFeedbackRepo.findOneOpt(DELETED_FEEDBACK_ID)).thenThrow(new NoSuchElementException());
 
-        feedbackService.delete(FEEDBACK_ID);
+        feedbackService.delete(DELETED_FEEDBACK_ID);
 
-        feedbackService.findByFeedbackId(FEEDBACK_ID);
+        feedbackService.findByFeedbackId(DELETED_FEEDBACK_ID);
     }
 
     @Test(groups = {"mock"})
@@ -253,7 +232,6 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
      * with a given id
      */
     public void testFindOne() {
-        Optional<Feedback> oFeedback = Optional.of(feedbackServiceImplTest.createMockFeedback());
 
         when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(oFeedback);
 
@@ -280,5 +258,80 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
         Order mockOrder0 = feedbackServiceImplTest.createMockOrder();
         Order mockOrder1 = feedbackService.getOrder(1L);
         Assert.assertTrue(mockOrder0.equals(mockOrder1));
+    }
+
+    @Test(groups = {"mock"}, expectedExceptions = NullPointerException.class)
+    /**
+     * tests method from FeedbackServiceImpl.class, which return list of Feedback.class objects, filtered acc.
+     * to FeedbackFilterDTO.class
+     */
+    public void testFindFiltered() {
+
+        List<FeedbackDto> feedbackDtos = new ArrayList<>();
+
+        feedbackDtos.add(feedbackServiceImplTest.createMockFeedbackDTO());
+
+        when(mockFeedbackCustomRepo.findFiltered(any(FeedbackFilter.class))).thenReturn(feedbackDtos);
+
+        Assert.assertNotNull(feedbackService.findFiltered(feedbackServiceImplTest.createMockFeedbackFilterDTO()));
+    }
+
+    @Test(groups = {"mock"})
+    /**
+     * tests method from FeedbackServiceImpl.class, which gets an object of FeedbackDTO.class with a given id
+     *
+     */
+    public void testFindByFeedbackId() {
+
+        FeedbackDto feedbackDTO0 = feedbackServiceImplTest.createMockFeedbackDTO();
+
+        Feedback feedback = feedbackService.copyDTOToFeedback(feedbackDTO0);
+
+        when(mockFeedbackRepo.findOneOpt(anyLong())).thenReturn(Optional.of(feedback));
+
+        FeedbackDto feedbackDTO1 = feedbackService.findByFeedbackId(FEEDBACK_ID);
+
+        Assert.assertTrue(feedbackDTO0.equals(feedbackDTO1));
+    }
+
+    @Test(groups = {"mock"})
+    /**
+     * tests method from FeedbackServiceImpl.class, which gets an object of FeedbackDTO.class with a given id
+     * from a user with a Customer role
+     */
+    public void testGetCustomerFeedback() {
+
+        when(mockFeedbackRepo.getCustomerFeedback(anyLong())).thenReturn(feedback);
+
+        FeedbackDto feedbackDto = feedbackService.getCustomerFeedback(FEEDBACK_ID);
+
+        Assert.assertNotNull(feedbackDto);
+    }
+
+    @Test(groups = {"mock"}, expectedExceptions = IllegalArgumentException.class)
+    /**
+     * tests method from FeedbackServiceImpl.class, which adds a feedback from FeedbackDto and user email
+     */
+    public void testAddFeedback() {
+
+        feedbackService.addFeedback(null, null);
+
+    }
+
+    @Test(groups = {"mock"})
+    /**
+     * tests method from FeedbackServiceImpl.class, which finds a feedback by id and user email
+     */
+    public void testGetFeedback() {
+
+        List<Feedback> feedbacks = new ArrayList<>();
+
+        feedbacks.add(feedback);
+
+        when(mockFeedbackRepo.getFeedbackByOrderIdAndEmail(anyLong(), anyString())).thenReturn(feedbacks);
+
+        FeedbackDto feedbackDto = feedbackService.getFeedback(FEEDBACK_ID, APPROVED_DRIVER_EMAIL);
+
+        Assert.assertNotNull(feedbackDto);
     }
 }

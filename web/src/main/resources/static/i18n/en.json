@@ -150,5 +150,6 @@
 	"activate_car_warn": "Are you sure you want to move the car to active cars?",
 	"cant_del_deactivate_car_warn": "The car cannot be deleted. Do you want to remove it from active cars?",
 	"deactivate_car_info": "Click if you want to REMOVE the car FROM active list",
-	"activate_car_info": "Click if you want to MOVE the car TO active list"
+	"activate_car_info": "Click if you want to MOVE the car TO active list",
+	"cant_delete_referenced_car": "The car cannot be deleted, since it is stored in previous orders and/or offers. Do you want to remove it from active cars? "
 }
