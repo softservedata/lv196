@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ChatMessageRepository extends BaseRepository<ChatMessage, Long> {
     List<ChatMessage> findByChatId(Long chatId);
-    Page<ChatMessage> findByChatId(Long chatId, Pageable pageable);
+    Page<ChatMessage> findByChatIdOrderByTimestampDesc(Long chatId, Pageable pageable);
 }

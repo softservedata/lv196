@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +46,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public ConversationDto findByParticipant(String email, int page, int size) {
-        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "timestamp");
+        Pageable pageable = new PageRequest(page, size);
 
         Page<ChatInfoDto> chatPage = chatRepository.findChatsByParticipantEmail(email, pageable);
 
@@ -78,9 +77,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public ChatHistoryDto findMessagesHistory(Long chatId, int page, int size) {
-        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "timestamp");
+        Pageable pageable = new PageRequest(page, size);
 
-        Page<ChatMessage> chatPage = chatMessageRepository.findByChatId(chatId, pageable);
+        Page<ChatMessage> chatPage = chatMessageRepository.findByChatIdOrderByTimestampDesc(chatId, pageable);
 
         List<ChatMessageDto> messages = chatPage.getContent()
                 .stream()
