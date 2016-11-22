@@ -1,8 +1,14 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.domain.*;
-import com.softserve.edu.delivery.dto.*;
-import com.softserve.edu.delivery.repository.*;
+import com.softserve.edu.delivery.dto.FeedbackDto;
+import com.softserve.edu.delivery.dto.LocationDto;
+import com.softserve.edu.delivery.dto.OrderDto;
+import com.softserve.edu.delivery.dto.OrderFilterDto;
+import com.softserve.edu.delivery.repository.CityRepository;
+import com.softserve.edu.delivery.repository.FeedbackRepository;
+import com.softserve.edu.delivery.repository.OrderRepository;
+import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +24,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,13 +57,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderDto> findOpenOrders(String email) {
-        return Stream.of(
-                orderRepository
-                        .findOrderOpenWithOffersByCustomerEmail(email),
-                orderRepository
-                        .findOrderOpenWithoutOffersByCustomerEmail(email))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        return orderRepository
+                .findOrderOpenByCustomerEmail(email);
     }
 
     @Override
