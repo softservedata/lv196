@@ -1,8 +1,8 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.ChatDto;
 import com.softserve.edu.delivery.dto.ChatHistoryDto;
 import com.softserve.edu.delivery.dto.ChatMessageDto;
+import com.softserve.edu.delivery.dto.ConversationDto;
 import com.softserve.edu.delivery.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATED;
 import static com.softserve.edu.delivery.config.SecurityConstraints.CUSTOMER_OR_DRIVER;
@@ -50,10 +49,11 @@ public class ChatController {
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
-    @RequestMapping(path = "/conversations", method = RequestMethod.GET)
+    @RequestMapping(path = "/conversations/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
-    List<ChatDto> conversations(Principal principal) {
-        return chatService.findByParticipant(principal.getName());
+    ConversationDto conversations(@PathVariable Integer page, @PathVariable Integer size, Principal principal) {
+        return chatService.findByParticipant(principal.getName(), page, size);
+
     }
 
     @PreAuthorize(AUTHENTICATED)

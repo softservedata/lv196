@@ -6,9 +6,10 @@ import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.domain.chat.Chat;
 import com.softserve.edu.delivery.domain.chat.ChatMessage;
-import com.softserve.edu.delivery.dto.ChatDto;
 import com.softserve.edu.delivery.dto.ChatHistoryDto;
+import com.softserve.edu.delivery.dto.ChatInfoDto;
 import com.softserve.edu.delivery.dto.ChatMessageDto;
+import com.softserve.edu.delivery.dto.ConversationDto;
 import com.softserve.edu.delivery.repository.ChatMessageRepository;
 import com.softserve.edu.delivery.repository.ChatRepository;
 import com.softserve.edu.delivery.repository.OfferRepository;
@@ -45,8 +46,12 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatDto> findByParticipant(String email) {
-        return chatRepository.findChatsByParticipantEmail(email);
+    public ConversationDto findByParticipant(String email, int page, int size) {
+        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "timestamp");
+
+        Page<ChatInfoDto> chatPage = chatRepository.findChatsByParticipantEmail(email, pageable);
+
+        return new ConversationDto(chatPage.getContent(), chatPage.hasNext());
     }
 
     @Override

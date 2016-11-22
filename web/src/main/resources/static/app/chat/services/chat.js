@@ -8,8 +8,9 @@ angular
         };
         const isOpened = () => opened.modal !== null;
 
+        let wsEndpoint = sessionStorage.getItem('wsEndpoint');
         const stompClient = () => $rootScope.stomp === null ?
-            Stomp.client('ws://localhost:8080/chat') : $rootScope.stomp;
+            Stomp.client(wsEndpoint + '/chat') : $rootScope.stomp;
 
         const closeChat = () => {
             opened.chatId = null;

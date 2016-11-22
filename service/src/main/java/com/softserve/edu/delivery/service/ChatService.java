@@ -1,12 +1,11 @@
 package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.domain.chat.Chat;
-import com.softserve.edu.delivery.dto.ChatDto;
 import com.softserve.edu.delivery.dto.ChatHistoryDto;
 import com.softserve.edu.delivery.dto.ChatMessageDto;
+import com.softserve.edu.delivery.dto.ConversationDto;
 import org.springframework.security.access.AccessDeniedException;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ChatService {
@@ -21,12 +20,14 @@ public interface ChatService {
     Optional<Chat> findByIdAndParticipant(Long id, String email);
 
     /**
-     * Finds conversations by given email
+     * Finds portion conversations by given email
      *
      * @param email user email
-     * @return list of chats
+     * @param page page of requested chats
+     * @param size size of a portion
+     * @return list of all conversations
      */
-    List<ChatDto> findByParticipant(String email);
+    ConversationDto findByParticipant(String email, int page, int size);
 
     /**
      * Persists message retrieved in dto

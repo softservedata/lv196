@@ -14,7 +14,7 @@
 </div>
 <div class="site-content conversations">
     <div class="panel panel-default">
-        <div ng-repeat="chat in conversations track by $index" class="dialog">
+        <div ng-repeat="chat in chats | orderBy:'message.timestamp':true track by $index" class="dialog">
             <div class="panel-body" ng-click="showChat(chat.message.chatId)">
                 <div class="chat-details chat">
                     <p class="text">{{chat.message.timestamp | date:'h:mm a, MMM d'}}</p>
@@ -28,6 +28,11 @@
                 </ul>
                 <hr/>
             </div>
+        </div>
+        <div class="conversations-footer">
+            <p ng-if="havingMore" class="load-more">
+                <a ng-click="loadMore()">LOAD MORE</a>
+            </p>
         </div>
     </div>
 </div>

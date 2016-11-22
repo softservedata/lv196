@@ -106,11 +106,11 @@ angular
         }])
     .factory('$storage', ['$http', '$q', ($http, $q) => {
         return {
-            getEmail: () => sessionStorage.getItem('email'),
-            retrieveEmail: () => {
+            config: () => {
                 const deferred = $q.defer();
-                $http.get('user/email').then(response => {
-                    sessionStorage.setItem('email', response.data);
+                $http.get('configure').then(response => {
+                    sessionStorage.setItem('email', response.data.email);
+                    sessionStorage.setItem('wsEndpoint', response.data.wsEndpoint);
                     deferred.resolve(response.data);
                 }, () => deferred.reject("Couldn't retrieve email"));
                 return deferred.promise;
@@ -135,10 +135,10 @@ angular
     .run(['$http', '$rootScope', '$filter', '$storage', '$chat', 'Notification',
         function ($http, $rootScope, $filter, $storage, $chat, Notification) {
 
-            $storage.retrieveEmail().then(email => {
+            $storage.config().then(data => {
 
-                $rootScope.stomp = Stomp.client('ws://localhost:8080/chat');
-                $rootScope.stomp.connect({login: email}, () => {
+                $rootScope.stomp = Stomp.client(data.wsEndpoint + '/chat');
+                $rootScope.stomp.connect({login: data.email}, () => {
 
                     $rootScope.stomp.subscribe('/user/queue/chat-notifications', response => {
                         const offerId = response.body;

@@ -1,6 +1,9 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.*;
+import com.softserve.edu.delivery.dto.OrderIdDto;
+import com.softserve.edu.delivery.dto.StringResponse;
+import com.softserve.edu.delivery.dto.UserAuthDTO;
+import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.slf4j.Logger;
@@ -14,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
@@ -112,12 +114,6 @@ public class AuthController {
         mv.setViewName("login");
         logger.info("Email was verified. Return login page");
         return mv;
-    }
-
-    @RequestMapping(path = "/user/email", produces = "text/plain")
-    @ResponseBody
-    public String userEmail(Principal principal) {
-        return principal.getName();
     }
 
     @PreAuthorize(AUTHENTICATED)

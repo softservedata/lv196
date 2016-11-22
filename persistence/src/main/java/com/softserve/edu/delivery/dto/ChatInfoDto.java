@@ -2,14 +2,14 @@ package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.chat.ChatMessage;
 
-public class ChatDto {
+public class ChatInfoDto {
     private String driverName;
     private ChatMessageDto message;
 
-    public ChatDto() {
+    public ChatInfoDto() {
     }
 
-    public ChatDto(String driverName, ChatMessage msg) {
+    public ChatInfoDto(String driverName, ChatMessage msg) {
         this.driverName = driverName;
         this.message = ChatMessageDto.of(msg);
     }
@@ -18,7 +18,7 @@ public class ChatDto {
         return driverName;
     }
 
-    public ChatDto setDriverName(String driverName) {
+    public ChatInfoDto setDriverName(String driverName) {
         this.driverName = driverName;
         return this;
     }
@@ -27,7 +27,7 @@ public class ChatDto {
         return message;
     }
 
-    public ChatDto setMessage(ChatMessageDto msg) {
+    public ChatInfoDto setMessage(ChatMessageDto msg) {
         this.message = msg;
         return this;
     }
