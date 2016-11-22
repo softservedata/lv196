@@ -1,9 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.domain.Notification;
-import com.softserve.edu.delivery.domain.NotificationStatus;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.NotificationDto;
 import com.softserve.edu.delivery.dto.OfferDto;
@@ -31,12 +28,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-/**
- * Created by Taras Kurdiukov on 22.10.2016.
- */
 @Service
 @Transactional
 public class NotificationServiceImpl implements NotificationService {
@@ -52,14 +45,15 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private Environment env;
     @Autowired
-    TemplateEngine templateEngine;
+    private TemplateEngine templateEngine;
     @Autowired
     private JavaMailSender mailSender;
 
-//    Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class.getName());
     private static Locale currentLocal;
     private static ResourceBundle res;
     private static ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final String PROPERTY = "spring.mail.username";
 
     @Override
     public void addNotification(NotificationStatus status, String message, String email) {
@@ -77,16 +71,16 @@ public class NotificationServiceImpl implements NotificationService {
             sendEmail(notification);
         }
         catch (RuntimeException e) {
-            System.err.println("tasks sendEmail interrupted");
+            logger.error("tasks sendEmail interrupted");
         }
     }
 
     private void sendEmail(Notification notification){
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom(env.getProperty("spring.mail.username"));
+            messageHelper.setFrom(env.getProperty(PROPERTY));
             messageHelper.setTo(notification.getUser().getEmail());
-            messageHelper.setSubject("Notification from Delivery");
+            messageHelper.setSubject(res.getString("notification_from_delivery"));
             String text = buildHtmlTemplate(notification.getMessage());
             messageHelper.setText(text, true);
         };
@@ -144,9 +138,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void updateFeedback(FeedbackDto feedbackDTO) {
         executor.submit(() -> addNotification(NotificationStatus.INFO,
-                res.getString("dear") + " " + feedbackDTO.getUserName() + res.getString("your_feedback") + " " + feedbackDTO.getTransporterName() +
-                        res.getString("feedback_status") + " " + feedbackDTO.getApproved()
-                ,feedbackDTO.getUserEmail()));
+                res.getString("dear") + " " + feedbackDTO.getUserName() + res.getString("your_feedback_for") + " " + feedbackDTO.getTransporterName() +
+                        res.getString("was_moderated") + " " + feedbackDTO.getApproved(), feedbackDTO.getUserEmail()));
     }
 
     @Override
@@ -174,10 +167,31 @@ public class NotificationServiceImpl implements NotificationService {
             User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
             Order order = orderRepository.findOneOpt(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
+                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + orderId));
             addNotification(NotificationStatus.INFO,
                 res.getString("driver") + " " + user.getFirstName() + " " + user.getLastName() + res.getString("send_offer")
                 , order.getCustomer().getEmail());
+        });
+    }
+
+    @Override
+    public void approveDelivery(Long orderId){
+        executor.submit(() -> {
+            Order order = orderRepository.findOneOpt(orderId)
+                    .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + orderId));
+            Offer approvedOffer = null;
+            for (Offer offer: order.getOffers()) {
+                if (offer.isApproved()){
+                    approvedOffer = offer;
+                }
+            }
+            if (approvedOffer == null){
+                throw new IllegalArgumentException("No any approved Offer on that Order: " + orderId);
+            }
+            User user = approvedOffer.getCar().getDriver();
+            addNotification(NotificationStatus.INFO,
+                    res.getString("driver") + " " + user.getFirstName() + " " + user.getLastName() + res.getString("approve_delivery")
+                    , order.getCustomer().getEmail());
         });
     }
 

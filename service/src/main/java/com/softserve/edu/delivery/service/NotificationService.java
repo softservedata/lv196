@@ -7,9 +7,6 @@ import com.softserve.edu.delivery.dto.OfferDto;
 
 import java.util.List;
 
-/**
- * Created by Taras Kurdiukov on 22.10.2016.
- */
 public interface NotificationService {
 
     void addNotification(NotificationStatus status, String message, String email);
@@ -24,5 +21,6 @@ public interface NotificationService {
     void changeUserStatus(String email, Boolean status);
     void addOffer(Long orderId, String email);
     void setLanguage(String mylocale);
+    void approveDelivery(Long orderId);
 
 }

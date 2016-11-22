@@ -46,10 +46,6 @@ public interface OrderService {
 
     void removeOrder(Long id);
 
-/**
-* Author - Taras Kurdiukov
-*/
-
     List<OrderDto> findAllClosedOrders(String email);
 
     List<OrderDto> getOrdersFiltered (OrderFilterDto orderFilterDto);

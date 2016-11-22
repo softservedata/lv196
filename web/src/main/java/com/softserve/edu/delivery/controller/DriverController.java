@@ -131,8 +131,6 @@ public class DriverController {
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "approve-delivery", method = RequestMethod.PUT)
     void approveDelivery(@RequestBody Long orderId) {
-        logger.info("Method DriverController.approveDelivery()");
-
-
+        notification.approveDelivery(orderId);
     }
 }
