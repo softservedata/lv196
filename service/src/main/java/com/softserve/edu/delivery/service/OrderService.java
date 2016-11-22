@@ -52,11 +52,6 @@ public interface OrderService {
 
     List<OrderDto> findAllClosedOrders(String email);
 
-/**
-* Author - Ivan Synyshyn
-*/
-    //As transporter I want to choose orders by filter
-//    List<OrderDto> getOrdersFiltered (Long cityFrom, Long cityTo, Double weight, Timestamp arrivalDate, Pageable pageable);
     List<OrderDto> getOrdersFiltered (OrderFilterDto orderFilterDto);
     long getCountOfFilteredOrders();
     List<OrderDto> getAllOpenOrder(Pageable pageable);

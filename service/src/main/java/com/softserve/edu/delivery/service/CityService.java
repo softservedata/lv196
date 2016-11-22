@@ -6,9 +6,6 @@ import com.softserve.edu.delivery.domain.State;
 
 import java.util.Set;
 
-/**
- * Author - Ivan Synyshyn
- */
 public interface CityService {
 	
 	City addCity(City city);

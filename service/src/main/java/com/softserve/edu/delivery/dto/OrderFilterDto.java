@@ -1,11 +1,11 @@
 package com.softserve.edu.delivery.dto;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
-/**
- * Created by Ivan on 18.11.2016.
- */
 public class OrderFilterDto {
+
+    private Long id;
     private Long cityFromId;
     private Long cityToId;
     private Double weight;
@@ -16,14 +16,23 @@ public class OrderFilterDto {
     public OrderFilterDto() {
     }
 
-    public OrderFilterDto(Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate, Integer currentPage, Integer itemsPerPage) {
+    public OrderFilterDto(Long id, Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate, Integer currentPage, Integer itemsPerPage) {
 
+        this.id = id;
         this.cityFromId = cityFromId;
         this.cityToId = cityToId;
         this.weight = weight;
         this.arrivalDate = arrivalDate;
         this.currentPage = currentPage;
         this.itemsPerPage = itemsPerPage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getCityFromId() {
@@ -90,22 +99,12 @@ public class OrderFilterDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        OrderFilterDto that = (OrderFilterDto) o;
-
-        if (cityFromId != null ? !cityFromId.equals(that.cityFromId) : that.cityFromId != null) return false;
-        if (cityToId != null ? !cityToId.equals(that.cityToId) : that.cityToId != null) return false;
-        if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
-        return arrivalDate != null ? arrivalDate.equals(that.arrivalDate) : that.arrivalDate == null;
-
+        OrderFilterDto orderFilterDto = (OrderFilterDto) o;
+        return Objects.equals(id, orderFilterDto.id);
     }
 
     @Override
     public int hashCode() {
-        int result = cityFromId != null ? cityFromId.hashCode() : 0;
-        result = 31 * result + (cityToId != null ? cityToId.hashCode() : 0);
-        result = 31 * result + (weight != null ? weight.hashCode() : 0);
-        result = 31 * result + (arrivalDate != null ? arrivalDate.hashCode() : 0);
-        return result;
+        return Objects.hash(id);
     }
 }

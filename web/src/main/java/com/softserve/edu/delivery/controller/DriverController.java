@@ -22,10 +22,6 @@ import java.util.List;
 import static com.softserve.edu.delivery.config.SecurityConstraints.CUSTOMER_OR_DRIVER;
 import static com.softserve.edu.delivery.config.SecurityConstraints.DRIVER;
 
-/**
- * Created by Ivan Synyshyn on 25.10.2016.
- */
-
 @RestController
 @RequestMapping(path = "driver")
 public class DriverController {

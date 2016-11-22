@@ -19,10 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Ivan Synyshyn on 11.10.2016.
- */
-
 @Service
 @Transactional
 public class OfferServiceImpl implements OfferService{
