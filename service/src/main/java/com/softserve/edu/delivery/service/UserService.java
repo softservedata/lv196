@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.service;
 
 import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.dto.DriverRegistrationDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +22,6 @@ public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 
     void register(UserRegistrationDTO userRegDTO, String url);
-
-	void register(DriverRegistrationDTO driverRegDTO, String url);
 
     void verifyRegistration(String token);
     
