@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_SESSION;
+import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
 @Controller
 public class SocialController {
@@ -50,7 +50,7 @@ public class SocialController {
     private static final String LINKEDIN_RESOURCE = "https://api.linkedin.com/v1/people/~:(id,email-address,firstName,lastName,picture-url)?format=json";
 
     @GetMapping(value = "/login/linkedin/callback")
-    public ModelAndView linkedInCallback(@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier, WebRequest webRequest) {
+    public ModelAndView linkedInCallback(@RequestParam(value = "oauth_verifier") String oauthVerifier, WebRequest webRequest) {
         OAuthService oAuthService = this.linkedInServiceProvider.getService();
         Token requestToken = (Token) webRequest.getAttribute(SOCIAL_REQUEST_TOKEN, SCOPE_SESSION);
 
@@ -65,14 +65,12 @@ public class SocialController {
         Response oAuthResponse = oAuthRequest.send();
         String responseBody = oAuthResponse.getBody();
 
-        logger.info("ResponseBody:" + oAuthResponse.getBody());
-
-        logger.info("Got response body from linked in");
+        logger.info("Got response body from linked in. Response body: " + oAuthResponse.getBody());
 
         SocialUserDTO socialUser = ResponseParser.fromLinkedIn(responseBody);
         this.socialUserService.signIn(socialUser);
 
-        return new ModelAndView("redirect:/authRedirect");
+        return new ModelAndView("redirect:" + AUTH_REDIRECT_URL);
     }
 
     @GetMapping(value = "/login/google")
@@ -81,7 +79,6 @@ public class SocialController {
         String authorizationUrl = oAuthService.getAuthorizationUrl(OAuthConstants.EMPTY_TOKEN);
 
         logger.info("Return to google authorization url.");
-
         return new ModelAndView("redirect:" + authorizationUrl);
     }
 

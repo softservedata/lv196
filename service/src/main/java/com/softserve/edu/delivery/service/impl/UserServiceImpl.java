@@ -30,10 +30,10 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private Long totalItems;
     @Autowired
-    private CarRepository carRepository;
+    private UserRepository userRepository;
+
+    private Long totalItems;
 
     @Autowired
     private EmailTokenRepository tokenRepository;
@@ -44,29 +44,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    private static String generateRandomUUID() {
-        return UUID.randomUUID().toString();
-    }
-
-    private User createUserFromDto(UserProfileDto userProfileDto) {
-
-        return new User()
-                .setEmail(userProfileDto.getEmail())
-                .setFirstName(userProfileDto.getFirstName())
-                .setLastName(userProfileDto.getLastName())
-                .setBlocked(userProfileDto.getBlocked())
-                .setUserRole(userProfileDto.getRole() == null ? null : userProfileDto.getUserRole())
-                .setRate(userProfileDto.getRate())
-                .setPhone(userProfileDto.getPhone())
-                .setPhotoUrl(userProfileDto.getPhotoUrl())
-                .setPassport(userProfileDto.getPassport())
-                .setApproved(userProfileDto.getApproved());
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -112,13 +89,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean tokenExists(String token) {
+        return Objects.nonNull(tokenRepository.findByToken(token));
+    }
+
+    @Override
     public void verifyRegistration(String token) {
-        EmailVerificationToken verificationToken = tokenRepository.findByToken(token);
-        if (verificationToken == null) {
-            throw new IllegalArgumentException("Token isn't exist");
-        } else {
+        if (this.tokenExists(token)) {
+            EmailVerificationToken verificationToken = tokenRepository.findByToken(token);
             verificationToken.getUser().setApproved(true);
             tokenRepository.delete(verificationToken);
+        } else {
+            throw new IllegalArgumentException("Token isn't exist");
         }
     }
 
@@ -209,23 +191,6 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private User createUser(UserRegistrationDTO userRegDTO) {
-        User newUser = new User();
-        newUser.setEmail(userRegDTO.getUserEmail());
-        newUser.setPassword(this.passwordEncoder.encode(userRegDTO.getUserPassword()));
-        newUser.setFirstName(userRegDTO.getUserFirstName());
-        newUser.setLastName(userRegDTO.getUserLastName());
-        newUser.setPhone(userRegDTO.getUserPhoneNumber());
-        newUser.setPassport(userRegDTO.getUserPassport());
-        newUser.setPhotoUrl(userRegDTO.getUserPhotoUrl());
-
-        newUser.setBlocked(false);
-        newUser.setApproved(false);
-        newUser.setUserRole(Role.CUSTOMER);
-
-        return newUser;
-    }
-
     @Override
     public User findOne(String email) {
         return userRepository.findOne(email);
@@ -248,5 +213,41 @@ public class UserServiceImpl implements UserService {
         currentUser.setPassword(passwordEncoder.encode(newPassword));
         save(currentUser);
 
+    }
+
+    private User createUser(UserRegistrationDTO userRegDTO) {
+        User newUser = new User();
+        newUser.setEmail(userRegDTO.getUserEmail());
+        newUser.setPassword(this.passwordEncoder.encode(userRegDTO.getUserPassword()));
+        newUser.setFirstName(userRegDTO.getUserFirstName());
+        newUser.setLastName(userRegDTO.getUserLastName());
+        newUser.setPhone(userRegDTO.getUserPhoneNumber());
+        newUser.setPassport(userRegDTO.getUserPassport());
+        newUser.setPhotoUrl(userRegDTO.getUserPhotoUrl());
+
+        newUser.setBlocked(false);
+        newUser.setApproved(false);
+        newUser.setUserRole(Role.CUSTOMER);
+
+        return newUser;
+    }
+
+    private static String generateRandomUUID() {
+        return UUID.randomUUID().toString();
+    }
+
+    private User createUserFromDto(UserProfileDto userProfileDto) {
+
+        return new User()
+                .setEmail(userProfileDto.getEmail())
+                .setFirstName(userProfileDto.getFirstName())
+                .setLastName(userProfileDto.getLastName())
+                .setBlocked(userProfileDto.getBlocked())
+                .setUserRole(userProfileDto.getRole() == null ? null : userProfileDto.getUserRole())
+                .setRate(userProfileDto.getRate())
+                .setPhone(userProfileDto.getPhone())
+                .setPhotoUrl(userProfileDto.getPhotoUrl())
+                .setPassport(userProfileDto.getPassport())
+                .setApproved(userProfileDto.getApproved());
     }
 }

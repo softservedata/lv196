@@ -1,9 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.dto.OrderIdDto;
-import com.softserve.edu.delivery.dto.StringResponse;
-import com.softserve.edu.delivery.dto.UserAuthDTO;
-import com.softserve.edu.delivery.dto.UserRegistrationDTO;
+import com.softserve.edu.delivery.dto.*;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
 import org.slf4j.Logger;
@@ -17,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Objects;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 
@@ -24,7 +23,7 @@ import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 public class AuthController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @Autowired
     private UserAuthenticationDetails authenticationDetails;
@@ -33,20 +32,19 @@ public class AuthController {
 
     @GetMapping(value = "/welcome")
     public ModelAndView welcome() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("orderIdDto", new OrderIdDto());
-        mv.setViewName("welcome");
         logger.info("Return welcome page");
-        return mv;
+        return new ModelAndView("welcome")
+        .addObject("orderIdDto", new OrderIdDto());
     }
 
     @GetMapping(value = "/login")
-    public ModelAndView signIn(@RequestParam(value = "auth", required = false) String auth,
+    public ModelAndView signIn(@RequestParam(value = "authError", required = false) String auth,
                                @RequestParam(value = "logout", required = false) String logout){
         ModelAndView mv = new ModelAndView();
-        if (auth != null && auth.equals("false")) {
+        if (Objects.nonNull(auth)) {
             mv.addObject("wrong_login", "");
-        } else if (logout != null) {
+            logger.error("Wrong authentication");
+        } else if (Objects.nonNull(logout)) {
             mv.addObject("success_logout", "");
             logger.info("Logout");
         }
@@ -57,45 +55,29 @@ public class AuthController {
         return mv;
     }
 
-    @PostMapping(value = "/loginProcess")
-    public ModelAndView loginProcess(@ModelAttribute("userAuthDto") @Valid UserAuthDTO userAuthDTO,
-                                     BindingResult result) {
-        if (result.hasErrors()) {
-            logger.error("Binding error, user: " + userAuthDTO.getEmail());
-            return new ModelAndView("login", "userAuthDto", userAuthDTO);
-        }
-        logger.info("Return welcome page");
-        return new ModelAndView("redirect:/welcome");
-    }
-
     @GetMapping(value = "/authRedirect")
     public ModelAndView authRedirect() {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName(roleRedirect());
         logger.info("Return redirecting page");
-        return mv;
+        return new ModelAndView(roleRedirect());
     }
 
     @GetMapping(value = "/registration")
     public ModelAndView registration() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("userRegistration", new UserRegistrationDTO());
-        mv.setViewName("registration");
         logger.info("Return registration page");
-        return mv;
+        return new ModelAndView("registration")
+        .addObject("userRegistration", new UserRegistrationDTO());
     }
 
     @PostMapping(value = "/register")
-    public ModelAndView reg(@ModelAttribute("userRegistration") @Valid UserRegistrationDTO userRegDTO,
+    public ModelAndView register(@ModelAttribute("userRegistration") @Valid UserRegistrationDTO userRegDTO,
                             BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             logger.error("Registration binding process has errors, returning registration form back");
-            ModelAndView mv = new ModelAndView("registration", "userRegistration", userRegDTO);
-            mv.addObject("wrong_register", "Please fill correct registration form");
-            return mv;
+            return new ModelAndView("registration", "userRegistration", userRegDTO)
+            .addObject("wrong_register", "");
         } else {
             String url = request.getRequestURL().toString();
-            service.register(userRegDTO, url);
+            userService.register(userRegDTO, url);
             ModelAndView mv = new ModelAndView();
             mv.addObject("success_register", "");
             mv.addObject("userAuthDto", new UserAuthDTO());
@@ -107,13 +89,22 @@ public class AuthController {
 
     @GetMapping(value = "/register")
     public ModelAndView reg(@RequestParam("token") String token) {
-        service.verifyRegistration(token);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("userAuthDto", new UserAuthDTO());
-        mv.addObject("email_verified", "");
-        mv.setViewName("login");
-        logger.info("Email was verified. Return login page");
-        return mv;
+        if (userService.tokenExists(token)) {
+            userService.verifyRegistration(token);
+
+            logger.info("Email was verified. Return login page");
+            return new ModelAndView("login")
+            .addObject("userAuthDto", new UserAuthDTO())
+            .addObject("email_verified", "");
+        } else {
+            return new ModelAndView(PAGE_NOT_FOUND_URL);
+        }
+    }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(path = "/user/email", produces = "text/plain")
+    public @ResponseBody String userEmail(Principal principal) {
+        return principal.getName();
     }
 
     @PreAuthorize(AUTHENTICATED)

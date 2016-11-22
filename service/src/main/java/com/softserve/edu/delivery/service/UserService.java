@@ -23,6 +23,8 @@ public interface UserService extends UserDetailsService {
 
     void register(UserRegistrationDTO userRegDTO, String url);
 
+    boolean tokenExists(String token);
+
     void verifyRegistration(String token);
     
     UserProfileDto changeUserStatus(String mail, boolean blocked);
