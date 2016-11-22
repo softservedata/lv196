@@ -81,7 +81,7 @@
 	"message": "Message",
 	"search_pleace": "Place search",
 	"user_profiles": "User profiles",
-	"driver_open": "Orders in panding",
+	"driver_open": "Orders in pending",
 	"orders_inProgress": "Orders in progress",
 	"orders_closed": "Closed orders ",
 	"dimensions": "Dimensions",
@@ -151,5 +151,7 @@
 	"cant_del_deactivate_car_warn": "The car cannot be deleted. Do you want to remove it from active cars?",
 	"deactivate_car_info": "Click if you want to REMOVE the car FROM active list",
 	"activate_car_info": "Click if you want to MOVE the car TO active list",
-	"cant_delete_referenced_car": "The car cannot be deleted, since it is stored in previous orders and/or offers. Do you want to remove it from active cars? "
+	"cant_delete_referenced_car": "The car cannot be deleted, since it is stored in previous orders and/or offers. Do you want to remove it from active cars? ",
+	"finish_route": "Finish route",
+	"approve_delivery": "Approve delivery"
 }

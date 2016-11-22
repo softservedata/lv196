@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
+import static com.softserve.edu.delivery.config.SecurityConstraints.CUSTOMER_OR_DRIVER;
 import static com.softserve.edu.delivery.config.SecurityConstraints.DRIVER;
 
 /**
@@ -129,5 +130,13 @@ public class DriverController {
     @RequestMapping(path = "offer-id/{orderId}", method = RequestMethod.GET)
     public Long getOfferId(@PathVariable Long orderId, Principal principal) {
         return offerService.findOfferId(orderId, principal.getName());
+    }
+
+    @PreAuthorize(DRIVER)
+    @RequestMapping(path = "approve-delivery", method = RequestMethod.PUT)
+    void approveDelivery(@RequestBody Long orderId) {
+        logger.info("Method DriverController.approveDelivery()");
+
+
     }
 }

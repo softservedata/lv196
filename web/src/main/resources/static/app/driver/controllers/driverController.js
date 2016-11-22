@@ -185,9 +185,16 @@ angular
             $scope.retrieveMyOrdersClosed = () => {
                 $http.get('/driver/my-orders-closed').then(response => {
                     $scope.orders.closed = response.data;
+                    calcRate();
                 })
             };
             $scope.retrieveMyOrdersClosed();
+
+            var calcRate = function () {
+                for (var i = 0; i < $scope.orders.closed.length; i++) {
+                    $scope.orders.closed[i].feedbackDto.rate = $scope.orders.closed[i].feedbackDto.rate / 10;
+                }
+            }
 
             $scope.addFeedback = function (orderForFeedback) {
                 const modalInstance = $uibModal.open({
@@ -199,4 +206,25 @@ angular
                     }
                 });
             };
+
+            $scope.approveDelivery = (id) => {
+                $orderProperty.setId(id);
+                modalInstance = $uibModal.open({
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: '/app/orders/views/approveDelivery.html',
+                    scope: $scope
+                });
+            };
+
+            $scope.confirmApproveDelivery = () => {
+                $http.put('/driver/approve-delivery/', $orderProperty.getId()).then(response => {
+                    Notification.info('Thank you, your message was send successfully');
+                });
+                modalInstance.close()
+            };
+
+            $scope.cancelApproveDelivery = () => {
+                modalInstance.dismiss('cancel');
+            }
         }])

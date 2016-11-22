@@ -182,6 +182,7 @@
                 <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
                     <div class="panel-body">
                         <div class="order-actions">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="approveDelivery(order.id)">{{ 'finish_route' | translate }}</button>
                             <button type="button" class="btn btn-default btn-sm" ng-click="trackingRedirect(order.id)">{{ 'track' | translate }}</button>
                             <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
                         </div>
@@ -253,7 +254,7 @@
                                         </div>
                                         <div class="col-sm-12 form-group">
                                             <i class="fa fa-star" aria-hidden="true"></i><label class="control-label">{{ 'customer_rate' | translate }}: </label>
-                                            <span uib-rating class="customer rating" read-only="true" ng-model="order.feedbackDto.rate/10" aria-labelledby="default-rating"></span>
+                                            <span uib-rating class="customer rating" read-only="true" ng-model="order.feedbackDto.rate" aria-labelledby="default-rating"></span>
                                         </div>
                                         <div class="col-sm-12 form-group">
                                             <label class="order-sub"><i class="fa fa-comment" aria-hidden="true"></i>{{ 'customer_feedback' | translate }}:
