@@ -1,6 +1,6 @@
 <div class="container" ng-controller="ordersTrackingController" ng-init="mapInit()">
 
-    <div id="trackingMap" style="width: 1050px; height: 800px;"/>
+    <div id="trackingMap" class="route" style="width: 1050px; height: 800px;"/>
 <div id="def">
     <input type = "text" ng-model = "orderId" ng-change="trackOrder(orderId)"/>
     <p>Customer name: {{ordersTracking.orderDto.customerName}}</p>

@@ -20,6 +20,7 @@ import java.util.List;
 @SpringBootApplication
 @EnableScheduling
 public class Application extends SpringBootServletInitializer {
+//    implements CommandLineRunner
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -30,9 +31,9 @@ public class Application extends SpringBootServletInitializer {
         SpringApplication.run(Application.class, args);
     }
 
-//    @Autowired
-//    private RouteCityService routeCityService;
-//
+    @Autowired
+    private RouteCityService routeCityService;
+
 //    @Override
 //    public void run(String... strings) throws Exception
 //    {

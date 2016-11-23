@@ -13,6 +13,9 @@
 .map-container .leaflet-control-container {
     /*display: none;*/
 }
+.route .leaflet-control-container {
+    display: none;
+}
 .modal-dialog{
     width: whatever;
 }

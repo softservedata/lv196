@@ -4,14 +4,12 @@ angular
         function ($scope, $http) {
             $scope.markers = [];
 
-
             var LeafIcon = L.Icon.extend({
                 options: {
                     iconSize:     [38, 38],
                     iconAnchor:   [22, 22],
                     popupAnchor:  [-3, -76]
                 }
-
             });
 
             var icon = new LeafIcon({iconUrl: '../../img/car.png'});
@@ -34,23 +32,39 @@ angular
                     $scope.points = [];
                     for(var i = 0; i < response.data.routeCityDTOs.length; i++) {
                         var point = response.data.routeCityDTOs[i].placeDTO.point;
-                        var marker = L.marker([point.x, point.y], {icon: icon}).addTo($scope.map);
+                        var marker = L.marker([point.x, point.y], {icon: icon}).addTo($scope.map)
+                            .bindPopup('Baggage tracking: <br> Aditional information')
+                            .openPopup();
 
                         $scope.points.push(L.latLng(point.x, point.y));
 
                         $scope.markers.push(marker);
                     }
-                    // var plan = new ReversablePlan(
-                    //     $scope.points
-                    //     , {
-                    //         geocoder: L.Control.Geocoder.nominatim(),
-                    //         routeWhileDragging: true
-                    //     }),
-                    //     control = L.Routing.control({
-                    //         routeWhileDragging: true,
-                    //         plan: plan
-                    //     }).addTo($scope.map);
-                    $scope.path = L.polyline($scope.points).addTo($scope.map);
+
+                    var control = L.Routing.control({
+                        waypoints: $scope.points,
+                        // addWaypoints: false,
+                        // routeWhileDragging: false,
+                        // show: false,
+                        lineOptions: {
+                            styles: [{color: 'blue', opacity: 1, weight: 3}]
+                        },
+                    }).addTo($scope.map);
+                    // control.hide().addTo($scope.map);
+
+                    // var polylineOptions = {
+                    //     color: 'blue',
+                    //     weight: 6,
+                    //     opacity: 0.9
+                    // };
+                    //
+                    // var polyline = new L.Polyline($scope.points, polylineOptions);
+                    //
+                    // $scope.map.addLayer(polyline);
+                    // $scope.map.fitBounds(polyline.getBounds());
+
+                    // $scope.path = L.polyline($scope.points).addTo($scope.map);
+
                 });
             };
 
