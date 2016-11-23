@@ -33,7 +33,7 @@
     <security:authorize access="isAnonymous()">
         <li><a href="login"><spring:message code="sigin"/></a></li>
     </security:authorize>
-    <li><a href="#"><spring:message code="about"/></a></li>
+    <li><a href="about"><spring:message code="about"/></a></li>
     <security:authentication property="authorities" var="roles" scope="page" />
     <c:forEach var="role" items="${roles}">
         <c:if test="${role == 'Customer'}">

@@ -52,17 +52,6 @@ angular
                     }).addTo($scope.map);
                     // control.hide().addTo($scope.map);
 
-                    // var polylineOptions = {
-                    //     color: 'blue',
-                    //     weight: 6,
-                    //     opacity: 0.9
-                    // };
-                    //
-                    // var polyline = new L.Polyline($scope.points, polylineOptions);
-                    //
-                    // $scope.map.addLayer(polyline);
-                    // $scope.map.fitBounds(polyline.getBounds());
-
                     // $scope.path = L.polyline($scope.points).addTo($scope.map);
 
                 });
