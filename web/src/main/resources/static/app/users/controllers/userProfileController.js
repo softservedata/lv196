@@ -173,10 +173,6 @@ angular
             };
 
             $scope.clickImage = function (target, car, index) {
-                if (car != null && car.id < 0) {
-                    $scope.car.driverEmail = $scope.loggedUser.email;
-                    $scope.addNewCar();
-                }
                 switch (target) {
                     case 'userPhoto':
                         document.getElementById('userPhotoUpload').click();
@@ -259,6 +255,10 @@ angular
 
             $scope.addCar = function () {
                 resetCar();
+                if ($scope.car.id < 0) {
+                    $scope.car.driverEmail = $scope.loggedUser.email;
+                    $scope.addNewCar();
+                }
                 modalInstance = $uibModal.open({
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
@@ -269,7 +269,7 @@ angular
 
             $scope.confirmAddCar = function () {
                 modalInstance.close();
-                $scope.updateCar($scope.car, null, true);
+                $scope.updateCar($scope.car);
                 $scope.car = initialCar;
             };
 
@@ -332,9 +332,9 @@ angular
                             function (response) {
                                 var msg = '';
                                 if (response.status == 409) {
-                                    msg = ($filter('translate')('cant_delete_referenced_car'));
+                                    msg = 'cant_delete_referenced_car';
                                 } else {
-                                    msg = ($filter('translate')('cant_del_deactivate_car_warn'));
+                                    msg = 'cant_del_deactivate_car_warn';
                                 }
                                     for (var i = 0; i < $scope.cars.length; i++) {
                                         if ($scope.cars[i].id == deleteCarId) {

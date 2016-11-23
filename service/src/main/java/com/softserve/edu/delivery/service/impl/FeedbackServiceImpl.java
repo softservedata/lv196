@@ -48,11 +48,10 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     private String processRequestText(String text) {
-        if (text.equals("undefined")) {
+        if (text == null) {
             return "%";
-        } else {
-            return "%" + text + "%";
         }
+        return "%" + text + "%";
     }
 
     private Integer processRequestRate(String rate) {
@@ -71,20 +70,22 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
     }
 
-    private Boolean processRequestApproved(String approved) {
-        if (approved.toLowerCase().contains("tru")) {
-            feedbackFilter.setApproved1(true);
-            return true;
-        } else if (approved.toLowerCase().contains("fal")) {
-            feedbackFilter.setApproved1(false);
-            return false;
+    private Boolean processRequestApproved(Boolean approved) {
+        if (approved != null) {
+            if (approved) {
+                feedbackFilter.setApproved1(true);
+                return true;
+            } else {
+                feedbackFilter.setApproved1(false);
+                return false;
+            }
         }
         feedbackFilter.setApproved1(false);
         return true;
     }
 
-    private String processRequestSortOrder(String sortOrder) {
-        if (sortOrder.toLowerCase().contains("tru")) {
+    private String processRequestSortOrder(Boolean sortDesc) {
+        if (sortDesc != null && sortDesc) {
             return "desc";
         }
         return "asc";
@@ -249,7 +250,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackFilter.setTransporterName(processRequestText(feedbackFilterDTO.getTransporterName()));
         feedbackFilter.setCreatedOn(processRequestCreatedOn(feedbackFilterDTO.getCreatedOn()));
         feedbackFilter.setApproved0(processRequestApproved(feedbackFilterDTO.getApproved()));
-        feedbackFilter.setSortOrder(processRequestSortOrder(feedbackFilterDTO.getSortOrder()));
+        feedbackFilter.setSortOrder(processRequestSortOrder(feedbackFilterDTO.getSortDesc()));
         feedbackFilter.setSortBy(feedbackFilterDTO.getSortBy());
         feedbackFilter.setCurrentPage(feedbackFilterDTO.getCurrentPage());
         feedbackFilter.setItemsPerPage(feedbackFilterDTO.getItemsPerPage());

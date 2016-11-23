@@ -33,7 +33,6 @@ public class FeedbackController {
     @PreAuthorize(MODERATOR)
     @RequestMapping(path = "all", method = RequestMethod.POST)
     List<FeedbackDto> getAllFeedbacks(@RequestBody FeedbackFilterDTO feedbackFilterDTO) {
-
         logger.info("Before feedbackService.findFiltered()");
         return feedbackService.findFiltered(feedbackFilterDTO);
     }

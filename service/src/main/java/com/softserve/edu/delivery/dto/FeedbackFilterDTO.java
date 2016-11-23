@@ -10,9 +10,9 @@ public class FeedbackFilterDTO {
     private String userName;
     private String transporterName;
     private String createdOn;
-    private String approved;
+    private Boolean approved;
     private String sortBy;
-    private String sortOrder;
+    private Boolean sortDesc;
     private int currentPage;
     private int itemsPerPage;
 
@@ -56,11 +56,11 @@ public class FeedbackFilterDTO {
         this.createdOn = createdOn;
     }
 
-    public String getApproved() {
+    public Boolean getApproved() {
         return approved;
     }
 
-    public void setApproved(String approved) {
+    public void setApproved(Boolean approved) {
         this.approved = approved;
     }
 
@@ -72,12 +72,12 @@ public class FeedbackFilterDTO {
         this.sortBy = sortBy;
     }
 
-    public String getSortOrder() {
-        return sortOrder;
+    public Boolean getSortDesc() {
+        return sortDesc;
     }
 
-    public void setSortOrder(String sortOrder) {
-        this.sortOrder = sortOrder;
+    public void setSortDesc(Boolean sortDesc) {
+        this.sortDesc = sortDesc;
     }
 
     public int getCurrentPage() {

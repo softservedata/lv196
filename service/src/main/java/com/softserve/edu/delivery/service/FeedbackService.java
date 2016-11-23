@@ -30,13 +30,9 @@ public interface FeedbackService {
 
     Order getOrder(Long id);
 
-    /*------------- Find all feedbacks -----------------------*/
-
     List<FeedbackDto> findFiltered(FeedbackFilterDTO feedbackFilterDTO);
 
     long getTotalItemsNumber();
-
-    /*------------- Find feedbacks by id -----------------------*/
 
     FeedbackDto findByFeedbackId(Long id);
 

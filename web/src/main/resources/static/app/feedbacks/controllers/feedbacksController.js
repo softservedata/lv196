@@ -12,14 +12,14 @@ angular
             $scope.sortFeedbacksOrderDesc = [];
 
             $scope.feedbackFilterDTO = {
-                text: '',
-                rate: '',
-                userName: '',
-                transporterName: '',
-                createdOn: '',
-                approved: '',
-                sortBy: '',
-                sortOrder: '',
+                text: null,
+                rate: null,
+                userName: null,
+                transporterName: null,
+                createdOn: null,
+                approved: null,
+                sortBy: null,
+                sortDesc: null,
                 currentPage: 1,
                 itemsPerPage: 5
             };
@@ -32,11 +32,11 @@ angular
             $scope.text = '';
             $scope.createdOn = '';
 
-            var rateFactor = 10;
-            var columnNumber = 7;
+            const rateFactor = 10;
+            const columnNumber = 7;
+            const rateStep = 0.5;
             var columnPos = 0;
             var toggleFilterApprovedPos = 0;
-            var rateStep = 0.5;
 
             var init = function () {
                 for (var i = 0; i < columnNumber; i++) {
@@ -85,13 +85,13 @@ angular
             $scope.toggleFilterApprovedStyle = function () {
                 switch (toggleFilterApprovedPos) {
                     case 1:
-                        $scope.feedbackFilterDTO.approved = "false";
+                        $scope.feedbackFilterDTO.approved = false;
                         return "color: red;";
                     case 2:
-                        $scope.feedbackFilterDTO.approved = "true";
+                        $scope.feedbackFilterDTO.approved = true;
                         return "color: green;";
                     default:
-                        $scope.feedbackFilterDTO.approved = "";
+                        $scope.feedbackFilterDTO.approved = null;
                         return "color: lightgray;";
                 }
             };
@@ -117,7 +117,7 @@ angular
                 $scope.feedbackFilterDTO.rate  = ($scope.rate - rateStep) * rateFactor;
                 $scope.feedbackFilterDTO.createdOn = Date.parse($scope.createdOn);
                 $scope.feedbackFilterDTO.sortBy = sortBy(columnPos);
-                $scope.feedbackFilterDTO.sortOrder = $scope.sortFeedbacksOrderDesc[columnPos];
+                $scope.feedbackFilterDTO.sortDesc = $scope.sortFeedbacksOrderDesc[columnPos];
             };
 
             $scope.checkInputLength = function (contents) {
@@ -242,12 +242,12 @@ angular
             });
 
             $scope.clearAllFilters = function () {
-                $scope.feedbackFilterDTO.text = '';
-                $scope.rate = '';
-                $scope.feedbackFilterDTO.userName = '';
-                $scope.feedbackFilterDTO.transporterName = '';
-                $scope.createdOn = '';
-                $scope.feedbackFilterDTO.approved = '';
+                $scope.feedbackFilterDTO.text = null;
+                $scope.rate = null;
+                $scope.feedbackFilterDTO.userName = null;
+                $scope.feedbackFilterDTO.transporterName = null;
+                $scope.createdOn = null;
+                $scope.feedbackFilterDTO.approved = null;
                 toggleFilterApprovedPos = 2;
                 $scope.changeFilterApprovedClass();
                 $scope.filterFeedbacks();

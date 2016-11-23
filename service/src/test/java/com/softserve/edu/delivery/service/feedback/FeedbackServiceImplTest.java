@@ -10,11 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 
-/**
- * Created by Ivan Rudnytskyi on 17.09.2016.
- *
- * The class provides service methods for different test classes
- */
 @Component
 public class FeedbackServiceImplTest{
 
@@ -28,7 +23,7 @@ public class FeedbackServiceImplTest{
     private final String MOCK_APPROVED_DRIVER_NAME = "Approved Driver";
     private final String MOCK_APPROVED_DRIVER_EMAIL = "email0@gmail.com";
     private final String MOCK_SORT_BY = "createdOn";
-    private final String MOCK_SORT_ORDER = "desc";
+    private final Boolean MOCK_SORT_ORDER = true;
     private final Timestamp MOCK_CREATED_ON = Timestamp.valueOf("2016-10-02 04:15:06");
     private final Long MOCK_ORDER_ID = 1L;
     private final Long START_ORDER_ID = 1L;
@@ -144,9 +139,9 @@ public class FeedbackServiceImplTest{
         feedbackFilterDTO.setUserName(MOCK_USER_FIRST_NAME + MOCK_USER_LAST__NAME);
         feedbackFilterDTO.setTransporterName(MOCK_APPROVED_DRIVER_NAME);
         feedbackFilterDTO.setCreatedOn(MOCK_CREATED_ON.toString());
-        feedbackFilterDTO.setApproved(Boolean.toString(MOCK_APPROVED));
+        feedbackFilterDTO.setApproved(MOCK_APPROVED);
         feedbackFilterDTO.setSortBy(MOCK_SORT_BY);
-        feedbackFilterDTO.setSortOrder(MOCK_SORT_ORDER);
+        feedbackFilterDTO.setSortDesc(MOCK_SORT_ORDER);
         feedbackFilterDTO.setCurrentPage(MOCK_CURRENT_PAGE);
         feedbackFilterDTO.setItemsPerPage(MOCK_ITEMS_PER_PAGE);
 

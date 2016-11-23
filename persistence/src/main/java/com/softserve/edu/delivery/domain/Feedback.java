@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "feedbacks")
@@ -92,15 +93,12 @@ public class Feedback {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Feedback feedback = (Feedback) o;
-
-        return feedbackId.equals(feedback.feedbackId);
-
+        return Objects.equals(feedback.feedbackId, feedbackId);
     }
 
     @Override
     public int hashCode() {
-        return feedbackId.hashCode();
+        return Objects.hash(feedbackId);
     }
 }
