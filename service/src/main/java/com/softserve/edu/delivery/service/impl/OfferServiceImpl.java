@@ -81,7 +81,7 @@ public class OfferServiceImpl implements OfferService{
 
         Order order = orderRepository.findOneOpt(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("No order found"));
-        order.setOrderStatus(OrderStatus.IN_PROGRESS);
+        order.setOrderStatus(OrderStatus.APPROVED);
         orderRepository.save(order);
     }
 

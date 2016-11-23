@@ -216,9 +216,6 @@ angular
         $scope.retrieveOffers = () => {
             $http.get('/order/offers/' + $scope.orderIdWithOffers).then(response => {
                 $scope.offers.offers = response.data;
-                for (var i=0; i<$scope.offers.offers.length; i++){
-                    $scope.offers.offers[i].rate = $scope.offers.offers[i].rate/10;
-                }
             })
         };
         $scope.retrieveOffers();

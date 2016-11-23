@@ -179,16 +179,8 @@ public class NotificationServiceImpl implements NotificationService {
         executor.submit(() -> {
             Order order = orderRepository.findOneOpt(orderId)
                     .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + orderId));
-            Offer approvedOffer = null;
-            for (Offer offer: order.getOffers()) {
-                if (offer.isApproved()){
-                    approvedOffer = offer;
-                }
-            }
-            if (approvedOffer == null){
-                throw new IllegalArgumentException("No any approved Offer on that Order: " + orderId);
-            }
-            User user = approvedOffer.getCar().getDriver();
+            Offer offer = offerRepository.getOfferByOrderIdAndStatus(orderId);
+            User user = offer.getCar().getDriver();
             addNotification(NotificationStatus.INFO,
                     res.getString("driver") + " " + user.getFirstName() + " " + user.getLastName() + res.getString("approve_delivery")
                     , order.getCustomer().getEmail());
