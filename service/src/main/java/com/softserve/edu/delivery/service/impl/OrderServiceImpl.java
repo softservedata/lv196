@@ -169,6 +169,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDto> getMyApprovedOrders(String email) {
+        return orderRepository
+                .getMyApprovedOrders(email)
+                .stream()
+                .map(OrderDto::of)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrderDto> getMyOrdersInProgress(String email) {
         return orderRepository
                 .getMyOrdersInProgress(email)
@@ -194,7 +203,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void approveDelivery(Long orderId) {
         Order order = orderRepository.findOne(orderId);
-        orderRepository.save(order.setOrderStatus(OrderStatus.CLOSED));
+        orderRepository.save(order
+                .setOrderStatus(OrderStatus.CLOSED)
+                .setArrivalDate(new Timestamp(new Date().getTime())));
     }
 
     @Override

@@ -168,6 +168,17 @@ angular
             };
 
             $scope.orders = {
+                approved: []
+            };
+
+            $scope.retrieveMyApprovedOrders = () => {
+                $http.get('/driver/my-approved-orders').then(response => {
+                    $scope.orders.approved = response.data;
+                })
+            };
+            $scope.retrieveMyApprovedOrders();
+
+            $scope.orders = {
                 inProgress: []
             };
 

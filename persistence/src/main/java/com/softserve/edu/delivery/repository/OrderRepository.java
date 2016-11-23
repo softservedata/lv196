@@ -59,6 +59,10 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     List<Order> getOpenOrdersWithMyOffers(@Param("email") String email);
 
     @Query("select off.order from Offer off where off.car.driver.email = :email " +
+            "and off.order.orderStatus = 'APPROVED'")
+    List<Order> getMyApprovedOrders(@Param("email") String email);
+
+    @Query("select off.order from Offer off where off.car.driver.email = :email " +
             "and off.order.orderStatus = 'IN_PROGRESS'")
     List<Order> getMyOrdersInProgress(@Param("email") String email);
 

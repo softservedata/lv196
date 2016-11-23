@@ -53,6 +53,7 @@ public interface OrderService {
     List<OrderDto> getAllOpenOrder(Pageable pageable);
     long getCountOfOrders();
     List<OrderDto> getOpenOrdersWithMyOffers(String email);
+    List<OrderDto> getMyApprovedOrders(String email);
     List<OrderDto> getMyOrdersInProgress(String email);
     List<OrderDto> getMyOrdersClosed(String email);
     void approveDelivery(Long orderId);

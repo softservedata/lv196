@@ -92,6 +92,14 @@ public class DriverController {
     }
 
     @PreAuthorize(DRIVER)
+    @RequestMapping(path = "my-approved-orders", method = RequestMethod.GET)
+    List<OrderDto> myApprovedOrders() {
+        logger.info("Method DriverController.myApprovedOrders()");
+        String email = authenticationDetails.getAuthenticatedUserEmail();
+        return orderService.getMyApprovedOrders(email);
+    }
+
+    @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-orders-in-progress", method = RequestMethod.GET)
     List<OrderDto> myOrdersInProgress() {
         logger.info("Method DriverController.myOrdersInProgress()");
