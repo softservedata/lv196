@@ -215,3 +215,6 @@ i.fa, div {
 .tabsDynamicHeight md-content {
     margin-top: 0; }
 
+a:hover {
+    text-decoration: none;
+}

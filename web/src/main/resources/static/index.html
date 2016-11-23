@@ -98,10 +98,6 @@
                     {{ 'statistics' | translate }}
                 </a>
                 <hr/>
-                <a href="welcome" class="sidebar-menu-item">
-                    <i class="fa fa-home" aria-hidden="true"></i>
-                    {{ 'home' | translate }}
-                </a>
                 <a href="logout" class="sidebar-menu-item">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     {{ 'logout' | translate }}
@@ -109,7 +105,7 @@
             </div>
 
             <div class="sidebar-footer hidden-xs">
-                <h3>Delivery</h3>
+                <a href="welcome"><h3>Delivery</h3></a>
                 <div class="languages" ng-controller="LanguageSwitchController">
                     <a ng-class="{'lang-on':lang=='uk', 'lang-off':lang!=='uk'}"
                        ng-click="changeLanguage('uk')" translate="lang_uk"></a>
