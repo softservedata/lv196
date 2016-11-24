@@ -41,7 +41,7 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
             "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName), off.car.vehicleFrontPhotoURL) " +
             "from Offer off join off.order ord where ord.orderStatus = 'CLOSED' " +
-            "and off.approved = 1 and ord.customer.email = :email")
+            "and off.approved = 1 and ord.customer.email = :email order by ord.arrivalDate DESC")
     List<OrderDto> getAllClosedOrderByCustomerEmail(@Param("email") String email);
 
     @Query("select o from Order o where o.orderStatus = 'OPEN' " +

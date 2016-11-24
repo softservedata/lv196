@@ -154,5 +154,15 @@
 	"activate_car_info": "Click if you want to MOVE the car TO active list",
 	"cant_delete_referenced_car": "The car cannot be deleted, since it is stored in previous orders and/or offers. Do you want to remove it from active cars? ",
 	"finish_route": "Finish route",
-	"approve_delivery": "Approve delivery"
+	"approve_delivery": "Approve delivery",
+	"incorrect_city_from": "Sorry, you write incorrect city from name. You can use the hint",
+	"incorrect_city_to": "Sorry, you write incorrect city to name. You can use the hint",
+	"incorrect_weight": "Sorry, you write incorrect weight. Please, write a positive number",
+	"incorrect_date": "Sorry, you write incorrect date. You can use the calendar",
+	"more_than_one_offer": "Sorry, you can not create more than one offer for this order",
+	"offer_added": "Thank you, your offer added successfully",
+	"offer_canceled": "Thank you, your offer canceled successfully",
+	"message_send": "Thank you, your message was send successfully",
+	"delivery_approved": "Thank you, your delivery was approved successfully. You can write a feedback",
+	"driver_name":"Driver name"
 }

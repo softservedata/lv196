@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('ordersInProgressController', ['$scope', '$chat', '$orders', '$orderProperty', '$uibModal', '$http', 'Notification', '$location',
-        function ($scope, $chat, $orders, $orderProperty, $uibModal, $http, Notification, $location) {
+    .controller('ordersInProgressController', ['$scope', '$chat', '$orders', '$orderProperty', '$uibModal', '$http', 'Notification', '$location', '$filter',
+        function ($scope, $chat, $orders, $orderProperty, $uibModal, $http, Notification, $location, $filter) {
 
             var modalInstance;
 
@@ -36,7 +36,7 @@ angular
 
             $scope.confirmApproveDelivery = () => {
                 $http.put('/order/approve-delivery/', $orderProperty.getId()).then(response => {
-                    Notification.success('Thank you, your delivery was approved successfully. You can write a feedback');
+                    Notification.success($filter('translate')('delivery_approved'));
                     window.location.href = '/#/orders/closed';
                 });
             };

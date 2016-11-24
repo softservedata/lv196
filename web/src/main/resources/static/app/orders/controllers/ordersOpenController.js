@@ -50,12 +50,11 @@ angular
             };
 
             $scope.showOffers = (orderWithOffers) => {
-                if (orderWithOffers.amountOfOffers == 0) {
-                        Notification($filter('translate')('no_offers'));
-                }
-                else {
                     $scope.orderIdWithOffers = orderWithOffers.id;
-                }
+            };
+
+            $scope.hasOffersToShow = function(orderWithOffers) {
+                return (orderWithOffers.amountOfOffers > 0);
             };
 
             $scope.showConversation = (orderWithOffers) => {

@@ -1,4 +1,4 @@
-<div data-ng-repeat="order in orders.closed track by order.id" class="panel panel-default order-open">
+<div data-ng-repeat="order in orders.closed | limitTo: paginationLimit()" class="panel panel-default order-open">
     <div class="panel-body">
         <div class="order-actions" style="margin-top: -22px">
             <p class="navbar-btn">
@@ -45,4 +45,7 @@
             </span>
         </div>
     </div>
+</div>
+<div style="text-align: center">
+    <button class="btn btn-primary  btn-xs" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()">Show more</button>
 </div>

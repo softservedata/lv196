@@ -12,7 +12,7 @@
                 <ng-rate-it resetable="false" step="1" star-width="32" star-height="32" read-only="true" ng-model="offer.rate"></ng-rate-it>
             </div>
             <div class="col-sm-4 form-group">
-                <label class="control-label">{{ 'driver' | translate }}:
+                <label class="control-label">{{ 'driver_name' | translate }}:
                     <input type="radio" name="radio-primary" ng-value="true" ng-model="offer.approved" ng-checked="offer.approved" ng-change="update(offer)"/>
                     {{offer.driverName}}
                 </label>

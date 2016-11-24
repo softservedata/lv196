@@ -1,7 +1,7 @@
 angular
     .module('delivery')
-    .controller('driverController', ['$scope', '$chat', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal', '$location', '$anchorScroll',
-        function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal, $location, $anchorScroll) {
+    .controller('driverController', ['$scope', '$chat', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal', '$location', '$anchorScroll', '$filter',
+        function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal, $location, $anchorScroll, $filter) {
 
             $scope.filterObject = {
                 cityFrom: null,
@@ -67,21 +67,21 @@ angular
                 if ($scope.filterObject.cityFrom && $scope.filterObject.cityFrom.cityId) {
                     $scope.orderFilterDto.cityFromId = $scope.filterObject.cityFrom.cityId;
                 } else if ($scope.filterObject.cityFrom) {
-                    Notification.error('Sorry, you write incorrect city from name. You can use the hint');
+                    Notification.error($filter('translate')('incorrect_city_from'));
                 }
 
                 $scope.orderFilterDto.cityToId = null;
                 if ($scope.filterObject.cityTo && $scope.filterObject.cityTo.cityId) {
                     $scope.orderFilterDto.cityToId = $scope.filterObject.cityTo.cityId;
                 } else if ($scope.filterObject.cityTo) {
-                    Notification.error('Sorry, you write incorrect city to name. You can use the hint');
+                    Notification.error($filter('translate')('incorrect_city_to'));
                 }
 
                 $scope.orderFilterDto.weight = null;
                 if ($scope.filterObject.weight > 0) {
                     $scope.orderFilterDto.weight = $scope.filterObject.weight;
                 } else if ($scope.filterObject.weight) {
-                    Notification.error('Sorry, you write incorrect weight. Please, write a positive number');
+                    Notification.error($filter('translate')('incorrect_weight'));
                 }
 
                 $scope.orderFilterDto.arrivalDate = null;
@@ -90,7 +90,7 @@ angular
                     $scope.orderFilterDto.arrivalDate = Date.parse($scope.filterObject.arrivalDate);
                 }
                 else if ($scope.filterObject.arrivalDate) {
-                    Notification.error('Sorry, you write incorrect date. You can use the calendar');
+                    Notification.error($filter('translate')('incorrect_date'));
                 }
 
                 $scope.orderFilterDto.currentPage = $scope.filterObject.currentPage;
@@ -126,10 +126,10 @@ angular
                 $orderProperty.setId(id);
                 $http.post('/driver/offer/' + $orderProperty.getId()).then(response => {
                     console.log("addOffer");
-                    Notification.success('Thank you, your offer added successfully');
+                    Notification.success($filter('translate')('offer_added'));
                     $scope.retrieveOpenOrdersWithMyOffers();
                 }).catch(function () {
-                    Notification.error('Sorry, you can not create more than one offer for this order');
+                    Notification.error($filter('translate')('more_than_one_offer'));
                 })
             }
 
@@ -162,7 +162,7 @@ angular
                 $orderProperty.setId(id);
                 $http.delete('/driver/cancel-offer/' + $orderProperty.getId()).then(response => {
                     console.log("cancelOffer");
-                    Notification.success('Thank you, your offer canceled successfully');
+                    Notification.success($filter('translate')('offer_canceled'));
                     $scope.retrieveOpenOrdersWithMyOffers();
                 })
             };
@@ -230,7 +230,7 @@ angular
 
             $scope.confirmApproveDelivery = () => {
                 $http.put('/driver/approve-delivery/', $orderProperty.getId()).then(response => {
-                    Notification.info('Thank you, your message was send successfully');
+                    Notification.info($filter('translate')('message_send'));
                 });
                 modalInstance.close()
             };

@@ -3,28 +3,47 @@
     .controller('ordersClosedController',['$scope', '$http', '$uibModal',
         function ($scope, $http, $uibModal) {
 
-        $scope.orders = {
-            closed: []
-        };
+            $scope.orders = {
+                closed: []
+            };
 
-        $scope.retrieveClosedOrders = () => {
-            $http.get('/order/closed').then(response => {
-                $scope.orders.closed = response.data;
-            })
-        };
-        $scope.retrieveClosedOrders();
+            var pagesShown = 1;
 
-        $scope.addFeedback = function (orderForFeedback) {
-            const modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '/app/feedbacks/views/add.feedback.html',
-                controller: 'addFeedbackController',
-                resolve:{
-                    order: ()=> orderForFeedback
-                }
-            });
+            var pageSize = 8;
 
-        };
+            $scope.retrieveClosedOrders = () => {
+                $http.get('/order/closed').then(response => {
+                    $scope.orders.closed = response.data;
+                });
+
+                $scope.paginationLimit = function(data) {
+                    return pageSize * pagesShown;
+                };
+
+                $scope.hasMoreItemsToShow = function() {
+                    return pagesShown < ($scope.orders.closed.length / pageSize);
+                };
+
+                $scope.showMoreItems = function() {
+                    pagesShown = pagesShown + 1;
+                };
+
+            };
+            $scope.retrieveClosedOrders();
+
+
+
+
+            $scope.addFeedback = function (orderForFeedback) {
+                const modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/feedbacks/views/add.feedback.html',
+                    controller: 'addFeedbackController',
+                    resolve:{
+                        order: ()=> orderForFeedback
+                    }
+                });
+            };
         }]
     )
     .controller('addFeedbackController', ['$scope','$orders', '$http', '$uibModalInstance', 'Notification', '$filter', 'order',

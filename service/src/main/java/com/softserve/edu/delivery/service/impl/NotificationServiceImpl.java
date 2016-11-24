@@ -9,6 +9,7 @@ import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.NotificationService;
+import com.softserve.edu.delivery.service.strings.BundleKeyStrings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class NotificationServiceImpl implements NotificationService {
+public class NotificationServiceImpl implements NotificationService, BundleKeyStrings {
 
     @Autowired
     private NotificationRepository notificationRepository;
@@ -80,7 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom(env.getProperty(PROPERTY));
             messageHelper.setTo(notification.getUser().getEmail());
-            messageHelper.setSubject(res.getString("notification_from_delivery"));
+            messageHelper.setSubject(res.getString(NOTIFICATION_FROM_DELIVERY));
             String text = buildHtmlTemplate(notification.getMessage());
             messageHelper.setText(text, true);
         };
@@ -129,24 +130,36 @@ public class NotificationServiceImpl implements NotificationService {
                 .stream()
                 .map(OfferDto::offerToOfferDto)
                 .forEach(offer ->
-                        addNotification(NotificationStatus.WARNING,
-                                res.getString("dear") + " " + offer.getDriverName() +  res.getString("we_are_sorry") + " " + offer.getCustomerName() + res.getString("cancel_order") + " " + offer.getOrderId()
-                                ,offer.getDriverEmail())
+                        addNotification(NotificationStatus.WARNING, new StringBuilder()
+                                .append(res.getString(DEAR))
+                                .append(offer.getDriverName())
+                                .append(res.getString(WE_ARE_SORRY))
+                                .append(offer.getCustomerName())
+                                .append(res.getString(CANCEL_ORDER))
+                                .append(offer.getOrderId())
+                                .toString(), offer.getDriverEmail())
                 ));
     }
 
     @Override
     public void updateFeedback(FeedbackDto feedbackDTO) {
-        executor.submit(() -> addNotification(NotificationStatus.INFO,
-                res.getString("dear") + " " + feedbackDTO.getUserName() + res.getString("your_feedback_for") + " " + feedbackDTO.getTransporterName() +
-                        res.getString("was_moderated") + " " + feedbackDTO.getApproved(), feedbackDTO.getUserEmail()));
+        executor.submit(() -> addNotification(NotificationStatus.INFO, new StringBuilder()
+                .append(res.getString(DEAR))
+                .append(feedbackDTO.getUserName())
+                .append(res.getString(YOUR_FEEDBACK_FOR))
+                .append(feedbackDTO.getTransporterName())
+                .append(res.getString(WAS_MODERATED))
+                .append(feedbackDTO.getApproved())
+                .toString(), feedbackDTO.getUserEmail()));
     }
 
     @Override
     public void changeOfferStatus(OfferDto offerDto){
-        executor.submit(() -> addNotification(NotificationStatus.INFO,
-                res.getString("customer") + " " + offerDto.getCustomerName() + res.getString("approved_your_offer")
-                , offerDto.getDriverEmail()));
+        executor.submit(() -> addNotification(NotificationStatus.INFO, new StringBuilder()
+                        .append(res.getString(CUSTOMER))
+                        .append(offerDto.getCustomerName())
+                        .append(res.getString(APPROVED_YOUR_OFFER))
+                        .toString(), offerDto.getDriverEmail()));
     }
 
     @Override
@@ -154,10 +167,14 @@ public class NotificationServiceImpl implements NotificationService {
         executor.submit(() -> {
             User user = userRepository.findOneOpt(email)
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
-            addNotification(NotificationStatus.WARNING,
-                res.getString("dear") + " " + user.getFirstName() + " " + user.getLastName() +
-                res.getString("your_user_status") + " " + user.getBlocked()
-                , email);
+            addNotification(NotificationStatus.WARNING, new StringBuilder()
+                    .append(res.getString(DEAR))
+                    .append(user.getFirstName())
+                    .append(" ")
+                    .append(user.getLastName())
+                    .append(res.getString(YOUR_USER_STATUS))
+                    .append(user.getBlocked())
+                    .toString(), email);
         });
     }
 
@@ -168,9 +185,13 @@ public class NotificationServiceImpl implements NotificationService {
                 .orElseThrow(() -> new IllegalArgumentException("No such user with email: " + email));
             Order order = orderRepository.findOneOpt(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + orderId));
-            addNotification(NotificationStatus.INFO,
-                res.getString("driver") + " " + user.getFirstName() + " " + user.getLastName() + res.getString("send_offer")
-                , order.getCustomer().getEmail());
+            addNotification(NotificationStatus.INFO, new StringBuilder()
+                    .append(res.getString(DRIVER))
+                    .append(user.getFirstName())
+                    .append(" ")
+                    .append(user.getLastName())
+                    .append(res.getString(SEND_OFFER))
+                    .toString(), order.getCustomer().getEmail());
         });
     }
 
@@ -181,9 +202,12 @@ public class NotificationServiceImpl implements NotificationService {
                     .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + orderId));
             Offer offer = offerRepository.getOfferByOrderIdAndStatus(orderId);
             User user = offer.getCar().getDriver();
-            addNotification(NotificationStatus.INFO,
-                    res.getString("driver") + " " + user.getFirstName() + " " + user.getLastName() + res.getString("approve_delivery")
-                    , order.getCustomer().getEmail());
+            addNotification(NotificationStatus.INFO, new StringBuilder()
+                    .append(res.getString(DRIVER))
+                    .append(user.getFirstName())
+                    .append(user.getLastName())
+                    .append(res.getString(APPROVE_DELIVERY))
+                    .toString(), order.getCustomer().getEmail());
         });
     }
 
