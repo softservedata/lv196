@@ -2,75 +2,112 @@ angular
 	.module('delivery')
     .controller('statisticsController', ['$scope', '$http', 
     		function ($scope, $http) {
+    	
+  	  $scope.userData = [];
 
-    	$scope.dayData = [[]];
-    	$scope.dayLabels = [];
-    
-        $scope.countOrdersByTime = (function() {
-            $http.get('/data/day-orders').then(response => {
-          	  $scope.dayData = response.data;
-              $http.get('/data/hours').then(response2 => {
-              	$scope.dayLabels = response2.data;
-              });
-            });
-        }());
-  	  
-  	  	$scope.dayDatasetOverride = [{
-  	  			fill: true
-  	  	}];
-  	  	
-    	$scope.monthData = [[]];
-    	$scope.monthLabels = [];
-    
-        $scope.countOrdersByDay = (function() {
-            $http.get('/data/month-orders').then(response => {
-          	  $scope.monthData = response.data;
-              $http.get('/data/days').then(response2 => {
-              	$scope.monthLabels = response2.data;
-              });
-            });
-        }());
+      $scope.countUsers = (function() {
+          $http.get('/data/users-by-role').then(response => {
+        	  $scope.userData = response.data;
+          });
+      }());
+
+	  $scope.userLabels = ["Customers", "Drivers", "Moderators", "Admins"];
+	  
+	  $scope.rateData = [];
+	  
+      $scope.countRate = (function() {
+          $http.get('/data/users-by-rate').then(response => {
+        	  $scope.rateData = response.data;
+          });
+      }());
+
+	  $scope.rateLabels = ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"];
+	  
+      $scope.drivers = {
+              topFive: []
+          };
+      
+      $scope.retrieveUsers = (function() {
+          $http.get('/data/top-5-drivers').then(response => {
+              $scope.drivers.topFive = response.data;
+          });
+      }());
+
+	  $scope.dayDatasetOverride = [{
+	  			fill: true
+	  }];
+	  	
+      $scope.datePicker = {
+                format: 'yyyy/MM/dd',
+                options: {
+                    formatYear: 'yyyy',
+                    formatMonth: 'MMMM',
+                    formatDay: 'dd',
+                    maxDate: new Date(2017, 12, 31),
+                    minDate: new Date(2016, 01, 01),
+                    startingDay: 1,
+                    showWeeks: false
+                },
+                open: () => {
+                    $scope.datePicker.opened = true;
+                }
+         };
         
-    	$scope.yearData = [[]];
-    	$scope.yearLabels = [];
-    
-        $scope.countOrdersByMonth = (function() {
-            $http.get('/data/year-orders').then(response => {
-          	  $scope.yearData = response.data;
-              $http.get('/data/month').then(response2 => {
-              	$scope.yearLabels = response2.data;
+        $scope.dayLabels = [];
+        $scope.dateOfAnalyse = new Date();
+    	$scope.dayData = [[]];
+  	    $scope.dayLabels = [];
+        $scope.dayMap = [[]];
+
+        $scope.retrieveDayData = (dateOfAnalyse) => {
+            $http.get('/data/day-orders?date=' + Date.parse(dateOfAnalyse)).then(response => {
+                $scope.dayMap = response.data;
+                $scope.dayLabels = getColumn($scope.dayMap, 0);
+                $scope.dayData[0] = getColumn($scope.dayMap, 1);
+                for(var i = 0; i < $scope.dayLabels.length; i++){
+              	  $scope.dayLabels[i] = $scope.dayLabels[i] + ':00';
+                }
               });
+            };
+        
+        $scope.retrieveDayData($scope.dateOfAnalyse);
+        
+        $scope.$watch('dateOfAnalyse', (newValue, oldValue) => {
+        	if (newValue != oldValue) {
+        		$scope.retrieveDayData(newValue);
+        	}
+        }, true);
+        
+    	$scope.monthData = [[]];
+  	    $scope.monthLabels = [];
+        $scope.monthMap = [[]] ;
+
+        $scope.retrieveMonthlyData = (function() {
+          $http.get('/data/month-orders').then(response => {
+              $scope.monthMap = response.data;
+              $scope.monthLabels = getColumn($scope.monthMap, 0);
+              $scope.monthData[0] = getColumn($scope.monthMap, 1);              
             });
-        }());
-    	  
-    	  $scope.userData = [];
-
-          $scope.countUsers = (function() {
-              $http.get('/data/users-by-role').then(response => {
-            	  $scope.userData = response.data;
-              });
           }());
-
-    	  $scope.userLabels = ["Customers", "Drivers", "Moderators", "Admins"];
-    	  
-    	  $scope.rateData = [];
-    	  
-          $scope.countRate = (function() {
-              $http.get('/data/users-by-rate').then(response => {
-            	  $scope.rateData = response.data;
+      
+  	    $scope.yearData = [[]];
+  	    $scope.yearLabels = [];
+  	    $scope.yearMap = [[]];
+  
+        $scope.retrieveYearlyData = (function() {
+            $http.get('/data/year-orders').then(response => {
+                $scope.yearMap = response.data;
+                $scope.yearLabels = getColumn($scope.yearMap, 0);
+                $scope.yearData[0] = getColumn($scope.yearMap, 1);
               });
-          }());
-
-    	  $scope.rateLabels = ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"];
-    	  
-          $scope.drivers = {
-                  topFive: []
-              };
-          
-          $scope.retrieveUsers = (function() {
-              $http.get('/data/top-5-drivers').then(response => {
-                  $scope.drivers.topFive = response.data;
-              });
-          }());
+        }()); 
+        
+       function getColumn(matrix, col){
+            var column = [];
+            for(var i=0; i<matrix.length; i++){
+               column.push(matrix[i][col]);
+            }
+            return column;
+         }
 
         }]);

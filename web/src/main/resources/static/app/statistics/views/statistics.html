@@ -1,18 +1,24 @@
-<md-toolbar class="md-warn">
-         <div class="md-toolbar-tools data-header">
-            <h2 class="md-flex data-header">{{ 'statistics' | translate }}</h2>
-         </div>
-</md-toolbar>
-
-<md-content class="md-padding" layout-xs="column" layout="row" class="row">
+<div class="navbar navbar-inverse navbar-static-top users" style="background-color: #148b73">
+    <div class="container-fluid">
+		<span class="navbar-brand">{{ 'statistics' | translate }}</span>
+    </div>
+</div>
+<md-content class="md-padding data" layout-xs="column" layout="row" class="row">
     <div flex-xs flex-gt-xs="55" layout="column">
 
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
       	<md-card-title>
           <md-card-title-text>
-            <span class="md-headline">TODAY'S STATS</span>
-            <span class="md-subhead">Total deliveries today</span>
+            <span class="md-headline">{{ 'daily_stats' | translate }}</span>
+            <span class="md-subhead">{{ 'today_stats_opt' | translate }}</span>
           </md-card-title-text>
+             <div class="data-date">
+            	<input ng-focus="datePicker.open()" ng-model="dateOfAnalyse"
+                   	   is-open="datePicker.opened" uib-datepicker-popup="{{datePicker.format}}"
+                       datepicker-options="datePicker.options" close-text="Close"
+                       id="arrivalDateInput" class="form-control date-input" />
+            	<label for="arrivalDateInput" class="date-label"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+            </div>
         </md-card-title>
 		<div>		
 			<canvas id="line" class="chart chart-line dayline" chart-data="dayData"
@@ -25,8 +31,8 @@
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">MONTHLY STATS</span>
-            <span class="md-subhead">Monthly deliveries by day</span>
+            <span class="md-headline">{{ 'monthly_stats' | translate }}</span>
+            <span class="md-subhead">{{ 'monthly_stats_opt' | translate }}</span>
           </md-card-title-text>
         </md-card-title>
 		<div>		
@@ -39,15 +45,14 @@
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">ANNUAL STATS</span>
-            <span class="md-subhead">Total deliveries of this year</span>
+            <span class="md-headline">{{ 'annual_stats' | translate }}</span>
+            <span class="md-subhead">{{ 'annual_stats_opt' | translate }}</span>
           </md-card-title-text>
         </md-card-title>
 		<div>		
-			<canvas id="line" class="chart chart-line dayline" chart-data="yearData"
-				chart-labels="yearLabels" chart-series="series" chart-options="options"
-				chart-dataset-override="datasetOverride" chart-click="onClick">
-			</canvas>
+			<canvas id="base" class="chart-horizontal-bar dayline"
+  					chart-data="yearData" chart-labels="yearLabels" >
+			</canvas> 
 		</div>
       </md-card>
       
@@ -56,8 +61,8 @@
  		<md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text class="data-users-title">
-            <span class="md-headline">USERS QUANTITY</span>
-            <span class="md-subhead">Number of users by role</span>
+            <span class="md-headline">{{ 'users_quantity' | translate }}</span>
+            <span class="md-subhead">{{ 'users_quantity_role' | translate }}</span>
           </md-card-title-text>
         </md-card-title>
         	<div class="data-pie">
@@ -67,10 +72,10 @@
 					</canvas> 
 				</div>
 				<div class="users-pie-info">
- 					<h1 class="users-info-name"><i class="fa fa-square cus-icon" aria-hidden="true"></i>Customers</h1>
- 					<h1 class="users-info-name"><i class="fa fa-square dr-icon" aria-hidden="true"></i>Drivers</h1>
- 					<h1 class="users-info-name"><i class="fa fa-square mod-icon" aria-hidden="true"></i>Moderators</h1>
- 					<h1 class="users-info-name"><i class="fa fa-square adm-icon" aria-hidden="true"></i>Admins</h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square cus-icon" aria-hidden="true"></i>{{ 'customers' | translate }}</h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square dr-icon" aria-hidden="true"></i>{{ 'drivers' | translate }}</h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square mod-icon" aria-hidden="true"></i>{{ 'moderat' | translate }}</h1>
+ 					<h1 class="users-info-name"><i class="fa fa-square adm-icon" aria-hidden="true"></i>{{ 'admins' | translate }}</h1>
 				</div>
 			</div>
       </md-card>
@@ -78,8 +83,8 @@
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text class="data-users-title">
-            <span class="md-headline">BEST DRIVERS</span>
-            <span class="md-subhead">Top 5 best drivers</span>
+            <span class="md-headline">{{ 'best_drivers' | translate }}</span>
+            <span class="md-subhead">{{ 'top_5' | translate }}</span>
           </md-card-title-text>
         </md-card-title>
         	<div>
@@ -98,8 +103,8 @@
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text class="data-users-title">
-            <span class="md-headline">USERS QUANTITY</span>
-            <span class="md-subhead">Number of users by role</span>
+            <span class="md-headline">{{ 'users_quantity' | translate }}</span>
+            <span class="md-subhead">{{ 'users_quantity_rate' | translate }}</span>
           </md-card-title-text>
         </md-card-title>
         	<div class="data-pie">
@@ -125,3 +130,6 @@
  	</div>
 
 </md-content>
+
+
+

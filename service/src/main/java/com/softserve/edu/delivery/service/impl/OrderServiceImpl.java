@@ -1,6 +1,7 @@
 package com.softserve.edu.delivery.service.impl;
 
 import com.softserve.edu.delivery.domain.*;
+import com.softserve.edu.delivery.dto.DataDto;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.OrderDto;
@@ -9,6 +10,7 @@ import com.softserve.edu.delivery.repository.CityRepository;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
+import com.softserve.edu.delivery.repository.impl.DataRepositoryCustomImpl;
 import com.softserve.edu.delivery.service.FeedbackService;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -46,6 +42,8 @@ public class OrderServiceImpl implements OrderService {
     private FeedbackRepository feedbackRepository;
     @Autowired
     FeedbackService feedbackService;
+    @Autowired
+    private DataRepositoryCustomImpl dataRepositoryCustom;
 
     @Override
     @Transactional(readOnly = true)
@@ -218,69 +216,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Long> countOrdersByTime() {
-        List<Long> ordersQuantity = new ArrayList<>();
-        LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start = LocalDate.now().atStartOfDay();
-        for (LocalDateTime date = start; date.isBefore(end); date = date.plusHours(1)) {
-            ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date), Timestamp.valueOf(date.plusHours(1))));
-        }
-        return ordersQuantity;
+    public List<DataDto> countClosedOrdersPerHour(String date) {
+    	String dateOfAnalyse = getDate(date);
+    	return dataRepositoryCustom.countClosedOrdersPerHour(dateOfAnalyse);
+    }
+    
+    @Override
+    public List<DataDto> countClosedOrdersPerDay() {
+    	return dataRepositoryCustom.countClosedOrdersPerDay();
+    }
+    
+    @Override
+    public List<DataDto> countClosedOrdersMonth() {
+    	return dataRepositoryCustom.countClosedOrdersMonth();
+    }
+    
+    private String getDate(String value) {
+    	java.sql.Date date = new  java.sql.Date(Long.parseLong(value));
+            return date.toString();  
     }
 
-    @Override
-    public List<String> getHoursToThisMoment() {
-        LocalTime.now();
-        LocalTime end = LocalTime.now();
-        LocalTime start = LocalTime.MIDNIGHT.plusHours(1);
-        return Stream.iterate(start, date -> date.plusHours(1))
-                .limit(ChronoUnit.HOURS.between(start, end.plusMinutes(59).plusSeconds(59)))
-                .map(Object::toString)
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    public List<Long> countOrdersByDay() {
-        List<Long> ordersQuantity = new ArrayList<>();
-        LocalDateTime end = LocalDate.now().atStartOfDay();
-        LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfMonth());
-        for (LocalDateTime date = start; date.isBefore(end); date = date.plusDays(1)) {
-            ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date),
-                    Timestamp.valueOf(date.plusHours(23).plusMinutes(59).plusSeconds(59))));
-        }
-        return ordersQuantity;
-    }
-
-    @Override
-    public List<String> getDaysToThisMoment() {
-        LocalDate end = LocalDate.now();
-        LocalDate start = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-        return Stream.iterate(start, date -> date.plusDays(1))
-                .limit(ChronoUnit.DAYS.between(start, end))
-                .map(Object::toString)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Long> countOrdersByMonth() {
-        List<Long> ordersQuantity = new ArrayList<>();
-        LocalDateTime end = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfMonth());
-        LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfYear());
-        for (LocalDateTime date = start; date.isBefore(end); date = date.plusMonths(1)) {
-            ordersQuantity.add(orderRepository.countByArrivalDate(Timestamp.valueOf(date),
-                    Timestamp.valueOf(date.with(TemporalAdjusters.lastDayOfMonth()))));
-        }
-        return ordersQuantity;
-    }
-
-    @Override
-    public List<String> getMonthsToThisMoment() {
-        LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start = LocalDate.now().atStartOfDay().with(TemporalAdjusters.firstDayOfYear());
-        return Stream.iterate(start, date -> date.plusMonths(1))
-                .limit(ChronoUnit.MONTHS.between(start, end))
-                .map(LocalDateTime::getMonth)
-                .map(Object::toString)
-                .collect(Collectors.toList());
-    }
 }

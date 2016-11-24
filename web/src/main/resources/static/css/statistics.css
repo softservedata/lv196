@@ -17,6 +17,7 @@
 
 .dayline {
 	padding: 16px;
+	margin-bottom: 12px;
 }
 
 .data-users {
@@ -115,5 +116,38 @@
 	margin-left: 7px;
 }
 
+.data {
+	padding-top: 65px;
+}
+
+.data-date {
+ 	width: 120px;
+}
+
+.data-date input{
+	font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    -webkit-box-shadow: inset 0 0 0 #ddd;
+    box-shadow: inset 0 0 0 #ddd;
+}
+
+.data-date :hover {
+    color: rgba(68, 68, 68, 0.7);
+}
+
+.date-input {
+	cursor: pointer;
+	float: left;
+	width: 100px;
+}
+
+.date-label {
+	cursor: pointer;
+	float: right;
+	width: 20px;
+	font-size: 16px;
+	padding-top: 4px;
+}
 
 

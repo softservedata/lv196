@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.service;
 
+import com.softserve.edu.delivery.dto.DataDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.dto.OrderFilterDto;
 import org.springframework.data.domain.Pageable;
@@ -60,15 +61,7 @@ public interface OrderService {
 
     OrderDto getOrderById(Long orderId);
     
-    List<Long> countOrdersByTime();
-    
-    List<String> getHoursToThisMoment();
-    
-    List<Long> countOrdersByDay();
-    
-    List<String> getDaysToThisMoment();
-    
-    List<Long> countOrdersByMonth();
-    
-    List<String> getMonthsToThisMoment();
+    List<DataDto> countClosedOrdersPerHour(String date);
+    List<DataDto> countClosedOrdersPerDay();
+    List<DataDto> countClosedOrdersMonth();
 }
