@@ -27,7 +27,7 @@ import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATE
 @RequestMapping(path = "userProfile")
 public class UserProfileController {
 
-    private final HttpHeaders responseHeaders = new HttpHeaders();
+
     private final Logger logger = LoggerFactory.getLogger(UserProfileController.class.getName());
 
     @Autowired
@@ -37,8 +37,7 @@ public class UserProfileController {
     @Autowired
     private UserAuthenticationDetails authenticationDetails;
 
-    private HttpStatus status;
-    private String errorDetails;
+
 
     private User userDTOToUser(UserProfileDto userProfileDto) {
         User user = userService.findOne(userProfileDto.getEmail());
@@ -87,13 +86,15 @@ public class UserProfileController {
     }
 
     private ResponseEntity handleException(String errorDetails, String message) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         logger.error(errorDetails + message);
-        status = HttpStatus.BAD_REQUEST;
         responseHeaders.set("message", message);
         return new ResponseEntity(responseHeaders, status);
     }
 
     private ResponseEntity handleException(String errorDetails, String message, HttpStatus status) {
+        HttpHeaders responseHeaders = new HttpHeaders();
         logger.error(errorDetails + message);
         responseHeaders.set("message", message);
         return new ResponseEntity(responseHeaders, status);
@@ -102,8 +103,10 @@ public class UserProfileController {
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "loggedUser", method = RequestMethod.GET)
     ResponseEntity<UserProfileDto> getLoggedUser() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
+        String errorDetails;
 
-        status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
 
         UserProfileDto user = userService.getUser(authenticationDetails.getAuthenticatedUserEmail());
@@ -121,13 +124,14 @@ public class UserProfileController {
     @RequestMapping(path = {"updateUser"}, method = RequestMethod.PUT)
     ResponseEntity updateUser(@RequestBody UserProfileDto userProfileDto) {
         logger.info("Before UserProfileController.update(userProfileDto)");
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
 
         try {
             userService.save(userDTOToUser(userProfileDto));
         } catch (Exception e) {
-            errorDetails = "Exception while trying to update user with id " + userProfileDto.getEmail() +
+            String errorDetails = "Exception while trying to update user with id " + userProfileDto.getEmail() +
                     " in UserProfileController.update(userProfileDto) ";
             return handleException(errorDetails, e.getMessage());
         }
@@ -139,7 +143,9 @@ public class UserProfileController {
     @RequestMapping(path = "loggedUser/cars", method = RequestMethod.GET)
     ResponseEntity<CarDTO> getLoggedUserCars(@RequestParam("email") String email) {
 
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
+
         responseHeaders.set("message", "OK");
 
         List<CarDTO> cars;
@@ -147,7 +153,7 @@ public class UserProfileController {
         try {
             cars = carService.getCarsByDriver(email);
         } catch (Exception e) {
-            errorDetails = "Exception while trying to get cars of logged user /n";
+            String errorDetails = "Exception while trying to get cars of logged user /n";
             //noinspection unchecked
             return handleException(errorDetails, e.getMessage());
         }
@@ -160,14 +166,15 @@ public class UserProfileController {
     @RequestMapping(path = "addNewCar", method = RequestMethod.PUT)
     ResponseEntity<CarDTO> addNewCar(@RequestBody CarDTO carDTO) {
         logger.info("Before UserProfileController.addNewCar(CarDTO carDTO)");
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
 
         CarDTO carDTOsaved;
         try {
             carDTOsaved = carService.save(carDTOToCar(carDTO));
         } catch (Exception e) {
-            errorDetails = "Exception while trying to add car for user with id " + carDTO.getDriverEmail() +
+            String errorDetails = "Exception while trying to add car for user with id " + carDTO.getDriverEmail() +
                     " in UserProfileController.addNewCar(CarDTO carDTO) ";
             //noinspection unchecked
             return handleException(errorDetails, e.getMessage());
@@ -181,12 +188,14 @@ public class UserProfileController {
     @RequestMapping(path = "updateCar", method = RequestMethod.PUT)
     ResponseEntity updateCar(@RequestBody CarDTO carDTO) {
         logger.info("Before UserProfileController.updateCar(CarDTO carDTO)");
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
+
         responseHeaders.set("message", "OK");
         try {
             carService.save(carDTOToCar(carDTO));
         } catch (Exception e) {
-            errorDetails = "Exception while trying to update car for user with id " + carDTO.getDriverEmail() +
+            String errorDetails = "Exception while trying to update car for user with id " + carDTO.getDriverEmail() +
                     " in UserProfileController.updateCar(CarDTO carDTO) ";
             return handleException(errorDetails, e.getMessage());
         }
@@ -198,16 +207,17 @@ public class UserProfileController {
     @RequestMapping(path = "deleteCar/{carId}", method = RequestMethod.DELETE)
     ResponseEntity deleteCar(@PathVariable long carId) {
         logger.info("Before UserProfileController.deleteCar(long carId)");
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
         try {
             carService.delete(carId);
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
-            errorDetails = "Cannot delete a car, which is referenced in the db, carId= " + carId +
+            String errorDetails = "Cannot delete a car, which is referenced in the db, carId= " + carId +
                     " in UserProfileController.addNewCar(CarDTO carDTO) ";
             return handleException(errorDetails, e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            errorDetails = "Exception while trying to delete car with id " + carId +
+            String errorDetails = "Exception while trying to delete car with id " + carId +
                     " in UserProfileController.addNewCar(CarDTO carDTO) ";
             return handleException(errorDetails, e.getMessage());
         }
@@ -223,7 +233,8 @@ public class UserProfileController {
         String currentUserEmail = authenticationDetails.getAuthenticatedUserEmail();
 
         logger.info("Before UserProfileController.changePassword()");
-        status = HttpStatus.BAD_REQUEST;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
         try {
             if (userService.checkPassword(currentUserEmail, currentPassword)) {
@@ -246,7 +257,7 @@ public class UserProfileController {
                         .body("{\"message\": \"wrong_password\",\"title\": \"passwords_dont_match\"}");
             }
         } catch (Exception e) {
-            errorDetails = "Exception while trying to change password for user " + currentUserEmail +
+            String errorDetails = "Exception while trying to change password for user " + currentUserEmail +
                     " in UserProfileController.changePassword() ";
             //noinspection unchecked
             return handleException(errorDetails, e.getMessage());
@@ -262,7 +273,8 @@ public class UserProfileController {
     @RequestMapping(path = "passwordparams", method = RequestMethod.GET)
     ResponseEntity<Map<String, Integer>> getPasswordParams() {
         logger.info("Before UserProfileController.getPasswordParams()");
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
 
         Map<String, Integer> passwordParams = new HashMap<>();

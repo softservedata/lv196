@@ -32,7 +32,7 @@ public interface FeedbackService {
 
     List<FeedbackDto> findFiltered(FeedbackFilterDTO feedbackFilterDTO);
 
-    long getTotalItemsNumber();
+    long getTotalItemsNumber(FeedbackFilterDTO feedbackFilterDTO);
 
     FeedbackDto findByFeedbackId(Long id);
 

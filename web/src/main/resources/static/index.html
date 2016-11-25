@@ -23,7 +23,7 @@
     <link href="./css/sidebar.css" rel="stylesheet">
     <link href="./css/orders.css" rel="stylesheet">
     <link href="./css/users.css" rel="stylesheet">
-    <link href="./css/feedbacks.css" rel="stylesheet">
+    <link href="css/feedback.css" rel="stylesheet">
     <link href="./css/tracking.css" rel="stylesheet">
     <link href="./css/statistics.css" rel="stylesheet">
     <link href="./css/profile.css" rel="stylesheet">
@@ -82,7 +82,7 @@
                     <i class="fa fa-car" aria-hidden="true"></i>
                     {{ 'driver' | translate }}
                 </a>
-                <a ng-show="forRole('Moderator')" ui-sref="feedbacks" ui-sref-active="active-list-item"
+                <a ng-show="forRole('Moderator')" ui-sref="feedback" ui-sref-active="active-list-item"
                    class="sidebar-menu-item">
                     <i class="fa fa-comment" aria-hidden="true"></i>
                     {{ 'feedbacks' | translate }}
@@ -165,11 +165,11 @@
 <script src="./app/orders/controllers/ordersClosedController.js"></script>
 <script src="./app/driver/controllers/driverController.js"></script>
 <script src="./app/users/controllers/usersController.js"></script>
-<script src="./app/feedbacks/controllers/feedbacksController.js"></script>
-<script src="./app/feedbacks/controllers/editFeedbackController.js"></script>
-<script src="./app/feedbacks/controllers/feedbackInfoController.js"></script>
-<script src="./app/feedbacks/controllers/feedbackShowUserController.js"></script>
-<script src="./app/feedbacks/controllers/deleteFeedbackController.js"></script>
+<script src="app/feedback/controllers/feedbackController.js"></script>
+<script src="./app/feedback/controllers/editFeedbackController.js"></script>
+<script src="./app/feedback/controllers/feedbackInfoController.js"></script>
+<script src="./app/feedback/controllers/feedbackShowUserController.js"></script>
+<script src="./app/feedback/controllers/deleteFeedbackController.js"></script>
 <script src="./app/tracking/controller/trackingForDriver.js"></script>
 <script src="./app/tracking/controller/trackingForAdmin.js"></script>
 <script src="app/tracking/controller/ordersTrackingController.js"></script>

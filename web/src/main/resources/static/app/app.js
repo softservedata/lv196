@@ -44,10 +44,10 @@ angular
                 templateUrl: '/app/chat/views/conversation.html',
                 controller: 'conversationsController'
             })
-            .state('feedbacks', {
-                url: '/feedbacks',
-                templateUrl: '/app/feedbacks/views/feedbacks.html',
-                controller: 'feedbacksController'
+            .state('feedback', {
+                url: '/feedback',
+                templateUrl: '/app/feedback/views/feedback.html',
+                controller: 'feedbackController'
             })
             .state('users', {
                 url: '/users',

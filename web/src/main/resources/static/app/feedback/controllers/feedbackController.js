@@ -2,12 +2,12 @@
 
 angular
     .module('delivery')
-    .controller('feedbacksController', ['$scope', '$http', 'shareFeedbackDataService', '$uibModal', '$location',
+    .controller('feedbackController', ['$scope', '$http', 'shareFeedbackDataService', '$uibModal', '$location',
         '$anchorScroll', 'Notification', '$filter',
         function ($scope, $http, shareFeedbackDataService, $uibModal, $location, $anchorScroll,
                   Notification, $filter) {
 
-            $scope.feedbacks = [];
+            $scope.feedback = [];
             $scope.feedbackSortIcons = [];
             $scope.sortFeedbacksOrderDesc = [];
 
@@ -19,7 +19,7 @@ angular
                 createdOn: null,
                 approved: null,
                 sortBy: null,
-                sortDesc: null,
+                sortDesc: true,
                 currentPage: 1,
                 itemsPerPage: 5
             };
@@ -35,19 +35,20 @@ angular
             const rateFactor = 10;
             const columnNumber = 7;
             const rateStep = 0.5;
-            var columnPos = 0;
+            var columnPos = 5;
             var toggleFilterApprovedPos = 0;
 
             var init = function () {
                 for (var i = 0; i < columnNumber; i++) {
-                    $scope.sortFeedbacksOrderDesc.push(false);
                     if (i == 5) {
-                        $scope.feedbackSortIcons.push("fa fa-sort-asc");
+                        $scope.feedbackSortIcons.push("fa fa-sort-desc");
+                        $scope.sortFeedbacksOrderDesc.push(true);
                     } else {
                         $scope.feedbackSortIcons.push("fa fa-sort");
+                        $scope.sortFeedbacksOrderDesc.push(false);
                     }
                 }
-                if ($scope.feedbacks.length == 0) {
+                if ($scope.feedback.length == 0) {
                     $scope.filterFeedbacks();
                 }
             };
@@ -59,8 +60,8 @@ angular
             };
 
             var recalcRate = function () {
-                for (var i = 0; i < $scope.feedbacks.length; i++) {
-                    $scope.feedbacks[i].rate = $scope.feedbacks[i].rate / rateFactor;
+                for (var i = 0; i < $scope.feedback.length; i++) {
+                    $scope.feedback[i].rate = $scope.feedback[i].rate / rateFactor;
                 }
             };
 
@@ -86,13 +87,13 @@ angular
                 switch (toggleFilterApprovedPos) {
                     case 1:
                         $scope.feedbackFilterDTO.approved = false;
-                        return "color: red;";
+                        return "color: red; text-align: center; vertical-align: middle; line-height: inherit;";
                     case 2:
                         $scope.feedbackFilterDTO.approved = true;
-                        return "color: green;";
+                        return "color: green; text-align: center; vertical-align: middle; line-height: inherit;";
                     default:
                         $scope.feedbackFilterDTO.approved = null;
-                        return "color: lightgray;";
+                        return "color: lightgray; text-align: center; vertical-align: middle; line-height: inherit;";
                 }
             };
 
@@ -113,8 +114,8 @@ angular
                 }
             };
 
-            var prepareFeedbackFilterDTO = function(){
-                $scope.feedbackFilterDTO.rate  = ($scope.rate - rateStep) * rateFactor;
+            var prepareFeedbackFilterDTO = function () {
+                $scope.feedbackFilterDTO.rate = ($scope.rate - rateStep) * rateFactor;
                 $scope.feedbackFilterDTO.createdOn = Date.parse($scope.createdOn);
                 $scope.feedbackFilterDTO.sortBy = sortBy(columnPos);
                 $scope.feedbackFilterDTO.sortDesc = $scope.sortFeedbacksOrderDesc[columnPos];
@@ -147,27 +148,33 @@ angular
 
                 prepareFeedbackFilterDTO();
 
-                $http.post("/feedbacks/all", $scope.feedbackFilterDTO)
+                $http.post("/feedback/all", $scope.feedbackFilterDTO)
                     .then(function (response0) {
-                            $http.get("/feedbacks/totalItems")
+                            $http.post("/feedback/totalItems", $scope.feedbackFilterDTO)
                                 .then(function (response1) {
                                     $scope.totalItems = response1.data;
                                 });
-                            $scope.feedbacks = response0.data;
+                            $scope.feedback = response0.data;
                             recalcRate();
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')(response.data.message), title: $filter('translate')("error")});
+                            Notification.error({
+                                message: $filter('translate')(response.data.message),
+                                title: $filter('translate')("error")
+                            });
                         });
             };
 
             $scope.changeFeedbackStatus = function (feedbackDTO) {
                 feedbackDTO.approved = !feedbackDTO.approved;
-                $http.put("/feedbacks/updateFeedback", feedbackDTO)
+                $http.put("/feedback/updateFeedback", feedbackDTO)
                     .then(function (response) {
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')(response.data.message), title: $filter('translate')("error")});
+                            Notification.error({
+                                message: $filter('translate')(response.data.message),
+                                title: $filter('translate')("error")
+                            });
                         });
             };
 
@@ -190,7 +197,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'editFeedbackController',
-                    templateUrl: '/app/feedbacks/views/editFeedbackText.html',
+                    templateUrl: '/app/feedback/views/editFeedbackText.html',
                     resolve: {
                         feedbackDTO: function () {
                             return feedbackDTO;
@@ -204,7 +211,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'deleteFeedbackController',
-                    templateUrl: '/app/feedbacks/views/deleteFeedback.html',
+                    templateUrl: '/app/feedback/views/deleteFeedback.html',
                     resolve: {
                         feedbackId: function () {
                             return feedbackId;
@@ -218,7 +225,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'feedbackInfoController',
-                    templateUrl: '/app/feedbacks/views/infoFeedbacks.html',
+                    templateUrl: '/app/feedback/views/infoFeedbacks.html',
                     resolve: {
                         text: function () {
                             return text;
@@ -259,7 +266,10 @@ angular
                             $scope.showUser(response.data);
                         },
                         function (response) {
-                            Notification.error({message: $filter('translate')(response.data.message), title: $filter('translate')("error")});
+                            Notification.error({
+                                message: $filter('translate')(response.data.message),
+                                title: $filter('translate')("error")
+                            });
                         });
             };
 
@@ -268,7 +278,7 @@ angular
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
                     controller: 'feedbackShowUserController',
-                    templateUrl: '/app/feedbacks/views/feedbackShowUser.html',
+                    templateUrl: '/app/feedback/views/feedbackShowUser.html',
                     resolve: {
                         userDTO: function () {
                             return userDTO;
@@ -294,7 +304,7 @@ angular
     })
     .directive('searchForm', function () {
         return {
-            templateUrl: '/app/feedbacks/views/searchFeedbackTemplate.html'
+            templateUrl: '/app/feedback/views/searchFeedbackTemplate.html'
         };
     })
     .directive("disableAnimate", function ($animate) {

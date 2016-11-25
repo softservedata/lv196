@@ -37,7 +37,7 @@
             $scope.addFeedback = function (orderForFeedback) {
                 const modalInstance = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/feedbacks/views/add.feedback.html',
+                    templateUrl: '/app/feedback/views/add.feedback.html',
                     controller: 'addFeedbackController',
                     resolve:{
                         order: ()=> orderForFeedback

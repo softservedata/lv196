@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class FeedbackRepositoryCustomImpl <T>{
+public class FeedbackRepositoryCustomImpl {
 
     private final String FIND_BY =
             "select f from Feedback f " +

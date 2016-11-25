@@ -1,39 +1,39 @@
-.feedbacks.navbar {
+.feedback.navbar {
     background-color: #148b73;
 }
 
-.feedbacks.span {
+.feedback.span {
     float: right;
     margin-right: 20px;
     display: inline-block;
 }
 
-.feedbacks.select.form-control {
+.feedback.select.form-control {
     width: 50px;
     color: #148b73;
     display: inline;
     margin: 10px;
 }
 
-.feedbacks.main {
-    padding-top: 70px;
+.feedback.main {
+    padding-top: 150px;
 }
 
-.feedbacks.tableSort {
+.feedback.tableSort {
     float: right;
 }
 
-.feedbacks.btn-round.down {
-    top: 65px;
-    right: 20px;
+.feedback.btn-round.down {
+    top: 150px;
+    right: 10px;
 }
 
-.feedbacks.btn-round.up {
+.feedback.btn-round.up {
     bottom: 0;
-    right: 20px;
+    right: 10px;
 }
 
-.feedbacks.btn-round.btn-sm {
+.feedback.btn-round.btn-sm {
     position: fixed;
     border-radius: 50%;
     width: 40px;
@@ -41,73 +41,74 @@
     opacity: 0.2;
 }
 
-.feedbacks.btn-round.btn-sm:hover {
+.feedback.btn-round.btn-sm:hover {
     opacity: 1;
 }
 
-.feedbacks.btn-round.btn-sm:focus {
+.feedback.btn-round.btn-sm:focus {
     outline-style: none;
 }
 
-.feedbacks.fa-angle-double-up {
+.feedback.fa-angle-double-up {
     color: white;
 }
 
-.feedbacks.fa-angle-double-down {
+.feedback.fa-angle-double-down {
     color: white;
 }
 
-.feedbacks.del,
-.feedbacks.clear {
+.feedback.del,
+.feedback.clear {
     text-align: center;
+    vertical-align: middle;
 }
 
-.feedbacks.action {
+.feedback.action {
     color: gray;
 }
 
-.feedbacks.action:hover {
+.feedback.action:hover {
     color: red;
     transform: scale(2);
 }
 
-.feedbacks.deleteWarning {
+.feedback.deleteWarning {
     text-align: center;
     color: red;
     font-size: large;
 }
 
-.feedbacks.clear:hover,
-.feedbacks.fa-user:hover {
+.feedback.clear:hover,
+.feedback.fa-user:hover {
     transform: scale(2);
 }
 
-.feedbacks.fa-pencil-square-o,
-.feedbacks.fa-user {
+.feedback.fa-pencil-square-o,
+.feedback.fa-user {
     float: right;
 }
 
-.feedbacks.fa-pencil-square-o:hover {
+.feedback.fa-pencil-square-o:hover {
     color: green;
     transform: scale(2);
 }
 
-.feedbacks ul.pagination li a {
+.feedback ul.pagination li a {
     color: #148b73;
 }
 
-.feedbacks ul.pagination li.active a,
-.feedbacks ul.pagination li a:focus {
+.feedback ul.pagination li.active a,
+.feedback ul.pagination li a:focus {
     color: white;
     background-color: #148b73;
     outline-style: none;
 }
 
-.feedbacks.control-label {
+.feedback.control-label {
     font-size: large;
 }
 
-.feedbacks.userPhoto {
+.feedback.userPhoto {
     height: 200px;
 }
 

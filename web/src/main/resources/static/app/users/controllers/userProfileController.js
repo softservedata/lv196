@@ -29,6 +29,8 @@ angular
             $scope.rate = $scope.loggedUser.rate / rateFactor;
             $scope.isActiveAccordionOpen = true;
             $scope.isInactiveAccordionOpen = false;
+            $scope.activeCarsPresent = false;
+            $scope.inactiveCarsPresent = false;
 
             $scope.car = {
                 id: -1,
@@ -87,8 +89,22 @@ angular
                 if ($scope.loggedUser.role.toLowerCase() == 'driver' || $scope.loggedUser.role.toLowerCase() == 'customer') {
                     $scope.showCars = true;
                     $scope.getCars();
+
                 } else {
                     $scope.showCars = false;
+                }
+
+            };
+
+            var checkCarsStatus = function () {
+                $scope.activeCarsPresent = false;
+                $scope.inactiveCarsPresent = false;
+                for (let i = 0; i < $scope.cars.length; i++){
+                    if ($scope.cars[i].active){
+                        $scope.activeCarsPresent = true;
+                    } else {
+                        $scope.inactiveCarsPresent = true;
+                    }
                 }
             };
 
@@ -126,6 +142,7 @@ angular
                 $http.get("/userProfile/loggedUser/cars?email=" + $scope.loggedUser.email)
                     .then(function (response) {
                         $scope.cars = response.data;
+                        checkCarsStatus();
                         $scope.initialCars = angular.copy($scope.cars);
                         $scope.isCollapsed.length = 0;
                         var pos = -1;
@@ -192,6 +209,7 @@ angular
                 $http.put("/userProfile/addNewCar", $scope.car)
                     .then(function (response) {
                             $scope.car = response.data;
+                            checkCarsStatus();
                             shareCarService.setSelectedCar($scope.car);
                         },
                         function (response) {

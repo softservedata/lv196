@@ -8,7 +8,7 @@ angular
 
             $scope.confirmDeleteFeedback = function () {
                 $uibModalInstance.close();
-                $http.delete("/feedbacks/deleteFeedback/" + feedbackId)
+                $http.delete("/feedback/deleteFeedback/" + feedbackId)
                     .then(function (response) {
                             if (response.status == 200) {
                                 Notification.success($filter('translate')('delete_feedback_success'));

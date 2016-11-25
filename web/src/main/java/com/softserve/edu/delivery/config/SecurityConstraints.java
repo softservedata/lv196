@@ -30,7 +30,7 @@ public class SecurityConstraints {
     public static final String CUSTOMER_PAGE = "/#/orders/open";
     public static final String DRIVER_PAGE = "/#/driver";
     public static final String ADMIN_PAGE = "/#/users";
-    public static final String MODERATOR_PAGE = "/#/feedbacks";
+    public static final String MODERATOR_PAGE = "/#/feedback";
 
     public static final String LINKED_IN_LOGIN_URL = "/login/linkedin";
     public static final String LINKED_IN_CALLBACK_URL = "/login/linkedin/callback";

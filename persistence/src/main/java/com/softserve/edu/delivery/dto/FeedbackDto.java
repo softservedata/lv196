@@ -135,7 +135,16 @@ public class FeedbackDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FeedbackDto feedbackDto = (FeedbackDto) o;
-        return Objects.equals(feedbackDto.feedbackId, feedbackId);
+        return Objects.equals(feedbackDto.feedbackId, feedbackId) &&
+                Objects.equals(feedbackDto.text, text) &&
+                Objects.equals(feedbackDto.rate, rate) &&
+                Objects.equals(feedbackDto.approved, approved) &&
+                Objects.equals(feedbackDto.orderId, orderId) &&
+                Objects.equals(feedbackDto.userEmail, userEmail) &&
+                Objects.equals(feedbackDto.userName, userName) &&
+                Objects.equals(feedbackDto.transporterEmail, transporterEmail) &&
+                Objects.equals(feedbackDto.transporterName, transporterName) &&
+                Objects.equals(feedbackDto.createdOn, createdOn);
     }
 
     @Override

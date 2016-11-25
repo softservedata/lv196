@@ -16,7 +16,6 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -48,12 +47,6 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
     private Feedback feedback;
     private Optional<Feedback> oFeedback;
 
-    @Override
-    @BeforeSuite
-    protected void springTestContextPrepareTestInstance() throws Exception {
-        super.springTestContextPrepareTestInstance();
-    }
-
     @BeforeClass
     void injectMockDAO() {
         feedbackService = new FeedbackServiceImpl(mockFeedbackRepo, mockFeedbackCustomRepo, mockUserRepo, mockOrderRepo);
@@ -73,9 +66,7 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
         when(mockFeedbackRepo.getApprovedDriverEmail(anyLong())).thenReturn(Optional.of(APPROVED_DRIVER_EMAIL));
         when(mockUserRepo.findOneOpt(anyString())).thenReturn(Optional.of(mockUser));
         when(mockOrderRepo.findOneOpt(anyLong())).thenReturn(Optional.of(mockOrder));
-
         when(mockFeedbackRepo.save(any(Feedback.class))).thenReturn(null);
-
     }
 
     @Test(groups = {"mock"})
@@ -260,18 +251,18 @@ public class FeedbackServiceImplMockTest extends AbstractTestNGSpringContextTest
         Assert.assertTrue(mockOrder0.equals(mockOrder1));
     }
 
-    @Test(groups = {"mock"}, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"mock"})
     /**
      * tests method from FeedbackServiceImpl.class, which return list of Feedback.class objects, filtered acc.
      * to FeedbackFilterDTO.class
      */
     public void testFindFiltered() {
 
-        List<FeedbackDto> feedbackDtos = new ArrayList<>();
+        List<Feedback> feedbackList = new ArrayList<>();
 
-        feedbackDtos.add(feedbackServiceImplTest.createMockFeedbackDTO());
+        feedbackList.add(feedbackServiceImplTest.createMockFeedback());
 
-        when(mockFeedbackCustomRepo.findFiltered(any(FeedbackFilter.class))).thenReturn(feedbackDtos);
+        when(mockFeedbackCustomRepo.findFiltered(any(FeedbackFilter.class))).thenReturn(feedbackList);
 
         Assert.assertNotNull(feedbackService.findFiltered(feedbackServiceImplTest.createMockFeedbackFilterDTO()));
     }

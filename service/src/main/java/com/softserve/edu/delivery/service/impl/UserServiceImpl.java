@@ -5,7 +5,6 @@ import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
-import com.softserve.edu.delivery.repository.CarRepository;
 import com.softserve.edu.delivery.repository.EmailTokenRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.service.UserService;
@@ -110,7 +109,7 @@ public class UserServiceImpl implements UserService {
                 .findOneOpt(email)
                 .map(user -> userRepository.save(user.setBlocked(!blocked)))
                 .map(UserProfileDto::create)
-                .<IllegalStateException>orElseThrow(() -> new IllegalStateException("User: " + email + " not found!"));
+                .orElseThrow(() -> new IllegalStateException("User: " + email + " not found!"));
     }
 
     @Override
@@ -131,19 +130,6 @@ public class UserServiceImpl implements UserService {
         Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(
                 filter.getSortReverse() ? "ASC" : "DESC"),
                 filter.getSortType());
-/*        Page<User> resultPage = userRepository
-                .findUsers(filter.getFirstName(),
-                        filter.getLastName(),
-                        filter.getEmail(),
-                        filter.getRole().isEmpty() ? null : Role.valueOf(filter.getRole().toUpperCase()),
-                        filter.getBlocked(), new PageRequest(filter.getCurrentPage() - 1,
-                                filter.getRows(), new Sort(sortOrder)));
-        totalItems = resultPage.getTotalElements();
-        return resultPage
-                .getContent()
-                .stream()
-                .map(UserProfileDto::createUserFromDto)
-                .collect(Collectors.toList());*/
 
         User user = createUserFromDto(filter);
 

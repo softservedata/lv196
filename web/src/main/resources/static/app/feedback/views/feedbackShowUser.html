@@ -9,7 +9,7 @@
     <div class="modal-body" id="modal-body">
         <div class="row">
             <div class="col-xs-6 form-group">
-                <img ng-src="{{userDTO.photoUrl}}" class="feedbacks userPhoto" alt="user photo">
+                <img ng-src="{{userDTO.photoUrl}}" class=" userPhoto" alt="user photo">
             </div>
             <div class="col-xs-6 form-group">
                 <label>{{ 'fname' | translate }}: {{userDTO.firstName}} {{userDTO.lastName}}</label>
@@ -19,15 +19,18 @@
                 <label>{{ 'email' | translate }}: {{userDTO.email}}</label>
                 <br>
                 <label>{{ 'rate' | translate }}: </label>
-                <span uib-rating class="feedbacks rating" ng-model="userDTO.rate" read-only="true"
+                <span uib-rating class=" rating" ng-model="userDTO.rate" read-only="true"
                       aria-labelledby="default-rating"></span>
                 <br>
-                <label>{{ 'approved' | translate }}: {{userDTO.approved}}</label>
+                <label>{{ 'approved' | translate }}:
+                    <i class="fa" ng-class="{'fa-check-circle approved':userDTO.approved,
+                    'fa-check-circle not-approved':!userDTO.approved}" aria-hidden="true"></i></label>
                 <br>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-click="closeFeedbackShowUser()" type="button" class="btn btn-primary">{{ 'close' | translate }}</button>
+        <button ng-click="closeFeedbackShowUser()" type="button" class="btn btn-primary">{{ 'close' | translate }}
+        </button>
     </div>
 </form>

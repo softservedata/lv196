@@ -31,10 +31,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private FeedbackFilter feedbackFilter;
-
-    private long totalItemsNumber;
 
     public FeedbackServiceImpl() {
     }
@@ -70,7 +66,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
     }
 
-    private Boolean processRequestApproved(Boolean approved) {
+    private Boolean processRequestApproved(Boolean approved, FeedbackFilter feedbackFilter) {
         if (approved != null) {
             if (approved) {
                 feedbackFilter.setApproved1(true);
@@ -89,6 +85,22 @@ public class FeedbackServiceImpl implements FeedbackService {
             return "desc";
         }
         return "asc";
+    }
+
+    private FeedbackFilter processFeedbackFilter(FeedbackFilterDTO feedbackFilterDTO){
+        FeedbackFilter feedbackFilter = new FeedbackFilter();
+        feedbackFilter.setText(processRequestText(feedbackFilterDTO.getText()));
+        feedbackFilter.setRate(processRequestRate(feedbackFilterDTO.getRate()));
+        feedbackFilter.setUserName(processRequestText(feedbackFilterDTO.getUserName()));
+        feedbackFilter.setTransporterName(processRequestText(feedbackFilterDTO.getTransporterName()));
+        feedbackFilter.setCreatedOn(processRequestCreatedOn(feedbackFilterDTO.getCreatedOn()));
+        feedbackFilter.setApproved0(processRequestApproved(feedbackFilterDTO.getApproved(), feedbackFilter));
+        feedbackFilter.setSortOrder(processRequestSortOrder(feedbackFilterDTO.getSortDesc()));
+        feedbackFilter.setSortBy(feedbackFilterDTO.getSortBy());
+        feedbackFilter.setCurrentPage(feedbackFilterDTO.getCurrentPage());
+        feedbackFilter.setItemsPerPage(feedbackFilterDTO.getItemsPerPage());
+
+        return feedbackFilter;
     }
 
     private List<FeedbackDto> copyFeedbackListToDTOList(List<Feedback> feedbackList) {
@@ -244,27 +256,14 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Transactional
     public List<FeedbackDto> findFiltered(FeedbackFilterDTO feedbackFilterDTO) {
 
-        feedbackFilter.setText(processRequestText(feedbackFilterDTO.getText()));
-        feedbackFilter.setRate(processRequestRate(feedbackFilterDTO.getRate()));
-        feedbackFilter.setUserName(processRequestText(feedbackFilterDTO.getUserName()));
-        feedbackFilter.setTransporterName(processRequestText(feedbackFilterDTO.getTransporterName()));
-        feedbackFilter.setCreatedOn(processRequestCreatedOn(feedbackFilterDTO.getCreatedOn()));
-        feedbackFilter.setApproved0(processRequestApproved(feedbackFilterDTO.getApproved()));
-        feedbackFilter.setSortOrder(processRequestSortOrder(feedbackFilterDTO.getSortDesc()));
-        feedbackFilter.setSortBy(feedbackFilterDTO.getSortBy());
-        feedbackFilter.setCurrentPage(feedbackFilterDTO.getCurrentPage());
-        feedbackFilter.setItemsPerPage(feedbackFilterDTO.getItemsPerPage());
-
-        List<Feedback> feedbackList = feedbackRepositoryCustom.findFiltered(feedbackFilter);
-
-        totalItemsNumber = feedbackRepositoryCustom.getTotalItemsNumber(feedbackFilter);
+        List<Feedback> feedbackList = feedbackRepositoryCustom.findFiltered(processFeedbackFilter(feedbackFilterDTO));
 
         return copyFeedbackListToDTOList(feedbackList);
     }
 
     @Override
-    public long getTotalItemsNumber() {
-        return totalItemsNumber;
+    public long getTotalItemsNumber(FeedbackFilterDTO feedbackFilterDTO) {
+        return feedbackRepositoryCustom.getTotalItemsNumber(processFeedbackFilter(feedbackFilterDTO));
     }
 
     @Override

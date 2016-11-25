@@ -131,7 +131,7 @@ angular
                 }).catch(function () {
                     Notification.error($filter('translate')('more_than_one_offer'));
                 })
-            }
+            };
 
             $scope.trackingRedirect = function () {
                 $location.url('/tracking');
@@ -152,11 +152,11 @@ angular
                 $http.get('driver/offer-id/' + orderId).then(response => {
                     $scope.showChat(response.data)
                 })
-            }
+            };
 
             $scope.showChat = id => {
                 $chat.open(id);
-            }
+            };
 
             $scope.cancelOffer = (id) => {
                 $orderProperty.setId(id);
@@ -205,12 +205,12 @@ angular
                 for (var i = 0; i < $scope.orders.closed.length; i++) {
                     $scope.orders.closed[i].feedbackDto.rate = $scope.orders.closed[i].feedbackDto.rate / 10;
                 }
-            }
+            };
 
             $scope.addFeedback = function (orderForFeedback) {
                 const modalInstance = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/feedbacks/views/add.feedback.html',
+                    templateUrl: '/app/feedback/views/add.feedback.html',
                     controller: 'addFeedbackController',
                     resolve:{
                         order: ()=> orderForFeedback
@@ -238,4 +238,4 @@ angular
             $scope.cancelApproveDelivery = () => {
                 modalInstance.dismiss('cancel');
             }
-        }])
+        }]);

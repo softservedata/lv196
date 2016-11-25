@@ -6,11 +6,13 @@ angular
         function ($scope, $http, $uibModalInstance, feedbackDTO, Notification, $filter) {
 
             $scope.feedbackText = feedbackDTO.text;
+            $scope.feedbackUserName = feedbackDTO.userName;
+            $scope.feedbackTransporterName = feedbackDTO.transporterName;
 
             $scope.updateFeedbackText = function () {
                 $uibModalInstance.close();
                 feedbackDTO.text = $scope.feedbackText;
-                $http.put("/feedbacks/updateFeedback", feedbackDTO)
+                $http.put("/feedback/updateFeedback", feedbackDTO)
                     .then(function (response) {
                             if (response.status == 200) {
                                 Notification.success($filter('translate')('edit_feedback_success'));

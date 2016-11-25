@@ -19,16 +19,15 @@ import java.util.NoSuchElementException;
 import static com.softserve.edu.delivery.config.SecurityConstraints.MODERATOR;
 
 @RestController
-@RequestMapping(path = "feedbacks")
+@RequestMapping(path = "feedback")
 public class FeedbackController {
 
     private final Logger logger = LoggerFactory.getLogger(FeedbackController.class.getName());
-    private final HttpHeaders responseHeaders = new HttpHeaders();
+
     @Autowired
     private FeedbackService feedbackService;
     @Autowired
     private NotificationService notificationService;
-    private HttpStatus status;
 
     @PreAuthorize(MODERATOR)
     @RequestMapping(path = "all", method = RequestMethod.POST)
@@ -38,17 +37,18 @@ public class FeedbackController {
     }
 
     @PreAuthorize(MODERATOR)
-    @RequestMapping(path = "totalItems", method = RequestMethod.GET)
-    long getTotalItemsNumber() {
+    @RequestMapping(path = "totalItems", method = RequestMethod.POST)
+    long getTotalItemsNumber(@RequestBody FeedbackFilterDTO feedbackFilterDTO) {
         logger.info("Before feedbackService.getTotalItemsNumber()");
-        return feedbackService.getTotalItemsNumber();
+        return feedbackService.getTotalItemsNumber(feedbackFilterDTO);
     }
 
     @PreAuthorize(MODERATOR)
     @RequestMapping(path = {"updateFeedback"}, method = RequestMethod.PUT)
     ResponseEntity updateFeedback(@RequestBody FeedbackDto feedbackDTO) {
         logger.info("Before feedbackService.update(feedbackDTO)");
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
 
         try {
@@ -71,7 +71,8 @@ public class FeedbackController {
     @RequestMapping(path = {"deleteFeedback/{feedbackId}"}, method = RequestMethod.DELETE)
     ResponseEntity deleteFeedback(@PathVariable Long feedbackId) {
         logger.info("Before feedbackService.delete(feedbackId)");
-        status = HttpStatus.OK;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus status = HttpStatus.OK;
         responseHeaders.set("message", "OK");
 
         try {
