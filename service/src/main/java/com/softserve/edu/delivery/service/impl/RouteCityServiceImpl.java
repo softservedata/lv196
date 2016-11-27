@@ -1,20 +1,17 @@
 package com.softserve.edu.delivery.service.impl;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import com.softserve.edu.delivery.dto.PlaceDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.softserve.edu.delivery.domain.RouteCities;
-import com.softserve.edu.delivery.dto.LocationDto;
+import com.softserve.edu.delivery.dto.PlaceDto;
 import com.softserve.edu.delivery.dto.RouteCityDTO;
 import com.softserve.edu.delivery.repository.RouteCitiesRepository;
 import com.softserve.edu.delivery.service.RouteCityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @Service

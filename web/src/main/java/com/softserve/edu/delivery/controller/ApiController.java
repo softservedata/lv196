@@ -14,9 +14,12 @@ public class ApiController {
     @Value("${websocket.endpoint}")
     String wsEndpoint;
 
+    @Value("${google.geocode.key}")
+    String googleGeocodeKey;
+
     @RequestMapping(path = "configure", method = RequestMethod.GET)
     ConfigDto configure(Principal principal) {
-        return new ConfigDto(principal.getName(), wsEndpoint);
+        return new ConfigDto(principal.getName(), wsEndpoint, googleGeocodeKey);
     }
 
 }

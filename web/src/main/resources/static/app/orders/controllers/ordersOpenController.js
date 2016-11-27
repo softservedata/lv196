@@ -50,10 +50,10 @@ angular
             };
 
             $scope.showOffers = (orderWithOffers) => {
-                    $scope.orderIdWithOffers = orderWithOffers.id;
+                $scope.orderIdWithOffers = orderWithOffers.id;
             };
 
-            $scope.hasOffersToShow = function(orderWithOffers) {
+            $scope.hasOffersToShow = function (orderWithOffers) {
                 return (orderWithOffers.amountOfOffers > 0);
             };
 
@@ -63,7 +63,7 @@ angular
                     templateUrl: '/app/orders/views/conversation.html',
                     controller: 'showConversationController',
                     resolve: {
-                        order: ()=> orderWithOffers
+                        order: () => orderWithOffers
                     }
                 });
             }
@@ -88,16 +88,12 @@ angular
 
             $scope.locationLabel = location => {
                 if (location) {
-                    let arr = [location.cityName];
-                    location.regionName ? arr.push(location.regionName + ' rg.') : {};
-                    location.stateName ? arr.push(location.stateName + ' obl.') : {};
-
-                    return arr.join(', ');
+                    return location.formatted;
                 }
             };
 
             $scope.findLocations = val => {
-                return $locations.find(val).then(response => response.data);
+                return $locations.googleGeocode(val);
             };
 
             $scope.cancel = () => $uibModalInstance.dismiss('cancel');
@@ -163,11 +159,11 @@ angular
                         $scope.map.routing.setWaypoints([
                             {
                                 latLng: L.latLng(from.latitude, from.longitude),
-                                name: from.cityName
+                                name: from.formatted
                             },
                             {
                                 latLng: L.latLng(to.latitude, to.longitude),
-                                name: to.cityName
+                                name: to.formatted
                             }
                         ]);
                     } else if (fromInfo.message) {
@@ -197,7 +193,7 @@ angular
                 let info = {valid: false};
 
                 if (location) {
-                    info.valid = Number.isFinite(location.latitude) && Number.isFinite(location.latitude);
+                    info.valid = Number.isFinite(location.latitude) && Number.isFinite(location.longitude);
                     if (!info.valid) {
                         info.message = $filter('translate')('location_is_not_defined') + $scope.locationLabel(location);
                     }

@@ -30,7 +30,7 @@ public interface OfferRepository extends BaseRepository<Offer, Long> {
     List<Offer> findOfferByOrderIdAndDriverId(@Param("id")Long orderId, @Param("email")String email);
 
     @Query("select new com.softserve.edu.delivery.dto.OfferInfoDto(" +
-            "off.id, off.car.driver, ord.customer, ord.cityFrom.cityName, ord.cityTo.cityName, ord.arrivalDate) " +
+            "off.id, off.car.driver, ord.customer, ord.locationFrom.city, ord.locationTo.city, ord.arrivalDate) " +
             "from Offer off join off.order ord where off.offerId = :offerId")
     Optional<OfferInfoDto> findOfferInfo(@Param("offerId") Long offerId);
 

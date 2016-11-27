@@ -32,12 +32,12 @@ public class Order {
     private User customer;
 
     @ManyToOne
-    @JoinColumn(name = "city_from_id")
-    private City cityFrom;
+    @JoinColumn(name = "location_from_id")
+    private Location locationFrom;
 
     @ManyToOne
-    @JoinColumn(name = "city_to_id")
-    private City cityTo;
+    @JoinColumn(name = "location_to_id")
+    private Location locationTo;
 
     @OneToMany(mappedBy = "order", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Offer> offers = new ArrayList<>();
@@ -138,21 +138,21 @@ public class Order {
         return this;
     }
 
-    public City getCityFrom() {
-        return cityFrom;
+    public Location getLocationFrom() {
+        return locationFrom;
     }
 
-    public Order setCityFrom(City cityFrom) {
-        this.cityFrom = cityFrom;
+    public Order setLocationFrom(Location locationFrom) {
+        this.locationFrom = locationFrom;
         return this;
     }
 
-    public City getCityTo() {
-        return cityTo;
+    public Location getLocationTo() {
+        return locationTo;
     }
 
-    public Order setCityTo(City cityTo) {
-        this.cityTo = cityTo;
+    public Order setLocationTo(Location locationTo) {
+        this.locationTo = locationTo;
         return this;
     }
 

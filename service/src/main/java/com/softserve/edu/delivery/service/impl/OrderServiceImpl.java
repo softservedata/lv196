@@ -3,15 +3,14 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.DataDto;
 import com.softserve.edu.delivery.dto.FeedbackDto;
-import com.softserve.edu.delivery.dto.LocationDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.dto.OrderFilterDto;
-import com.softserve.edu.delivery.repository.CityRepository;
 import com.softserve.edu.delivery.repository.FeedbackRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
 import com.softserve.edu.delivery.repository.impl.DataRepositoryCustomImpl;
 import com.softserve.edu.delivery.service.FeedbackService;
+import com.softserve.edu.delivery.service.LocationService;
 import com.softserve.edu.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,13 +34,13 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private CityRepository cityRepository;
+    private LocationService locationService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
     @Autowired
-    FeedbackService feedbackService;
+    private FeedbackService feedbackService;
     @Autowired
     private DataRepositoryCustomImpl dataRepositoryCustom;
 
@@ -86,15 +85,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void saveOrder(Order order, OrderDto dto) {
-        City from = cityRepository.findOneOpt(dto.getLocationFrom().getCityId())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationFrom().getCityId()));
-
-        City to = cityRepository.findOneOpt(dto.getLocationTo().getCityId())
-                .orElseThrow(() -> new IllegalArgumentException("No such city with id: " + dto.getLocationTo().getCityId()));
+        Location from = locationService.persistLocation(dto.getLocationFrom());
+        Location to = locationService.persistLocation(dto.getLocationTo());
 
         orderRepository.save(order
-                .setCityFrom(from)
-                .setCityTo(to)
+                .setLocationFrom(from)
+                .setLocationTo(to)
                 .setArrivalDate(dto.getArrivalDate())
                 .setHeight(dto.getHeight())
                 .setWidth(dto.getWidth())
@@ -103,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
                 .setDescription(dto.getDescription()));
     }
 
-    private void requireLocationsNonNull(LocationDto from, LocationDto to) {
+    private void requireLocationsNonNull(Location from, Location to) {
         Objects.requireNonNull(from, "Departure city cannot be null");
         Objects.requireNonNull(to, "Arrival city cannot be null");
     }

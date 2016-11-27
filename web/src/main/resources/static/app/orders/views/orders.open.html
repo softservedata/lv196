@@ -9,8 +9,8 @@
             <i class="fa fa-car" ng-show="hasOffersToShow(order)" popover-trigger="'outsideClick'" uib-popover-template="templateForOffers.templateUrl" popover-placement="bottom-right" ng-click="showOffers(order)" data-notifications="{{order.amountOfOffers}}" aria-hidden="true"></i>
             <i class="fa fa-trash" ng-click="deleteOrder(order.id)" aria-hidden="true"></i>
         </div>
-        <div class="order-city" ng-click="status.open = !status.open">
-            {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
+        <div class="order-location" ng-click="status.open = !status.open">
+            {{order.locationFrom.formatted}} &mdash; {{order.locationTo.formatted}}
         </div>
         <div class="order-details">
             <uib-accordion close-others="true">

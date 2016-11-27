@@ -4,8 +4,8 @@
             <button type="button" class="btn btn-default btn-sm" ng-click="approveDelivery(order.id)">{{ 'approve_delivery' | translate }}</button>
             <i ng-click="showChat(order.approvedOfferId)" class="fa fa-envelope" aria-hidden="true"></i>
         </div>
-        <div ng-click="status.open = !status.open" class="order-city">
-            {{order.locationFrom.cityName}} &mdash; {{order.locationTo.cityName}}
+        <div ng-click="status.open = !status.open" class="order-location">
+            {{order.locationFrom.formatted}} &mdash; {{order.locationTo.formatted}}
         </div>
         <div class="order-details">
             <uib-accordion close-others="true">

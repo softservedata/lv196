@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.dto;
 
+import com.softserve.edu.delivery.domain.Location;
 import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.User;
 
@@ -10,8 +11,8 @@ public class OrderDto {
     private Long id;
     private Timestamp arrivalDate;
     private String customerName;
-    private LocationDto locationFrom;
-    private LocationDto locationTo;
+    private Location locationFrom;
+    private Location locationTo;
     private String driverName;
     private Long approvedOfferId;
     private Double height;
@@ -44,8 +45,8 @@ public class OrderDto {
     public OrderDto(Order order) {
         this.id = order.getId();
         this.arrivalDate = order.getArrivalDate();
-        this.locationFrom = order.getCityFrom() == null ? null : LocationDto.of(order.getCityFrom());
-        this.locationTo = order.getCityTo() == null ? null : LocationDto.of(order.getCityTo());
+        this.locationFrom = order.getLocationFrom();
+        this.locationTo = order.getLocationTo();
         this.weight = order.getWeight();
         this.height = order.getHeight();
         this.width = order.getWidth();
@@ -117,20 +118,20 @@ public class OrderDto {
         return this;
     }
 
-    public LocationDto getLocationFrom() {
+    public Location getLocationFrom() {
         return locationFrom;
     }
 
-    public OrderDto setLocationFrom(LocationDto locationFrom) {
+    public OrderDto setLocationFrom(Location locationFrom) {
         this.locationFrom = locationFrom;
         return this;
     }
 
-    public LocationDto getLocationTo() {
+    public Location getLocationTo() {
         return locationTo;
     }
 
-    public OrderDto setLocationTo(LocationDto locationTo) {
+    public OrderDto setLocationTo(Location locationTo) {
         this.locationTo = locationTo;
         return this;
     }

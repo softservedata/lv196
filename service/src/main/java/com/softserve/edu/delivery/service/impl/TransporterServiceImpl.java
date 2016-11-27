@@ -8,17 +8,16 @@ import com.softserve.edu.delivery.dto.RoutesDto;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.RouteCitiesRepository;
 import com.softserve.edu.delivery.service.TransporterService;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.softserve.edu.delivery.domain.OrderStatus.IN_PROGRESS;
 
@@ -56,8 +55,8 @@ public class TransporterServiceImpl implements TransporterService {
             Long id = o.getId();
             RouteCities routeCities = routeCityRepository.findCurrentLocation(id);
             resultList.add(new RoutesDto(
-                    new Point(o.getCityFrom().getLatitude(), o.getCityFrom().getLongitude()),
-                    new Point(o.getCityTo().getLatitude(), o.getCityTo().getLongitude()),
+                    new Point(o.getLocationFrom().getLatitude(), o.getLocationFrom().getLongitude()),
+                    new Point(o.getLocationTo().getLatitude(), o.getLocationTo().getLongitude()),
                     new PlaceDto(new Point(routeCities.getX(), routeCities.getY()),
                             new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(routeCities.getVisitDate()), id)
                     ));
