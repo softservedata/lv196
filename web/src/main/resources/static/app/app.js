@@ -112,7 +112,7 @@ angular
                 $http.get('configure').then(response => {
                     sessionStorage.setItem('email', response.data.email);
                     sessionStorage.setItem('wsEndpoint', response.data.wsEndpoint);
-                    sessionStorage.setItem("google-key", data.googleGeocodeKey);
+                    sessionStorage.setItem("google-key", response.data.googleGeocodeKey);
                     deferred.resolve(response.data);
                 }, () => deferred.reject("Couldn't retrieve email"));
                 return deferred.promise;
