@@ -208,8 +208,7 @@ public class UserServiceImpl implements UserService {
         newUser.setFirstName(userRegDTO.getUserFirstName());
         newUser.setLastName(userRegDTO.getUserLastName());
         newUser.setPhone(userRegDTO.getUserPhoneNumber());
-        newUser.setPassport(userRegDTO.getUserPassport());
-        newUser.setPhotoUrl(userRegDTO.getUserPhotoUrl());
+        newUser.setGender(userRegDTO.getGender());
 
         newUser.setBlocked(false);
         newUser.setApproved(false);

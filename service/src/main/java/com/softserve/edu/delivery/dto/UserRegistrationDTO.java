@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.dto;
 
+import com.softserve.edu.delivery.domain.chat.Gender;
 import com.softserve.edu.delivery.dto.valid.PasswordMatches;
 import org.hibernate.validator.constraints.Email;
 
@@ -32,18 +33,12 @@ public class UserRegistrationDTO {
     @Size(min = PASS_MIN_LENGTH, max = PASS_MAX_LENGTH)
 	private String userConfirmPassword;
 
+    @NotNull
+    private Gender gender;
+
     @NotNull(message = PHONE_NOT_VALID_MASSAGE)
     @Pattern(regexp = PHONE_REGEX)
 	private String userPhoneNumber;
-
-    /*@NotNull(message = PASSPORT_NOT_VALID_MESSAGE)
-    @Size(min = PASSPORT_MIN_LENGTH, max = PASS_MAX_LENGTH)*/
-	private String userPassport;
-
-/*    @NotNull(message = NOT_NULL_VALID_MASSAGE)
-    @Size(min = DEFAULT_MIN_LENGTH, max = DEFAULT_MAX_LENGTH)*/
-	private String userPhotoUrl;
-
     
     public String getUserEmail() {
         return userEmail;
@@ -69,12 +64,8 @@ public class UserRegistrationDTO {
         return userPhoneNumber;
     }
 
-    public String getUserPassport() {
-        return userPassport;
-    }
-
-    public String getUserPhotoUrl() {
-        return userPhotoUrl;
+    public Gender getGender() {
+        return gender;
     }
 
     public void setUserEmail(String userEmail) {
@@ -101,11 +92,7 @@ public class UserRegistrationDTO {
         this.userPhoneNumber = userPhoneNumber;
     }
 
-    public void setUserPassport(String userPassport) {
-        this.userPassport = userPassport;
-    }
-
-    public void setUserPhotoUrl(String userPhotoUrl) {
-        this.userPhotoUrl = userPhotoUrl;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

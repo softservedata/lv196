@@ -14,6 +14,7 @@ public class ResponseParser {
         socialUser.setFirstName(jsonObject.getString("given_name"));
         socialUser.setLastName(jsonObject.getString("family_name"));
         socialUser.setPhotoUrl(jsonObject.getString("picture"));
+        socialUser.setGender(jsonObject.getString("gender"));
 
         return socialUser;
     }

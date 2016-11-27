@@ -1,5 +1,7 @@
 package com.softserve.edu.delivery.domain;
 
+import com.softserve.edu.delivery.domain.chat.Gender;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +40,9 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Role userRole;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     public User() {
     }
@@ -167,6 +172,15 @@ public class User implements Serializable {
     public User setBlocked(Boolean blocked) {
         this.blocked = blocked;
         return this;
+    }
+
+    public User setGender(Gender gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 
     @Override

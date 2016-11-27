@@ -61,11 +61,14 @@
     <spring:message code='tooltip.lname' var="tooltip3"/>
     <spring:message code='tooltip.password2' var="tooltip4"/>
     <spring:message code='tooltip.phone' var="tooltip5"/>
+    <spring:message code='tooltip.phone' var="tooltip5"/>
+    <spring:message code='tooltip.male' var="tooltip6"/>
+    <spring:message code='tooltip.female' var="tooltip7"/>
     <spring:message code='register' var="register"/>
     <mvc:form modelAttribute="userRegistration" id="register_form" action="register" method = "post" enctype="utf-8">
         <div class="mess">
             <mvc:input path="userEmail" type="email" name="userEmail" id="userEmail" class="user" placeholder="${email}" maxlength="255"
-                   required="required" title="${tooltip1}"/>
+                   required="required" title="${tooltip1}" autofocus="autofocus"/>
             <mvc:errors path="userEmail"/>
         </div>
         <div class="mess">
@@ -92,6 +95,12 @@
             <mvc:input path="userPhoneNumber" type="text" class="user" id="userPhoneNumber" pattern=".\d+" name="userPhoneNumber"
                    placeholder="${phone}" required="required" title="${tooltip5}"/>
             <mvc:errors path="userPhoneNumber"/>
+        </div>
+        <div class="mess">
+            <mvc:select path="gender" name="gender" id="gender">
+                <mvc:option value="MALE" label="${tooltip6}"/>
+                <mvc:option value="FEMALE" label="${tooltip7}"/>
+            </mvc:select>
         </div>
         <input type="submit" value="${register}">
     </mvc:form>

@@ -2,6 +2,7 @@ package com.softserve.edu.delivery.service.social.dto;
 
 import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.chat.Gender;
 
 public class SocialUserDTO {
 
@@ -16,6 +17,8 @@ public class SocialUserDTO {
     private String phone;
 
     private String photoUrl;
+
+    private Gender gender;
 
 
     public void setId(String id) {
@@ -42,6 +45,18 @@ public class SocialUserDTO {
         this.photoUrl = photoUrl;
     }
 
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void setGender(String gender) {
+        if (gender.equals("male")) {
+            this.gender = Gender.MALE;
+        } else {
+            this.gender = Gender.FEMALE;
+        }
+    }
+
     public String getId() {
         return id;
     }
@@ -66,6 +81,9 @@ public class SocialUserDTO {
         return photoUrl;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
 
     public static User getUser(SocialUserDTO socialUser) {
         User newUser = new User();
@@ -75,6 +93,7 @@ public class SocialUserDTO {
         newUser.setPhone(socialUser.getPhone());
         newUser.setPhotoUrl(socialUser.getPhotoUrl());
         newUser.setUserRole(Role.CUSTOMER);
+        newUser.setGender(socialUser.getGender());
         newUser.setApproved(true);
 
         return newUser;

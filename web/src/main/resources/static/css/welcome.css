@@ -70,6 +70,19 @@ input.lock {
     background-repeat: no-repeat;
     background-position: 7px 9px;
 }
+
+select {
+    font-size: 1.1em;
+    color: black;
+    padding: 0.5em 0.5em 0.5em 0.8em;
+    width: 100%;
+    border: 1px solid #ccc;
+    outline: none;
+    display: block;
+    border-radius: 4px;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
 .john-text input[type="text"] {
     font-size: 1em;
     color: #ccc;
@@ -1508,4 +1521,11 @@ ul.topnav li.icon {display: none;}
     margin-right:auto;
     margin-left:auto;
     max-width: 400px;
+}
+
+input[type]:focus:invalid {
+    border: 1px solid red;
+}
+input[type]:focus:valid {
+    border: 1px solid green;
 }
