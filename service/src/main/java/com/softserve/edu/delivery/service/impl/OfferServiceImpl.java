@@ -1,10 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.domain.Car;
-import com.softserve.edu.delivery.domain.Offer;
-import com.softserve.edu.delivery.domain.Order;
-import com.softserve.edu.delivery.domain.User;
-import com.softserve.edu.delivery.domain.OrderStatus;
+import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.OfferDto;
 import com.softserve.edu.delivery.dto.OfferInfoDto;
 import com.softserve.edu.delivery.repository.OfferRepository;
@@ -59,6 +55,11 @@ public class OfferServiceImpl implements OfferService{
                .findOfferInfo(offerId)
                .filter(info -> info.getCustomerEmail().equals(email) || info.getDriverEmail().equals(email))
                .orElseThrow(() -> new IllegalArgumentException("Couldn't find offer info"));
+    }
+
+    @Override
+    public List<OfferInfoDto> findDriverNamesByOrderId(Long orderId) {
+        return offerRepository.findDriverNamesByOrderId(orderId);
     }
 
     @Override

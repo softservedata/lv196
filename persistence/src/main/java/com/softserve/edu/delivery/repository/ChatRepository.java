@@ -12,11 +12,11 @@ import java.util.Optional;
 
 public interface ChatRepository extends BaseRepository<Chat, Long> {
 
-    @Query("select new com.softserve.edu.delivery.dto.ChatInfoDto(" +
-            "concat(off.car.driver.firstName, ' ', off.car.driver.lastName), msg) " +
-            "from ChatMessage msg join msg.chat c join c.participants p join c.offer off " +
-            "where p.email = :email and msg.timestamp = (select max(timestamp) " +
-            "from ChatMessage m2 where m2.chat = msg.chat) order by msg.timestamp desc")
+    @Query("select distinct new com.softserve.edu.delivery.dto.ChatInfoDto(" +
+            "concat(p2.firstName, ' ', p2.lastName), msg) " +
+            "from Chat c2 join c2.participants p2, ChatMessage msg join msg.chat c join c.participants p " +
+            "where c2.id = msg.chat.id and p2.email <> :email and p.email = :email " +
+            "and msg.timestamp = (select max(timestamp) from ChatMessage m2 where m2.chat = msg.chat) order by msg.timestamp desc")
     Page<ChatInfoDto> findChatsByParticipantEmail(@Param("email") String email, Pageable pageable);
 
     @Query("select c from Chat c join c.participants p where c.id = :id and p.email = :email")

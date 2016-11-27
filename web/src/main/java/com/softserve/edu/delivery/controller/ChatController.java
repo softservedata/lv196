@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATED;
@@ -40,7 +39,7 @@ public class ChatController {
 
         dto = chatService.saveMessage(dto.setChatId(chatId)
                 .setAuthorEmail(principal.getName())
-                .setTimestamp(new Timestamp(new Date().getTime())));
+                .setTimestamp(new Date().getTime()));
         messagingTemplate.convertAndSend("/topic/chat/" + chatId, dto);
 
 

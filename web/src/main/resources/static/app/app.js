@@ -106,6 +106,7 @@ angular
         }])
     .factory('$storage', ['$http', '$q', ($http, $q) => {
         return {
+            getEmail: () => sessionStorage.getItem('email'),
             config: () => {
                 const deferred = $q.defer();
                 $http.get('configure').then(response => {
@@ -144,7 +145,7 @@ angular
                         const offerId = response.body;
 
                         $storage.findOfferInfo(offerId).then(offerInfo => {
-                            const senderName = email === offerInfo.driverEmail ?
+                            const senderName = data.email === offerInfo.driverEmail ?
                                 offerInfo.customerName : offerInfo.driverName;
 
                             if ($chat.openedChatId() != offerId) {

@@ -257,17 +257,19 @@ angular
 
             };
         }])
-    .controller('showConversationController', ['$scope', '$http', '$chat', 'order',
-        function ($scope, $http, $chat, order) {
+    .controller('showConversationController', ['$scope', '$http', '$chat', '$uibModalInstance', 'order',
+        function ($scope, $http, $chat, $uibModalInstance, order) {
             $scope.offers = [];
 
             $scope.showChat = (offerId) => {
                 $chat.open(offerId);
             }
-            $scope.retrieveOffers = () => {
-                $http.get('/order/offers/' + order.id).then(response => {
+            $scope.retrieveDriverNames = () => {
+                $http.get('/order/offer/' + order.id).then(response => {
                     $scope.offers = response.data;
                 })
             };
-            $scope.retrieveOffers();
+            $scope.retrieveDriverNames();
+
+            $scope.cancel = () => $uibModalInstance.dismiss('cancel');
         }]);

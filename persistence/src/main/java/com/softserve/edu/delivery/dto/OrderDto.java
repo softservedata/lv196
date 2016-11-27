@@ -19,6 +19,7 @@ public class OrderDto {
     private Double length;
     private Double weight;
     private String description;
+    private String orderStatus;
     private Long amountOfOffers;
     private String carPhoto;
     private FeedbackDto feedbackDto;
@@ -50,6 +51,7 @@ public class OrderDto {
         this.width = order.getWidth();
         this.length = order.getLength();
         this.description = order.getDescription();
+        this.orderStatus = order.getOrderStatus().name();
 
         User customer = order.getCustomer();
         if (customer != null) {
@@ -103,6 +105,15 @@ public class OrderDto {
 
     public OrderDto setCustomerName(String customerName) {
         this.customerName = customerName;
+        return this;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public OrderDto setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
         return this;
     }
 

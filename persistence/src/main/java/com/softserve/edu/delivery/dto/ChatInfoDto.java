@@ -3,23 +3,23 @@ package com.softserve.edu.delivery.dto;
 import com.softserve.edu.delivery.domain.chat.ChatMessage;
 
 public class ChatInfoDto {
-    private String driverName;
+    private String companion;
     private ChatMessageDto message;
 
     public ChatInfoDto() {
     }
 
-    public ChatInfoDto(String driverName, ChatMessage msg) {
-        this.driverName = driverName;
+    public ChatInfoDto(String companion, ChatMessage msg) {
+        this.companion = companion;
         this.message = ChatMessageDto.of(msg);
     }
 
-    public String getDriverName() {
-        return driverName;
+    public String getCompanion() {
+        return companion;
     }
 
-    public ChatInfoDto setDriverName(String driverName) {
-        this.driverName = driverName;
+    public ChatInfoDto setCompanion(String companion) {
+        this.companion = companion;
         return this;
     }
 

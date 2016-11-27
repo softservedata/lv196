@@ -107,6 +107,12 @@ public class OrderController {
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
+    @RequestMapping(path = "offer/{id}", method = RequestMethod.GET)
+    List<OfferInfoDto> findDriverNames(@PathVariable Long id) {
+        return offerService.findDriverNamesByOrderId(id);
+    }
+
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "offer-info/{offerId}", method = RequestMethod.GET)
     OfferInfoDto offerInfo(@PathVariable Long offerId, Principal principal) {
         return offerService.findOfferInfo(offerId, principal.getName());

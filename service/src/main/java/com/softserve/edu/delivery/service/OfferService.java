@@ -11,6 +11,7 @@ public interface OfferService {
     void cancelOffer(Long orderId, String email);
     Long findOfferId(Long orderId, String email);
     OfferInfoDto findOfferInfo(Long offerId, String email);
+    List<OfferInfoDto> findDriverNamesByOrderId(Long orderId);
     void changeStatus(Long offerId, Boolean offerStatus, Long orderId);
     List<OfferDto> getOffersByOrderId(Long id);
 }

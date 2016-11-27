@@ -9,7 +9,7 @@
     height: 200px;
 }
 
-.map-container .leaflet-control-container {
+.map-container .leaflet-routing-container.leaflet-bar.leaflet-routing-collapsible.leaflet-control {
     display: none;
 }
 
@@ -50,6 +50,17 @@
 .order-details div.col-sm-6.form-group {
     width: 300px;
     margin-bottom: 5px !important;
+}
+
+.order-creation .form-group-details input {
+    padding-right: 20px;
+    width: 65px;;
+}
+
+.order-creation .form-group-details .metric-addon {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
 }
 
 .orders {

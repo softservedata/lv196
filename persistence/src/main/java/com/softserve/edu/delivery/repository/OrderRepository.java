@@ -21,7 +21,7 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
 
     @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
             "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName), off.offerId) " +
-            "from Offer off join off.order ord where ord.orderStatus = 'IN_PROGRESS' " +
+            "from Offer off join off.order ord where ord.orderStatus in ('IN_PROGRESS', 'APPROVED') " +
             "and off.approved = 1 and ord.customer.email = :email")
     List<OrderDto> findOrderInProgressByCustomerEmail(@Param("email") String email);
 

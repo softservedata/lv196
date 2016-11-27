@@ -20,11 +20,15 @@ public class OfferInfoDto {
     public OfferInfoDto() {
     }
 
-    public OfferInfoDto(Long offerId, User driver, User customer,
-                        String cityNameFrom, String cityNameTo, Date arrivalDate) {
+    public OfferInfoDto(Long offerId, User driver) {
         this.offerId = offerId;
         this.driverEmail = driver.getEmail();
         this.driverName = driver.getFirstName() + " "  + driver.getLastName();
+    }
+
+    public OfferInfoDto(Long offerId, User driver, User customer,
+                        String cityNameFrom, String cityNameTo, Date arrivalDate) {
+        this(offerId, driver);
         this.customerEmail = customer.getEmail();
         this.customerName = customer.getFirstName() + " "  + customer.getLastName();
         this.cityNameFrom = cityNameFrom;

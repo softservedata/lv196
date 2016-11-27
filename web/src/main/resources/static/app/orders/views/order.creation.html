@@ -33,21 +33,33 @@
         </div>
         <h5 class="order-creation-details">{{ 'details' | translate }}:</h5>
         <div class="row">
-            <div class="col-xs-3 form-group">
+            <div class="col-xs-3 form-group form-group-details">
                 <label class="control-label" for="weightItnput">{{ 'weight' | translate }}</label>
-                <input name="weight" ng-model="form.weight" type="text" class="form-control" id="weightItnput">
+                <div class="input-group">
+                    <input name="weight" ng-model="form.weight" type="text" class="form-control" id="weightItnput">
+                    <span class="metric-addon">kg</span>
+                </div>
             </div>
-            <div class="col-xs-3 form-group">
+            <div class="col-xs-3 form-group form-group-details">
                 <label class="control-label" for="heightInput">{{ 'height' | translate }}</label>
-                <input name="height" ng-model="form.height" type="text" class="form-control" id="heightInput">
+                <div class="input-group">
+                    <input name="height" ng-model="form.height" type="text" class="form-control" id="heightInput">
+                    <span class="metric-addon">m</span>
+                </div>
             </div>
-            <div class="col-xs-3 form-group">
+            <div class="col-xs-3 form-group form-group-details">
                 <label class="control-label" for="widthInput">{{ 'width' | translate }}</label>
-                <input name="width" ng-model="form.width" type="text" class="form-control" id="widthInput">
+                <div class="input-group">
+                    <input name="width" ng-model="form.width" type="text" class="form-control" id="widthInput">
+                    <span class="metric-addon">m</span>
+                </div>
             </div>
-            <div class="col-xs-3 form-group">
+            <div class="col-xs-3 form-group form-group-details">
                 <label class="control-label" for="lengthInput">{{ 'length' | translate }}</label>
-                <input name="length" ng-model="form.length" class="form-control" id="lengthInput">
+                <div class="input-group">
+                    <input name="length" ng-model="form.length" class="form-control" id="lengthInput">
+                    <span class="metric-addon">m</span>
+                </div>
             </div>
         </div>
         <div class="row">

@@ -1,7 +1,6 @@
 package com.softserve.edu.delivery.domain.chat;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -10,7 +9,7 @@ public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Timestamp timestamp;
+    private Long timestamp;
     private String authorEmail;
     private String text;
 
@@ -30,11 +29,11 @@ public class ChatMessage {
         return this;
     }
 
-    public Timestamp getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public ChatMessage setTimestamp(Timestamp timestamp) {
+    public ChatMessage setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
         return this;
     }

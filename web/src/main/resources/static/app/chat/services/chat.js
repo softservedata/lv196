@@ -86,12 +86,14 @@ angular
 
             $scope.sendMessage = () => {
                 const msg = {text: $scope.inputText};
-                if (subscription === null) {
-                    $chat.create(chatId).then(() => {
-                        connectAndSend(msg);
-                    });
-                } else {
-                    sendMessageToStomp(msg);
+                if (msg.text != null) {
+                    if (subscription === null) {
+                        $chat.create(chatId).then(() => {
+                            connectAndSend(msg);
+                        });
+                    } else {
+                        sendMessageToStomp(msg);
+                    }
                 }
             };
 
