@@ -59,20 +59,20 @@ angular
             $scope.retrieveOpenOrders();
 
             $scope.findLocations = val => {
-                return $locations.find(val).then(response => response.data);
+                return $locations.googleGeocode(val);;
             };
 
             $scope.filter = () => {
                 $scope.orderFilterDto.cityFromId = null;
-                if ($scope.filterObject.cityFrom && $scope.filterObject.cityFrom.cityId) {
-                    $scope.orderFilterDto.cityFromId = $scope.filterObject.cityFrom.cityId;
+                if ($scope.filterObject.cityFrom && $scope.filterObject.cityFrom.id) {
+                    $scope.orderFilterDto.cityFromId = $scope.filterObject.cityFrom.id;
                 } else if ($scope.filterObject.cityFrom) {
                     Notification.error($filter('translate')('incorrect_city_from'));
                 }
 
                 $scope.orderFilterDto.cityToId = null;
-                if ($scope.filterObject.cityTo && $scope.filterObject.cityTo.cityId) {
-                    $scope.orderFilterDto.cityToId = $scope.filterObject.cityTo.cityId;
+                if ($scope.filterObject.cityTo && $scope.filterObject.cityTo.id) {
+                    $scope.orderFilterDto.cityToId = $scope.filterObject.cityTo.id;
                 } else if ($scope.filterObject.cityTo) {
                     Notification.error($filter('translate')('incorrect_city_to'));
                 }

@@ -45,8 +45,8 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     List<OrderDto> getAllClosedOrderByCustomerEmail(@Param("email") String email);
 
     @Query("select o from Order o where o.orderStatus = 'OPEN' " +
-            "and (:cityFromId is null or o.locationFrom.id = :locationFromId) " +
-            "and (:cityToId is null or o.locationTo.id = :locationToId) " +
+            "and (:locationFromId is null or o.locationFrom.id = :locationFromId) " +
+            "and (:locationToId is null or o.locationTo.id = :locationToId) " +
             "and (:weight is null or o.weight <= :weight) " +
             "and (:arrivalDate is null or o.arrivalDate >= :arrivalDate)")
     Page<Order> getOrdersFiltered(@Param("locationFromId") String locationFromId,
