@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.dto.OrderFilterDto;
@@ -21,6 +22,9 @@ import java.util.List;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.CUSTOMER_OR_DRIVER;
 import static com.softserve.edu.delivery.config.SecurityConstraints.DRIVER;
+import static com.softserve.edu.delivery.domain.OrderStatus.APPROVED;
+import static com.softserve.edu.delivery.domain.OrderStatus.IN_PROGRESS;
+import static com.softserve.edu.delivery.domain.OrderStatus.OPEN;
 
 @RestController
 @RequestMapping(path = "driver")
@@ -42,6 +46,8 @@ public class DriverController {
     private NotificationService notification;
 
     private final Logger logger = LoggerFactory.getLogger(DriverController.class.getName());
+    private String email;
+    private OrderStatus status;
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "open", method = RequestMethod.GET)
@@ -78,7 +84,7 @@ public class DriverController {
     @RequestMapping(path = "offer/{id}", method = RequestMethod.POST)
     void addOffer(@PathVariable Long id) {
         logger.info("Method DriverController.addOffer()");
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+        email = authenticationDetails.getAuthenticatedUserEmail();
         offerService.addOffer(id, email);
         notification.addOffer(id, email);
     }
@@ -87,31 +93,34 @@ public class DriverController {
     @RequestMapping(path = "my-offers", method = RequestMethod.GET)
     List<OrderDto> myOffers() {
         logger.info("Method DriverController.myOffers()");
-        String email = authenticationDetails.getAuthenticatedUserEmail();
-        return orderService.getOpenOrdersWithMyOffers(email);
+        email = authenticationDetails.getAuthenticatedUserEmail();
+        status = OPEN;
+        return orderService.getMyOrdersByStatus(email, status);
     }
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-approved-orders", method = RequestMethod.GET)
     List<OrderDto> myApprovedOrders() {
         logger.info("Method DriverController.myApprovedOrders()");
-        String email = authenticationDetails.getAuthenticatedUserEmail();
-        return orderService.getMyApprovedOrders(email);
+        email = authenticationDetails.getAuthenticatedUserEmail();
+        status = APPROVED;
+        return orderService.getMyOrdersByStatus(email, status);
     }
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-orders-in-progress", method = RequestMethod.GET)
     List<OrderDto> myOrdersInProgress() {
         logger.info("Method DriverController.myOrdersInProgress()");
-        String email = authenticationDetails.getAuthenticatedUserEmail();
-        return orderService.getMyOrdersInProgress(email);
+        email = authenticationDetails.getAuthenticatedUserEmail();
+        status = IN_PROGRESS;
+        return orderService.getMyOrdersByStatus(email, status);
     }
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "my-orders-closed", method = RequestMethod.GET)
     List<OrderDto> myOrdersClosed() {
         logger.info("Method DriverController.myOrdersClosed()");
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+        email = authenticationDetails.getAuthenticatedUserEmail();
         return orderService.getMyOrdersClosed(email);
     }
 
@@ -119,7 +128,7 @@ public class DriverController {
     @RequestMapping(path = "cancel-offer/{id}", method = RequestMethod.DELETE)
     void cancelOffer(@PathVariable Long id) {
         logger.info("Method DriverController.cancelOffer()");
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+        email = authenticationDetails.getAuthenticatedUserEmail();
         offerService.cancelOffer(id, email);
     }
 
@@ -127,7 +136,7 @@ public class DriverController {
     @RequestMapping(path = "addfeedback", method = RequestMethod.POST)
     void addFeedback(@PathVariable FeedbackDto dto) {
         logger.info("Method DriverController.addFeedback()");
-        String email = authenticationDetails.getAuthenticatedUserEmail();
+        email = authenticationDetails.getAuthenticatedUserEmail();
         feedbackService.addFeedback(dto, email);
     }
 

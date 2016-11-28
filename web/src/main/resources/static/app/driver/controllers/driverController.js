@@ -196,16 +196,9 @@ angular
             $scope.retrieveMyOrdersClosed = () => {
                 $http.get('/driver/my-orders-closed').then(response => {
                     $scope.orders.closed = response.data;
-                    calcRate();
                 })
             };
             $scope.retrieveMyOrdersClosed();
-
-            var calcRate = function () {
-                for (var i = 0; i < $scope.orders.closed.length; i++) {
-                    $scope.orders.closed[i].feedbackDto.rate = $scope.orders.closed[i].feedbackDto.rate / 10;
-                }
-            };
 
             $scope.addFeedback = function (orderForFeedback) {
                 const modalInstance = $uibModal.open({

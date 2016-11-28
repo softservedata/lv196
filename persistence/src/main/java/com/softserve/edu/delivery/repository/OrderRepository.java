@@ -55,20 +55,13 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
                                   @Param("arrivalDate") Timestamp arrivalDate, Pageable pageable);
 
     @Query("select off.order from Offer off where off.car.driver.email = :email " +
-            "and off.order.orderStatus = 'OPEN'")
-    List<Order> getOpenOrdersWithMyOffers(@Param("email") String email);
-
-    @Query("select off.order from Offer off where off.car.driver.email = :email " +
-            "and off.order.orderStatus = 'APPROVED'")
-    List<Order> getMyApprovedOrders(@Param("email") String email);
-
-    @Query("select off.order from Offer off where off.car.driver.email = :email " +
-            "and off.order.orderStatus = 'IN_PROGRESS'")
-    List<Order> getMyOrdersInProgress(@Param("email") String email);
-
-    @Query("select off.order from Offer off where off.car.driver.email = :email " +
             "and off.order.orderStatus = 'CLOSED'")
     List<Order> getMyOrdersClosed(@Param("email") String email);
+
+    @Query("select off.order from Offer off where off.car.driver.email = :email " +
+            "and off.order.orderStatus = :status")
+    List<Order> getMyOrdersByStatus(@Param("email") String email,
+                                    @Param("status") OrderStatus status);
 
     Page<Order> findAllByOrderStatus(OrderStatus orderStatus, Pageable pageable);
 

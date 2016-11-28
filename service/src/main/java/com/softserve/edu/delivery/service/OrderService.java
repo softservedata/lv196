@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.service;
 
+import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.dto.DataDto;
 import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.dto.OrderFilterDto;
@@ -53,10 +54,8 @@ public interface OrderService {
     long getCountOfFilteredOrders();
     List<OrderDto> getAllOpenOrder(Pageable pageable);
     long getCountOfOrders();
-    List<OrderDto> getOpenOrdersWithMyOffers(String email);
-    List<OrderDto> getMyApprovedOrders(String email);
-    List<OrderDto> getMyOrdersInProgress(String email);
     List<OrderDto> getMyOrdersClosed(String email);
+    List<OrderDto> getMyOrdersByStatus(String email, OrderStatus status);
     void approveDelivery(Long orderId);
 
     OrderDto getOrderById(Long orderId);

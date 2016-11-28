@@ -154,33 +154,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOpenOrdersWithMyOffers(String email) {
-        return orderRepository
-                .getOpenOrdersWithMyOffers(email)
-                .stream()
-                .map(OrderDto::of)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<OrderDto> getMyApprovedOrders(String email) {
-        return orderRepository
-                .getMyApprovedOrders(email)
-                .stream()
-                .map(OrderDto::of)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<OrderDto> getMyOrdersInProgress(String email) {
-        return orderRepository
-                .getMyOrdersInProgress(email)
-                .stream()
-                .map(OrderDto::of)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<OrderDto> getMyOrdersClosed(String email) {
         List<Order> listOrders = orderRepository.getMyOrdersClosed(email);
         List<OrderDto> result = new ArrayList<>();
@@ -192,6 +165,15 @@ public class OrderServiceImpl implements OrderService {
             } else result.add(OrderDto.of(order));
         }
         return result;
+    }
+
+    @Override
+    public List<OrderDto> getMyOrdersByStatus(String email, OrderStatus status) {
+        return orderRepository
+                .getMyOrdersByStatus(email, status)
+                .stream()
+                .map(OrderDto::of)
+                .collect(Collectors.toList());
     }
 
     @Override
