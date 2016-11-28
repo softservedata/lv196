@@ -88,7 +88,7 @@ public class AuthController {
     }
 
     @GetMapping(value = "/register")
-    public ModelAndView reg(@RequestParam("token") String token) {
+    public ModelAndView verifyRegistration(@RequestParam("token") String token) {
         if (userService.tokenExists(token)) {
             userService.verifyRegistration(token);
 
@@ -123,10 +123,11 @@ public class AuthController {
                 return redirect += CUSTOMER_PAGE;
             case "Driver":
                 return redirect += DRIVER_PAGE;
-            case "Admin" :
-                return redirect += ADMIN_PAGE;
             case "Moderator":
                 return redirect += MODERATOR_PAGE;
+            case "Admin" :
+            case "Manager":
+                return redirect += ADMIN_PAGE;
             default:
                 return redirect += WELCOME_PAGE;
         }

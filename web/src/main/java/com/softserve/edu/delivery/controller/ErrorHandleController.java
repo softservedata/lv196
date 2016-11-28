@@ -3,15 +3,18 @@ package com.softserve.edu.delivery.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class ErrorHandleController {
 
     private static Logger logger = LoggerFactory.getLogger(ErrorHandleController.class);
 
-    @GetMapping(value = "/notFound")
+    @RequestMapping(value = "/notFound", method = {GET, POST})
     public ModelAndView pageNotFound() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("error");
@@ -22,7 +25,7 @@ public class ErrorHandleController {
         return mv;
     }
 
-    @GetMapping(value = "/serverError")
+    @RequestMapping(value = "/serverError", method = {GET, POST})
     public ModelAndView serverError() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("error");
@@ -33,7 +36,7 @@ public class ErrorHandleController {
         return mv;
     }
 
-    @GetMapping(value = "/accessDenied")
+    @RequestMapping(value = "/accessDenied", method = {GET, POST})
     public ModelAndView accessDenied() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("error");
