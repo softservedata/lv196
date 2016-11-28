@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -200,8 +201,9 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
-    public List<DataDto> countClosedOrdersPerDay() {
-    	return dataRepositoryCustom.countClosedOrdersPerDay();
+    public List<DataDto> countClosedOrdersPerDay(Integer month) {
+    	String monthOfAnalyse = getMonth(month);
+    	return dataRepositoryCustom.countClosedOrdersPerDay(monthOfAnalyse);
     }
     
     @Override
@@ -212,6 +214,10 @@ public class OrderServiceImpl implements OrderService {
     private String getDate(String value) {
     	java.sql.Date date = new  java.sql.Date(Long.parseLong(value));
             return date.toString();  
+    }
+    
+    private String getMonth(Integer month) {
+		return LocalDate.of(LocalDate.now().getYear(), month, 1).toString();
     }
 
 

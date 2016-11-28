@@ -1,12 +1,13 @@
 angular
     .module('delivery')
-    .controller('usersController', ['$scope', '$http', '$location', '$anchorScroll', 'Notification', '$filter',
-        function ($scope, $http, $location, $anchorScroll, Notification, $filter) {
+    .controller('usersController', ['$scope', '$http', '$location', '$anchorScroll', 'Notification', '$filter', '$uibModal',
+        function ($scope, $http, $location, $anchorScroll, Notification, $filter, $uibModal) {
         $scope.users = {
             allProfiles: [],
             roles: ['Customer', 'Driver', 'Moderator', 'Admin']
         };
-
+        
+        $scope.userCars = [];
         $scope.totalItems;
         $scope.filterStatus = false;
         $scope.userInfo = false;
@@ -72,7 +73,14 @@ angular
             var rate = user.rate;
             $http.get('/users/email?email=' + email).then(response => {
                 $scope.userInfo = response.data;
-                $scope.userRate = rate / 10;
+                $http.get("/userProfile/loggedUser/cars?email=" + email).then(response => {
+                    $scope.userCars = response.data;
+                })
+                if ($scope.userInfo.role.toLowerCase() == 'driver' ) {
+                	$scope.showCars = true;
+                } else {
+                	$scope.showCars = false;
+                }
             })
         };
 
@@ -101,4 +109,50 @@ angular
                 $scope.retrieveUsers($scope.filter);
             })
         }
-    }]);
+        
+        $scope.showUserInfo = function (userProfile) {
+            var modalInstance = $uibModal.open({
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                controller: 'showUserController',
+                templateUrl: '/app/users/views/userInfo.html',
+                resolve: {
+                	userProfile: function () { return userProfile;},
+                    userCars: function () { return $scope.userCars;}
+                }
+            });
+        };
+        
+        $scope.showCars = function () {
+            $http.get("/userProfile/loggedUser/cars?email=" + $scope.userProfile.email)
+                .then(function (response) {
+                    $scope.userCars = response.data;
+                });
+        };
+        
+    }])
+    
+    .controller('showUserController', ['$scope', '$uibModalInstance', 'userProfile', 'userCars',
+        function ($scope, $uibModalInstance, userProfile, userCars) {
+            
+            $scope.showCars = true;
+            $scope.userCars = [];
+            $scope.userCars = userCars;
+            $scope.userProfile = userProfile;
+
+            $scope.closeUserInfo = function () {
+                $uibModalInstance.close();
+            };
+            
+            var checkIfDriver = function () {
+                if ($scope.userProfile.role.toLowerCase() == 'driver') {
+                    $scope.showCars = true;
+                } else {
+                    $scope.showCars = false;
+                }
+            };
+            
+            checkIfDriver();
+
+     }]);
+    

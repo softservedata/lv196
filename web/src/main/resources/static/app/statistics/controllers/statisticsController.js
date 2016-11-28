@@ -1,6 +1,6 @@
 angular
 	.module('delivery')
-    .controller('statisticsController', ['$scope', '$http', 
+    .controller('statisticsController', ['$scope', '$http',  
     		function ($scope, $http) {
     	
   	  $scope.userData = [];
@@ -36,28 +36,22 @@ angular
 	  $scope.dayDatasetOverride = [{
 	  			fill: true
 	  }];
-	  	
-      $scope.datePicker = {
-                format: 'yyyy/MM/dd',
-                options: {
-                    formatYear: 'yyyy',
-                    formatMonth: 'MMMM',
-                    formatDay: 'dd',
-                    maxDate: new Date(2017, 12, 31),
-                    minDate: new Date(2016, 01, 01),
-                    startingDay: 1,
-                    showWeeks: false
-                },
-                open: () => {
-                    $scope.datePicker.opened = true;
-                }
-         };
         
         $scope.dayLabels = [];
         $scope.dateOfAnalyse = new Date();
     	$scope.dayData = [[]];
   	    $scope.dayLabels = [];
         $scope.dayMap = [[]];
+        
+        $scope.minDate = new Date(
+                $scope.dateOfAnalyse.getFullYear(),
+                $scope.dateOfAnalyse.getMonth() - 2,
+                $scope.dateOfAnalyse.getDate());
+
+        $scope.maxDate = new Date(
+                $scope.dateOfAnalyse.getFullYear(),
+                $scope.dateOfAnalyse.getMonth() + 2,
+                $scope.dateOfAnalyse.getDate());
 
         $scope.retrieveDayData = (dateOfAnalyse) => {
             $http.get('/data/day-orders?date=' + Date.parse(dateOfAnalyse)).then(response => {
@@ -65,7 +59,7 @@ angular
                 $scope.dayLabels = getColumn($scope.dayMap, 0);
                 $scope.dayData[0] = getColumn($scope.dayMap, 1);
                 for(var i = 0; i < $scope.dayLabels.length; i++){
-              	  $scope.dayLabels[i] = $scope.dayLabels[i] + ':00';
+              	 // $scope.dayLabels[i] = $scope.dayLabels[i] + ':00';
                 }
               });
             };
@@ -80,15 +74,24 @@ angular
         
     	$scope.monthData = [[]];
   	    $scope.monthLabels = [];
-        $scope.monthMap = [[]] ;
+        $scope.monthMap = [[]];
+        $scope.monthOfAnalyse;
 
-        $scope.retrieveMonthlyData = (function() {
-          $http.get('/data/month-orders').then(response => {
+        $scope.retrieveMonthlyData = (month) => {
+          $http.get('/data/month-orders' + month).then(response => {
               $scope.monthMap = response.data;
               $scope.monthLabels = getColumn($scope.monthMap, 0);
               $scope.monthData[0] = getColumn($scope.monthMap, 1);              
             });
-          }());
+         };
+          
+        $scope.retrieveMonthlyData($scope.monthOfAnalyse);
+        
+        $scope.$watch('monthOfAnalyse', (newValue, oldValue) => {
+        	if (newValue != oldValue) {
+        		$scope.retrieveMonthlyData(newValue);
+        	}
+        }, true);
       
   	    $scope.yearData = [[]];
   	    $scope.yearLabels = [];

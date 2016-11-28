@@ -18,13 +18,13 @@ public class DataRepositoryCustomImpl {
 
 	private final String COUNT_ORDERS_PER_DAY = "select dd.day, count(o.id) "
 			+ "from day_dimension dd left outer join orders o on dd.day = date_format(arrival_date, '%e') "
-			+ "and arrival_date like concat(date_format(now(),'%Y-%m'), '%') "
-			+ "group by dd.day having dd.day <= date_format(now(),'%e') ";
+			+ "and arrival_date like concat(date_format(:month,'%Y-%m'), '%') group by dd.day "
+			+ "having dd.day <= datediff(date_add(:month,interval 1 month), :month) ";
 
 	private final String COUNT_ORDERS_PER_MONTH = "select md.month, count(o.id) "
 			+ "from month_dimension md left outer join orders o on md.month = date_format(arrival_date, '%M') "
 			+ "and arrival_date like concat(date_format(now(),'%Y'), '%') group by md.month_id ";
-
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -37,9 +37,10 @@ public class DataRepositoryCustomImpl {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<DataDto> countClosedOrdersPerDay() {
+	public List<DataDto> countClosedOrdersPerDay(String month) {
 		return entityManager
 				.createNativeQuery(COUNT_ORDERS_PER_DAY)
+				.setParameter("month", month)
 				.getResultList();
 	}
 

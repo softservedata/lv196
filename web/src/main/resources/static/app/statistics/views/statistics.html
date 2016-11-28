@@ -4,7 +4,7 @@
     </div>
 </div>
 <md-content class="md-padding data" layout-xs="column" layout="row" class="row">
-    <div flex-xs flex-gt-xs="55" layout="column">
+    <div flex-xs flex-gt-xs="65" layout="column">
 
       <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
       	<md-card-title>
@@ -13,11 +13,8 @@
             <span class="md-subhead">{{ 'today_stats_opt' | translate }}</span>
           </md-card-title-text>
              <div class="data-date">
-            	<input ng-focus="datePicker.open()" ng-model="dateOfAnalyse"
-                   	   is-open="datePicker.opened" uib-datepicker-popup="{{datePicker.format}}"
-                       datepicker-options="datePicker.options" close-text="Close"
-                       id="arrivalDateInput" class="form-control date-input" />
-            	<label for="arrivalDateInput" class="date-label"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+            	<md-datepicker ng-model="dateOfAnalyse" md-placeholder="Enter date"
+            				   md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
             </div>
         </md-card-title>
 		<div>		
@@ -34,6 +31,24 @@
             <span class="md-headline">{{ 'monthly_stats' | translate }}</span>
             <span class="md-subhead">{{ 'monthly_stats_opt' | translate }}</span>
           </md-card-title-text>
+            <div class="data-month">
+                 <md-input-container>
+            			<md-select ng-model="monthOfAnalyse" placeholder="Month" class="month-of-analyse">
+          					<md-option value="1">{{ 'jan' | translate }}</md-option>
+          					<md-option value="2">{{ 'feb' | translate }}</md-option>
+          					<md-option value="3">{{ 'mar' | translate }}</md-option>
+          					<md-option value="4">{{ 'apr' | translate }}</md-option>
+          					<md-option value="5">{{ 'may' | translate }}</md-option>
+          					<md-option value="6">{{ 'jun' | translate }}</md-option>
+          					<md-option value="7">{{ 'jul' | translate }}</md-option>
+          					<md-option value="8">{{ 'aug' | translate }}</md-option>
+          					<md-option value="9">{{ 'sep' | translate }}</md-option>
+          					<md-option value="10">{{ 'oct' | translate }}</md-option>
+          					<md-option value="11" ng-selected="true">{{ 'nov' | translate }}</md-option>
+          					<md-option value="12">{{ 'dec' | translate }}</md-option>
+        				</md-select>
+        		</md-input-container>
+            </div>
         </md-card-title>
 		<div>		
 			<canvas id="bar" class="chart chart-bar dayline"
@@ -57,7 +72,7 @@
       </md-card>
       
     </div>
- 	<div flex-xs flex-gt-xs="45" layout="column">
+ 	<div flex-xs flex-gt-xs="35" layout="column">
  		<md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
         <md-card-title>
           <md-card-title-text class="data-users-title">
@@ -88,7 +103,7 @@
           </md-card-title-text>
         </md-card-title>
         	<div>
-        		<md-list-item ng-repeat="user in drivers.topFive" ng-click="goToPerson(person.name, $event)" class="noright">
+        		<md-list-item ng-repeat="user in drivers.topFive" ng-click="goToPerson(person.name, $event)" class="noright topdrivers">
     				<img title="{{user.firstName}} {{user.lastName}}" src="./img/user-photo.png" class="md-avatar img-driver">
     					  <div class="md-list-item-text" layout="column">
             					<h1 class="driver-name">{{ user.firstName }} {{user.lastName}}</h1>
@@ -108,7 +123,7 @@
           </md-card-title-text>
         </md-card-title>
         	<div class="data-pie">
-        		<div class="users-pie">
+        		<div class="users-pie-rate">
 					<canvas id="doughnut" class="chart chart-doughnut"
   							chart-data="rateData" chart-labels="rateLabels" chart-options="options" height="120" width="120">
 					</canvas> 
@@ -130,6 +145,5 @@
  	</div>
 
 </md-content>
-
 
 

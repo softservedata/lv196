@@ -61,6 +61,6 @@ public interface OrderService {
     OrderDto getOrderById(Long orderId);
     
     List<DataDto> countClosedOrdersPerHour(String date);
-    List<DataDto> countClosedOrdersPerDay();
+    List<DataDto> countClosedOrdersPerDay(Integer date);
     List<DataDto> countClosedOrdersMonth();
 }

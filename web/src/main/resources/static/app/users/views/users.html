@@ -96,7 +96,7 @@
     	</thead>
     	<tbody ng-controller="roleController"  ng-init="getRole()" ng-cloak >
       		<tr ng-repeat-start="user in users.allProfiles" disable-animate>
-        		<td class="col-xs-1"><img title="{{user.firstName}} {{user.lastName}}" src="./img/user-photo.png" class="img-thumbnail img-responsive img-circle"></td>
+        		<td class="col-xs-1"><img ng-src="{{user.photoUrl}}" title="{{user.firstName}} {{user.lastName}}"  class="img-thumbnail img-responsive img-circle users-img"></td>
         		<td class="col-xs-2">{{user.lastName}}</td>
         		<td class="col-xs-2"><span class="scnd">{{user.firstName}}</span></td>
         		<td class="col-xs-2"><span class="thrd">{{user.email}}</span></td>
@@ -117,7 +117,7 @@
         		<td></td>
         		<td colspan="7">
           			<div class="container col-xs-12">
-            		<div class="col-xs-12"><h1 class="name">{{userInfo.firstName}}
+            		<div class="col-xs-12"><i class="name" ng-click="showUserInfo(user)">{{userInfo.firstName}}</i>
             			<i class="fa " ng-class="{'fa-check-circle approved':userInfo.approved==true, 'fa-check-circle not-approved':userInfo.approved==false}" title="approved status"  aria-hidden="true"></i></h1>
             		</div>
             		<div class="col-md-4 col-xs-7 small">
@@ -126,12 +126,13 @@
               			<label class="user-info">{{ 'email' | translate }}</label>{{userInfo.email}}<br>
             		</div>
             		<div class="col-md-4 col-xs-7 small">
-              			<label class="user-info">{{ 'rate' | translate }}</label>{{userInfo.rate}}<br>
-              			<label class="user-rate"><span uib-rating class="rating user-rate" ng-model="userRate"
-                 				aria-labelledby="default-rating" readonly="isReadonly" ></span></label>
+              			<label class="user-info-rate">{{ 'rate' | translate }}</label><br>
+              			<label><span uib-rating class="rating user-rate" ng-model="userInfo.rate"
+                 				aria-labelledby="default-rating" readonly="isReadonly" ></span></label>	 
             		</div>
             		<div class="col-md-3 col-xs-10 text-center">
-              			<img title="{{userInfo.firstName}} {{userInfo.lastName}}" src="./img/user-photo.png" class="img-thumbnail img-responsive img-circle center-block photo">
+              			<img ng-src="{{userInfo.photoUrl}}" title="{{userInfo.firstName}} {{userInfo.lastName}}" ng-click="showUserInfo(user)"
+              				 class="img-thumbnail img-responsive img-circle center-block photo users-img-med">
             		</div>
             		<div class="col-xs-12"></div>
           			</div>

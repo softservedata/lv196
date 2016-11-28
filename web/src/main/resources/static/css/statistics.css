@@ -17,14 +17,24 @@
 
 .dayline {
 	padding: 16px;
-	margin-bottom: 12px;
+	margin-bottom: 3px;
 }
 
 .data-users {
 	height: 40%;
 }
 
+.data-users-title {
+	margin-bottom: 1px;
+}
+
 .users-pie {
+	width: 58%;
+	padding: 20px;
+	float: left;
+}
+
+.users-pie-rate {
 	width: 60%;
 	padding: 20px;
 	float: left;
@@ -33,14 +43,13 @@
 .users-pie-info {
 	float: left;
 	width: 40%;
-	padding: 25px;
-	margin-top: 20px;
+	padding: 20px;
 }
 
 .users-info-name {
-	font-size: 14px;
-	margin-top: 0px;
-	margin-down: 0px;
+	font-size: 13px;
+	margin-top: 10px;
+	color: #555555;
 }
 
 .cus-icon {
@@ -76,14 +85,13 @@
 
 .data-rate {
 	font-weight: bold;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .users-rate-info {
 	float: left;
 	width: 40%;
-	padding: 20px;
-	margin-top: 20px;
+	margin-top: 30px;
 }
 
 .img-driver {
@@ -118,36 +126,27 @@
 
 .data {
 	padding-top: 65px;
+	padding-left: 3px;
+	padding-right: 3px;
 }
 
 .data-date {
- 	width: 120px;
+ 	width: 200px;
 }
 
-.data-date input{
-	font-size: 16px;
-    cursor: pointer;
-    display: inline-block;
-    -webkit-box-shadow: inset 0 0 0 #ddd;
-    box-shadow: inset 0 0 0 #ddd;
+.data-month {
+ 	width: 150px;
 }
 
-.data-date :hover {
-    color: rgba(68, 68, 68, 0.7);
+.month-of-analyse {
+	font-size: 15px;
+	color: #555555;
+	padding-left: 27px;
 }
 
-.date-input {
-	cursor: pointer;
-	float: left;
-	width: 100px;
-}
-
-.date-label {
-	cursor: pointer;
-	float: right;
-	width: 20px;
-	font-size: 16px;
-	padding-top: 4px;
+.topdrivers {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 

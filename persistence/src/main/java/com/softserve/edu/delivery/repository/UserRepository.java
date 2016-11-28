@@ -26,6 +26,6 @@ public interface UserRepository extends BaseRepository<User, String> {
     
     List<User> findTop5ByUserRoleOrderByRateDesc(Role userRole);
     
-    @Query("select count(u) from User u where u.rate between ?1 and ?2")
-    Long countByRate(@Param("rate")Integer rateFrom, @Param("rate")Integer rateTo);
+    @Query("select count(u) from User u group by u.rate")
+    List<Long> countByRate();
 }

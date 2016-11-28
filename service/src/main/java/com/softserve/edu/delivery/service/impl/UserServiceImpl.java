@@ -162,10 +162,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Long> countUsersByRate() {
-        List<Long> users = new ArrayList<>();
-        for (int i = 1; i < 50; i = i + 10)
-            users.add(userRepository.countByRate(i, i + 9));
-        return users;
+        return userRepository.countByRate();
     }
 
     @Override
