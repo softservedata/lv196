@@ -28,8 +28,8 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
             "ord, count(off.order.id)) from Order ord left join ord.offers off " +
             "left join off.car c left join c.driver d " +
-            "where ord.orderStatus = 'OPEN' and ord.customer.email = :email " +
-            "and d.blocked = 0 or (d.blocked is null) group by ord.id")
+            "where (d.blocked = 0 or d.blocked is null) and ord.orderStatus = 'OPEN' " +
+            "and ord.customer.email = :email group by ord.id")
     List<OrderDto> findOrderOpenByCustomerEmail(@Param("email") String email);
 
     @Query("select o from Order o where o.orderStatus = 'OPEN'")
