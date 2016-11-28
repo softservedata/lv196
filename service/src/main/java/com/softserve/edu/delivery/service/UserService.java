@@ -51,4 +51,6 @@ public interface UserService extends UserDetailsService {
 
     void changePassword(String email, CharSequence newPassword);
 
+    void changeUserRole(UserProfileDto user);
+
 }

@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.*;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.NotificationDto;
 import com.softserve.edu.delivery.dto.OfferDto;
+import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.repository.NotificationRepository;
 import com.softserve.edu.delivery.repository.OfferRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
@@ -205,10 +206,25 @@ public class NotificationServiceImpl implements NotificationService, BundleKeySt
             addNotification(NotificationStatus.INFO, new StringBuilder()
                     .append(res.getString(DRIVER))
                     .append(user.getFirstName())
+                    .append(" ")
                     .append(user.getLastName())
                     .append(res.getString(APPROVE_DELIVERY))
                     .toString(), order.getCustomer().getEmail());
         });
+    }
+
+    public void changeUserRole(UserProfileDto user){
+        executor.submit(() -> {
+            addNotification(NotificationStatus.INFO, new StringBuilder()
+                    .append(res.getString(DEAR))
+                    .append(user.getFirstName())
+                    .append(" ")
+                    .append(user.getLastName())
+                    .append(res.getString(YOUR_ROLE_CHANGED))
+                    .append(user.getRole())
+                    .toString(), user.getEmail());
+        });
+
     }
 
 }

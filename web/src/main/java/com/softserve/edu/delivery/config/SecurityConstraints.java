@@ -12,6 +12,10 @@ public class SecurityConstraints {
     public static final String CUSTOMER_OR_DRIVER = "hasAuthority('Customer') or hasAuthority('Driver')";
     public static final String ADMIN = "hasAuthority('Admin')";
     public static final String MODERATOR = "hasAuthority('Moderator')";
+    public static final String MODERATOR_OR_MANAGER = "hasAuthority('Moderator') or hasAuthority('Manager')";
+    public static final String MANAGER = "hasAuthority('Manager')";
+    public static final String ADMIN_OR_MANAGER = "hasAuthority('Admin') or hasAuthority('Manager')";
+
 
 
     public static final String WELCOME_PAGE = "/welcome";

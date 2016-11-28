@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.MODERATOR;
+import static com.softserve.edu.delivery.config.SecurityConstraints.MODERATOR_OR_MANAGER;
 
 @RestController
 @RequestMapping(path = "feedback")
@@ -29,21 +29,21 @@ public class FeedbackController {
     @Autowired
     private NotificationService notificationService;
 
-    @PreAuthorize(MODERATOR)
+    @PreAuthorize(MODERATOR_OR_MANAGER)
     @RequestMapping(path = "all", method = RequestMethod.POST)
     List<FeedbackDto> getAllFeedbacks(@RequestBody FeedbackFilterDTO feedbackFilterDTO) {
         logger.info("Before feedbackService.findFiltered()");
         return feedbackService.findFiltered(feedbackFilterDTO);
     }
 
-    @PreAuthorize(MODERATOR)
+    @PreAuthorize(MODERATOR_OR_MANAGER)
     @RequestMapping(path = "totalItems", method = RequestMethod.POST)
     long getTotalItemsNumber(@RequestBody FeedbackFilterDTO feedbackFilterDTO) {
         logger.info("Before feedbackService.getTotalItemsNumber()");
         return feedbackService.getTotalItemsNumber(feedbackFilterDTO);
     }
 
-    @PreAuthorize(MODERATOR)
+    @PreAuthorize(MODERATOR_OR_MANAGER)
     @RequestMapping(path = {"updateFeedback"}, method = RequestMethod.PUT)
     ResponseEntity updateFeedback(@RequestBody FeedbackDto feedbackDTO) {
         logger.info("Before feedbackService.update(feedbackDTO)");
@@ -67,7 +67,7 @@ public class FeedbackController {
         return new ResponseEntity(responseHeaders, status);
     }
 
-    @PreAuthorize(MODERATOR)
+    @PreAuthorize(MODERATOR_OR_MANAGER)
     @RequestMapping(path = {"deleteFeedback/{feedbackId}"}, method = RequestMethod.DELETE)
     ResponseEntity deleteFeedback(@PathVariable Long feedbackId) {
         logger.info("Before feedbackService.delete(feedbackId)");

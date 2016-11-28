@@ -1,8 +1,10 @@
 angular
     .module('delivery')
-    .controller('usersController', ['$scope', '$http', '$location', '$anchorScroll', function ($scope, $http, $location, $anchorScroll) {
+    .controller('usersController', ['$scope', '$http', '$location', '$anchorScroll', 'Notification', '$filter',
+        function ($scope, $http, $location, $anchorScroll, Notification, $filter) {
         $scope.users = {
-            allProfiles: []
+            allProfiles: [],
+            roles: ['Customer', 'Driver', 'Moderator', 'Admin']
         };
 
         $scope.totalItems;
@@ -93,4 +95,10 @@ angular
             $anchorScroll();
         };
 
+        $scope.saveRole = (user) => {
+            $http.put('/users/change-role', user).then(response => {
+                Notification.success($filter('translate')('save_role'));
+                $scope.retrieveUsers($scope.filter);
+            })
+        }
     }]);

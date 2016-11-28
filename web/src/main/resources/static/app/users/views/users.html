@@ -94,13 +94,21 @@
         		<th class="col-xs-1"></th>
       		</tr>
     	</thead>
-    	<tbody>
+    	<tbody ng-controller="roleController"  ng-init="getRole()" ng-cloak >
       		<tr ng-repeat-start="user in users.allProfiles" disable-animate>
         		<td class="col-xs-1"><img title="{{user.firstName}} {{user.lastName}}" src="./img/user-photo.png" class="img-thumbnail img-responsive img-circle"></td>
         		<td class="col-xs-2">{{user.lastName}}</td>
         		<td class="col-xs-2"><span class="scnd">{{user.firstName}}</span></td>
         		<td class="col-xs-2"><span class="thrd">{{user.email}}</span></td>
-        		<td class="col-xs-2"><span class="frth">{{user.role}}</span></td>
+                <td class="col-xs-2">
+                    <div ng-show="forRole('Admin')">
+                        <span class="frth">{{user.role}}</span>
+                    </div>
+                    <div  ng-show="forRole('Manager')">
+                        <select class="change-role" name="changeRole" id="changeRole" ng-model="user.role" ng-options="option for option in users.roles"></select>
+                        <button class="btn btn-primary  btn-xs"  ng-click="saveRole(user)">{{ 'save' | translate }}</button>
+                    </div>
+                </td>
         		<td class="col-xs-1"><span class="ban-btn"><i class="fa fa-2x status-btn" ng-class="{'fa-toggle-on':user.blocked==true, 'fa-toggle-off':user.blocked==false}" ng-click="changeUserStatus(user, $index)" aria-hidden="true"></i></span></td>
         		<td class="col-xs-1"></td>
         		<td class="col-xs-1"><a href="" class="down-btn"><i ng-click="getUserInfo(user)" class="fa fa-2x" ng-class="{'fa-angle-down':userInfo.email!==user.email, 'fa-angle-up':userInfo.email==user.email}"  aria-hidden="true"></i></a></td>

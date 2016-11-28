@@ -4,6 +4,7 @@ import com.softserve.edu.delivery.domain.NotificationStatus;
 import com.softserve.edu.delivery.dto.FeedbackDto;
 import com.softserve.edu.delivery.dto.NotificationDto;
 import com.softserve.edu.delivery.dto.OfferDto;
+import com.softserve.edu.delivery.dto.UserProfileDto;
 
 import java.util.List;
 
@@ -22,5 +23,6 @@ public interface NotificationService {
     void addOffer(Long orderId, String email);
     void setLanguage(String mylocale);
     void approveDelivery(Long orderId);
+    void changeUserRole(UserProfileDto user);
 
 }

@@ -1,6 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN;
+import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN_OR_MANAGER;
 
 import java.util.List;
 
@@ -30,39 +30,39 @@ public class StatisticsController {
 	   
 	   Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 	   
-	   @PreAuthorize(ADMIN)
+	   @PreAuthorize(ADMIN_OR_MANAGER)
 	   @RequestMapping(path = "day-orders", method = RequestMethod.GET)
 	   List<DataDto> countAllPerHour(@RequestParam("date") String date) {
 	       return orderService.countClosedOrdersPerHour(date);
 	   }
 	   
-	   @PreAuthorize(ADMIN)
+	   @PreAuthorize(ADMIN_OR_MANAGER)
 	   @RequestMapping(path = "month-orders", method = RequestMethod.GET)
 	   List<DataDto> countAllPerDay() {
 	       return orderService.countClosedOrdersPerDay();
 	   }
 	   
-	   @PreAuthorize(ADMIN)
+	   @PreAuthorize(ADMIN_OR_MANAGER)
 	   @RequestMapping(path = "year-orders", method = RequestMethod.GET)
 	   List<DataDto> countAllPerMonth() {
 	       return orderService.countClosedOrdersMonth();
 	   }
 	   
-	   @PreAuthorize(ADMIN)
+	   @PreAuthorize(ADMIN_OR_MANAGER)
 	   @RequestMapping(path = "top-5-drivers", method = RequestMethod.GET)
 	   List<UserProfileDto> getTopFiveDrivers() {
 		   logger.info("Method UserController.getTopFiveDrivers()");
 	       return userService.findTopFiveDriversByRate();
 	   }
 	   
-	   @PreAuthorize(ADMIN)
+	   @PreAuthorize(ADMIN_OR_MANAGER)
 	   @RequestMapping(path = "users-by-role", method = RequestMethod.GET)
 	   List<Long> countUsersByRole() {
 		   logger.info("Method StatisticsController.countUsersByRole()");
 	       return userService.countUsersByRole();
 	   }
 	   
-	   @PreAuthorize(ADMIN)
+	   @PreAuthorize(ADMIN_OR_MANAGER)
 	   @RequestMapping(path = "users-by-rate", method = RequestMethod.GET)
 	   List<Long> countUsersByRate() {
 		   logger.info("Method StatisticsController.countUsersByRole()");

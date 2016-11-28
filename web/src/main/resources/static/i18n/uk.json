@@ -182,5 +182,6 @@
   "driver_name": "Ім'я водія",
   "feedback_from": "Відгук від",
   "feedback_on": "Відгук на",
-  "find_driver": "Водій"
+  "find_driver": "Водій",
+  "save_role": "Успіх : Успішно змінено роль користувача"
 }

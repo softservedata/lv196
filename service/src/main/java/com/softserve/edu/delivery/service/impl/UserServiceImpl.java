@@ -201,6 +201,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void changeUserRole(UserProfileDto userDto){
+        User user = createUserFromDto(userDto);
+        save(user);
+    }
+
     private User createUser(UserRegistrationDTO userRegDTO) {
         User newUser = new User();
         newUser.setEmail(userRegDTO.getUserEmail());

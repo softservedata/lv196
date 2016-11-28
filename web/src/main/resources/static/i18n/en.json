@@ -182,5 +182,6 @@
   "driver_name": "Driver name",
   "feedback_from": "Feedback from",
   "feedback_on": "Feedback on",
-  "find_driver": "Driver"
+  "find_driver": "Driver",
+  "save_role": "Success : Successful change User role"
 }

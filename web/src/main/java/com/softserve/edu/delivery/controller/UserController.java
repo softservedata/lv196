@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN;
+import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN_OR_MANAGER;
 import static com.softserve.edu.delivery.config.SecurityConstraints.MODERATOR;
+import static com.softserve.edu.delivery.config.SecurityConstraints.MANAGER;
 
 @RestController
 @RequestMapping(path = "users")
@@ -29,14 +30,14 @@ public class UserController {
 
 		Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
-		@PreAuthorize(ADMIN + "||" + MODERATOR)
+		@PreAuthorize(ADMIN_OR_MANAGER + "||" + MODERATOR)
 		@RequestMapping(path = "email", method = RequestMethod.GET)
 	    UserProfileDto getUser(@RequestParam("email") String email) {
 			logger.info("Method UserController.getUser()");
 	        return userService.getUser(email);
 	    }
 
-	    @PreAuthorize(ADMIN)
+	    @PreAuthorize(ADMIN_OR_MANAGER)
 	    @RequestMapping(path = "change-status", method = RequestMethod.PUT)
 	    UserProfileDto changeUserStatus(@RequestParam("email") String email, @RequestParam("status") Boolean status) {
 			logger.info("Method UserController.changeUserStatus()");
@@ -44,17 +45,25 @@ public class UserController {
 	        return userService.changeUserStatus(email, status);
 	    }
 
-	    @PreAuthorize(ADMIN)
+	    @PreAuthorize(ADMIN_OR_MANAGER)
 	    @RequestMapping(path = "count-items", method = RequestMethod.GET)
 	    Long countUsers() {
 			logger.info("Method UserController.countUsers()");
 	        return userService.countItems();
 	    }
 
-	    @PreAuthorize(ADMIN)
+	    @PreAuthorize(ADMIN_OR_MANAGER)
 	    @RequestMapping(path = "filter", method = RequestMethod.POST)
 	    List<UserProfileDto> allUsers(@RequestBody UserProfileDto dto   ) {
 			logger.info("Method UserController.allUsers()");
 	        return userService.findUsers(dto);
 	    }
+
+		@PreAuthorize(MANAGER)
+		@RequestMapping(path = "change-role", method = RequestMethod.PUT)
+		void changeUserRole(@RequestBody UserProfileDto user) {
+			logger.info("Method UserController.changeUserRole()");
+			userService.changeUserRole(user);
+//			notificationService.changeUserRole(user.getEmail(), user.getRole());
+		}
 }

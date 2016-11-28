@@ -82,17 +82,17 @@
                     <i class="fa fa-car" aria-hidden="true"></i>
                     {{ 'driver' | translate }}
                 </a>
-                <a ng-show="forRole('Moderator')" ui-sref="feedback" ui-sref-active="active-list-item"
+                <a ng-show="forRoles(['Moderator','Manager'])" ui-sref="feedback" ui-sref-active="active-list-item"
                    class="sidebar-menu-item">
                     <i class="fa fa-comment" aria-hidden="true"></i>
                     {{ 'feedbacks' | translate }}
                 </a>
-                <a ng-show="forRole('Admin')" ui-sref="users" ui-sref-active="active-list-item"
+                <a ng-show="forRoles(['Admin','Manager'])" ui-sref="users" ui-sref-active="active-list-item"
                    class="sidebar-menu-item">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     {{ 'user_profiles' | translate }}
                 </a>
-                <a ng-show="forRole('Admin')" ui-sref="statistics" ui-sref-active="active-list-item"
+                <a ng-show="forRoles(['Admin','Manager'])" ui-sref="statistics" ui-sref-active="active-list-item"
                    class="sidebar-menu-item">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                     {{ 'statistics' | translate }}

@@ -4,6 +4,7 @@ public enum Role {
     ADMIN("Admin"),
     MODERATOR("Moderator"),
     CUSTOMER("Customer"),
+    MANAGER("Manager"),
     DRIVER("Driver");
 
     private String roleName;
