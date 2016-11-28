@@ -6,8 +6,8 @@ import java.util.Objects;
 public class OrderFilterDto {
 
     private Long id;
-    private Long cityFromId;
-    private Long cityToId;
+    private String cityFromId;
+    private String cityToId;
     private Double weight;
     private Timestamp arrivalDate;
     private Integer currentPage;
@@ -16,7 +16,7 @@ public class OrderFilterDto {
     public OrderFilterDto() {
     }
 
-    public OrderFilterDto(Long id, Long cityFromId, Long cityToId, Double weight, Timestamp arrivalDate, Integer currentPage, Integer itemsPerPage) {
+    public OrderFilterDto(Long id, String cityFromId, String cityToId, Double weight, Timestamp arrivalDate, Integer currentPage, Integer itemsPerPage) {
 
         this.id = id;
         this.cityFromId = cityFromId;
@@ -35,19 +35,19 @@ public class OrderFilterDto {
         this.id = id;
     }
 
-    public Long getCityFromId() {
+    public String getCityFromId() {
         return cityFromId;
     }
 
-    public void setCityFromId(Long cityFromId) {
+    public void setCityFromId(String cityFromId) {
         this.cityFromId = cityFromId;
     }
 
-    public Long getCityToId() {
+    public String getCityToId() {
         return cityToId;
     }
 
-    public void setCityToId(Long cityToId) {
+    public void setCityToId(String cityToId) {
         this.cityToId = cityToId;
     }
 

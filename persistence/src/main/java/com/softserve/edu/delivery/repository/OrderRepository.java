@@ -49,8 +49,8 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
             "and (:cityToId is null or o.locationTo.id = :locationToId) " +
             "and (:weight is null or o.weight <= :weight) " +
             "and (:arrivalDate is null or o.arrivalDate >= :arrivalDate)")
-    Page<Order> getOrdersFiltered(@Param("locationFromId") Long locationFromId,
-                                  @Param("locationToId") Long locationToId,
+    Page<Order> getOrdersFiltered(@Param("locationFromId") String locationFromId,
+                                  @Param("locationToId") String locationToId,
                                   @Param("weight") Double weight,
                                   @Param("arrivalDate") Timestamp arrivalDate, Pageable pageable);
 
