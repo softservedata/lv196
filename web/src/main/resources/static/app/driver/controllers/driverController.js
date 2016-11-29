@@ -1,7 +1,10 @@
 angular
     .module('delivery')
-    .controller('driverController', ['$scope', '$chat', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal', '$location', '$anchorScroll', '$filter',
-        function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal, $location, $anchorScroll, $filter) {
+    .controller('driverController', ['$scope', '$chat', '$locations', '$orderProperty', '$http', 'Notification', '$uibModal', '$location', '$anchorScroll', '$filter','$utils',
+        function ($scope, $chat, $locations, $orderProperty, $http, Notification, $uibModal, $location, $anchorScroll, $filter, $utils) {
+
+
+            $scope.notStarted = true;
 
             $scope.filterObject = {
                 cityFrom: null,
@@ -232,5 +235,38 @@ angular
 
             $scope.cancelApproveDelivery = () => {
                 modalInstance.dismiss('cancel');
+            };
+
+            $scope.showMap = (id) => {
+                const modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/tracking/view/dialog.html',
+                    controller: 'driverModalController',
+                    size: 'lg',
+                    resolve: {
+                        orderId: () => id
+                    }
+                });
+            };
+
+            $scope.start = (id) => {
+                $http.get('/start/'+id).then(() => {
+                    $scope.retrieveMyApprovedOrders();
+                    $scope.retrieveMyOrdersInProgress();
+                })
             }
+            $scope.startRoute = id => {
+                $utils.confirmDialog({
+                    message: 'Are you sure you want to start this trip?',
+                    yes: 'Start',
+                    no: 'Cancel',
+                    yesBtnClass: 'btn-danger'
+                }).then(answer => {
+                    if (answer) {
+                        $scope.start(id);
+
+                    }
+                })
+            };
+
         }]);

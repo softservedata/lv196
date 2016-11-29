@@ -64,6 +64,11 @@ public class RouteCities {
         this.x = latitude;
         this.y = longitude;
     }
+    public RouteCities(Long orderId, Point point) {
+        this.order = new Order().setId(orderId);
+        this.setX(point.getX());
+        this.setY(point.getY());
+    }
 
     public Double getX() {
 

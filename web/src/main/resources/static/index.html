@@ -18,6 +18,9 @@
     <link href="./bower_components/angular-rateit/dist/ng-rateit.css" rel="stylesheet">
     <link href="./bower_components/angular-ui-notification/dist/angular-ui-notification.min.css" rel="stylesheet">
     <link href="./bower_components/angular-material/angular-material.min.css" rel="stylesheet">
+    <link href="./bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" rel="stylesheet">
+
+
 
     <link href="./css/main.css" rel="stylesheet">
     <link href="./css/sidebar.css" rel="stylesheet">
@@ -97,6 +100,11 @@
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                     {{ 'statistics' | translate }}
                 </a>
+                <a ng-show="forRole('Admin')" ui-sref="adminMaps.inProgress" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-truck" aria-hidden="true"></i>
+                    {{ 'tracking' | translate }}
+                </a>
                 <hr/>
                 <a href="logout" class="sidebar-menu-item">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -153,6 +161,8 @@
 <script src="./bower_components/ng-file-upload/ng-file-upload-shim.js"></script>
 <script src="./bower_components/cloudinary_ng/js/angular.cloudinary.js"></script>
 <script src="./bower_components/ng-file-upload/ng-file-upload.js"></script>
+<script src="./bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js"></script>
+
 
 <script src="./app/orders/services/orderService.js"></script>
 <script src="./app/common/services/commonServices.js"></script>
@@ -170,7 +180,7 @@
 <script src="./app/feedback/controllers/feedbackInfoController.js"></script>
 <script src="./app/feedback/controllers/feedbackShowUserController.js"></script>
 <script src="./app/feedback/controllers/deleteFeedbackController.js"></script>
-<script src="./app/tracking/controller/trackingForDriver.js"></script>
+<script src="./app/tracking/controller/trackingForCustomer.js"></script>
 <script src="./app/tracking/controller/trackingForAdmin.js"></script>
 <script src="app/tracking/controller/ordersTrackingController.js"></script>
 <script src="./app/common/controllers/userImageUploadController.js"></script>
@@ -180,6 +190,10 @@
 <script src="app/users/controllers/roleController.js"></script>
 <script src="./app/users/controllers/userProfileController.js"></script>
 <script src="./app/users/controllers/currentUserController.js"></script>
+<script src="app/tracking/controller/trackingForDriver.js"></script>
+
+
+
 
 </body>
 </html>

@@ -1,30 +1,30 @@
 package com.softserve.edu.delivery.service.impl;
 
-import com.softserve.edu.delivery.domain.Order;
+import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.domain.Point;
 import com.softserve.edu.delivery.domain.RouteCities;
+import com.softserve.edu.delivery.dto.OrderClosedDto;
+import com.softserve.edu.delivery.dto.OrderDto;
 import com.softserve.edu.delivery.dto.PlaceDto;
 import com.softserve.edu.delivery.dto.RoutesDto;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.RouteCitiesRepository;
 import com.softserve.edu.delivery.service.TransporterService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.softserve.edu.delivery.domain.OrderStatus.IN_PROGRESS;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import static com.softserve.edu.delivery.domain.OrderStatus.*;
 
 @Service
 @Transactional
 public class TransporterServiceImpl implements TransporterService {
-    private Long count;
     private final RouteCitiesRepository routeCityRepository;
     private final OrderRepository orderRepository;
 
@@ -33,39 +33,72 @@ public class TransporterServiceImpl implements TransporterService {
         this.routeCityRepository = routeCityRepository;
         this.orderRepository = orderRepository;
     }
-    public List<PlaceDto> getAllPleaces() {
-        return routeCityRepository.findAll()
-                .stream()
-                .map(entity -> PlaceDto.convertEntity(entity))
-                .collect(Collectors.toList());
-    }
     @Override
-    public List<PlaceDto> getAllPleacesByOrderId(Long id) {
+    public List<PlaceDto> getAllPointsByOrderIdWitoutDate(Long id) {
         return routeCityRepository.findByOrderId(id)
                 .stream()
-                .map(entity -> PlaceDto.convertEntity(entity))
+                .map(entity -> PlaceDto.convertEntityWitoutDate(entity))
                 .collect(Collectors.toList());
     }
+
     @Override
-    public List<RoutesDto> getAllOrdersInProgress(Pageable pageable){
-        Page<Order> list= orderRepository.findAllByOrderStatus(IN_PROGRESS, pageable);
-        count = list.getTotalElements();
+    public RoutesDto getMyRoute(Long id) {
+        OrderDto orderDto = orderRepository.findOneByIdAndOrderStatus(id, IN_PROGRESS)
+                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + id+" and order status" + IN_PROGRESS));
+        RouteCities routeCities = routeCityRepository.findCurrentLocation(id)
+                .orElseThrow(() -> new IllegalArgumentException("No such  points with order id: " + id));
+        return RoutesDto.convertEntity(orderDto, routeCities);
+    }
+
+    @Override
+    public List<RoutesDto> getAllOrdersInProgress() {
+        List<OrderDto> list= orderRepository.findAllByOrderStatus(IN_PROGRESS);
         List<RoutesDto> resultList = new ArrayList<>();
-        for(Order o : list) {
-            Long id = o.getId();
-            RouteCities routeCities = routeCityRepository.findCurrentLocation(id);
-            resultList.add(new RoutesDto(
-                    new Point(o.getLocationFrom().getLatitude(), o.getLocationFrom().getLongitude()),
-                    new Point(o.getLocationTo().getLatitude(), o.getLocationTo().getLongitude()),
-                    new PlaceDto(new Point(routeCities.getX(), routeCities.getY()),
-                            new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(routeCities.getVisitDate()), id)
-                    ));
+        for(OrderDto o : list) {
+            RouteCities routeCities = routeCityRepository.findCurrentLocation(o.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("No such point with order id: " + o.getId()));
+            resultList.add(RoutesDto.convertEntity(o, routeCities));
         }
         return  resultList;
     }
     @Override
-    public Long getCount() {
-        return count;
+    public List<OrderClosedDto> getAllOrdersClosed() {
+        List<OrderDto> orders= orderRepository.findAllByOrderStatus(CLOSED);
+        List<OrderClosedDto> list = orders
+                .stream()
+                .map(entity-> OrderClosedDto.convertEntity(entity))
+                .collect(Collectors.toList());
+
+        return list;
     }
+    @Override
+    public List<OrderClosedDto> getAllOrdersClosedByDates(Timestamp min, Timestamp max) {
+        List<OrderDto> orders = orderRepository.findByOrderStatusAndArrivalDateBetween(min, max);
+        for(OrderDto o: orders){
+            System.out.println(o.toString());
+        }
+        List<OrderClosedDto> list = orders
+                .stream()
+                .map(entity -> OrderClosedDto.convertEntity(entity))
+                .collect(Collectors.toList());
+
+        return list;
+
+    }
+    @Override
+    public OrderClosedDto findOneByIdAndOrderStatus(Long id) {
+        OrderDto order = orderRepository.findOneByIdAndOrderStatus(id, APPROVED)
+                .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + id+" and order status" + APPROVED));
+        return OrderClosedDto.convertEntity(order);
+    }
+    @Override
+    public void setPoints(Long orderId, List<Point> points) {
+        points.forEach(point -> routeCityRepository.save(new RouteCities(orderId, point)));
+    }
+    @Override
+    public void changeStatus(Long id, OrderStatus status) {
+        orderRepository.changeStatus(id, status);
+    }
+
 
 }

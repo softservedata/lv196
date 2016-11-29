@@ -6,9 +6,12 @@ import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.dto.OrderDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.TemporalType;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -74,8 +77,28 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
                                     @Param("status") OrderStatus status);
 
     Page<Order> findAllByOrderStatus(OrderStatus orderStatus, Pageable pageable);
+    @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
+            "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName)) " +
+            "from Offer off join off.order ord where ord.orderStatus = :orderStatus and off.approved = 1")
+    List<OrderDto> findAllByOrderStatus(@Param("orderStatus") OrderStatus orderStatus);
+
+    @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
+            "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName)) " +
+            "from Offer off join off.order ord where ord.id = :id and ord.orderStatus = :orderStatus and off.approved = 1")
+    Optional<OrderDto> findOneByIdAndOrderStatus(@Param("id") Long id, @Param("orderStatus") OrderStatus orderStatus);
+
+    @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
+            "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName)) " +
+            "from Offer off join off.order ord where ord.orderStatus = 'CLOSED' and off.approved = 1"+
+            "and ord.arrivalDate between ?1 and ?2")
+    List<OrderDto> findByOrderStatusAndArrivalDateBetween(@Param("dateFrom") Timestamp dateFrom, @Param("dateTo") Timestamp dateTo);
 
     @Query("select count(o.id) from Order o where o.orderStatus = 'CLOSED'" +
             "and o.arrivalDate between ?1 and ?2")
     Long countByArrivalDate(@Param("arrivalDate") Timestamp dateFrom, @Param("arrivalDate") Timestamp dateTo);
+
+    @Modifying
+    @Query("update Order r set r.orderStatus = :status where r.id = :idOrder")
+    void changeStatus(@Param("idOrder")Long idOrder, @Param("status") OrderStatus status);
+
 }

@@ -9,5 +9,5 @@ import java.math.BigDecimal;
  */
 public interface PointService {
     void savePleace(Point point);
-    void deleteAll();
+    void update(Point point, Long id);
 }

@@ -51,8 +51,10 @@ public class OrderController {
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "closed", method = RequestMethod.GET)
-    List<OrderDto> closed(Principal principal) {
-        return orderService.findAllClosedOrders(principal.getName());
+    List<OrderDto> closed() {
+//        String email = authenticationDetails.getAuthenticatedUserEmail();
+        String email = "martin@gmail.com";
+        return orderService.findAllClosedOrders(email);
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)

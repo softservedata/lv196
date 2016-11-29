@@ -192,7 +192,7 @@ public class Order {
         return "Order [id=" + id + ", height=" + height + ", width=" + width +
                 ", length=" + length + ", weight=" + weight + ", price=" + price +
                 ", registrationDate=" + registrationDate + ", arrivalDate=" + arrivalDate +
-                ", description=" + description + "]";
+                ", description=" + description +", cityFrom=" + locationFrom +", cityTo=" + locationTo + "]";
     }
 
 }

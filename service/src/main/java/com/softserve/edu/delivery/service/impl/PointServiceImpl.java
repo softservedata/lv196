@@ -26,7 +26,8 @@ public class PointServiceImpl implements PointService{
         routeCitiesRepository.save(routeCities);
     }
     @Override
-    public void deleteAll(){
-        routeCitiesRepository.deleteAll();
+    public void update(Point point, Long id){
+        routeCitiesRepository.update(id, new Timestamp(new java.util.Date().getTime()), point.getX(), point.getY());
     }
+
 }

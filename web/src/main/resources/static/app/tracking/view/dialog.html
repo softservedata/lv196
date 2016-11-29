@@ -1,28 +1,15 @@
-<div id="popDialog-bg" ng-controller="pleaceController">
+<div id="popDialog-lg" ng-init="mapInit()">
     <div id="popDialog">
     <div class="modal-header">
         <button ng-click="$dismiss()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title" id="modal-title">{{ 'add_location' | translate }}</h3>
+        <h4 class="modal-title" id="modal-title">{{ 'add_location' | translate }}</h4>
     </div>
-    <div class="modal-body" id="modal-body">
-        <div class="form-group">
-            <select ng-model="selectedState" class="form-control" ng-click="getStateList()" ng-change="sentState()" ng-options="state.name for state in stateList track by state.name">
-                <option value="">{{ 'choose_state' | translate }}</option>
-            </select>
-
-        </div>
-        <div class="form-group">
-            <select ng-model="selectedRegion" class="form-control" ng-change="sentRegion()" ng-disabled="!selectedState" ng-options="region.name for region in regionList track by region.name">
-                <option value="">{{ 'choose_region' | translate }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <select ng-disabled="!selectedRegion" ng-model="selectedCity" class="form-control" ng-options="city.name for city in cityList track by city.name">
-                <option value="">{{ 'choose_city' | translate }}</option></select>
-        </div>
+    <div class="modal-body" id="modal-body" style="height: 400px" ng-init="getRouteById()">
+        <div id="driverMap" class="map-container" style="height: 390px"></div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-danger" type="submit" ng-click="add()"data-dismiss="modal" ng-disabled="!selectedCity">{{ 'add' | translate }}</button>
+        <button class="btn btn-danger"  type="button" data-dismiss="modal" ng-show="set" ng-click="cleanAllMap()">Remove markers</button>
+        <button class="btn btn-danger" type="submit" ng-show="set" ng-click="setPoints()"data-dismiss="modal">{{ 'add' | translate }}</button>
         <button class="btn btn-danger" type="button" data-dismiss="modal" ng-click="$dismiss()">{{ 'close' | translate }}</button>
     </div>
     </div>

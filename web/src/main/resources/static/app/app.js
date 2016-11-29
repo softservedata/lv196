@@ -55,7 +55,7 @@ angular
                 controller: 'usersController'
             })
             .state('tracking', {
-                url: '/tracking',
+                url: '/tracking/:id',
                 templateUrl: '/app/tracking/view/tracking.html',
                 controller: 'pleaceController',
                 params: {
@@ -81,16 +81,31 @@ angular
                 url: '/statistics',
                 templateUrl: '/app/statistics/views/statistics.html',
                 controller: 'statisticsController'
+            })
+            .state('adminMaps.Closed', {
+                url: '/Closed',
+                templateUrl: '/app/tracking/view/adminMaps.Closed.html',
+                controller: 'adminMapsController'
+            })
+            .state('adminMaps.inProgress', {
+                url: '/inProgress',
+                templateUrl: '/app/tracking/view/adminMaps.inProgress.html',
+                controller: 'adminMapsController'
+            })
+            .state('driverButton', {
+                url: '/driverButton',
+                templateUrl: '/app/tracking/view/driverButton.html',
+                controller: 'driverButtonController'
             });
 
-        $translateProvider
-            .useStaticFilesLoader({
-                prefix: '/i18n/',
-                suffix: '.json'
-            })
-            .preferredLanguage('en')
-            .useLocalStorage()
-            .useMissingTranslationHandlerLog();
+            $translateProvider
+                .useStaticFilesLoader({
+                    prefix: '/i18n/',
+                    suffix: '.json'
+                })
+                .preferredLanguage('en')
+                .useLocalStorage()
+                .useMissingTranslationHandlerLog();
 
             $translateProvider.useSanitizeValueStrategy('escapeParameters');
 

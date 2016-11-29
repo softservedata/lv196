@@ -35,6 +35,10 @@ public class OrderDto {
         this.driverName = driverName;
         this.approvedOfferId = approvedOfferId;
     }
+    public OrderDto(Order order, String driverName) {
+        this(order);
+        this.driverName = driverName;
+    }
 
     public OrderDto(Order order, String driverName, String carPhoto) {
         this(order);

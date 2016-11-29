@@ -2,9 +2,7 @@ package com.softserve.edu.delivery.dto;
 
 import com.softserve.edu.delivery.domain.Point;
 import com.softserve.edu.delivery.domain.RouteCities;
-/**
- * Created by Natalia on 02.10.2016.
- */
+
 public class PlaceDto {
     private Long id;
     private Long orderId;
@@ -16,6 +14,10 @@ public class PlaceDto {
     public PlaceDto(Point point, String date, Long orderId) {
         this.point = point;
         this.date = date;
+        this.orderId = orderId;
+    }
+    public PlaceDto(Point point, Long orderId) {
+        this.point = point;
         this.orderId = orderId;
     }
 
@@ -42,12 +44,17 @@ public class PlaceDto {
     public static PlaceDto convertEntity(RouteCities routeCities){
         return new PlaceDto(new Point(routeCities.getX(), routeCities.getY()), routeCities.getVisitDate().toString(), routeCities.getOrder().getId());
     }
+    public static PlaceDto convertEntityWitoutDate(RouteCities routeCities){
+        return new PlaceDto(new Point(routeCities.getX(), routeCities.getY()), routeCities.getOrder().getId());
+    }
 
     @Override
     public String toString() {
-        return "PleaceDto{" +
+        return "PlaceDto{" +
                 "id=" + id +
-                ", date=" + date +
+                ", orderId=" + orderId +
+                ", point=" + point.toString() +
+                ", date='" + date + '\'' +
                 '}';
     }
 }
