@@ -35,7 +35,7 @@ insert into users (email, approved, blocked, first_name, last_name, passport, pa
 insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email26@gmail.com', 1, 0, 'John', 'Shelly', 'ЙН 069135', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3800632159', '/resources/users/photos/email26@gmail.com.png', 3, 'CUSTOMER');
 insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email27@gmail.com', 1, 0, 'Ann', 'Jefferson', 'ХМ 375924', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3802154942', '/resources/users/photos/email27@gmail.com.png', 2, 'CUSTOMER');
 insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email28@gmail.com', 0, 1, 'Andy', 'Hatthaway', 'ЛС 432382', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3802326950', '/resources/users/photos/email28@gmail.com.png', 4, 'CUSTOMER');
-insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email29@gmail.com', 1, 0, 'Samuel', 'Wick', 'НХ 048021', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3805257202', '/resources/users/photos/email29@gmail.com.png', 5, 'CUSTOMER');
+insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email29@gmail.com', 1, 0, 'Samuel', 'Wick', 'НХ 048021', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3805257202', '/resources/users/photos/email29@gmail.com.png', 1, 'CUSTOMER');
 insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email30@gmail.com', 1, 0, 'Andy', 'Clayborn', 'ХЖ 081313', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3807493590', '/resources/users/photos/email30@gmail.com.png', 4, 'CUSTOMER');
 insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email31@gmail.com', 1, 0, 'Ann', 'Garcia', 'ЕП 524550', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3806648954', '/resources/users/photos/email31@gmail.com.png', 5, 'CUSTOMER');
 insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('martin@gmail.com', 1, 0, 'Martin', 'Oderky', 'ЕП 524550', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3806648951', '/resources/users/photos/email31@gmail.com.png', 5, 'CUSTOMER');
@@ -117,3 +117,28 @@ insert into feedbacks (approved, created_on, rate, text, order_id, email) VALUES
 insert into feedbacks (approved, created_on, rate, text, order_id, email) VALUES  (1, '2016-09-09 15:15:33.023', 5, 'Excellent service. Delivered exactly as promised, Thank you much...', 23,  'email42@gmail.com');
 insert into feedbacks (approved, created_on, rate, text, order_id, email) VALUES  (1, '2016-09-06 06:59:56.84', 5, 'Exceptionally typical delivery. Passable packaging.', 151,  'email90@gmail.com');
 SET FOREIGN_KEY_CHECKS=1;
+
+CREATE TABLE hour_dimension (hour INT NOT NULL, PRIMARY KEY (hour));
+  
+CREATE TABLE day_dimension (day INT NOT NULL, PRIMARY KEY (day));
+
+CREATE TABLE month_dimension (month_id INT NOT NULL, month VARCHAR(10) NULL, PRIMARY KEY (month_id));
+
+INSERT INTO hour_dimension (hour) VALUES (0), (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11);
+INSERT INTO hour_dimension (hour) VALUES (12), (13), (14), (15), (16), (17), (18), (19), (20), (21), (22), (23);
+
+INSERT INTO day_dimension (day) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12), (13), (14), (15);
+INSERT INTO day_dimension (day) VALUES (16), (17), (18), (19), (20), (21), (22), (23), (24), (25), (26), (27), (28), (29), (30), (31)
+
+INSERT INTO month_dimension (month_id, month) VALUES (1, 'January');
+INSERT INTO month_dimension (month_id, month) VALUES (2, 'February');
+INSERT INTO month_dimension (month_id, month) VALUES (3, 'March');
+INSERT INTO month_dimension (month_id, month) VALUES (4, 'April');
+INSERT INTO month_dimension (month_id, month) VALUES (5, 'May');
+INSERT INTO month_dimension (month_id, month) VALUES (6, 'June');
+INSERT INTO month_dimension (month_id, month) VALUES (7, 'July');
+INSERT INTO month_dimension (month_id, month) VALUES (8, 'August ');
+INSERT INTO month_dimension (month_id, month) VALUES (9, 'September');
+INSERT INTO month_dimension (month_id, month) VALUES (10, 'October');
+INSERT INTO month_dimension (month_id, month) VALUES (11, 'November');
+INSERT INTO month_dimension (month_id, month) VALUES (12, 'December');
