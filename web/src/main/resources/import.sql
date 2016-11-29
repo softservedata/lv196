@@ -128,7 +128,7 @@ INSERT INTO hour_dimension (hour) VALUES (0), (1), (2), (3), (4), (5), (6), (7),
 INSERT INTO hour_dimension (hour) VALUES (12), (13), (14), (15), (16), (17), (18), (19), (20), (21), (22), (23);
 
 INSERT INTO day_dimension (day) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12), (13), (14), (15);
-INSERT INTO day_dimension (day) VALUES (16), (17), (18), (19), (20), (21), (22), (23), (24), (25), (26), (27), (28), (29), (30), (31)
+INSERT INTO day_dimension (day) VALUES (16), (17), (18), (19), (20), (21), (22), (23), (24), (25), (26), (27), (28), (29), (30), (31);
 
 INSERT INTO month_dimension (month_id, month) VALUES (1, 'January');
 INSERT INTO month_dimension (month_id, month) VALUES (2, 'February');
@@ -142,3 +142,16 @@ INSERT INTO month_dimension (month_id, month) VALUES (9, 'September');
 INSERT INTO month_dimension (month_id, month) VALUES (10, 'October');
 INSERT INTO month_dimension (month_id, month) VALUES (11, 'November');
 INSERT INTO month_dimension (month_id, month) VALUES (12, 'December');
+
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 49.866071, 23.957118, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 49.9602678,24.5536551, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.0711054,25.1656323, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.379910, 25.707483, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.602637, 26.519247, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.602061, 27.016033, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.615450, 27.251681, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.581687, 27.688400, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.356229, 28.317024, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.389874, 29.491531, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.425987, 29.961527, 1);
+INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.456188, 30.436237, 1);

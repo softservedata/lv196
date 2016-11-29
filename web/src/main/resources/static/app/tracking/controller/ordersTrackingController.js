@@ -7,11 +7,10 @@ angular
             var LeafIcon = L.Icon.extend({
                 options: {
                     iconSize:     [38, 38],
-                    iconAnchor:   [22, 22],
-                    popupAnchor:  [-3, -76]
+                    iconAnchor:   [19, 38],
+                    popupAnchor:  [0, -40]
                 }
             });
-
             var icon = new LeafIcon({iconUrl: '../../img/car.png'});
 
             $scope.trackOrder = function(orderId) {
@@ -25,6 +24,9 @@ angular
                 }
 
                 $scope.markers = [];
+                if($scope.route) {
+                    $scope.map.removeControl($scope.route);
+                }
 
                 $http.get('/order/tracking/' + orderId).then(function(response) {
                     console.log(response.data);
@@ -32,28 +34,37 @@ angular
                     $scope.points = [];
                     for(var i = 0; i < response.data.routeCityDTOs.length; i++) {
                         var point = response.data.routeCityDTOs[i].placeDTO.point;
-                        var marker = L.marker([point.x, point.y], {icon: icon}).addTo($scope.map)
-                            .bindPopup('Baggage tracking: <br> Aditional information')
-                            .openPopup();
+                        var marker = L.marker([point.x, point.y], {icon: icon})
+                        .addTo($scope.map);
+                        marker.bindPopup("fereger");
+                        console.log(response.data.routeCityDTOs[i].date);
 
                         $scope.points.push(L.latLng(point.x, point.y));
 
                         $scope.markers.push(marker);
                     }
 
-                    var control = L.Routing.control({
+                    // var control = L.Routing.control({
+                    //     waypoints: $scope.points,
+                    //     lineOptions: {
+                    //         styles: [{color: 'blue', opacity: 0.5, weight: 2}]
+                    //     },
+                    // }).addTo($scope.map);
+
+                    $scope.route = L.Routing.control({
                         waypoints: $scope.points,
-                        // addWaypoints: false,
-                        // routeWhileDragging: false,
-                        // show: false,
+                        plan: L.Routing.plan($scope.points, {
+                            createMarker: function(i, wp) {
+                                return L.marker(wp.latLng, {
+                                    draggable: false,
+                                    icon: icon,
+                                }).bindPopup('Baggage tracking: <br> Aditional information');
+                            },
+                        }),
                         lineOptions: {
-                            styles: [{color: 'blue', opacity: 1, weight: 3}]
+                            styles: [{color: 'blue', opacity: 0.6, weight: 3}]
                         },
                     }).addTo($scope.map);
-                    // control.hide().addTo($scope.map);
-
-                    // $scope.path = L.polyline($scope.points).addTo($scope.map);
-
                 });
             };
 
