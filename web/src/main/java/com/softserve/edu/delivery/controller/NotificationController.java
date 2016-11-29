@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-import static com.softserve.edu.delivery.config.SecurityConstraints.*;
+import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATED;
 
 @RestController
 @RequestMapping(path = "notification")
@@ -43,7 +43,7 @@ public class NotificationController {
     Integer countNotification(Principal principal) throws InterruptedException {
         Integer amountNewNotification;
         do{
-            Thread.sleep(2000);
+            Thread.sleep(900000000);
             amountNewNotification = this.notificationService.countNewNotification(principal.getName());
         }
         while (amountNewNotification == lastAmount);

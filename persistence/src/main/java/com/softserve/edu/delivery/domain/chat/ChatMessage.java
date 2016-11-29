@@ -12,6 +12,7 @@ public class ChatMessage {
     private Long timestamp;
     private String authorEmail;
     private String text;
+    private boolean seen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
@@ -53,6 +54,15 @@ public class ChatMessage {
 
     public ChatMessage setText(String text) {
         this.text = text;
+        return this;
+    }
+
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public ChatMessage setSeen(boolean seen) {
+        this.seen = seen;
         return this;
     }
 

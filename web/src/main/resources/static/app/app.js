@@ -165,6 +165,7 @@ angular
                                 offerInfo.customerName : offerInfo.driverName;
 
                             if ($chat.openedChatId() != offerId) {
+                                $rootScope.refreshMessageNotifications();
                                 Notification.info({
                                     title: 'New message from ' + senderName,
                                     message: 'Regarding order: ' + offerInfo.cityNameFrom + ' - ' + offerInfo.cityNameTo +

@@ -11,6 +11,7 @@ public class ChatMessageDto {
     private String authorEmail;
     private Long timestamp;
     private String text;
+    private boolean seen;
 
     public ChatMessageDto() {
     }
@@ -22,7 +23,8 @@ public class ChatMessageDto {
                 .setAuthorEmail(msg.getAuthorEmail())
                 .setChatId(msg.getChat() == null ? null : msg.getChat().getId())
                 .setText(msg.getText())
-                .setTimestamp(msg.getTimestamp());
+                .setTimestamp(msg.getTimestamp())
+                .setSeen(msg.isSeen());
     }
 
     public Long getId() {
@@ -70,13 +72,12 @@ public class ChatMessageDto {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "ChatMessageDto{" +
-                "chatId=" + chatId +
-                ", authorEmail='" + authorEmail + '\'' +
-                ", timestamp=" + timestamp +
-                ", text='" + text + '\'' +
-                '}';
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public ChatMessageDto setSeen(boolean seen) {
+        this.seen = seen;
+        return this;
     }
 }

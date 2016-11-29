@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ChatRepository extends BaseRepository<Chat, Long> {
 
-    @Query("select distinct new com.softserve.edu.delivery.dto.ChatInfoDto(" +
+    @Query("select new com.softserve.edu.delivery.dto.ChatInfoDto(" +
             "concat(p2.firstName, ' ', p2.lastName), msg) " +
             "from Chat c2 join c2.participants p2, ChatMessage msg join msg.chat c join c.participants p " +
             "where c2.id = msg.chat.id and p2.email <> :email and p.email = :email " +
@@ -24,4 +24,7 @@ public interface ChatRepository extends BaseRepository<Chat, Long> {
 
     @Query("select p.email from Chat c join c.participants p where c.id = :chatId and p.email <> :senderEmail")
     String findReceiverEmail(@Param("chatId") Long chatId, @Param("senderEmail") String senderEmail);
+
+    @Query("select count(1) > 0 from Chat c join c.participants p where c.id = :id and p.email = :email")
+    boolean isUserInChat(@Param("id") Long id, @Param("email") String email);
 }

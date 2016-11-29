@@ -3,7 +3,7 @@ angular
     .factory('$chat', ['$http', '$q', '$uibModal', '$rootScope', ($http, $q, $uibModal, $rootScope) => {
         const opened = {
             chatId: null,
-            subscription: null,
+            subscriptions: [],
             modal: null
         };
         const isOpened = () => opened.modal !== null;
@@ -14,9 +14,9 @@ angular
 
         const closeChat = () => {
             opened.chatId = null;
-            if (opened.subscription !== null) {
-                opened.subscription.unsubscribe();
-                opened.subscription = null;
+            if (opened.subscriptions.length > 0) {
+                opened.subscriptions.forEach(subs => subs.unsubscribe());
+                opened.subscriptions = [];
             }
             if (isOpened()) {
                 opened.modal.close();
@@ -41,6 +41,7 @@ angular
                 });
                 opened.modal.result.finally(() => {
                     closeChat();
+                    $rootScope.refreshMessageNotifications();
                     deferred.resolve(chatId);
                 });
             }
@@ -54,42 +55,46 @@ angular
             isOpened: isOpened,
             openedChatId: () => opened.chatId,
             open: open,
-            subscribe: (chatId, onMessage) => {
+            subscribe: (chatId, onMessage, onMessageSeen) => {
                 const deferred = $q.defer();
-                if (opened.subscription !== null) {
+                if (opened.subscriptions.length > 0) {
                     deferred.reject('Chat is already created. Please, close the old one to create new.');
                 } else {
-                    opened.subscription = stompClient().subscribe('/topic/chat/' + chatId, response => {
-                        onMessage(response);
-                    });
-                    deferred.resolve(opened.subscription);
+                    opened.subscriptions = [
+                        stompClient().subscribe('/topic/chat/' + chatId, onMessage),
+                        stompClient().subscribe('/topic/chat-seen/' + chatId, onMessageSeen)
+                    ];
+                    deferred.resolve(opened.subscriptions);
                 }
                 return deferred.promise;
             },
             sendMessage: (chatId, message) => stompClient().send('/app/chat/' + chatId, {}, JSON.stringify(message)),
+            readMessage: (chatId, messageIds) => stompClient().send('/app/chat-seen/' + chatId, {}, JSON.stringify(messageIds)),
             stomp: stompClient
         };
     }])
     .controller('chatController', ['$scope', '$uibModalInstance', '$chat', '$location', '$anchorScroll', '$timeout', 'chatId',
         function ($scope, $uibModalInstance, $chat, $location, $anchorScroll, $timeout, chatId) {
-            let subscription = null;
+            let subscriptions = [];
             let userEmail = sessionStorage.getItem('email');
             $scope.messages = [];
             $scope.page = 0;
 
             $chat.history(chatId, $scope.page, 7).then(response => {
-                processChatHistoryResponse(response.data);
-                connectAndSend();
+                connect(() => processChatHistoryResponse(response.data, true))
             });
 
-            $scope.classByMsg = msg => msg.authorEmail == userEmail ? 'right' : 'left';
+            $scope.classByMsg = msg => {
+                const classes = msg.authorEmail == userEmail ? 'right' : 'left';
+                return msg.seen ? classes : (classes + ' unseen');
+            };
 
             $scope.sendMessage = () => {
                 const msg = {text: $scope.inputText};
                 if (msg.text != null) {
-                    if (subscription === null) {
+                    if (subscriptions.length == 0) {
                         $chat.create(chatId).then(() => {
-                            connectAndSend(msg);
+                            connect(() => sendMessageToStomp(message));
                         });
                     } else {
                         sendMessageToStomp(msg);
@@ -100,13 +105,21 @@ angular
             $scope.loadMore = () => {
                 $chat
                     .history(chatId, $scope.page, 7)
-                    .then(response => processChatHistoryResponse(response.data));
+                    .then(response => processChatHistoryResponse(response.data, false));
             };
 
-            function processChatHistoryResponse(data) {
+            function processChatHistoryResponse(data, checkMsgSeen) {
                 $scope.page += 1;
                 $scope.messages = data.messages.concat($scope.messages);
                 $scope.havingMore = data.havingMore;
+
+                if (checkMsgSeen) {
+                    let msgs = $scope.messages
+                        .filter(m => !m.seen && m.authorEmail != userEmail)
+                        .map(m => m.id);
+                    $chat.readMessage(chatId, msgs);
+                    $scope.$apply();
+                }
 
                 const scrollInx = $scope.page == 1 ? $scope.messages.length - 1 : 0;
                 $timeout(() => scrollTo($scope.messages[scrollInx].id), 0, false);
@@ -120,17 +133,35 @@ angular
             function receiveMessage(message) {
                 $scope.$apply(() => {
                     $scope.messages.push(message);
+                    if (message.authorEmail != userEmail) {
+                        $chat.readMessage(chatId, [message.id]);
+                    }
                 });
                 scrollTo(message.id)
             }
 
-            function connectAndSend(message) {
-                subscription = $chat.subscribe(chatId, response => {
-                    receiveMessage(JSON.parse(response.body))
-                });
-                if (message) {
-                    sendMessageToStomp(message);
+            function messagesSeen(ids) {
+                if (Array.isArray(ids) && ids.length > 0) {
+                    $scope.messages
+                        .filter(m => ids.indexOf(m.id) > -1 && !m.seen)
+                        .forEach(m => m.seen = true);
+                    $scope.$apply();
                 }
+            }
+
+            function connect(callabck) {
+                $chat.subscribe(
+                    chatId,
+                    response => {
+                        receiveMessage(JSON.parse(response.body))
+                    },
+                    response => {
+                        messagesSeen(JSON.parse(response.body))
+                    }
+                ).then(subs => {
+                    subscriptions = subs;
+                    callabck();
+                });
             }
 
             function scrollTo(msgId) {

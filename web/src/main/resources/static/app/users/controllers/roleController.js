@@ -1,6 +1,6 @@
 angular
     .module('delivery')
-    .controller('roleController', ['$scope', '$http', function ($scope, $http) {
+    .controller('roleController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
 
         $scope.role = '';
 
@@ -24,4 +24,15 @@ angular
             }
             return false;
         };
+
+        $scope.showMsgNotify = false;
+        $rootScope.refreshMessageNotifications = () => {
+            $http.get("/chat/count").then(resp => {
+                $scope.showMsgNotify = resp.data > 0;
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            })
+        };
+        $rootScope.refreshMessageNotifications();
     }]);

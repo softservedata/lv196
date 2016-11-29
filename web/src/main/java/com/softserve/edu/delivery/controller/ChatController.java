@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATED;
 import static com.softserve.edu.delivery.config.SecurityConstraints.CUSTOMER_OR_DRIVER;
@@ -35,7 +37,7 @@ public class ChatController {
 
     @MessageMapping("/chat/{chatId}")
     void handleMessage(@DestinationVariable("chatId") Long chatId,
-                              @Payload ChatMessageDto dto, Principal principal) {
+                       @Payload ChatMessageDto dto, Principal principal) {
 
         dto = chatService.saveMessage(dto.setChatId(chatId)
                 .setAuthorEmail(principal.getName())
@@ -47,12 +49,18 @@ public class ChatController {
         messagingTemplate.convertAndSendToUser(receiver, "/queue/chat-notifications", dto.getChatId().toString());
     }
 
+    @MessageMapping("/chat-seen/{chatId}")
+    List<Long> handleMessageSeen(@DestinationVariable("chatId") Long chatId,
+                                 @Payload ListOfLong ids, Principal principal) {
+
+        return chatService.messagesSeen(ids, chatId, principal.getName());
+    }
+
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path = "/conversations/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     ConversationDto conversations(@PathVariable Integer page, @PathVariable Integer size, Principal principal) {
         return chatService.findByParticipant(principal.getName(), page, size);
-
     }
 
     @PreAuthorize(AUTHENTICATED)
@@ -72,5 +80,14 @@ public class ChatController {
     void createConversation(@PathVariable Long chatId, Principal principal) {
         chatService.initChat(chatId, principal.getName());
     }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(path = "/chat/count", method = RequestMethod.GET)
+    @ResponseBody
+    int countUnreadMessages(Principal principal) {
+        return chatService.countUnreadMessages(principal.getName());
+    }
+
+    private static class ListOfLong extends ArrayList<Long> {}
 }
 

@@ -166,3 +166,7 @@
 .messages .message .text_wrapper .text {
     font-size: 14px;
 }
+
+.messages .message.unseen {
+    background-color: rgba(59, 158, 126, 0.08);
+}

@@ -6,6 +6,7 @@ import com.softserve.edu.delivery.dto.ChatMessageDto;
 import com.softserve.edu.delivery.dto.ConversationDto;
 import org.springframework.security.access.AccessDeniedException;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ChatService {
@@ -39,6 +40,15 @@ public interface ChatService {
     ChatMessageDto saveMessage(ChatMessageDto dto);
 
     /**
+     * Updates messages seen parameter by their given ids
+     *
+     * @param ids - list of messages id to see
+     * @param chatId - chat of id
+     * @param email - author email
+     */
+    List<Long> messagesSeen(List<Long> ids, Long chatId, String email);
+
+    /**
      * Finds portion messages for given chat and page params
      *
      * @param chatId id of chat
@@ -66,4 +76,6 @@ public interface ChatService {
      * @return receiver email
      */
     String findReceiverEmail(Long chatId, String senderEmail);
+
+    int countUnreadMessages(String email);
 }

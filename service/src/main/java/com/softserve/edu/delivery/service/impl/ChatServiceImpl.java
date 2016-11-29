@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,6 +64,7 @@ public class ChatServiceImpl implements ChatService {
                 .setAuthorEmail(dto.getAuthorEmail())
                 .setChat(chat)
                 .setText(dto.getText())
+                .setSeen(false)
                 .setTimestamp(dto.getTimestamp());
 
         chatMessage = chatMessageRepository.save(chatMessage);
@@ -73,6 +75,26 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public String findReceiverEmail(Long chatId, String senderEmail) {
         return chatRepository.findReceiverEmail(chatId, senderEmail);
+    }
+
+    @Override
+    @Transactional
+    public List<Long> messagesSeen(List<Long> ids, Long chatId, String email) {
+        if (chatRepository.isUserInChat(chatId, email)) {
+            List<ChatMessage> messages = chatMessageRepository
+                    .findByIdIn(ids)
+                    .stream()
+                    .filter(message -> !message.getAuthorEmail().equals(email))
+                    .map(message -> message.setSeen(true))
+                    .collect(Collectors.toList());
+
+            return chatMessageRepository
+                    .save(messages)
+                    .stream()
+                    .map(ChatMessage::getId)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
     @Override
@@ -113,5 +135,10 @@ public class ChatServiceImpl implements ChatService {
                 .setParticipants(Arrays.asList(customer, driver));
 
         chatRepository.save(chat);
+    }
+
+    @Override
+    public int countUnreadMessages(String email) {
+        return chatMessageRepository.countUnreadMessages(email);
     }
 }
