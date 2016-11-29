@@ -36,20 +36,11 @@ angular
                         var point = response.data.routeCityDTOs[i].placeDTO.point;
                         var marker = L.marker([point.x, point.y], {icon: icon})
                         .addTo($scope.map);
-                        marker.bindPopup("fereger");
-                        console.log(response.data.routeCityDTOs[i].date);
 
                         $scope.points.push(L.latLng(point.x, point.y));
 
                         $scope.markers.push(marker);
                     }
-
-                    // var control = L.Routing.control({
-                    //     waypoints: $scope.points,
-                    //     lineOptions: {
-                    //         styles: [{color: 'blue', opacity: 0.5, weight: 2}]
-                    //     },
-                    // }).addTo($scope.map);
 
                     $scope.route = L.Routing.control({
                         waypoints: $scope.points,
@@ -58,7 +49,7 @@ angular
                                 return L.marker(wp.latLng, {
                                     draggable: false,
                                     icon: icon,
-                                }).bindPopup('Baggage tracking: <br> Aditional information');
+                                }).bindPopup(response.data.routeCityDTOs[i].date);
                             },
                         }),
                         lineOptions: {

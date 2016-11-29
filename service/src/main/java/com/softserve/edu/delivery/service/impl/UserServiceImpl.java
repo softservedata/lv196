@@ -3,6 +3,7 @@ package com.softserve.edu.delivery.service.impl;
 import com.softserve.edu.delivery.domain.EmailVerificationToken;
 import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.domain.User;
+import com.softserve.edu.delivery.domain.chat.Gender;
 import com.softserve.edu.delivery.dto.UserProfileDto;
 import com.softserve.edu.delivery.dto.UserRegistrationDTO;
 import com.softserve.edu.delivery.repository.EmailTokenRepository;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     private Long totalItems;
+    private final String MALE_ICON = "./img/manIcon.png";
+    private final String FEMALE_ICON = "./img/womanIcon.png";
 
     @Autowired
     private EmailTokenRepository tokenRepository;
@@ -75,6 +78,11 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Email already exist: " + userRegDTO.getUserEmail());
         } else {
             User newUser = createUser(userRegDTO);
+            if (newUser.getGender()== Gender.MALE) {
+                newUser.setPhotoUrl(MALE_ICON);
+            } else {
+                newUser.setPhotoUrl(FEMALE_ICON);
+            }
 
             userRepository.save(newUser);
 
@@ -199,7 +207,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUserRole(UserProfileDto userDto){
+    public void changeUserRole(UserProfileDto userDto) {
         User user = createUserFromDto(userDto);
         save(user);
     }
