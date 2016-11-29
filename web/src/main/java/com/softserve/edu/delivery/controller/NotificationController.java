@@ -43,7 +43,7 @@ public class NotificationController {
     Integer countNotification(Principal principal) throws InterruptedException {
         Integer amountNewNotification;
         do{
-            Thread.sleep(900000000);
+            Thread.sleep(2000);
             amountNewNotification = this.notificationService.countNewNotification(principal.getName());
         }
         while (amountNewNotification == lastAmount);
