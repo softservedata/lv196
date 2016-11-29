@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN_OR_MANAGER;
-import static com.softserve.edu.delivery.config.SecurityConstraints.MODERATOR;
+import static com.softserve.edu.delivery.config.SecurityConstraints.ADMIN_OR_MANAGER_OR_MODERATOR;
 import static com.softserve.edu.delivery.config.SecurityConstraints.MANAGER;
 
 @RestController
@@ -30,7 +30,7 @@ public class UserController {
 
 		Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
-		@PreAuthorize(ADMIN_OR_MANAGER + "||" + MODERATOR)
+		@PreAuthorize(ADMIN_OR_MANAGER_OR_MODERATOR)
 		@RequestMapping(path = "email", method = RequestMethod.GET)
 	    UserProfileDto getUser(@RequestParam("email") String email) {
 			logger.info("Method UserController.getUser()");
@@ -62,8 +62,7 @@ public class UserController {
 		@PreAuthorize(MANAGER)
 		@RequestMapping(path = "change-role", method = RequestMethod.PUT)
 		void changeUserRole(@RequestBody UserProfileDto user) {
-			logger.info("Method UserController.changeUserRole()");
 			userService.changeUserRole(user);
-//			notificationService.changeUserRole(user.getEmail(), user.getRole());
+			notificationService.changeUserRole(user);
 		}
 }

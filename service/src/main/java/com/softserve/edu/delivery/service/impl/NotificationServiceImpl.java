@@ -214,17 +214,14 @@ public class NotificationServiceImpl implements NotificationService, BundleKeySt
     }
 
     public void changeUserRole(UserProfileDto user){
-        executor.submit(() -> {
-            addNotification(NotificationStatus.INFO, new StringBuilder()
-                    .append(res.getString(DEAR))
-                    .append(user.getFirstName())
-                    .append(" ")
-                    .append(user.getLastName())
-                    .append(res.getString(YOUR_ROLE_CHANGED))
-                    .append(user.getRole())
-                    .toString(), user.getEmail());
-        });
-
+        executor.submit(() -> addNotification(NotificationStatus.INFO, new StringBuilder()
+                .append(res.getString(DEAR))
+                .append(user.getFirstName())
+                .append(" ")
+                .append(user.getLastName())
+                .append(res.getString(YOUR_ROLE_CHANGED))
+                .append(user.getRole())
+                .toString(), user.getEmail()));
     }
 
 }

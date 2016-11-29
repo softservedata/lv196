@@ -15,6 +15,7 @@ public class SecurityConstraints {
     public static final String MODERATOR_OR_MANAGER = "hasAuthority('Moderator') or hasAuthority('Manager')";
     public static final String MANAGER = "hasAuthority('Manager')";
     public static final String ADMIN_OR_MANAGER = "hasAuthority('Admin') or hasAuthority('Manager')";
+    public static final String ADMIN_OR_MANAGER_OR_MODERATOR = "hasAuthority('Admin') or hasAuthority('Manager') or hasAuthority('Moderator')";
 
 
 
