@@ -2,7 +2,7 @@ angular
     .module('delivery')
     .factory('$conversations', ['$http', $http => {
         return {
-            findAll: (page, size) => $http.get('conversations'+ '/' + page + '/' + size)
+            findAll: (page, size) => $http.get('conversations' + '/' + page + '/' + size)
         };
     }])
     .controller('conversationsController', ['$scope', '$conversations', '$chat',
@@ -12,11 +12,11 @@ angular
 
             $conversations.findAll($scope.page, 8).then(response => {
                 processConversationsResponse(response.data);
+                $scope.chats = response.data.chats.concat($scope.chats);
             });
 
             function processConversationsResponse(data) {
                 $scope.page += 1;
-                $scope.chats = data.chats.concat($scope.chats);
                 $scope.havingMore = data.havingMore;
             }
 
@@ -27,7 +27,12 @@ angular
             };
 
             $scope.showChat = (offerId) => {
-                $chat.open(offerId);
+                $chat.open(offerId).then(() => {
+                    $conversations.findAll(0, 8).then(response => {
+                        processConversationsResponse(response.data);
+                        $scope.chats = response.data.chats;
+                    });
+                });
             };
 
         }]);

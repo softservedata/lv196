@@ -35,6 +35,18 @@ i.fa, div {
     padding-top: 70px;
 }
 
+.sidebar-menu-item .fa-stack {
+    width: 1.7em;
+}
+
+.fa-stack .fa-circle.notify {
+    text-align: right;
+    margin-left: 4.5px;
+    font-size: smaller;
+    line-height: initial;
+    margin-top: 4.5px;
+ }
+
 .box {
     bottom: 0;
     left: 0;

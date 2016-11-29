@@ -46,6 +46,10 @@
     margin: 0 !important;
 }
 
+.driver .message.left .text.conversations-body {
+    padding-top: 10px;
+}
+
 .text.driver-name {
     font-weight: bold;
 }

@@ -5,9 +5,9 @@ import com.softserve.edu.delivery.domain.Order;
 import com.softserve.edu.delivery.domain.OrderStatus;
 import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.OrderDto;
-import com.softserve.edu.delivery.repository.LocationRepository;
 import com.softserve.edu.delivery.repository.OrderRepository;
 import com.softserve.edu.delivery.repository.UserRepository;
+import com.softserve.edu.delivery.service.LocationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class OrderServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private LocationRepository locationRepository;
+    private LocationService locationService;
 
     @InjectMocks
     private OrderServiceImpl orderService;
@@ -46,14 +46,15 @@ public class OrderServiceImplTest {
 
     @Before
     public void before() {
-        doNothing().when(orderRepository).save(any(Order.class));
 
         when(userRepository.findOneOpt(any(String.class))).thenReturn(Optional.empty());
         when(userRepository.findOneOpt(dummyEmail)).thenReturn(Optional.of(new User().setEmail(dummyEmail)));
 
-        when(locationRepository.findOneOpt(any(String.class))).thenReturn(Optional.empty());
-        when(locationRepository.findOneOpt("1")).thenReturn(Optional.of(new Location().setId("1")));
-        when(locationRepository.findOneOpt("2")).thenReturn(Optional.of(new Location().setId("2")));
+        Location loc1 = new Location().setId("1");
+        Location loc2 = new Location().setId("2");
+
+        when(locationService.persistLocation(loc1)).thenReturn(loc1);
+        when(locationService.persistLocation(loc2)).thenReturn(loc2);
     }
 
     @Test
@@ -66,8 +67,6 @@ public class OrderServiceImplTest {
 
         Assert.assertEquals(captured.getOrderStatus(), OrderStatus.OPEN);
         Assert.assertEquals(captured.getCustomer().getEmail(), dummyEmail);
-        Assert.assertEquals(captured.getLocationFrom().getId(), "1");
-        Assert.assertEquals(captured.getLocationTo().getId(), "2");
 
         Assert.assertEquals(captured.getArrivalDate(), dummyTimestamp);
         Assert.assertEquals(captured.getHeight(), Double.valueOf(23));
@@ -77,23 +76,18 @@ public class OrderServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addOrderDtoNull() {
-        orderService.addOrder(null, dummyEmail);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void addOrderNoUser() {
         orderService.addOrder(dummyDto(), dummyEmail + "dummyText");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void addOrderNoCityTo() {
-        orderService.addOrder(dummyDto().setLocationFrom(new Location().setId("33")), dummyEmail);
+        orderService.addOrder(dummyDto().setLocationTo(null), dummyEmail);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void addOrderNoCityFrom() {
-        orderService.addOrder(dummyDto().setLocationTo(new Location().setId("33")), dummyEmail);
+        orderService.addOrder(dummyDto().setLocationFrom(null), dummyEmail);
     }
 
     private OrderDto dummyDto() {

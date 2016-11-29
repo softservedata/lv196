@@ -20,8 +20,6 @@
     <link href="./bower_components/angular-material/angular-material.min.css" rel="stylesheet">
     <link href="./bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" rel="stylesheet">
 
-
-
     <link href="./css/main.css" rel="stylesheet">
     <link href="./css/sidebar.css" rel="stylesheet">
     <link href="./css/orders.css" rel="stylesheet">
@@ -77,7 +75,10 @@
                 </a>
                 <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="messages" ui-sref-active="active-list-item"
                    class="sidebar-menu-item">
-                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa-stack">
+                        <i class="fa fa-envelope fa-stack-1x"></i>
+                        <i ng-if="" class="fa fa-circle fa-stack-1x text-danger notify"></i>
+                    </span>
                     {{ 'messages' | translate }}
                 </a>
                 <a ng-show="forRole('Driver')" ui-sref="driver" ui-sref-active="active-list-item"
@@ -163,7 +164,6 @@
 <script src="./bower_components/ng-file-upload/ng-file-upload.js"></script>
 <script src="./bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js"></script>
 
-
 <script src="./app/orders/services/orderService.js"></script>
 <script src="./app/common/services/commonServices.js"></script>
 <script src="./app/chat/services/chat.js"></script>
@@ -191,9 +191,6 @@
 <script src="./app/users/controllers/userProfileController.js"></script>
 <script src="./app/users/controllers/currentUserController.js"></script>
 <script src="app/tracking/controller/trackingForDriver.js"></script>
-
-
-
 
 </body>
 </html>

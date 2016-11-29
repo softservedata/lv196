@@ -35,6 +35,7 @@ public class OrderDto {
         this.driverName = driverName;
         this.approvedOfferId = approvedOfferId;
     }
+
     public OrderDto(Order order, String driverName) {
         this(order);
         this.driverName = driverName;
@@ -47,6 +48,7 @@ public class OrderDto {
     }
 
     public OrderDto(Order order) {
+        Objects.requireNonNull(order, "Cannot create OrderDto due to order is null");
         this.id = order.getId();
         this.arrivalDate = order.getArrivalDate();
         this.locationFrom = order.getLocationFrom();
@@ -234,14 +236,4 @@ public class OrderDto {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "OrderForListDto{" +
-                "id=" + id +
-                ", arrivalDate=" + arrivalDate +
-                ", description='" + description + '\'' +
-                ", customerName='" + customerName + '\'' +
-                ", driverName='" + driverName + '\'' +
-                '}';
-    }
 }

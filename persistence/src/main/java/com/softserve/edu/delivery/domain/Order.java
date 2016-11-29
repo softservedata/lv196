@@ -187,12 +187,4 @@ public class Order {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Order [id=" + id + ", height=" + height + ", width=" + width +
-                ", length=" + length + ", weight=" + weight + ", price=" + price +
-                ", registrationDate=" + registrationDate + ", arrivalDate=" + arrivalDate +
-                ", description=" + description +", cityFrom=" + locationFrom +", cityTo=" + locationTo + "]";
-    }
-
 }

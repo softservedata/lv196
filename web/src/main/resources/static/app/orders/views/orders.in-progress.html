@@ -5,7 +5,7 @@
             <i ng-click="showChat(order.approvedOfferId)" class="fa fa-envelope" aria-hidden="true"></i>
         </div>
         <div ng-click="status.open = !status.open" class="order-location">
-            {{order.locationFrom.formatted}} &mdash; {{order.locationTo.formatted}}
+            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
         </div>
         <div class="order-details">
             <uib-accordion close-others="true">

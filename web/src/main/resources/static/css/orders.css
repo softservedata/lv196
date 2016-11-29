@@ -57,6 +57,11 @@
     width: 65px;;
 }
 
+.chats {
+    overflow-y: scroll;
+    height: 436px;
+}
+
 .order-creation .form-group-details .metric-addon {
     position: absolute;
     right: 0;

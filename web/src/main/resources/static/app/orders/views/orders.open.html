@@ -10,7 +10,7 @@
             <i class="fa fa-trash" ng-click="deleteOrder(order.id)" aria-hidden="true"></i>
         </div>
         <div class="order-location" ng-click="status.open = !status.open">
-            {{order.locationFrom.formatted}} &mdash; {{order.locationTo.formatted}}
+            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
         </div>
         <div class="order-details">
             <uib-accordion close-others="true">
