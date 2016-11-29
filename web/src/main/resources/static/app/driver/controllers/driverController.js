@@ -128,6 +128,7 @@ angular
                     console.log("addOffer");
                     Notification.success($filter('translate')('offer_added'));
                     $scope.retrieveOpenOrdersWithMyOffers();
+                    $scope.retrieveOpenOrders();
                 }).catch(function () {
                     Notification.error($filter('translate')('more_than_one_offer'));
                 })
@@ -164,6 +165,7 @@ angular
                     console.log("cancelOffer");
                     Notification.success($filter('translate')('offer_canceled'));
                     $scope.retrieveOpenOrdersWithMyOffers();
+                    $scope.retrieveOpenOrders();
                 })
             };
 

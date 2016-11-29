@@ -35,8 +35,14 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     @Query("select o from Order o where o.orderStatus = 'OPEN'")
     List<Order> getAllOpenOrder(Pageable pageable);
 
-    @Query("select count(o) from Order o where o.orderStatus = 'OPEN'")
-    long getCountOfOrders();
+    @Query("select o from Order o where o.orderStatus = 'OPEN' " +
+            "and o.id not in(select off.order.id from Offer off where off.car.driver.email = :email) " +
+            "order by o.arrivalDate ASC")
+    List<Order> getOpenOrderWithoutMyOffers(@Param("email") String email, Pageable pageable);
+
+    @Query("select count(o) from Order o where o.orderStatus = 'OPEN' " +
+            "and o.id not in(select off.order.id from Offer off where off.car.driver.email = :email)")
+    long getCountOfOrders(@Param("email") String email);
 
     @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
             "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName), off.car.vehicleFrontPhotoURL) " +
@@ -44,22 +50,26 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
             "and off.approved = 1 and ord.customer.email = :email order by ord.arrivalDate DESC")
     List<OrderDto> getAllClosedOrderByCustomerEmail(@Param("email") String email);
 
-    @Query("select o from Order o where o.orderStatus = 'OPEN' " +
-            "and (:locationFromId is null or o.locationFrom.id = :locationFromId) " +
-            "and (:locationToId is null or o.locationTo.id = :locationToId) " +
-            "and (:weight is null or o.weight <= :weight) " +
-            "and (:arrivalDate is null or o.arrivalDate >= :arrivalDate)")
+    @Query("select ord from Order ord where ord.orderStatus = 'OPEN' " +
+            "and ord.id not in(select off.order.id from Offer off where off.car.driver.email = :email) " +
+            "and (:locationFromId is null or ord.locationFrom.id = :locationFromId) " +
+            "and (:locationToId is null or ord.locationTo.id = :locationToId) " +
+            "and (:weight is null or ord.weight <= :weight) " +
+            "and (:arrivalDate is null or ord.arrivalDate >= :arrivalDate) " +
+            "order by ord.arrivalDate ASC")
     Page<Order> getOrdersFiltered(@Param("locationFromId") String locationFromId,
                                   @Param("locationToId") String locationToId,
                                   @Param("weight") Double weight,
-                                  @Param("arrivalDate") Timestamp arrivalDate, Pageable pageable);
+                                  @Param("arrivalDate") Timestamp arrivalDate,
+                                  @Param("email") String email,
+                                  Pageable pageable);
 
     @Query("select off.order from Offer off where off.car.driver.email = :email " +
-            "and off.order.orderStatus = 'CLOSED'")
+            "and off.order.orderStatus = 'CLOSED' order by off.order.arrivalDate DESC")
     List<Order> getMyOrdersClosed(@Param("email") String email);
 
     @Query("select off.order from Offer off where off.car.driver.email = :email " +
-            "and off.order.orderStatus = :status")
+            "and off.order.orderStatus = :status order by off.order.arrivalDate ASC")
     List<Order> getMyOrdersByStatus(@Param("email") String email,
                                     @Param("status") OrderStatus status);
 

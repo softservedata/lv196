@@ -55,14 +55,16 @@ public class DriverController {
                          @RequestParam Integer itemsPerPage) {
         logger.info("Method DriverController.open()");
         Pageable pageable = new PageRequest(currentPage - 1, itemsPerPage);
-        return orderService.getAllOpenOrder(pageable);
+        email = authenticationDetails.getAuthenticatedUserEmail();
+        return orderService.getOpenOrderWithoutMyOffers(email, pageable);
     }
 
     @PreAuthorize(DRIVER)
     @RequestMapping(path = "count-items", method = RequestMethod.GET)
     long countItems() {
         logger.info("Method DriverController.countItems()");
-        return orderService.getCountOfOrders();
+        email = authenticationDetails.getAuthenticatedUserEmail();
+        return orderService.getCountOfOrders(email);
     }
 
     @PreAuthorize(DRIVER)
@@ -70,7 +72,8 @@ public class DriverController {
     List<OrderDto> filter (@RequestBody OrderFilterDto orderFilterDto){
         logger.info("Method DriverController.filter()");
         logger.info("orderFilterDto = " + orderFilterDto);
-        return orderService.getOrdersFiltered(orderFilterDto);
+        email = authenticationDetails.getAuthenticatedUserEmail();
+        return orderService.getOrdersFiltered(orderFilterDto, email);
     }
 
     @PreAuthorize(DRIVER)

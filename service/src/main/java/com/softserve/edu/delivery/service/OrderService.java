@@ -50,10 +50,11 @@ public interface OrderService {
 
     List<OrderDto> findAllClosedOrders(String email);
 
-    List<OrderDto> getOrdersFiltered (OrderFilterDto orderFilterDto);
+    List<OrderDto> getOrdersFiltered (OrderFilterDto orderFilterDto, String email);
     long getCountOfFilteredOrders();
     List<OrderDto> getAllOpenOrder(Pageable pageable);
-    long getCountOfOrders();
+    List<OrderDto> getOpenOrderWithoutMyOffers(String email, Pageable pageable);
+    long getCountOfOrders(String email);
     List<OrderDto> getMyOrdersClosed(String email);
     List<OrderDto> getMyOrdersByStatus(String email, OrderStatus status);
     void approveDelivery(Long orderId);

@@ -118,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrdersFiltered(OrderFilterDto orderFilterDto) {
+    public List<OrderDto> getOrdersFiltered(OrderFilterDto orderFilterDto, String email) {
         Pageable pageable = new PageRequest(orderFilterDto.getCurrentPage() - 1, orderFilterDto.getItemsPerPage());
         Page<Order> result = orderRepository
                 .getOrdersFiltered(
@@ -126,6 +126,7 @@ public class OrderServiceImpl implements OrderService {
                         orderFilterDto.getCityToId(),
                         orderFilterDto.getWeight(),
                         orderFilterDto.getArrivalDate(),
+                        email,
                         pageable);
         totalItems = result.getTotalElements();
         return result
@@ -150,8 +151,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public long getCountOfOrders() {
-        return orderRepository.getCountOfOrders();
+    public List<OrderDto> getOpenOrderWithoutMyOffers(String email, Pageable pageable) {
+        return orderRepository
+                .getOpenOrderWithoutMyOffers(email, pageable)
+                .stream()
+                .map(OrderDto::of)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public long getCountOfOrders(String email) {
+        return orderRepository.getCountOfOrders(email);
     }
 
     @Override

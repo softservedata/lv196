@@ -68,7 +68,7 @@
                 <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
                     <div class="panel-body">
                         <div class="order-actions">
-                            <button type="button" class="btn btn-default btn-sm" onclick="style.display='none'" ng-click="addOffer(order.id)">{{
+                            <button type="button" class="btn btn-default btn-sm" ng-click="addOffer(order.id)">{{
                                 'add_offer' | translate }}
                             </button>
                         </div>
