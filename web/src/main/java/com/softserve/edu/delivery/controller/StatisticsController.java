@@ -32,8 +32,8 @@ public class StatisticsController {
 	   Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 	   
 	   @PreAuthorize(ADMIN_OR_MANAGER)
-	   @RequestMapping(path = "day-orders", method = RequestMethod.GET)
-	   List<DataDto> countAllPerHour(@RequestParam("date") String date) {
+	   @RequestMapping(path = {"day-orders{date}"}, method = RequestMethod.GET)
+	   List<DataDto> countAllPerHour(@RequestParam("date") Long date) {
 	       return orderService.countClosedOrdersPerHour(date);
 	   }
 	   

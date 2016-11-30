@@ -46,10 +46,10 @@ public class UserController {
 	    }
 
 	    @PreAuthorize(ADMIN_OR_MANAGER)
-	    @RequestMapping(path = "count-items", method = RequestMethod.GET)
-	    Long countUsers() {
+	    @RequestMapping(path = "count-items", method = RequestMethod.POST)
+	    Long countUsers(@RequestBody UserProfileDto dto) {
 			logger.info("Method UserController.countUsers()");
-	        return userService.countItems();
+	        return userService.countItems(dto);
 	    }
 
 	    @PreAuthorize(ADMIN_OR_MANAGER)

@@ -28,6 +28,11 @@ public interface BaseRepository<T, ID extends Serializable> extends JpaRepositor
 
         return findAll(Example.of(t, ExampleMatcher.matching().withStringMatcher(ExampleMatcher.StringMatcher.
                 CONTAINING)), pageable);
+    }
+    
+    default Long countFilteredByExample(T t){
 
+        return count(Example.of(t, ExampleMatcher.matching().withStringMatcher(ExampleMatcher.StringMatcher.
+                CONTAINING)));
     }
 }

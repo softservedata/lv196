@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private Long totalItems;
     private final String MALE_ICON = "./img/manIcon.png";
     private final String FEMALE_ICON = "./img/womanIcon.png";
 
@@ -158,8 +157,6 @@ public class UserServiceImpl implements UserService {
         Page<User> resultPage = userRepository.findFilteredByExample(user,
                 new PageRequest(filter.getCurrentPage() - 1, filter.getRows(), new Sort(sortOrder)));
 
-        totalItems = resultPage.getTotalElements();
-
         return resultPage
                 .getContent()
                 .stream()
@@ -168,8 +165,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long countItems() {
-        return totalItems;
+    public Long countItems(UserProfileDto filter) {
+    	User user = createUserFromDto(filter);
+        return userRepository.countFilteredByExample(user);
     }
 
     @Override

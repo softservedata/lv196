@@ -95,7 +95,7 @@
 			</div>
       </md-card>
       
-      <md-card md-theme="{{'default'}}" md-theme-watch class="data-row">
+      <md-card md-theme="{{'default'}}" md-theme-watch class="data-row" ng-controller="usersController">
         <md-card-title>
           <md-card-title-text class="data-users-title">
             <span class="md-headline">{{ 'best_drivers' | translate }}</span>
@@ -103,8 +103,8 @@
           </md-card-title-text>
         </md-card-title>
         	<div>
-        		<md-list-item ng-repeat="user in drivers.topFive" ng-click="goToPerson(person.name, $event)" class="noright topdrivers">
-    				<img title="{{user.firstName}} {{user.lastName}}" src="./img/user-photo.png" class="md-avatar img-driver">
+        		<md-list-item ng-repeat="user in drivers.topFive" ng-click="showUserInfo(user)" ng-init="getUserInfo(user)" class="noright topdrivers">
+    				<img ng-src="{{user.photoUrl}}" title="{{user.firstName}} {{user.lastName}}"  class="md-avatar img-driver">
     					  <div class="md-list-item-text" layout="column">
             					<h1 class="driver-name">{{ user.firstName }} {{user.lastName}}</h1>
             					<h1 class="driver-info"><i class="fa fa-envelope ic-driver" aria-hidden="true"></i> {{ user.email }}

@@ -8,7 +8,7 @@ angular
         };
         
         $scope.userCars = [];
-        $scope.totalItems;
+        $scope.totalItems = 0;
         $scope.filterStatus = false;
         $scope.userInfo = false;
         $scope.userRate;
@@ -44,7 +44,7 @@ angular
 
             $http.post('/users/filter', filter).then(response1 => {
                 $scope.users.allProfiles = response1.data;
-                $http.get('/users/count-items').then(response2 => {
+                $http.post('/users/count-items', filter).then(response2 => {
                     $scope.totalItems = response2.data;
                 });
             });

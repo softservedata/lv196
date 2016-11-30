@@ -205,7 +205,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<DataDto> countClosedOrdersPerHour(String date) {
+    public List<DataDto> countClosedOrdersPerHour(Long date) {
     	String dateOfAnalyse = getDate(date);
     	return dataRepositoryCustom.countClosedOrdersPerHour(dateOfAnalyse);
     }
@@ -221,8 +221,8 @@ public class OrderServiceImpl implements OrderService {
     	return dataRepositoryCustom.countClosedOrdersMonth();
     }
     
-    private String getDate(String value) {
-    	java.sql.Date date = new  java.sql.Date(Long.parseLong(value));
+    private String getDate(Long value) {
+    	java.sql.Date date = new  java.sql.Date(value);
             return date.toString();  
     }
     

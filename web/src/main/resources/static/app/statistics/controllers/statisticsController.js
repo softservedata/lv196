@@ -58,9 +58,6 @@ angular
                 $scope.dayMap = response.data;
                 $scope.dayLabels = getColumn($scope.dayMap, 0);
                 $scope.dayData[0] = getColumn($scope.dayMap, 1);
-                for(var i = 0; i < $scope.dayLabels.length; i++){
-              	 // $scope.dayLabels[i] = $scope.dayLabels[i] + ':00';
-                }
               });
             };
         

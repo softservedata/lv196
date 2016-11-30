@@ -33,7 +33,7 @@ public interface UserService extends UserDetailsService {
 	
 	UserProfileDto getUser(String email);
 	
-	Long countItems();
+	Long countItems(UserProfileDto filter);
 	
 	List<UserProfileDto> findUsers(UserProfileDto filter);
 
