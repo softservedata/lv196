@@ -44,6 +44,7 @@ angular
 
                     $scope.route = L.Routing.control({
                         waypoints: $scope.points,
+                        routeWhileDragging: false,
                         plan: L.Routing.plan($scope.points, {
                             createMarker: function(i, wp) {
                                 return L.marker(wp.latLng, {

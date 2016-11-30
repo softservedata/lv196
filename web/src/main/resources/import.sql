@@ -130,15 +130,40 @@ INSERT INTO month_dimension (month_id, month) VALUES (10, 'October');
 INSERT INTO month_dimension (month_id, month) VALUES (11, 'November');
 INSERT INTO month_dimension (month_id, month) VALUES (12, 'December');
 
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 49.866071, 23.957118, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 49.9602678,24.5536551, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.0711054,25.1656323, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.379910, 25.707483, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.602637, 26.519247, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.602061, 27.016033, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.615450, 27.251681, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.581687, 27.688400, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.356229, 28.317024, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.389874, 29.491531, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.425987, 29.961527, 1);
-INSERT INTO route_city (visit_date, x, y, order_id) VALUES ('2016-09-11 17:16:27.218', 50.456188, 30.436237, 1);
+# Львів - Київ
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (1, '2016-09-10 16:16:27.218', 49.866071, 23.957118, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (2, '2016-09-11 17:16:27.218', 49.9602678,24.5536551, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (3, '2016-09-11 17:16:27.218', 50.0711054,25.1656323, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (4, '2016-09-11 17:16:27.218', 50.379910, 25.707483, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (5, '2016-09-11 17:16:27.218', 50.602637, 26.519247, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (6, '2016-09-11 17:16:27.218', 50.602061, 27.016033, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (7, '2016-09-11 17:16:27.218', 50.615450, 27.251681, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (8, '2016-09-11 17:16:27.218', 50.581687, 27.688400, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (9, '2016-09-11 17:16:27.218', 50.356229, 28.317024, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (10, '2016-09-11 17:16:27.218', 50.389874, 29.491531, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (11, '2016-09-11 17:16:27.218', 50.425987, 29.961527, 1);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (12, '2016-09-12 18:16:27.218', 50.456188, 30.436237, 1);
+
+# Київ-Луганськ
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (13, '2016-09-11 17:16:27.218', 49.6678144,30.6315341, 2);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (14, '2016-09-11 17:16:27.218', 49.6020233,34.4871985, 2);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (15, '2016-09-11 17:16:27.218', 49.994507,36.1457405, 2);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (16, '2016-09-11 17:16:27.218', 48.5799791,38.796656, 2);
+
+# Львів-Вінниця
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (17, '2016-09-11 17:16:27.218', 49.8326679,23.9421956, 3);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (18, '2016-09-11 17:16:27.218', 49.5483334,25.527629, 3);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (19, '2016-09-11 17:16:27.218', 49.4105308,26.9252185, 3);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (20, '2016-09-11 17:16:27.218', 49.2347946,28.3995939, 3);
+
+# Одеса-Дніпро
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (21, '2016-09-11 17:16:27.218', 46.4598865,30.5717027, 4);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (22, '2016-09-11 17:16:27.218', 46.9329791,31.8679122, 4);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (23, '2016-09-11 17:16:27.218', 47.9070207,33.0863299, 4);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (24, '2016-09-11 17:16:27.218', 48.4622135,34.860272, 4);
+
+# Коростень-Вінниця
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (25, '2016-09-11 17:16:27.218', 50.9585396,28.5595401, 5);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (26, '2016-09-11 17:16:27.218', 50.2678654,28.6036776, 5);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (27, '2016-09-11 17:16:27.218', 49.8915304,28.5292031, 5);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (28, '2016-09-11 17:16:27.218', 49.2347946,28.3995939, 5);
