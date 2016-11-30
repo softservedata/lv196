@@ -1,10 +1,8 @@
 package com.softserve.edu.delivery.controller;
 
-import com.softserve.edu.delivery.domain.Car;
-import com.softserve.edu.delivery.domain.User;
 import com.softserve.edu.delivery.dto.CarDTO;
 import com.softserve.edu.delivery.dto.UserProfileDto;
-import com.softserve.edu.delivery.dto.valid.PatternConstraints;
+import com.softserve.edu.delivery.dto.valid.Validation;
 import com.softserve.edu.delivery.service.CarService;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
@@ -36,10 +34,10 @@ public class UserProfileController {
     private UserAuthenticationDetails authenticationDetails;
 
     private boolean isNewPasswordValid(CharSequence newPassword, CharSequence confirmPassword) {
-        if (newPassword.length() >= PatternConstraints.PASS_MIN_LENGTH && newPassword.length() <=
-                PatternConstraints.PASS_MAX_LENGTH) {
-            if (confirmPassword.length() >= PatternConstraints.PASS_MIN_LENGTH && confirmPassword.length() <=
-                    PatternConstraints.PASS_MAX_LENGTH) {
+        if (newPassword.length() >= Validation.PASS_MIN_LENGTH && newPassword.length() <=
+                Validation.PASS_MAX_LENGTH) {
+            if (confirmPassword.length() >= Validation.PASS_MIN_LENGTH && confirmPassword.length() <=
+                    Validation.PASS_MAX_LENGTH) {
                 if (newPassword.equals(confirmPassword)) {
                     return true;
                 }
@@ -215,8 +213,8 @@ public class UserProfileController {
         HttpStatus status = HttpStatus.OK;
 
         Map<String, Integer> passwordParams = new HashMap<>();
-        passwordParams.put("minPswdLength", PatternConstraints.PASS_MIN_LENGTH);
-        passwordParams.put("maxPswdLength", PatternConstraints.PASS_MAX_LENGTH);
+        passwordParams.put("minPswdLength", Validation.PASS_MIN_LENGTH);
+        passwordParams.put("maxPswdLength", Validation.PASS_MAX_LENGTH);
 
         logger.info("After UserProfileController.getPasswordParams()");
 

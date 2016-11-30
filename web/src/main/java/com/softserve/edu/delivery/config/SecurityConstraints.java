@@ -33,11 +33,6 @@ public class SecurityConstraints {
     public static final String INTERNAL_SERVER_ERROR_URL = "/serverError";
     public static final String ACCESS_DENIED_URL = "/accessDenied";
 
-    public static final String CUSTOMER_PAGE = "/#/orders/open";
-    public static final String DRIVER_PAGE = "/#/driver";
-    public static final String ADMIN_PAGE = "/#/users";
-    public static final String MODERATOR_PAGE = "/#/feedback";
-
     public static final String LINKED_IN_LOGIN_URL = "/login/linkedin";
     public static final String LINKED_IN_CALLBACK_URL = "/login/linkedin/callback";
     public static final String GOOGLE_LOGIN_URL = "/login/google";

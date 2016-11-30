@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="mvc" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <head>
@@ -67,6 +67,7 @@
     <spring:message code='register' var="register"/>
     <mvc:form modelAttribute="userRegistration" id="register_form" action="register" method = "post" enctype="utf-8">
         <div class="mess">
+            <mvc:errors path="*"/>
             <mvc:input path="userEmail" type="email" name="userEmail" id="userEmail" class="user" placeholder="${email}" maxlength="255"
                    required="required" title="${tooltip1}" autofocus="autofocus"/>
             <mvc:errors path="userEmail"/>
@@ -92,7 +93,7 @@
             <mvc:errors path="userConfirmPassword"/>
         </div>
         <div class="mess">
-            <mvc:input path="userPhoneNumber" type="text" class="user" id="userPhoneNumber" pattern=".\d+" name="userPhoneNumber"
+            <mvc:input path="userPhoneNumber" type="text" class="user" id="userPhoneNumber" pattern="^[0-9]{9,14}$" name="userPhoneNumber"
                    placeholder="${phone}" required="required" title="${tooltip5}"/>
             <mvc:errors path="userPhoneNumber"/>
         </div>
@@ -104,6 +105,19 @@
         </div>
         <input type="submit" value="${register}">
     </mvc:form>
+    <script>
+        var password = document.getElementById("userPassword"),
+            confirm_password = document.getElementById("userConfirmPassword");
+        function validatePassword(){
+            if(password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Password doesn't matches");
+            } else {
+                confirm_password.setCustomValidity('');
+            }
+        }
+        password.onchange = validatePassword;
+        confirm_password.onkeyup = validatePassword;
+    </script>
 </div>
 </body>
 </html>

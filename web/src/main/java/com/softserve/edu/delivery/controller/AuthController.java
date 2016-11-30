@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.controller;
 
+import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.dto.*;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.UserService;
@@ -116,26 +117,13 @@ public class AuthController {
     @PreAuthorize(AUTHENTICATED)
     @GetMapping(value = "role")
     public @ResponseBody StringResponse getRole() {
-        String role = authenticationDetails.getAuthenticatedUserRole();
+        String role = authenticationDetails.getAuthenticatedUserRole().getName();
         logger.info("Return user role: " + role);
         return new StringResponse(role);
     }
 
     private String roleRedirect() {
-        String role = this.authenticationDetails.getAuthenticatedUserRole();
-        String redirect = "redirect:";
-        switch (role) {
-            case "Customer":
-                return redirect += CUSTOMER_PAGE;
-            case "Driver":
-                return redirect += DRIVER_PAGE;
-            case "Moderator":
-                return redirect += MODERATOR_PAGE;
-            case "Admin" :
-            case "Manager":
-                return redirect += ADMIN_PAGE;
-            default:
-                return redirect += WELCOME_PAGE;
-        }
+        Role currentRole = this.authenticationDetails.getAuthenticatedUserRole();
+        return "redirect:" + currentRole.getPageUrl();
     }
 }

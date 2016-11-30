@@ -15,7 +15,7 @@ public class UserAuthenticationDetailsImpl implements UserAuthenticationDetails 
     public String getAuthenticatedUserEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
-            return "";
+            throw new RuntimeException("Method is not allowed for not authenticated users");
         } else {
             Object principal = auth.getPrincipal();
             if (principal instanceof UserDetails) {
@@ -28,18 +28,21 @@ public class UserAuthenticationDetailsImpl implements UserAuthenticationDetails 
     }
 
     @Override
-    public String getAuthenticatedUserRole() {
+    public Role getAuthenticatedUserRole() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Role result = null;
         if (auth == null) {
-            return "";
+            throw new RuntimeException("Method is not allowed for not authenticated users");
         } else {
             Object principal = auth.getPrincipal();
             if (principal instanceof UserDetails) {
-                return  ((UserDetails) principal).getAuthorities().iterator().next().toString();
+                String role = ((UserDetails) principal).getAuthorities().iterator().next().toString();
+                result = Role.getRoleByString(role);
             }else if (principal instanceof SocialAuthentication) {
-                return ((SocialAuthentication) principal).getUserRole();
+                String role = ((SocialAuthentication) principal).getUserRole();
+                result =  Role.getRoleByString(role);
             }
-            return "";
+            return result;
         }
     }
 }
