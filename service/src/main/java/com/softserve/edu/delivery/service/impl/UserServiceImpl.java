@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Email already exist: " + userRegDTO.getUserEmail());
         } else {
             User newUser = createUser(userRegDTO);
-            if (newUser.getGender()== Gender.MALE) {
+            if (newUser.getGender()== Gender.MALE || newUser.getGender()== null) {
                 newUser.setPhotoUrl(MALE_ICON);
             } else {
                 newUser.setPhotoUrl(FEMALE_ICON);
