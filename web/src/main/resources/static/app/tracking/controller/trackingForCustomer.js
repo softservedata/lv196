@@ -48,13 +48,11 @@ angular
             $http.get('/track/' + $scope.id).then((result) => {
                 let res = result.data;
                 let current = L.latLng(res.points.point.x, res.points.point.y);
-                let currentOld = L.latLng($scope.route.points.point.x, $scope.route.points.point.y);
-                if(current != currentOld) {
-                    $scope.deleteMarkers(currentOld);
+                    $scope.deleteMarkers();
                     L.marker(current, {
                         icon: car2,
                     }).addTo($scope.layerGroup).on('click', $scope.onButtonClick);
-                }
+
             });
         };
 
@@ -71,9 +69,8 @@ angular
 
        $interval($scope.updateCurrentLocation, 4000);
 
-        $scope.deleteMarkers = (o) => {
+        $scope.deleteMarkers = () => {
             $scope.layerGroup.getLayers().forEach((el) => {
-                if (el.getLatLng().lat == o.lat && el.getLatLng().lng == o.lng)
                     $scope.layerGroup.removeLayer(el);
             });
         };
