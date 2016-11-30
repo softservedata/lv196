@@ -36,6 +36,7 @@ public class User implements Serializable {
     private String photoUrl;
     private String passport;
     private Boolean approved;
+    @Column(columnDefinition="boolean default false")
     private Boolean blocked;
 
     @Enumerated(EnumType.STRING)
