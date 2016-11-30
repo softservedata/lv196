@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Natalia on 12.10.2016.
@@ -26,8 +27,12 @@ public class PointServiceImpl implements PointService{
         routeCitiesRepository.save(routeCities);
     }
     @Override
-    public void update(Point point, Long id){
-        routeCitiesRepository.update(id, new Timestamp(new java.util.Date().getTime()), point.getX(), point.getY());
+    public void update(Long id){
+        List<RouteCities> list = routeCitiesRepository.findPointToUpdate(id);
+        if(list.size() > 0) {
+            Point point = new Point(list.get(0).getX(), list.get(0).getY());
+            routeCitiesRepository.update(id, new Timestamp(new java.util.Date().getTime()), point.getX(), point.getY());
+        }
     }
 
 }

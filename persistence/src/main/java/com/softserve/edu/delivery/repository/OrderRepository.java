@@ -74,7 +74,15 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
     List<Order> getMyOrdersByStatus(@Param("email") String email,
                                     @Param("status") OrderStatus status);
 
+    @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
+            "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName)) " +
+            "from Offer off join off.order ord where ord.orderStatus = 'CLOSED' and off.approved = 1"+
+            "and ord.arrivalDate between ?1 and ?2")
+    List<OrderDto> findByOrderStatusAndArrivalDateBetween(@Param("dateFrom") Timestamp dateFrom, @Param("dateTo") Timestamp dateTo);
+
+
     Page<Order> findAllByOrderStatus(OrderStatus orderStatus, Pageable pageable);
+
     @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
             "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName)) " +
             "from Offer off join off.order ord where ord.orderStatus = :orderStatus and off.approved = 1")
@@ -85,11 +93,6 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
             "from Offer off join off.order ord where ord.id = :id and ord.orderStatus = :orderStatus and off.approved = 1")
     Optional<OrderDto> findOneByIdAndOrderStatus(@Param("id") Long id, @Param("orderStatus") OrderStatus orderStatus);
 
-    @Query("select new com.softserve.edu.delivery.dto.OrderDto(" +
-            "ord, concat(off.car.driver.firstName, ' ', off.car.driver.lastName)) " +
-            "from Offer off join off.order ord where ord.orderStatus = 'CLOSED' and off.approved = 1"+
-            "and ord.arrivalDate between ?1 and ?2")
-    List<OrderDto> findByOrderStatusAndArrivalDateBetween(@Param("dateFrom") Timestamp dateFrom, @Param("dateTo") Timestamp dateTo);
 
     @Query("select count(o.id) from Order o where o.orderStatus = 'CLOSED'" +
             "and o.arrivalDate between ?1 and ?2")

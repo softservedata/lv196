@@ -2,6 +2,10 @@ SET FOREIGN_KEY_CHECKS=0;
 
 insert into locations(id, formatted, latitude, longitude, city, region, oblast, custom) values('ChIJBUVa4U7P1EAR_kYBF9IxSXY', 'Київ, Україна', '50.4501', '30.5234', 'Київ', 'місто Київ', 'місто Київ', false);
 insert into locations(id, formatted, latitude, longitude, city, region, oblast, custom) values('ChIJV5oQCXzdOkcR4ngjARfFI0I', 'Львів, Львівська область, Україна',  '49.839683', '24.029717', 'Львів', 'Львівська область', null, false);
+insert into locations(id, formatted, latitude, longitude, city, region, oblast, custom) values('ChIJhWJMhGTFH0ERZHGeh34u4Pg', 'Луганськ, Луганська область, Україна', '48.574041', '39.307815', 'Луганськ', 'Луганська область', null, false);
+insert into locations(id, formatted, latitude, longitude, city, region, oblast, custom) values('ChIJj0YI_QPj20ARuhrB8tXzHAo', 'Дніпро, Дніпровська область, Україна',  '48.464717', '35.046183', 'Дніпро', 'Дніпровська область', null, false);
+insert into locations(id, formatted, latitude, longitude, city, region, oblast, custom) values('ChIJQ0yGC4oxxkARbBfyjOKPnxI', 'Одеса, Одеська область, Україна',  '46.482526', '30.7233095', 'Одеса', 'Одеська область', null, false);
+
 
 
 insert into users (email, approved, blocked, first_name, last_name, passport, password, phone, photo_url, rate, user_role) VALUES ('email0@gmail.com', 1, 0, 'Andy', 'Wick', 'ТЧ 938232', '$2a$10$d2HsbmeXA6x6hz7Wm.3RG.4ZFaZYW95i0ieKN.RItNnrt5sVykGr6', '+3809966847', './img/manIcon.png', 4, 'ADMIN');
@@ -60,9 +64,9 @@ insert into cars (car_id, vehicle_back_photourl, vehicle_front_photourl, vehicle
 insert into cars (car_id, vehicle_back_photourl, vehicle_front_photourl, vehicle_height, vehicle_length, vehicle_width, vehicle_weight, vehicle_name, vehicle_number, vehiclevin, driver_id) VALUES (18, '/resources/cars/photos/17_back_photo.png', '/resources/cars/photos/17_front_photo.png', 1.0346744217266206, 1.2933430271582758, 0.6466715135791379, 90.51255086457314, 'Honda Accord', 'VD 7939 NY', '6W8E4F0K6I6U6I2Q4', 'email19@gmail.com');
 
 insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (1, '2016-12-02 00:00:00', 'Glass', 2.00, 6.00, 'OPEN', NULL, '2016-11-28 00:45:40', 5.00, 0.8, 'martin@gmail.com', 'ChIJV5oQCXzdOkcR4ngjARfFI0I', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY');
-insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (2, '2016-12-02 00:00:00', 'Tools', 15.00, 3.00, 'OPEN', NULL, '2016-11-28 00:45:40', 2.00, 4.00, 'martin@gmail.com', 'ChIJV5oQCXzdOkcR4ngjARfFI0I', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY');
+insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (2, '2016-12-02 00:00:00', 'Tools', 15.00, 3.00, 'IN_PROGRESS', NULL, '2016-11-28 00:45:40', 2.00, 4.00, 'martin@gmail.com', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY', 'ChIJhWJMhGTFH0ERZHGeh34u4Pg');
 insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (3, '2016-12-02 00:00:00', 'Potatoes', 18.00, 2.00, 'OPEN', NULL, '2016-11-28 00:45:40', 5.50, 0.44, 'martin@gmail.com', 'ChIJV5oQCXzdOkcR4ngjARfFI0I', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY');
-insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (4, '2016-12-02 00:00:00', 'Clothing', 18.00, 2.00, 'IN_PROGRESS', NULL, '2016-11-28 00:45:40', 5.50, 0.44, 'martin@gmail.com', 'ChIJV5oQCXzdOkcR4ngjARfFI0I', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY');
+insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (4, '2016-12-02 00:00:00', 'Clothing', 18.00, 2.00, 'IN_PROGRESS', NULL, '2016-11-28 00:45:40', 5.50, 0.44, 'martin@gmail.com', 'ChIJQ0yGC4oxxkARbBfyjOKPnxI', 'ChIJj0YI_QPj20ARuhrB8tXzHAo');
 insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (5, '2016-12-02 00:00:00', 'Stuff', 18.00, 2.00, 'CLOSED', NULL, '2016-11-28 00:45:40', 5.50, 0.44, 'martin@gmail.com', 'ChIJV5oQCXzdOkcR4ngjARfFI0I', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY');
 insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (6, '2016-12-02 00:00:00', 'Glass', 18.00, 2.00, 'OPEN', NULL, '2016-11-28 00:45:40', 5.50, 0.44, 'martin@gmail.com', 'ChIJV5oQCXzdOkcR4ngjARfFI0I', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY');
 insert into orders(id, arrival_date, description, height, length, order_status, price, registration_date, weight, width, customer_user_id, location_from_id, location_to_id) values (7, '2016-12-02 00:00:00', 'Glass', 18.00, 2.00, 'APPROVED', NULL, '2016-11-28 00:45:40', 5.50, 0.44, 'martin@gmail.com', 'ChIJV5oQCXzdOkcR4ngjARfFI0I', 'ChIJBUVa4U7P1EAR_kYBF9IxSXY');
@@ -193,7 +197,7 @@ insert into orders(id, arrival_date, description, height, length, order_status, 
 
 
 insert into offers (offer_id, approved, car_id, order_id) VALUES (1, false, 1, 1);
-insert into offers (offer_id, approved, car_id, order_id) VALUES (2, false, 1, 2);
+insert into offers (offer_id, approved, car_id, order_id) VALUES (2, true, 1, 2);
 insert into offers (offer_id, approved, car_id, order_id) VALUES (3, false, 1, 3);
 insert into offers (offer_id, approved, car_id, order_id) VALUES (4, false, 3, 2);
 insert into offers (offer_id, approved, car_id, order_id) VALUES (5, false, 3, 3);
@@ -219,6 +223,8 @@ insert into offers (offer_id, approved, car_id, order_id) VALUES (24, false, 13,
 insert into offers (offer_id, approved, car_id, order_id) VALUES (25, true, 2, 4);
 insert into offers (offer_id, approved, car_id, order_id) VALUES (26, true, 15, 5);
 insert into offers (offer_id, approved, car_id, order_id) VALUES (27, true, 15, 7);
+insert into offers (offer_id, approved, car_id, order_id) VALUES (28, true, 5, 41);
+
 
 insert into DELIVERY.OFFERS (approved, car_id, order_id) VALUES (true, 1, 34), (true, 14, 8), (true, 10, 18), (true, 11, 13), (true, 17, 29), (true, 2, 38), (true, 17, 17), (true, 3, 31), (true, 10, 30), (true, 14, 14), (true, 12, 35), (true, 10, 16), (true, 16, 27), (true, 4, 37), (true, 8, 21), (true, 3, 36), (true, 18, 40), (true, 9, 23), (true, 4, 20), (true, 2, 24), (true, 4, 19), (true, 17, 33), (true, 17, 9), (true, 15, 25), (true, 14, 10), (true, 8, 39), (true, 13, 11), (true, 4, 15), (true, 3, 26), (true, 9, 32), (true, 16, 28), (true, 6, 22), (true, 15, 12);
 
@@ -266,10 +272,10 @@ INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (11, '
 INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (12, '2016-09-12 18:16:27.218', 50.456188, 30.436237, 1);
 
 # Київ-Луганськ
-INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (13, '2016-09-11 17:16:27.218', 49.6678144,30.6315341, 2);
-INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (14, '2016-09-11 17:16:27.218', 49.6020233,34.4871985, 2);
-INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (15, '2016-09-11 17:16:27.218', 49.994507,36.1457405, 2);
-INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (16, '2016-09-11 17:16:27.218', 48.5799791,38.796656, 2);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (13, '2016-09-11 17:16:12.218', 49.6678144,30.6315341, 2);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (14, '2016-09-11 17:16:22.218', 49.6020233,34.4871985, 2);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (15, '2016-09-11 17:16:32.218', 49.994507,36.1457405, 2);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (16, '2016-09-11 17:16:42.218', 48.5799791,38.796656, 2);
 
 # Львів-Вінниця
 INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (17, '2016-09-11 17:16:27.218', 49.8326679,23.9421956, 3);
@@ -279,9 +285,9 @@ INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (20, '
 
 # Одеса-Дніпро
 INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (21, '2016-09-11 17:16:27.218', 46.4598865,30.5717027, 4);
-INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (22, '2016-09-11 17:16:27.218', 46.9329791,31.8679122, 4);
-INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (23, '2016-09-11 17:16:27.218', 47.9070207,33.0863299, 4);
-INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (24, '2016-09-11 17:16:27.218', 48.4622135,34.860272, 4);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (22, '2016-09-11 17:16:37.218', 46.9329791,31.8679122, 4);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (23, '2016-09-11 17:16:47.218', 47.9070207,33.0863299, 4);
+INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (24, '2016-09-11 17:16:57.218', 48.4622135,34.860272, 4);
 
 # Коростень-Вінниця
 INSERT INTO route_city (route_city_id, visit_date, x, y, order_id) VALUES (25, '2016-09-11 17:16:27.218', 50.9585396,28.5595401, 5);

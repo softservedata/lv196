@@ -3,13 +3,13 @@
     <div class="input-group">
             <div layout-gt-xs="row">
                 <div flex-gt-xs>
-                    <md-datepicker ng-model="fromDate" md-placeholder="From date"></md-datepicker>
+                    <md-datepicker ng-model="fromDate" md-placeholder="{{ 'from_date' | translate }}"></md-datepicker>
                 </div>
                 <div flex-gt-xs>
-                    <md-datepicker ng-model="toDate" md-placeholder="To date"></md-datepicker>
+                    <md-datepicker ng-model="toDate" md-placeholder="{{ 'to_date' | translate }}"></md-datepicker>
                 </div>
                 <select ng-model="selectedDriver" class="form-control" style=" width: 200px; margin-left: 50px" ng-options="driverName for driverName in drivers">
-                    <option value="">Driver name</option>
+                    <option value="">{{ 'driver_name' | translate }}</option>
                 </select>
                 <button type="button" class="btn btn-default" ng-click="setDates()" style="margin-left: 50px; height: 35px">Filter</button>
             </div>

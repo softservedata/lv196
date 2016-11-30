@@ -10,12 +10,12 @@ import com.softserve.edu.delivery.dto.*;
 import org.springframework.data.domain.Pageable;
 
 public interface TransporterService {
-    List<PlaceDto> getAllPointsByOrderIdWitoutDate(Long id);
+    List<PlaceDto> getAllPointsByOrderIdWithoutDate(Long id);
     OrderClosedDto findOneByIdAndOrderStatus(Long id);
     List<RoutesDto> getAllOrdersInProgress();
-    List<OrderClosedDto> getAllOrdersClosed();
     List<OrderClosedDto> getAllOrdersClosedByDates(Timestamp min, Timestamp max);
     void setPoints(Long orderId, List<Point> points);
     void changeStatus(Long id, OrderStatus status);
     RoutesDto getMyRoute(Long id);
+    List<Long> getAllIdInProgress();
 }

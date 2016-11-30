@@ -89,6 +89,7 @@
   "chat": "chat",
   "track": "track",
   "tracking orders": "Track my order",
+  "tracking": "Tracking",
   "add_feedback": "add feedback",
   "delete_feedback_warn": "Are you sure you want to delete the feedback?",
   "statistics": "Statistics",
@@ -198,6 +199,13 @@
   "dec": "December",
   "without_rate": "without rate",
   "tracking": "Tracking",
+  "save_role": "Success : Successful change User role",
+  "tracking_orders": "Track orders",
+  "to_date": "To date",
+  "from_date": "From date",
+  "set_points": "Set points",
+  "start": "Start",
+  "remove_markers" : " Remove markers",
   "save_role": "Success : Successful change User role",
   "orders-tracking": "Tracking"
 }

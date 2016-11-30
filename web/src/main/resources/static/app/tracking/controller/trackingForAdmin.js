@@ -24,6 +24,7 @@ angular
             }).addTo(map);
             $scope.controlList = [];
             $scope.layerGroup = L.layerGroup().addTo(map);
+            $scope.layerGroupForCar = L.layerGroup().addTo(map);
         };
         $scope.getRandomColor = () => {
             return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
@@ -43,6 +44,12 @@ angular
         };
         $scope.getClosedByDate = (fromDate, toDate) => {
             $scope.cleanAllMap();
+            if(toDate == 0){
+                toDate = null;
+            }
+            if(fromDate == 0){
+                fromDate = null;
+            }
             $http.get('/closedByDates?fromDate='+fromDate+'&toDate='+ toDate).then(function (result) {
                 $scope.listOfClosed = result.data;
                 if($scope.drivers.length == 0){
@@ -50,9 +57,7 @@ angular
                         $scope.drivers.push(el.driverName);
                     })
                 }
-                console.log($scope.drivers);
                 for (var i = 0; i < $scope.listOfClosed.length; i++) {
-                    console.log($scope.listOfClosed[i].driverName);
                     if($scope.selectedDriver == null || $scope.listOfClosed[i].driverName ==  $scope.selectedDriver) {
                         $scope.buildRoute(L.latLng($scope.listOfClosed[i].from.x, $scope.listOfClosed[i].from.y),
                             L.latLng($scope.listOfClosed[i].to.x, $scope.listOfClosed[i].to.y));
@@ -102,6 +107,7 @@ angular
             })
         };
         $scope.deleteMarkers = (o) => {
+            console.log(o);
             $scope.layerGroup.getLayers().forEach((el, i) => {
                 if(o != undefined) {
                     if (el.getLatLng().lat == o.latLng.lat && el.getLatLng().lng == o.latLng.lng)
@@ -109,9 +115,17 @@ angular
                 }
                 else {
                     $scope.layerGroup.removeLayer(el);
+
                 }
-            })
-        };
+            });
+            if(o == undefined) {
+                console.log($scope.layerGroupForCar.getLayers());
+                $scope.layerGroupForCar.getLayers().forEach((el, i) => {
+                    $scope.layerGroupForCar.removeLayer(el);
+                });
+            }
+
+            };
         $scope.check = (array, arg1,args2, toDo, j) =>{
             if (arg1 != undefined && args2 != undefined) {
                 if (array[0].latLng.lat == arg1.lat && array[0].latLng.lng == arg1.lng) {
@@ -155,8 +169,7 @@ angular
                     }).bindPopup(String("Driver name:" + el.driverName + "<br>" +
                         "Customer name:" + el.customerName + "<br>" +
                         "Description:" + el.description)
-                    ).addTo($scope.layerGroup).on('click', $scope.onButtonClick);
-                    console.log(current);
+                    ).addTo($scope.layerGroupForCar).on('click', $scope.onButtonClick);
                 }
 
         };

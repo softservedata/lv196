@@ -39,6 +39,6 @@ public class OrderTrackingServiceImpl implements OrderTrackingService{
    @Override
    public PlaceDto getCurentLocation(Long id){
        return PlaceDto.convertEntity(routeCityRepository.findCurrentLocation(id)
-               .orElseThrow(() -> new IllegalArgumentException("No such  points with order id: " + id)));
+             .orElseThrow(() -> new IllegalArgumentException("No such  points with order id: " + id)));
    }
 }

@@ -25,6 +25,8 @@ import static com.softserve.edu.delivery.config.SecurityConstraints.*;
 public class PleacesController {
     @Autowired
     private TransporterService teTransporterService;
+    @Autowired
+    private Scheduler scheduler;
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path ="/track/{id}", method = RequestMethod.GET)
@@ -35,7 +37,7 @@ public class PleacesController {
     @PreAuthorize(CUSTOMER_OR_DRIVER)
     @RequestMapping(path ="/points/{id}", method = RequestMethod.GET)
     public List<PlaceDto> getPoints(@PathVariable Long id) {
-        return teTransporterService.getAllPointsByOrderIdWitoutDate(id);
+        return teTransporterService.getAllPointsByOrderIdWithoutDate(id);
     }
 
     @PreAuthorize(CUSTOMER_OR_DRIVER)
@@ -54,9 +56,8 @@ public class PleacesController {
     @RequestMapping(path ="/closedByDates", method = RequestMethod.GET)
     public List<OrderClosedDto> getAllRoutesClosedByDates(@RequestParam(value = "fromDate") String fromDate, @RequestParam(value = "toDate") String toDate){
         Timestamp min;
-        if(fromDate.equals("null") || fromDate.equals("0")) {
+        if(fromDate.equals("null")) {
             Calendar cal = Calendar.getInstance();
-            Date today = cal.getTime();
             cal.add(Calendar.YEAR, -1);
             min = new Timestamp(cal.getTime().getTime());
         }
@@ -64,14 +65,17 @@ public class PleacesController {
             min = new Timestamp(Long.valueOf(fromDate));
         }
         Timestamp max;
-        if(toDate.equals("null") || toDate.equals("0")) {
+        if(toDate.equals("null")) {
             max = new Timestamp(new Date().getTime());
         }
         else {
             max = new Timestamp(Long.valueOf(toDate));
         }
-        System.out.println("from: "+min+" to: "+max);
-        return teTransporterService.getAllOrdersClosedByDates(min, max);
+        List<OrderClosedDto> l = teTransporterService.getAllOrdersClosedByDates(min, max);
+        for(OrderClosedDto o : l){
+            System.out.println(o.toString());
+        }
+        return l;
     }
     @PreAuthorize(DRIVER)
     @RequestMapping(path ="/setPoints", method = RequestMethod.PUT)
@@ -88,10 +92,7 @@ public class PleacesController {
     @RequestMapping(path ="/start/{id}", method = RequestMethod.GET)
     public void startRoute(@PathVariable Long id) {
         teTransporterService.changeStatus(id, OrderStatus.IN_PROGRESS);
-        List<PlaceDto> list = teTransporterService.getAllPointsByOrderIdWitoutDate(id);
-        Scheduler.setFlag(true);
-        Scheduler.setId(id);
-        Scheduler.getPoints(list);
+        scheduler.setFlag(true);
     }
 
 }

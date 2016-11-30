@@ -25,10 +25,8 @@ angular
             };
 
             $scope.getRouteById = () => {
-                console.log(orderId);
                 $http.get('/getRoute/' + orderId).then((result)=> {
                         $scope.route = result.data;
-                        console.log($scope.set);
                         $scope.buildRoute(L.latLng($scope.route.from.x, $scope.route.from.y),
                             L.latLng($scope.route.to.x, $scope.route.to.y));
                     }
@@ -45,12 +43,11 @@ angular
                         styles: [{color: 'blue'}]
                     },
                     routeLine: function(route) {
-                        var line = L.Routing.line(route, {
+                        let line = L.Routing.line(route, {
                             addWaypoints: false
                         }).eachLayer(function(l) {
                             l.on('click', function(e) {
                                 L.marker(e.latlng).addTo($scope.layerGroup);
-                                console.log(e)
                             });
                         });
                         return line;
@@ -59,15 +56,12 @@ angular
                 $scope.getPoints();
             };
             $scope.setPoints = () => {
-                var list = [];
+                let list = [];
                 list.push($scope.route.from.x +' '+$scope.route.from.y);
-                console.log($scope.waypoint);
-                console.log($scope.layerGroup.getLayers());
                 $scope.layerGroup.getLayers().forEach((p) => {
                         list.push(p.getLatLng().lat + ' ' + p.getLatLng().lng);
                 });
                 list.push($scope.route.to.x +' '+$scope.route.to.y);
-                console.log(list);
                 $http.put('/setPoints?id='+ orderId+'&points='+ list).then(()=>{
                     $uibModalInstance.dismiss('cancel');
                 })
@@ -81,7 +75,7 @@ angular
                     }
                     $scope.points.forEach((el, i) => {
                         if(i != 0 && i != $scope.points.length - 1 ) {
-                            var point = L.latLng(el.point.x, el.point.y);
+                            let point = L.latLng(el.point.x, el.point.y);
                             L.marker(point).addTo($scope.layerGroup);
                             $scope.waypoint.push(point);
                         }

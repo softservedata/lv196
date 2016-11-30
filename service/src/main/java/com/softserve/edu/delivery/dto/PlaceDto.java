@@ -44,7 +44,7 @@ public class PlaceDto {
     public static PlaceDto convertEntity(RouteCities routeCities){
         return new PlaceDto(new Point(routeCities.getX(), routeCities.getY()), routeCities.getVisitDate().toString(), routeCities.getOrder().getId());
     }
-    public static PlaceDto convertEntityWitoutDate(RouteCities routeCities){
+    public static PlaceDto convertEntityWithoutDate(RouteCities routeCities){
         return new PlaceDto(new Point(routeCities.getX(), routeCities.getY()), routeCities.getOrder().getId());
     }
 

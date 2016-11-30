@@ -182,8 +182,8 @@
                 <div ng-repeat="order in orders.approved track by $index" class="panel panel-default order-in-progress">
                     <div class="panel-body">
                         <div class="order-actions">
-                            <button type="button" class="btn btn-default" ng-click="showMap(order.id)" data-target=".bd-example-modal-lg">Set points</button>
-                            <button type="button" class="btn btn-default" ng-show="notStarted" ng-click="startRoute(order.id)" data-target=".bd-example-modal-lg">Start</button>
+                            <button type="button" class="btn btn-default" ng-click="showMap(order.id)" data-target=".bd-example-modal-lg">{{ 'set_points' | translate }}</button>
+                            <button type="button" class="btn btn-default" ng-show="notStarted" ng-click="startRoute(order.id)" data-target=".bd-example-modal-lg">{{ 'start' | translate }}</button>
                             <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
                         </div>
                         <div class="order-city" ng-click="status.open = !status.open">
