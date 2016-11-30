@@ -88,7 +88,7 @@
   "dimensions": "Розміри",
   "chat": "чат",
   "track": "відслідкувати",
-  "tracking orders": "Відстежити замовлення",
+  "trackingorders": "Відстежити замовлення",
   "delete_feedback_warn": "Ви впевнені, що хочете видалити цей відгук?",
   "add_feedback": "додати відгук",
   "statistics": "Статистика",
@@ -144,7 +144,6 @@
   "confirm_password": "Підтвердіть пароль",
   "approve_delivery_message": "Ви впевненені, що хочете підтвердити доставку вантажу?",
   "error": "Помилка!",
-  "tracking": "Відслідковувати",
   "active_cars": "Активні авто",
   "inactive_cars": "Неактивні авто",
   "deactivate_car": "Вилучити",
@@ -205,7 +204,6 @@
   "from_date": "Початкова дата",
   "set_points": "Встановити пункти",
   "start": "Розпочати доставку",
-  "remove_markers" : " Видалити маркери"
-  "save_role": "Успіх : Успішно змінено роль користувача",
+  "remove_markers" : " Видалити маркери",
   "orders_tracking": "Трекінг"
 }

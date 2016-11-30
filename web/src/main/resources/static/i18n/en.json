@@ -88,8 +88,7 @@
   "dimensions": "Dimensions",
   "chat": "chat",
   "track": "track",
-  "tracking orders": "Track my order",
-  "tracking": "Tracking",
+  "trackingorders": "Track my order",
   "add_feedback": "add feedback",
   "delete_feedback_warn": "Are you sure you want to delete the feedback?",
   "statistics": "Statistics",
@@ -206,6 +205,5 @@
   "set_points": "Set points",
   "start": "Start",
   "remove_markers" : " Remove markers",
-  "save_role": "Success : Successful change User role",
   "orders_tracking": "Tracking"
 }
