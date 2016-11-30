@@ -14,7 +14,7 @@
 </div>
 <div class="site-content conversations">
     <div class="panel panel-default">
-        <div ng-repeat="chat in chats | orderBy:'message.timestamp':true track by $index" class="dialog">
+        <div ng-repeat="chat in chats | orderBy:'message.timestamp':true track by $index" class="dialog" ng-class="{'unseen': !chat.message.seen}">
             <div class="panel-body" ng-click="showChat(chat.message.chatId)">
                 <div class="chat-details chat">
                     <p class="text">{{chat.message.timestamp | date:'h:mm a, MMM d'}}</p>

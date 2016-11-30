@@ -94,7 +94,7 @@ angular
                 if (msg.text != null) {
                     if (subscriptions.length == 0) {
                         $chat.create(chatId).then(() => {
-                            connect(() => sendMessageToStomp(message));
+                            connect(() => sendMessageToStomp(msg));
                         });
                     } else {
                         sendMessageToStomp(msg);
@@ -118,7 +118,6 @@ angular
                         .filter(m => !m.seen && m.authorEmail != userEmail)
                         .map(m => m.id);
                     $chat.readMessage(chatId, msgs);
-                    $scope.$apply();
                 }
 
                 const scrollInx = $scope.page == 1 ? $scope.messages.length - 1 : 0;
@@ -149,7 +148,7 @@ angular
                 }
             }
 
-            function connect(callabck) {
+            function connect(callback) {
                 $chat.subscribe(
                     chatId,
                     response => {
@@ -160,7 +159,7 @@ angular
                     }
                 ).then(subs => {
                     subscriptions = subs;
-                    callabck();
+                    callback();
                 });
             }
 

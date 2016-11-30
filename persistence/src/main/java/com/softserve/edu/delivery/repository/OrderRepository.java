@@ -8,10 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.TemporalType;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +30,7 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
             "ord, count(off.order.id)) from Order ord left join ord.offers off " +
             "left join off.car c left join c.driver d " +
             "where (d.blocked = 0 or d.blocked is null) and ord.orderStatus = 'OPEN' " +
-            "and ord.customer.email = :email group by ord.id")
+            "and ord.customer.email = :email group by ord.id ")
     List<OrderDto> findOrderOpenByCustomerEmail(@Param("email") String email);
 
     @Query("select o from Order o where o.orderStatus = 'OPEN'")
