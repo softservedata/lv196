@@ -34,7 +34,7 @@
     <security:authorize access="isAnonymous()">
         <li><a href="login"><spring:message code="sigin"/></a></li>
     </security:authorize>
-    <li><a href="#"><spring:message code="about"/></a></li>
+    <li><a href="about"><spring:message code="about"/></a></li>
     <li><a href="welcome"><spring:message code="home"/></a></li>
 </ul>
 

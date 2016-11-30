@@ -50,7 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(STATIC_RESOURCES).permitAll()
-                .antMatchers(WELCOME_PAGE, AUTH_REDIRECT_URL, REGISTRATION_EMAIL_VERIFIED_URL).permitAll()
+                .antMatchers(WELCOME_PAGE, AUTH_REDIRECT_URL,
+                        REGISTRATION_EMAIL_VERIFIED_URL, ABOUT_US).permitAll()
                 .antMatchers(ERROR_URLs).permitAll()
                 .antMatchers(SOCIAL_URLs).permitAll()
                 .antMatchers(LOGIN_PAGE, REGISTRATION_PAGE).anonymous()

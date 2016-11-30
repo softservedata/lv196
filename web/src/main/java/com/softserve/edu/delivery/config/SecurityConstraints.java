@@ -21,6 +21,7 @@ public class SecurityConstraints {
 
     public static final String WELCOME_PAGE = "/welcome";
     public static final String LOGIN_PAGE = "/login";
+    public static final String ABOUT_US = "/about";
     public static final String REGISTRATION_PAGE = "/registration";
     public static final String REGISTRATION_EMAIL_VERIFIED_URL = "/register";
     public static final String LOGIN_PROCESS_URL = "/loginProcess";

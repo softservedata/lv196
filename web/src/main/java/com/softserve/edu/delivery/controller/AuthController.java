@@ -55,6 +55,12 @@ public class AuthController {
         return mv;
     }
 
+    @GetMapping(value = "/about")
+    public ModelAndView about() {
+        logger.info("Return about us page");
+        return new ModelAndView("about");
+    }
+
     @GetMapping(value = "/authRedirect")
     public ModelAndView authRedirect() {
         logger.info("Return redirecting page");
