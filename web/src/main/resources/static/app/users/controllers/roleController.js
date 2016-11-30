@@ -1,6 +1,7 @@
 angular
     .module('delivery')
-    .controller('roleController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
+    .controller('roleController', ['$scope', '$http', 'shareUserService', '$rootScope',
+        function ($scope, $http, shareUserService, $rootScope) {
 
         $scope.role = '';
 
@@ -24,6 +25,11 @@ angular
             }
             return false;
         };
+
+        $scope.$on('user data changed for main view', function () {
+            $scope.role = shareUserService.getLoggedUser().role;
+        });
+
 
         $scope.showMsgNotify = false;
         $rootScope.refreshMessageNotifications = () => {

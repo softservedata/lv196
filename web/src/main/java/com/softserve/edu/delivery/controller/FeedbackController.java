@@ -45,46 +45,23 @@ public class FeedbackController {
 
     @PreAuthorize(MODERATOR_OR_MANAGER)
     @RequestMapping(path = {"updateFeedback"}, method = RequestMethod.PUT)
-    ResponseEntity updateFeedback(@RequestBody FeedbackDto feedbackDTO) {
+    void updateFeedback(@RequestBody FeedbackDto feedbackDTO) {
         logger.info("Before feedbackService.update(feedbackDTO)");
-        HttpHeaders responseHeaders = new HttpHeaders();
-        HttpStatus status = HttpStatus.OK;
-        responseHeaders.set("message", "OK");
 
         try {
             feedbackService.update(feedbackDTO);
+            notificationService.updateFeedback(feedbackDTO);
         } catch (NoSuchElementException e) {
             logger.error("Exception while trying to update feedback with id " + feedbackDTO.getFeedbackId() +
                     " in feedbackService.update(feedbackDTO) " + e.getMessage());
-            status = HttpStatus.NOT_FOUND;
-            responseHeaders.set("message", e.getMessage());
         }
-
-        notificationService.updateFeedback(feedbackDTO);
-
-        logger.info("After feedbackService.update(feedbackDTO)");
-
-        return new ResponseEntity(responseHeaders, status);
     }
 
     @PreAuthorize(MODERATOR_OR_MANAGER)
     @RequestMapping(path = {"deleteFeedback/{feedbackId}"}, method = RequestMethod.DELETE)
-    ResponseEntity deleteFeedback(@PathVariable Long feedbackId) {
+    void deleteFeedback(@PathVariable Long feedbackId) {
         logger.info("Before feedbackService.delete(feedbackId)");
-        HttpHeaders responseHeaders = new HttpHeaders();
-        HttpStatus status = HttpStatus.OK;
-        responseHeaders.set("message", "OK");
-
-        try {
-            feedbackService.delete(feedbackId);
-        } catch (NoSuchElementException e) {
-            logger.error("Exception while trying to delete feedback with id " + feedbackId +
-                    " in feedbackService.delete(feedbackDTO) " + e.getMessage());
-            status = HttpStatus.NOT_FOUND;
-            responseHeaders.set("message", e.getMessage());
-        }
-        logger.info("After feedbackService.delete(feedbackDTO)");
-
-        return new ResponseEntity(responseHeaders, status);
+        feedbackService.delete(feedbackId);
     }
+
 }

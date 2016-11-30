@@ -27,7 +27,6 @@ import static com.softserve.edu.delivery.config.SecurityConstraints.AUTHENTICATE
 @RequestMapping(path = "userProfile")
 public class UserProfileController {
 
-
     private final Logger logger = LoggerFactory.getLogger(UserProfileController.class.getName());
 
     @Autowired
@@ -36,41 +35,6 @@ public class UserProfileController {
     private CarService carService;
     @Autowired
     private UserAuthenticationDetails authenticationDetails;
-
-
-
-    private User userDTOToUser(UserProfileDto userProfileDto) {
-        User user = userService.findOne(userProfileDto.getEmail());
-        user.setFirstName(userProfileDto.getFirstName());
-        user.setLastName(userProfileDto.getLastName());
-        user.setPhone(userProfileDto.getPhone());
-        user.setApproved(userProfileDto.getApproved());
-        user.setBlocked(userProfileDto.getBlocked());
-        user.setPhotoUrl(userProfileDto.getPhotoUrl());
-        user.setRate(userProfileDto.getRate());
-        user.setUserRole(userProfileDto.getUserRole());
-
-        return user;
-    }
-
-    private Car carDTOToCar(CarDTO carDTO) {
-        Car car = new Car();
-        car.setCarId(carDTO.getId());
-        car.setVehicleName(carDTO.getVehicleName());
-        car.setVehicleNumber(carDTO.getVehicleNumber());
-        car.setVehicleVIN(carDTO.getVehicleVIN());
-        car.setVehicleFrontPhotoURL(carDTO.getVehicleFrontPhotoURL());
-        car.setVehicleBackPhotoURL(carDTO.getVehicleBackPhotoURL());
-        car.setVehicleFrontPhotoURL(carDTO.getVehicleFrontPhotoURL());
-        car.setVehicleWeight(carDTO.getVehicleWeight());
-        car.setVehicleLength(carDTO.getVehicleLength());
-        car.setVehicleWidth(carDTO.getVehicleWidth());
-        car.setVehicleHeight(carDTO.getVehicleHeight());
-        car.setDriver(userService.findOne(carDTO.getDriverEmail()));
-        car.setActive(carDTO.getActive());
-
-        return car;
-    }
 
     private boolean isNewPasswordValid(CharSequence newPassword, CharSequence confirmPassword) {
         if (newPassword.length() >= PatternConstraints.PASS_MIN_LENGTH && newPassword.length() <=
@@ -107,8 +71,6 @@ public class UserProfileController {
         HttpStatus status = HttpStatus.OK;
         String errorDetails;
 
-        responseHeaders.set("message", "OK");
-
         UserProfileDto user = userService.getUser(authenticationDetails.getAuthenticatedUserEmail());
 
         if (user == null) {
@@ -121,15 +83,15 @@ public class UserProfileController {
         return new ResponseEntity(user, responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = {"updateUser"}, method = RequestMethod.PUT)
     ResponseEntity updateUser(@RequestBody UserProfileDto userProfileDto) {
         logger.info("Before UserProfileController.update(userProfileDto)");
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
-        responseHeaders.set("message", "OK");
 
         try {
-            userService.save(userDTOToUser(userProfileDto));
+            userService.save(userProfileDto);
         } catch (Exception e) {
             String errorDetails = "Exception while trying to update user with id " + userProfileDto.getEmail() +
                     " in UserProfileController.update(userProfileDto) ";
@@ -145,8 +107,6 @@ public class UserProfileController {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
-
-        responseHeaders.set("message", "OK");
 
         List<CarDTO> cars;
 
@@ -168,11 +128,10 @@ public class UserProfileController {
         logger.info("Before UserProfileController.addNewCar(CarDTO carDTO)");
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
-        responseHeaders.set("message", "OK");
 
         CarDTO carDTOsaved;
         try {
-            carDTOsaved = carService.save(carDTOToCar(carDTO));
+            carDTOsaved = carService.save(carDTO);
         } catch (Exception e) {
             String errorDetails = "Exception while trying to add car for user with id " + carDTO.getDriverEmail() +
                     " in UserProfileController.addNewCar(CarDTO carDTO) ";
@@ -190,10 +149,8 @@ public class UserProfileController {
         logger.info("Before UserProfileController.updateCar(CarDTO carDTO)");
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
-
-        responseHeaders.set("message", "OK");
         try {
-            carService.save(carDTOToCar(carDTO));
+            carService.save(carDTO);
         } catch (Exception e) {
             String errorDetails = "Exception while trying to update car for user with id " + carDTO.getDriverEmail() +
                     " in UserProfileController.updateCar(CarDTO carDTO) ";
@@ -209,7 +166,6 @@ public class UserProfileController {
         logger.info("Before UserProfileController.deleteCar(long carId)");
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
-        responseHeaders.set("message", "OK");
         try {
             carService.delete(carId);
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
@@ -225,6 +181,7 @@ public class UserProfileController {
         return new ResponseEntity(responseHeaders, status);
     }
 
+    @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "updateUserPassword", method = RequestMethod.POST)
     ResponseEntity<String> changePassword(@RequestParam("currentPassword") CharSequence currentPassword,
                                           @RequestParam("newPassword") CharSequence newPassword,
@@ -241,7 +198,6 @@ public class UserProfileController {
                 if (isNewPasswordValid(newPassword, confirmPassword)) {
                     userService.changePassword(currentUserEmail, newPassword);
                     status = HttpStatus.OK;
-                    responseHeaders.set("message", "OK");
                 } else {
                     responseHeaders.set("message", "Error");
                     return ResponseEntity
@@ -275,7 +231,6 @@ public class UserProfileController {
         logger.info("Before UserProfileController.getPasswordParams()");
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
-        responseHeaders.set("message", "OK");
 
         Map<String, Integer> passwordParams = new HashMap<>();
         passwordParams.put("minPswdLength", PatternConstraints.PASS_MIN_LENGTH);

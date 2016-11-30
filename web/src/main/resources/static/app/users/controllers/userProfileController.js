@@ -99,12 +99,24 @@ angular
             var checkCarsStatus = function () {
                 $scope.activeCarsPresent = false;
                 $scope.inactiveCarsPresent = false;
-                for (let i = 0; i < $scope.cars.length; i++){
-                    if ($scope.cars[i].active){
+                for (let i = 0; i < $scope.cars.length; i++) {
+                    if ($scope.cars[i].active) {
                         $scope.activeCarsPresent = true;
                     } else {
                         $scope.inactiveCarsPresent = true;
                     }
+                }
+            };
+
+            var checkLoggedUserRole = function () {
+                if ($scope.loggedUser.role.toLowerCase() == 'customer' && $scope.cars.length > 0) {
+                    $scope.loggedUser.role = 'Driver';
+                    $scope.loggedUser.userRole = 'DRIVER';
+                    $scope.updateUser();
+                } else if ($scope.loggedUser.role.toLowerCase() == 'driver' && $scope.cars.length == 0) {
+                    $scope.loggedUser.role = 'Customer';
+                    $scope.loggedUser.userRole = 'CUSTOMER';
+                    $scope.updateUser();
                 }
             };
 
@@ -142,6 +154,7 @@ angular
                 $http.get("/userProfile/loggedUser/cars?email=" + $scope.loggedUser.email)
                     .then(function (response) {
                         $scope.cars = response.data;
+                        checkLoggedUserRole();
                         checkCarsStatus();
                         $scope.initialCars = angular.copy($scope.cars);
                         $scope.isCollapsed.length = 0;
@@ -170,6 +183,7 @@ angular
                 $http.put("/userProfile/updateUser", $scope.loggedUser)
                     .then(function (response) {
                             Notification.success($filter('translate')('user_update_success'));
+                            checkCarsStatus();
                             $scope.initialUser = angular.copy($scope.loggedUser);
                             shareUserService.setLoggedUser($scope.loggedUser);
                             shareUserService.userDataChangedForMainView();
@@ -209,6 +223,7 @@ angular
                 $http.put("/userProfile/addNewCar", $scope.car)
                     .then(function (response) {
                             $scope.car = response.data;
+                            checkLoggedUserRole();
                             checkCarsStatus();
                             shareCarService.setSelectedCar($scope.car);
                         },
@@ -342,6 +357,8 @@ angular
                                 }
                                 $scope.initialCars = angular.copy($scope.cars);
                                 $scope.isCollapsed[0] = false;
+                                checkCarsStatus();
+                                checkLoggedUserRole();
 
                                 if (showNotification) {
                                     Notification.success($filter('translate')('car_delete_success'));
@@ -354,11 +371,11 @@ angular
                                 } else {
                                     msg = 'cant_del_deactivate_car_warn';
                                 }
-                                    for (var i = 0; i < $scope.cars.length; i++) {
-                                        if ($scope.cars[i].id == deleteCarId) {
-                                            $scope.deactivateCar($scope.cars[i], true, msg);
-                                        }
+                                for (var i = 0; i < $scope.cars.length; i++) {
+                                    if ($scope.cars[i].id == deleteCarId) {
+                                        $scope.deactivateCar($scope.cars[i], true, msg);
                                     }
+                                }
                             });
                 }
             };

@@ -1,5 +1,6 @@
 package com.softserve.edu.delivery.service.impl;
 
+import com.softserve.edu.delivery.domain.Role;
 import com.softserve.edu.delivery.service.UserAuthenticationDetails;
 import com.softserve.edu.delivery.service.social.auth.SocialAuthentication;
 import org.springframework.security.core.Authentication;

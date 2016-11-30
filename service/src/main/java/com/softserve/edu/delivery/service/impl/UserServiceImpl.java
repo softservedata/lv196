@@ -46,6 +46,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    private User userDTOToUser(UserProfileDto userProfileDto) {
+        User user = findOne(userProfileDto.getEmail());
+        user.setFirstName(userProfileDto.getFirstName());
+        user.setLastName(userProfileDto.getLastName());
+        user.setPhone(userProfileDto.getPhone());
+        user.setApproved(userProfileDto.getApproved());
+        user.setBlocked(userProfileDto.getBlocked());
+        user.setPhotoUrl(userProfileDto.getPhotoUrl());
+        user.setRate(userProfileDto.getRate());
+        user.setUserRole(userProfileDto.getUserRole());
+
+        return user;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -190,6 +204,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public void save(UserProfileDto userProfileDto) {
+        userRepository.save(userDTOToUser(userProfileDto));
     }
 
     @Override

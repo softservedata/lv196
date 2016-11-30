@@ -28,13 +28,11 @@ angular
                 opened: false
             };
 
-            $scope.rate;
+            $scope.rate = null;
             $scope.text = '';
             $scope.createdOn = '';
 
-            const rateFactor = 10;
             const columnNumber = 7;
-            const rateStep = 0.5;
             var columnPos = 5;
             var toggleFilterApprovedPos = 0;
 
@@ -56,12 +54,6 @@ angular
             var resetSortIcons = function () {
                 for (var i = 0; i < columnNumber; i++) {
                     $scope.feedbackSortIcons[i] = ("fa fa-sort");
-                }
-            };
-
-            var recalcRate = function () {
-                for (var i = 0; i < $scope.feedback.length; i++) {
-                    $scope.feedback[i].rate = $scope.feedback[i].rate / rateFactor;
                 }
             };
 
@@ -115,7 +107,7 @@ angular
             };
 
             var prepareFeedbackFilterDTO = function () {
-                $scope.feedbackFilterDTO.rate = ($scope.rate - rateStep) * rateFactor;
+                $scope.feedbackFilterDTO.rate = $scope.rate;
                 $scope.feedbackFilterDTO.createdOn = Date.parse($scope.createdOn);
                 $scope.feedbackFilterDTO.sortBy = sortBy(columnPos);
                 $scope.feedbackFilterDTO.sortDesc = $scope.sortFeedbacksOrderDesc[columnPos];
@@ -155,7 +147,6 @@ angular
                                     $scope.totalItems = response1.data;
                                 });
                             $scope.feedback = response0.data;
-                            recalcRate();
                         },
                         function (response) {
                             Notification.error({
@@ -176,6 +167,7 @@ angular
                                 title: $filter('translate')("error")
                             });
                         });
+                console.log(feedbackDTO);
             };
 
             $scope.toggleApproved = function (approved) {
@@ -257,7 +249,6 @@ angular
                 $scope.feedbackFilterDTO.approved = null;
                 toggleFilterApprovedPos = 2;
                 $scope.changeFilterApprovedClass();
-                $scope.filterFeedbacks();
             };
 
             $scope.getUser = function (email) {

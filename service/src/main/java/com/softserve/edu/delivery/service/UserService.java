@@ -40,6 +40,8 @@ public interface UserService extends UserDetailsService {
     User findOne(String email);
 
     void save(User user);
+
+    void save(UserProfileDto userProfileDto);
     
     List<Long> countUsersByRole();
     

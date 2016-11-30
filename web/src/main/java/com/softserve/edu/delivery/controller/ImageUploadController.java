@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +16,20 @@ import java.io.IOException;
 @RequestMapping(path = "upload")
 public class ImageUploadController {
 
+    @Value("${cloudinary_cloud_name}")
+    String cloudName;
+
+    @Value("${cloudinary_api_key}")
+    String apiKey;
+
+    @Value("${cloudinary_api_secret}")
+    String apiSecret;
+
     private final Logger logger = LoggerFactory.getLogger(ImageUploadController.class.getName());
     private final HttpHeaders responseHeaders = new HttpHeaders();
-    private final Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-            "cloud_name", "lv196java",
-            "api_key", "111615263263157",
-            "api_secret", "-HA9u2XJmgIOQTyf0VYNhBgA-fE"));
 
     private HttpStatus status = HttpStatus.OK;
     private String errorDetails;
-
 
     private ResponseEntity handleException(String errorDetails, String message) {
         logger.error(errorDetails + message);
@@ -36,6 +41,11 @@ public class ImageUploadController {
     @RequestMapping(path = "deleteCloudPhoto/{path}/{publicId}", method = RequestMethod.DELETE)
     ResponseEntity deleteCloudPhoto(@PathVariable String path,
                                     @PathVariable String publicId) {
+
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret));
 
         try {
             cloudinary.uploader().destroy(path + "/" + publicId, ObjectUtils.emptyMap());

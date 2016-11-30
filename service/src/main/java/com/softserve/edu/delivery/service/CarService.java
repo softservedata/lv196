@@ -15,6 +15,8 @@ public interface CarService {
 
     CarDTO save(Car car);
 
+    CarDTO save(CarDTO carDTO);
+
     void delete(Long id);
 
     List<CarDTO> getCarsByDriver(String email);
