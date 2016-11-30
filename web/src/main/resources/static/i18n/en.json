@@ -196,6 +196,8 @@
   "oct": "October",
   "nov": "November",
   "dec": "December",
+  "without_rate": "without rate",
+  "tracking": "Tracking",
   "save_role": "Success : Successful change User role",
   "orders-tracking": "Tracking"
 }
