@@ -126,4 +126,9 @@ public class AuthController {
         Role currentRole = this.authenticationDetails.getAuthenticatedUserRole();
         return "redirect:" + currentRole.getPageUrl();
     }
+    @PostMapping(value = "/tracking")
+    public ModelAndView trackOrder(@ModelAttribute("orderIdDto")OrderIdDto orderIdDto) {
+        logger.debug("tracking message");
+        return new ModelAndView("redirect:/#/orders-tracking?id=" + orderIdDto.getOrderId());
+    }
 }

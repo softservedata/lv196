@@ -20,7 +20,6 @@ public class OrderTrackingController {
     @Autowired
     private OrderTrackingService orderTrackingService;
 
-    @PreAuthorize(CUSTOMER)
     @RequestMapping(path = "{orderId}", method = RequestMethod.GET)
     public OrderTrackingDTO getOrderTracking(@PathVariable("orderId") Long orderId) {
         

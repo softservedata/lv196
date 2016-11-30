@@ -1,8 +1,11 @@
 angular
     .module('delivery')
-    .controller('ordersTrackingController', ['$scope', '$http',
-        function ($scope, $http) {
+    .controller('ordersTrackingController', ['$scope', '$http', '$routeParams',
+        function ($scope, $http, $routeParams) {
             $scope.markers = [];
+
+            var id = $routeParams.id;
+            console.log(id);
 
             var LeafIcon = L.Icon.extend({
                 options: {
@@ -50,7 +53,7 @@ angular
                                 return L.marker(wp.latLng, {
                                     draggable: false,
                                     icon: icon,
-                                }).bindPopup(response.data.routeCityDTOs[i].date);
+                                }).bindPopup(response.data.routeCityDTOs[i].date);//time
                             },
                         }),
                         lineOptions: {
