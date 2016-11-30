@@ -68,7 +68,7 @@
                     <i class="fa fa-truck" aria-hidden="true"></i>
                     {{ 'orders' | translate }}
                 </a>
-                <a ng-show="forRoles(['Customer'])" ui-sref="orders-tracking" ui-sref-active="active-list-item"
+                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="orders-tracking" ui-sref-active="active-list-item"
                    class="sidebar-menu-item">
                     <i class="fa fa-map" aria-hidden="true"></i>
                     {{ 'orders-tracking' | translate }}

@@ -50,24 +50,19 @@ public class UserProfileController {
     }
 
     private ResponseEntity handleException(String errorDetails, String message) {
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.BAD_REQUEST;
         logger.error(errorDetails + message);
-        responseHeaders.set("message", message);
-        return new ResponseEntity(responseHeaders, status);
+        return new ResponseEntity(status);
     }
 
     private ResponseEntity handleException(String errorDetails, String message, HttpStatus status) {
-        HttpHeaders responseHeaders = new HttpHeaders();
         logger.error(errorDetails + message);
-        responseHeaders.set("message", message);
-        return new ResponseEntity(responseHeaders, status);
+        return new ResponseEntity(status);
     }
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "loggedUser", method = RequestMethod.GET)
     ResponseEntity<UserProfileDto> getLoggedUser() {
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
         String errorDetails;
 
@@ -80,14 +75,13 @@ public class UserProfileController {
         }
 
         //noinspection unchecked
-        return new ResponseEntity(user, responseHeaders, status);
+        return new ResponseEntity(user, status);
     }
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = {"updateUser"}, method = RequestMethod.PUT)
     ResponseEntity updateUser(@RequestBody UserProfileDto userProfileDto) {
         logger.info("Before UserProfileController.update(userProfileDto)");
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
 
         try {
@@ -98,14 +92,13 @@ public class UserProfileController {
             return handleException(errorDetails, e.getMessage());
         }
         logger.info("After UserProfileController.update(userProfileDto)");
-        return new ResponseEntity(responseHeaders, status);
+        return new ResponseEntity(status);
     }
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "loggedUser/cars", method = RequestMethod.GET)
     ResponseEntity<CarDTO> getLoggedUserCars(@RequestParam("email") String email) {
 
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
 
         List<CarDTO> cars;
@@ -119,14 +112,13 @@ public class UserProfileController {
         }
 
         //noinspection unchecked
-        return new ResponseEntity(cars, responseHeaders, status);
+        return new ResponseEntity(cars, status);
     }
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "addNewCar", method = RequestMethod.PUT)
     ResponseEntity<CarDTO> addNewCar(@RequestBody CarDTO carDTO) {
         logger.info("Before UserProfileController.addNewCar(CarDTO carDTO)");
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
 
         CarDTO carDTOsaved;
@@ -140,14 +132,13 @@ public class UserProfileController {
         }
         logger.info("After UserProfileController.addNewCar(CarDTO carDTO)");
         //noinspection unchecked
-        return new ResponseEntity(carDTOsaved, responseHeaders, status);
+        return new ResponseEntity(carDTOsaved, status);
     }
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "updateCar", method = RequestMethod.PUT)
     ResponseEntity updateCar(@RequestBody CarDTO carDTO) {
         logger.info("Before UserProfileController.updateCar(CarDTO carDTO)");
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
         try {
             carService.save(carDTO);
@@ -157,14 +148,13 @@ public class UserProfileController {
             return handleException(errorDetails, e.getMessage());
         }
         logger.info("After UserProfileController.updateCar(CarDTO carDTO)");
-        return new ResponseEntity(responseHeaders, status);
+        return new ResponseEntity(status);
     }
 
     @PreAuthorize(AUTHENTICATED)
     @RequestMapping(path = "deleteCar/{carId}", method = RequestMethod.DELETE)
     ResponseEntity deleteCar(@PathVariable long carId) {
         logger.info("Before UserProfileController.deleteCar(long carId)");
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
         try {
             carService.delete(carId);
@@ -178,7 +168,7 @@ public class UserProfileController {
             return handleException(errorDetails, e.getMessage());
         }
         logger.info("After UserProfileController.deleteCar(long carId)");
-        return new ResponseEntity(responseHeaders, status);
+        return new ResponseEntity(status);
     }
 
     @PreAuthorize(AUTHENTICATED)
@@ -190,7 +180,6 @@ public class UserProfileController {
         String currentUserEmail = authenticationDetails.getAuthenticatedUserEmail();
 
         logger.info("Before UserProfileController.changePassword()");
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         try {
@@ -199,17 +188,13 @@ public class UserProfileController {
                     userService.changePassword(currentUserEmail, newPassword);
                     status = HttpStatus.OK;
                 } else {
-                    responseHeaders.set("message", "Error");
                     return ResponseEntity
                             .status(status)
-                            .headers(responseHeaders)
                             .body("{\"message\": \"passwords_dont_match\"}");
                 }
             } else {
-                responseHeaders.set("message", "Error");
                 return ResponseEntity
                         .status(status)
-                        .headers(responseHeaders)
                         .body("{\"message\": \"wrong_password\",\"title\": \"passwords_dont_match\"}");
             }
         } catch (Exception e) {
@@ -221,7 +206,6 @@ public class UserProfileController {
         logger.info("After UserProfileController.changePassword()");
         return ResponseEntity
                 .status(status)
-                .headers(responseHeaders)
                 .body("{\"message\": \"password_change_success\"}");
     }
 
@@ -229,7 +213,6 @@ public class UserProfileController {
     @RequestMapping(path = "passwordparams", method = RequestMethod.GET)
     ResponseEntity<Map<String, Integer>> getPasswordParams() {
         logger.info("Before UserProfileController.getPasswordParams()");
-        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
 
         Map<String, Integer> passwordParams = new HashMap<>();
@@ -240,7 +223,6 @@ public class UserProfileController {
 
         return ResponseEntity
                 .status(status)
-                .headers(responseHeaders)
                 .body(passwordParams);
     }
 }
