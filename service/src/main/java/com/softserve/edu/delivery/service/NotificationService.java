@@ -22,7 +22,8 @@ public interface NotificationService {
     void changeUserStatus(String email, Boolean status);
     void addOffer(Long orderId, String email);
     void setLanguage(String mylocale);
-    void approveDelivery(Long orderId);
+    void driverFinishRoute(Long orderId);
+    void customerApproveDelivery(Long orderId);
     void changeUserRole(UserProfileDto user);
 
 }

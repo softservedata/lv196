@@ -122,5 +122,6 @@ public class OrderController {
     @RequestMapping(path = "approve-delivery", method = RequestMethod.PUT)
     void approveDelivery(@RequestBody Long orderId) {
         orderService.approveDelivery(orderId);
+        notification.customerApproveDelivery(orderId);
     }
 }

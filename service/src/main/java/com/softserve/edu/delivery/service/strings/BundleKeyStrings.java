@@ -14,4 +14,5 @@ public interface BundleKeyStrings {
     String APPROVE_DELIVERY = "approve_delivery";
     String NOTIFICATION_FROM_DELIVERY = "notification_from_delivery";
     String YOUR_ROLE_CHANGED = "your_role_changed";
+    String FINISH_ROUTE = "finish_route";
 }

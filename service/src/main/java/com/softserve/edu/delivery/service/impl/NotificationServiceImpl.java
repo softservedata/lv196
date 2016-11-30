@@ -197,19 +197,37 @@ public class NotificationServiceImpl implements NotificationService, BundleKeySt
     }
 
     @Override
-    public void approveDelivery(Long orderId){
+    public void driverFinishRoute(Long orderId){
         executor.submit(() -> {
             Order order = orderRepository.findOneOpt(orderId)
                     .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + orderId));
             Offer offer = offerRepository.getOfferByOrderIdAndStatus(orderId);
-            User user = offer.getCar().getDriver();
+            User driver = offer.getCar().getDriver();
             addNotification(NotificationStatus.INFO, new StringBuilder()
                     .append(res.getString(DRIVER))
-                    .append(user.getFirstName())
+                    .append(driver.getFirstName())
                     .append(" ")
-                    .append(user.getLastName())
-                    .append(res.getString(APPROVE_DELIVERY))
+                    .append(driver.getLastName())
+                    .append(res.getString(FINISH_ROUTE))
                     .toString(), order.getCustomer().getEmail());
+        });
+    }
+
+    @Override
+    public void customerApproveDelivery(Long orderId){
+        executor.submit(() -> {
+            Order order = orderRepository.findOneOpt(orderId)
+                    .orElseThrow(() -> new IllegalArgumentException("No such order with id: " + orderId));
+            Offer offer = offerRepository.getOfferByOrderIdAndStatus(orderId);
+            User driver = offer.getCar().getDriver();
+            User customer = order.getCustomer();
+            addNotification(NotificationStatus.SUCCESS, new StringBuilder()
+                    .append(res.getString(CUSTOMER))
+                    .append(customer.getFirstName())
+                    .append(" ")
+                    .append(customer.getLastName())
+                    .append(res.getString(APPROVE_DELIVERY))
+                    .toString(), driver.getEmail());
         });
     }
 

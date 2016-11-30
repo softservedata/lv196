@@ -9,7 +9,7 @@
 
             var pagesShown = 1;
 
-            var pageSize = 8;
+            var pageSize = 6;
 
             $scope.retrieveClosedOrders = () => {
                 $http.get('/order/closed').then(response => {
