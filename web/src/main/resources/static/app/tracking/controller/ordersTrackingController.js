@@ -1,11 +1,8 @@
 angular
     .module('delivery')
-    .controller('ordersTrackingController', ['$scope', '$http', '$routeParams',
-        function ($scope, $http, $routeParams) {
+    .controller('ordersTrackingController', ['$scope', '$http', '$location',
+        function ($scope, $http, $location) {
             $scope.markers = [];
-
-            var id = $routeParams.id;
-            console.log(id);
 
             var LeafIcon = L.Icon.extend({
                 options: {
@@ -69,6 +66,10 @@ angular
                 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo($scope.map);
+                var id = $location.search().id;
+                if(id) {
+                    $scope.trackOrder(id);
+                }
 
             }
 

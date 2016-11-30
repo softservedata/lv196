@@ -5,8 +5,7 @@
     <input type = "text" ng-model = "orderId" placeholder="{{'orders-tracking' | translate}}" ng-change="trackOrder(orderId)"/>
     <p><b>Customer name: {{ordersTracking.orderDto.customerName}}</b></p>
     <p><b>From: {{ordersTracking.orderDto.locationFrom.city}}</b></p>
-    <p><b>To: {{ordersTracki
-        ng.orderDto.locationTo.city}}</b></p>
+    <p><b>To: {{ordersTracking.orderDto.locationTo.city}}</b></p>
     <p><b>Description: {{ordersTracking.orderDto.description}},</b><br/></p>
     <p><b>h/w/l: {{ordersTracking.orderDto.height | number:1}},
                {{ordersTracking.orderDto.width | number:1}},
