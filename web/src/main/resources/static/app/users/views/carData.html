@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-sm-3 form-group">
+        <label for="vehicleName">{{ 'vehicle_name' | translate }}:</label>
+        <input type="text" class="form-control" id="vehicleName" ng-model="car.vehicleName"/>
+    </div>
+    <div class="col-sm-3 form-group">
+        <label for="vehicleNumber">{{ 'vehicle_number' | translate }}:</label>
+        <input type="text" class="form-control" id="vehicleNumber" ng-model="car.vehicleNumber"/>
+    </div>
+    <div class="col-sm-3 form-group">
+        <label for="vehicleVIN">{{ 'vehicle_VIN' | translate }}:</label>
+        <input type="text" class="form-control" id="vehicleVIN" ng-model="car.vehicleVIN"/>
+    </div>
+    <div class="col-sm-3 form-group">
+        <label for="vehicleWeight">{{ 'vehicle_weight' | translate }}:</label>
+        <input type="number" min="0" class="form-control" id="vehicleWeight" ng-model="car.vehicleWeight"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <label for="vehicleLength">{{ 'vehicle_length' | translate }}:</label>
+        <input type="number" min="0" class="form-control" id="vehicleLength" ng-model="car.vehicleLength"/>
+    </div>
+    <div class="col-sm-4 form-group">
+        <label for="vehicleWidth">{{ 'vehicle_width' | translate }}:</label>
+        <input type="number" min="0" class="form-control" id="vehicleWidth" ng-model="car.vehicleWidth"/>
+    </div>
+    <div class="col-sm-4 form-group">
+        <label for="vehicleHeight">{{ 'vehicle_height' | translate }}:</label>
+        <input type="number" min="0" class="form-control" id="vehicleHeight" ng-model="car.vehicleHeight"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 form-group">
+        <div class="profile carPhoto">
+            <input type="image" class="profile carImage" uib-popover="{{ 'click_to_upload_a_photo' | translate }}"
+                   popover-trigger="'mouseenter'" popover-class="profile" ng-click="clickImage('carFrontPhoto', car, $index)"
+                   popover-popup-delay="1000" popover-append-to-body=true
+                   ng-src="{{car.vehicleFrontPhotoURL}}" alt="Car front photo">
+            <input type="file" accept="image/*" style="display: none;" id="carFrontPhotoUpload"
+                   custom-on-change="uploadCarPhotoCloud">
+            <uib-progressbar max="100" class="progress-striped active" value="car.progress" style="height: 16px;"
+                             ng-if="car.showProgressFront"><span
+                    style="color:white; white-space:nowrap;"></span></uib-progressbar>
+        </div>
+    </div>
+    <div class="col-sm-6 form-group">
+        <div class="profile carPhoto">
+            <input type="image" class="profile carImage" uib-popover="{{ 'click_to_upload_a_photo' | translate }}"
+                   popover-trigger="'mouseenter'" popover-class="profile" ng-click="clickImage('carBackPhoto', car, $index)"
+                   popover-popup-delay="1000" popover-append-to-body=true
+                   ng-src="{{car.vehicleBackPhotoURL}}" alt="Car back photo">
+            <input type="file" class="profile hiddenInput" accept="image/*" id="carBackPhotoUpload"
+                   custom-on-change="uploadCarPhotoCloud">
+            <uib-progressbar max="100" class="progress-striped active" value="car.progress" style="height: 16px;"
+                             ng-if="car.showProgressBack"><span
+                    style="color:white; white-space:nowrap;"></span></uib-progressbar>
+        </div>
+    </div>
+</div>

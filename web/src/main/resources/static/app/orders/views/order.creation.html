@@ -1,0 +1,83 @@
+<form name="newOrder" autocomplete="off" class="order-creation">
+    <div class="modal-header">
+        <button ng-click="cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+           {{ isEdit ? ('edit_order' | translate) : ('new_order' | translate) }}
+        </h4>
+        <div class="order-date">
+            <label for="arrivalDateInput">{{ 'deliver_in' | translate }} <i class="fa fa-calendar" aria-hidden="true"></i></label>
+            <input ng-focus="datePicker.open()" ng-model="form.arrivalDate"
+                   is-open="datePicker.opened" uib-datepicker-popup="{{datePicker.format}}"
+                   datepicker-options="datePicker.options" close-text="Close"
+                   id="arrivalDateInput" class="form-control"/>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-6 form-group">
+                <label class="control-label label-lg" for="cityFromInput">{{ 'from' | translate }}</label>
+                <input ng-model="form.locationFrom" ng-required="true"
+                       typeahead-on-select="map.open()"
+                       uib-typeahead="location as locationLabel(location)
+                       for location in findLocations($viewValue)"
+                       typeahead-loading="loadingCityFrom" typeahead-no-results="noResultsCityFrom"
+                       type="text" class="form-control input-lg" id="cityFromInput" name="locationFrom"/>
+            </div>
+            <div class="col-xs-6 form-group">
+                <label class="control-label label-lg" for="cityArrivalInput">{{ 'to' | translate }}</label>
+                <input ng-model="form.locationTo" typeahead-on-select="map.open()" ng-required="true"
+                       uib-typeahead="location as locationLabel(location)
+                       for location in findLocations($viewValue)"
+                       typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"
+                       type="text" class="form-control input-lg" id="cityArrivalInput" name="locationTo"/>
+            </div>
+        </div>
+        <h5 class="order-creation-details">{{ 'details' | translate }}:</h5>
+        <div class="row">
+            <div class="col-xs-3 form-group form-group-details">
+                <label class="control-label" for="weightItnput">{{ 'weight' | translate }}</label>
+                <div class="input-group">
+                    <input name="weight" ng-model="form.weight" type="text" class="form-control" id="weightItnput">
+                    <span class="metric-addon">kg</span>
+                </div>
+            </div>
+            <div class="col-xs-3 form-group form-group-details">
+                <label class="control-label" for="heightInput">{{ 'height' | translate }}</label>
+                <div class="input-group">
+                    <input name="height" ng-model="form.height" type="text" class="form-control" id="heightInput">
+                    <span class="metric-addon">m</span>
+                </div>
+            </div>
+            <div class="col-xs-3 form-group form-group-details">
+                <label class="control-label" for="widthInput">{{ 'width' | translate }}</label>
+                <div class="input-group">
+                    <input name="width" ng-model="form.width" type="text" class="form-control" id="widthInput">
+                    <span class="metric-addon">m</span>
+                </div>
+            </div>
+            <div class="col-xs-3 form-group form-group-details">
+                <label class="control-label" for="lengthInput">{{ 'length' | translate }}</label>
+                <div class="input-group">
+                    <input name="length" ng-model="form.length" class="form-control" id="lengthInput">
+                    <span class="metric-addon">m</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label class="control-label" for="descriptionInput">{{ 'description' | translate }}</label>
+                <textarea ng-model="form.description" class="form-control" rows="1" id="descriptionInput"></textarea>
+            </div>
+        </div>
+        <uib-accordion>
+            <div uib-accordion-group is-open="map.created">
+                <div id="orderCreateMap" class="map-container"></div>
+            </div>
+        </uib-accordion>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="cancel()" type="button" class="btn btn-default" data-dismiss="modal">{{ 'cancel' | translate }}</button>
+        <button ng-click="form.submit()" type="button" class="btn btn-primary">{{ 'save' | translate }}</button>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+<form name="editFeedbackText" autocomplete="off">
+    <div class="modal-header">
+        <button ng-click="cancelEditFeedbackText()" type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+            {{ 'edit_feedback' | translate }}
+        </h4>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-xs-6 form-group">
+                <label class="control-label">{{ 'feedback_from' | translate }}:
+                    <i class="fa fa-user" aria-hidden="true"></i></label>
+                <label class="control-label">{{ feedbackUserName }}</label>
+            </div>
+            <div class="col-xs-6 form-group">
+                <label class="control-label">{{ 'feedback_on' | translate }}:
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                </label>
+                <label class="control-label">{{ feedbackTransporterName }}</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label class="control-label feedback" for="feedbackText">{{ 'feedbackText' | translate }}:</label>
+                <textarea autofocus ng-model="feedbackText" class="form-control" rows="4" id="feedbackText"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="cancelEditFeedbackText()" type="button" class="btn btn-default" data-dismiss="modal">{{
+            'cancel' | translate }}
+        </button>
+        <button ng-click="updateFeedbackText()" type="button" class="btn btn-primary">{{ 'save' | translate }}</button>
+    </div>
+</form>

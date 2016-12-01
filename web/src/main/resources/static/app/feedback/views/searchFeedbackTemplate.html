@@ -1,0 +1,53 @@
+<th class="col-xs-3">
+    <div class="input-group">
+        <input type="text" class="form-control srch-in" placeholder="{{ 'text' | translate }}" ng-model="feedbackFilterDTO.text"
+               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilterDTO.text)"/>
+        <span class=" input-group-addon">
+        <i class="fa fa-search"></i>
+        </span>
+    </div>
+</th>
+<th class="col-xs-1">
+    <div class="input-group">
+        <input type="number" class="form-control  srch-in" min="1" max="5" placeholder="{{ 'rate' | translate }}" ng-model="rate"
+               ng-model-options="{ debounce: 500 }" ng-change="filterFeedbacks()"/>
+    </div>
+</th>
+<th class="col-xs-2">
+    <div class="input-group">
+        <input type="text" class="form-control  srch-in" placeholder="{{ 'user' | translate }}" ng-model="feedbackFilterDTO.userName"
+               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilterDTO.userName)"/>
+        <span class=" input-group-addon">
+        <i class="fa fa-search"></i>
+        </span>
+    </div>
+</th>
+<th class="col-xs-2">
+    <div class="input-group">
+        <input type="text" class="form-control  srch-in" placeholder="{{ 'find_driver' | translate }}" ng-model="feedbackFilterDTO.transporterName"
+               ng-model-options="{ debounce: 500 }" ng-change="checkInputLength(feedbackFilterDTO.transporterName)"/>
+        <span class=" input-group-addon">
+        <i class="fa fa-search"></i>
+        </span>
+    </div>
+</th>
+<th class="col-xs-2">
+    <div class="input-group">
+        <input type="text" class="form-control srch-in" uib-datepicker-popup="yyyy-MM-dd" placeholder="{{ 'date' | translate }}"
+               ng-model="createdOn" is-open="popupDatePicker.opened" ng-change="filterFeedbacks()"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-link" ng-click="openDatePicker()">
+                <i class="fa fa-calendar"></i></button>
+          </span>
+    </div>
+</th>
+<th class="col-xs-1">
+    <div class="input-group">
+        <a class="{{toggleFilterApprovedClass()}}" style="{{toggleFilterApprovedStyle()}}"
+           ng-click="changeFilterApprovedClass()"></a>
+    </div>
+</th>
+<th class="col-xs-1 clear feedback">
+    <span><i class="fa fa-times" aria-hidden="true" ng-click="clearAllFilters()"></i></span>
+</th>
+

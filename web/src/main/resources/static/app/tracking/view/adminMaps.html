@@ -1,0 +1,23 @@
+<div class="navbar navbar-inverse navbar-static-top" style="background-color: #007772">
+    <div class="container-fluid">
+        <span class="navbar-brand">{{ 'tracking_orders' | translate }}</span>
+        <ul class="nav navbar-nav navbar-right">
+            <div class="col-md-2"></div>
+    </ul>
+</div>
+    <div class="navbar-sub-tracking">
+        <ul class="nav nav-tabs">
+            <li ui-sref-active="active"><a ui-sref="adminMaps.inProgress" data-toggle="tab" aria-expanded="true" >{{ 'in_progress' | translate }}</a></li>
+            <li ui-sref-active="active"><a ui-sref="adminMaps.Closed" data-toggle="tab" aria-expanded="false">{{ 'closed' | translate }}</a></li>
+        </ul>
+    </div>
+</div>
+<br/><br/><br/><br/>
+<div ng-init="mapInit()">
+    <ui-view></ui-view>
+        <div id="adminMap" class="map-container">
+        </div>
+</div>
+
+
+

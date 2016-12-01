@@ -1,0 +1,59 @@
+<form name="showUserInfo">
+    <div class="modal-header">
+        <button ng-click="closeUserInfo()" type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+            {{ 'userInfo' | translate }}
+        </h4>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-xs-6 form-group">
+                <img ng-src="{{userProfile.photoUrl}}" class="feedbacks driver-photo" alt="user photo">
+            </div>
+            <div class="col-xs-6 form-group">
+                <label>{{ 'fname' | translate }}: {{userProfile.firstName}} {{userProfile.lastName}}</label>
+                <br>
+                <label>{{ 'phone' | translate }}: {{userProfile.phone}}</label>
+                <br>
+                <label>{{ 'email' | translate }}: {{userProfile.email}}</label>
+                <br>
+                <label>{{ 'rate' | translate }}: </label>
+                <span uib-rating class="feedbacks rating" ng-model="userProfile.rate" read-only="true"
+                      aria-labelledby="default-rating"></span>
+            </div>
+        </div>
+    </div>
+    
+    
+  <div ng-show="showCars"> 
+    <table class="table table-responsive">
+    	<thead>
+			<tr>
+        		<th class="col-xs-2"></th> 
+        		<th class="col-xs-2"></th> 
+        		<th class="col-xs-2">{{ 'vehicle_name' | translate }}</th>
+        		<th class="col-xs-2">{{ 'vehicle_number' | translate }}</th>
+        		<th class="col-xs-2">{{ 'active_cars' | translate }}</th>
+      		</tr>
+    	</thead>
+    	<tbody>
+      		<tr ng-repeat="car in userCars" disable-animate>
+        		<td class="col-xs-2 "><img ng-src="{{car.vehicleFrontPhotoURL}}" title="{{car.firstName}} {{user.lastName}}" class="img-thumbnail img-responsive"></td>
+        		<td class="col-xs-2 "><img ng-src="{{car.vehicleBackPhotoURL}}" title="{{car.firstName}} {{user.lastName}}" class="img-thumbnail img-responsive"></td> 
+        		<td class="col-xs-2">{{car.vehicleName}}</td> 
+        		<td class="col-xs-2">{{car.vehicleNumber}}</td>
+        		<td class="col-xs-2"><i class="fa " ng-class="{'fa-check-circle approved':car.active==true, 'fa-check-circle not-approved':car.active==false}" title="active status"  aria-hidden="true"></i></td></tr>
+      		</tr>
+    	</tbody>
+    </table>
+ </div>   
+    
+    <div class="modal-footer">
+        <button ng-click="closeUserInfo()" type="button" class="btn btn-primary">{{ 'close' | translate }}</button>
+    </div>
+</form>
+
+
+    
+

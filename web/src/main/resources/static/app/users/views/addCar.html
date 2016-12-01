@@ -1,0 +1,14 @@
+<form name="addCar" class="profile addCar">
+    <div class="modal-header">
+        <button ng-click="cancelAddCar()" type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+            {{ 'add_a_new_vehicle' | translate }}
+        </h4>
+    </div>
+    <div class="modal-body" car-data></div>
+    <div class="modal-footer">
+        <button ng-click="cancelAddCar()" type="button" class="btn btn-danger">{{ 'cancel' | translate }}</button>
+        <button ng-click="confirmAddCar()" type="button" class="btn btn-primary">{{ 'ok' | translate }}</button>
+    </div>
+</form>

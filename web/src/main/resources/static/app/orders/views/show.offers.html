@@ -1,0 +1,23 @@
+<div ng-controller="showOffersController">
+<h4 style="padding-left: 10px;"> Approved driver: {{GetApprovedOffer().driverName}} <a style="float:right;margin-right:10px;" class="btn btn-primary btn-xs" role="button" data-ng-click="changeStatus()">Apply</a></h4>
+
+<div data-ng-repeat="offer in offers.offers track by offer.offerId"  class="panel panel-default">
+    <div class="{{btnApprovedStyle(offer.approved)}}">
+        <div class="row">
+            <div class="col-sm-3 form-group">
+                <img width="100px" style="padding: 10px" ng-src="{{offer.carPhoto}}">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label class="control-label">{{ 'driver_rate' | translate }}: </label>
+                <ng-rate-it resetable="false" step="1" star-width="32" star-height="32" read-only="true" ng-model="offer.rate"></ng-rate-it>
+            </div>
+            <div class="col-sm-4 form-group">
+                <label class="control-label">{{ 'driver_name' | translate }}:
+                    <input type="radio" name="radio-primary" ng-value="true" ng-model="offer.approved" ng-checked="offer.approved" ng-change="update(offer)"/>
+                    {{offer.driverName}}
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

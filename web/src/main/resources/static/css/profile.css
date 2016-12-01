@@ -1,0 +1,71 @@
+.main.profile {
+    padding-top: 70px;
+}
+
+.profile.navbar {
+    background-color: #148b73;
+}
+
+.profile.center{
+    text-align: center;
+}
+
+.profile.left{
+    text-align: left;
+}
+
+.profile-useravatar {
+    height: auto;
+    width: 200px;
+    border-radius: 10%;
+}
+
+.profile.hiddenInput {
+    display: none;
+}
+
+.profile.addCar {
+    margin: 20px;
+}
+
+.profile.addCar.form-group{
+    text-align: left;
+}
+
+.profile.carPhoto {
+    display: inline-block;
+    text-align:center;
+    width: 200px;
+    height: 200px;
+    margin: 1em;
+}
+
+.profile.carImage {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.profile.button, .profile.well {
+    margin: 5px;
+}
+
+.profile-vertical-margin {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.profile.popover{
+    max-width: 200px;
+}
+
+.profile.button.small-padding {
+    margin: 5px;
+    padding-left:1px;
+    padding-right:1px;
+}
+
+.profile.button.car {
+    background-color: #f0f0f0;
+}
+

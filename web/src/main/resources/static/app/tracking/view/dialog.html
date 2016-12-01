@@ -1,0 +1,16 @@
+<div id="popDialog-lg" ng-init="mapInit()">
+    <div id="popDialog">
+    <div class="modal-header">
+        <button ng-click="$dismiss()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">{{ 'add_location' | translate }}</h4>
+    </div>
+    <div class="modal-body" id="modal-body" style="height: 400px" ng-init="getRouteById()">
+        <div id="driverMap" class="map-container" style="height: 390px"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger"  type="button" data-dismiss="modal" ng-show="set" ng-click="cleanAllMap()">{{ 'remove_markers' | translate }}</button>
+        <button class="btn btn-danger" type="submit" ng-show="set" ng-click="setPoints()"data-dismiss="modal">{{ 'add' | translate }}</button>
+        <button class="btn btn-danger" type="button" data-dismiss="modal" ng-click="$dismiss()">{{ 'close' | translate }}</button>
+    </div>
+    </div>
+</div>

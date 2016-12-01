@@ -1,0 +1,11 @@
+<br/>
+<div ng-init="getAllRoutes()"></div>
+<div class="input-group">
+    <div layout-gt-xs="row">
+        <select ng-model="selectedDriver" class="form-control" style=" margin-left: 13px;  width: 200px" ng-change="getAllRoutes()"  ng-options="route.driverName for route in listOfRoutes track by route.driverName">
+            <option value="">{{ 'driver_name' | translate }}</option>
+        </select>
+        <i class="fa fa-eye fa-2x" aria-hidden="false" style="margin-left: 750px" ng-click="showAll()" ></i>
+        <i class="fa fa-eye-slash fa-2x" aria-hidden="false" ng-click="clearAll()" style="margin-left: 20px"></i>
+    </div>
+</div>

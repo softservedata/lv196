@@ -1,0 +1,117 @@
+#mapCustomer {
+    width: 1090px;
+    height: 500px;
+}
+#adminMap {
+    width: 1090px;
+    height: 460px;
+
+}
+
+#map-wrapper {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    border: 1px solid black;
+}
+.tracking-table {
+    width: 1050px;
+}
+.tracking-div {
+    width: 100%;
+}
+
+.map-container .leaflet-control-container {
+    display: none;
+}
+.route .leaflet-control-container {
+    display: none;
+}
+.modal-dialog{
+    width: whatever;
+}
+.filtr {
+    margin-left: 13px;
+}
+.tracking-pageination{
+    margin-left: 300px;
+}
+.trackingForAdmin .from-date {
+    font-size: 18px;
+}
+
+.trackingForAdmin  .from-date .fa {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.navbar-sub-tracking .nav-tabs > li {
+    width: 50%;
+    text-align: center;
+}
+.navbar-sub-tracking .nav-tabs > li > a, .navbar-sub .nav-tabs > li > a:focus {
+    font-size: 14px;
+    color: rgba(255, 243, 224, 0.9);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar-sub-tracking .nav-tabs > li > a:hover, .navbar-sub .nav-tabs > li > a:focus:hover {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar-sub-tracking .nav-tabs > li.active > a, .navbar-sub .nav-tabs > li.active > a:focus {
+    color: #fff;
+    -webkit-box-shadow: inset 0 -2px 0 #FFC107;
+    box-shadow: inset 0 -2px 0 #FFC107;
+}
+.trackingForAdmin  .from-date label {
+    cursor: pointer;
+}
+
+.trackingForAdmin  .from-date input {
+    cursor: pointer;
+    font-weight: 400;
+    width: 95px;
+    display: inline-block;
+    -webkit-box-shadow: inset 0 0 0 #ddd;
+    box-shadow: inset 0 0 0 #ddd;
+}
+
+.trackingForAdmin  .from-date :hover {
+    color: rgba(68, 68, 68, 0.7);
+}
+.trackingForAdmin.span {
+    float: right;
+    margin-right: 200px;
+    display: inline-block;
+}
+#trackingMa{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+
+}
+/*#trackingMap{*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*bottom: 0;*/
+    /*right: 0;*/
+    /*left: 0;*/
+    /*z-index: -1;*/
+/*}*/
+#def{
+    position: fixed;
+    width: 330px;
+    opacity: 0.65;
+    background-color: white;
+    border-radius: 10px;
+    right: 0;
+    padding-right: 100px;
+    padding-top: 20px;
+    z-index: 10;
+}

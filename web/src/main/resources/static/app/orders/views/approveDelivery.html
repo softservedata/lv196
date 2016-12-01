@@ -1,0 +1,21 @@
+<form name="approveDelivery">
+    <div class="modal-header">
+        <button ng-click="cancelApproveDelivery()" type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-title">
+            {{ 'approve_delivery' | translate }}
+        </h4>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <p class="feedbacks deleteWarning">{{ 'approve_delivery_message' | translate }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="cancelApproveDelivery()" type="button" class="btn btn-danger" data-dismiss="modal">{{ 'cancel' | translate }}
+        </button>
+        <button ng-click="confirmApproveDelivery()" type="button" class="btn btn-succes">{{ 'yes' | translate }}</button>
+    </div>
+</form>

@@ -1,0 +1,63 @@
+<div ng-cloak="" class="tabsDynamicHeight">
+<md-content>
+    <md-tabs md-border-bottom="">
+        <md-tab label="All">
+            <md-content class="md-padding">
+                <div data-ng-repeat="notification in notifications.notifications track by $index"  class="panel panel-default">
+                    <div class="{{notification.notificationStatus}}">
+                        <div style="display:inline">
+                            {{ 'status' | translate }}:  {{notification.notificationStatus}}
+                            <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
+                <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
+                </span>
+                        </div>
+                        <p>{{ 'message' | translate }}: {{notification.message}}
+                    </div>
+                </div>
+            </md-content>
+        </md-tab>
+        <md-tab label="Info">
+            <md-content class="md-padding">
+                <div data-ng-repeat="notification in notifications.info track by $index"  class="panel panel-default">
+                    <div class="{{notification.notificationStatus}}">
+                        <div>
+                        <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
+                            <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
+                         </span>
+                            {{ 'message' | translate }}: {{notification.message}}
+                        </div>
+                    </div>
+                </div>
+            </md-content>
+        </md-tab>
+        <md-tab label="Success">
+            <md-content class="md-padding">
+                <div data-ng-repeat="notification in notifications.success track by $index"  class="panel panel-default">
+                    <div class="{{notification.notificationStatus}}">
+                        <div style="display:inline">
+                         <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
+                            <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
+                         </span>
+                            {{ 'message' | translate }}: {{notification.message}}
+                        </div>
+                    </div>
+                </div>
+            </md-content>
+        </md-tab>
+        <md-tab label="Warning">
+            <md-content class="md-padding">
+                <div data-ng-repeat="notification in notifications.warning track by $index"  class="panel panel-default">
+                    <div class="{{notification.notificationStatus}}">
+                        <div style="display:inline">
+                         <span style="float:right;padding-right:20px;">{{notification.time | date : 'short'}}
+                            <i class="fa fa-trash" ng-click="delete(notification.notificationId)" aria-hidden="true"></i>
+                         </span>
+                            {{ 'message' | translate }}: {{notification.message}}
+                        </div>
+                    </div>
+                </div>
+            </md-content>
+        </md-tab>
+    </md-tabs>
+</md-content>
+</div>

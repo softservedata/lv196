@@ -1,0 +1,66 @@
+.sidebar-header {
+    background-color: #148b73;
+    color: rgba(255, 255, 255, 0.87);
+    padding-top: 15px;
+    padding-left: 12px;
+    padding-bottom: 10px;
+}
+
+.sidebar-header .user-name {
+    font-size: 24px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.sidebar-menu {
+    font-size: 16px;
+}
+
+.sidebar-menu .sidebar-menu-item {
+    position: relative;
+    display: block;
+    padding: 15px;
+    background-color: #ffffff;
+    color: #555555;
+    text-decoration: none;
+}
+
+.sidebar-menu .sidebar-menu-item:hover {
+    text-decoration: none;
+    color: #555555;
+    background-color: #f5f5f5;
+}
+
+.sidebar-menu .active-list-item, .sidebar-menu .active-list-item:focus,
+.sidebar-menu .active-list-item:hover, .sidebar-menu .active-list-item:focus:hover  {
+    background-color: #eaeaea;
+}
+
+.sidebar-menu .sidebar-menu-item .fa {
+    padding-right: 8px;
+}
+
+.sidebar-menu hr {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top: 1px solid #dddddd;
+}
+
+.sidebar-offcanvas {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.43);
+    z-index: 1;
+}
+
+.sidebar-footer {
+    margin: auto auto 10px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .sidebar-offcanvas, .sidebar-offcanvas a, .sidebar-footer a {
+        padding-left: 3px;
+    }
+}

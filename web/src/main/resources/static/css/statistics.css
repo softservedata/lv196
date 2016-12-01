@@ -1,0 +1,157 @@
+.data-header {
+	background-color: #148b73;
+	color: 			  #ffffff;
+}
+
+.md-subhead {
+	color: #757575;
+}
+
+.data-ctions {
+	width: 80px;
+	height: 80px;
+}
+.data-pie {
+	padding-bottom: 7px;
+}
+
+.dayline {
+	padding: 16px;
+	margin-bottom: 3px;
+}
+
+.data-users {
+	height: 40%;
+}
+
+.data-users-title {
+	margin-bottom: 1px;
+}
+
+.users-pie {
+	width: 58%;
+	padding: 20px;
+	float: left;
+}
+
+.users-pie-rate {
+	width: 60%;
+	padding: 20px;
+	float: left;
+}
+
+.users-pie-info {
+	float: left;
+	width: 40%;
+	padding: 20px;
+}
+
+.users-info-name {
+	font-size: 13px;
+	margin-top: 10px;
+	color: #555555;
+}
+
+.cus-icon {
+	color: #97bbcd;
+	padding-right: 10px;
+}
+
+.dr-icon {
+	color: #dcdcdc;
+	padding-right: 10px;
+}
+
+.mod-icon {
+	color: #f7464a;
+	padding-right: 10px;
+}
+
+.adm-icon {
+	color: #46bfbd;
+	padding-right: 10px;
+}
+
+.five-icon {
+	color: #fdb45c;
+	padding-right: 10px;
+}
+
+.six-icon {
+	color: #b19f94;
+	padding-right: 10px;
+}
+
+.refresh-btn {
+	margin-left: 71px;
+	margin-top: 3px;
+	color: #757575;
+}
+
+.data-rate {
+	font-weight: bold;
+    font-size: 14px;
+}
+
+.users-rate-info {
+	float: left;
+	width: 40%;
+	margin-top: 30px;
+}
+
+.img-driver {
+	width: 120px;
+	height: 120px;
+	margin-right: 10px;
+}
+
+.driver-name {
+	font-size: 15px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+.driver-info {
+	font-size: 13px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	color: #757575;
+}
+
+.ic-driver {
+	font-size: 11px;
+	padding-right: 2px;
+}
+
+.icon-driver {
+	font-size: 11px;
+	padding-right: 2px;
+	margin-left: 7px;
+}
+
+.data {
+	padding-top: 65px;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.data-date {
+ 	width: 200px;
+}
+
+.data-month {
+ 	width: 150px;
+}
+
+.month-of-analyse {
+	font-size: 15px;
+	color: #555555;
+	padding-left: 27px;
+}
+
+.topdrivers {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+

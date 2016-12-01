@@ -1,0 +1,115 @@
+.feedback.navbar {
+    background-color: #148b73;
+}
+
+.feedback.span {
+    float: right;
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.feedback.select.form-control {
+    width: 50px;
+    color: #148b73;
+    display: inline;
+    margin: 10px;
+}
+
+.feedback.main {
+    padding-top: 150px;
+}
+
+.feedback.tableSort {
+    float: right;
+}
+
+.feedback.btn-round.down {
+    top: 150px;
+    right: 10px;
+}
+
+.feedback.btn-round.up {
+    bottom: 0;
+    right: 10px;
+}
+
+.feedback.btn-round.btn-sm {
+    position: fixed;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    opacity: 0.2;
+}
+
+.feedback.btn-round.btn-sm:hover {
+    opacity: 1;
+}
+
+.feedback.btn-round.btn-sm:focus {
+    outline-style: none;
+}
+
+.feedback.fa-angle-double-up {
+    color: white;
+}
+
+.feedback.fa-angle-double-down {
+    color: white;
+}
+
+.feedback.del,
+.feedback.clear {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.feedback.action {
+    color: gray;
+}
+
+.feedback.action:hover {
+    color: red;
+    transform: scale(2);
+}
+
+.feedback.deleteWarning {
+    text-align: center;
+    color: red;
+    font-size: large;
+}
+
+.feedback.clear:hover,
+.feedback.fa-user:hover {
+    transform: scale(2);
+}
+
+.feedback.fa-pencil-square-o,
+.feedback.fa-user {
+    float: right;
+}
+
+.feedback.fa-pencil-square-o:hover {
+    color: green;
+    transform: scale(2);
+}
+
+.feedback ul.pagination li a {
+    color: #148b73;
+}
+
+.feedback ul.pagination li.active a,
+.feedback ul.pagination li a:focus {
+    color: white;
+    background-color: #148b73;
+    outline-style: none;
+}
+
+.feedback.control-label {
+    font-size: large;
+}
+
+.feedback.userPhoto {
+    height: 200px;
+}
+
+

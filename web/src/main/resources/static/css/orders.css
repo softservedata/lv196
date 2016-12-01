@@ -1,0 +1,253 @@
+.order-in-progress, .order-open, .order-closed {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 4px;
+    color: #555555;
+}
+
+.modal-body .map-container {
+    height: 200px;
+}
+
+.map-container .leaflet-routing-container.leaflet-bar.leaflet-routing-collapsible.leaflet-control {
+    display: none;
+}
+
+.modal-body .panel {
+    box-shadow: none !important;
+}
+.modal-body .panel-body {
+    padding: 0;
+}
+.offerfalse {
+    background: white;
+}
+.offertrue {
+    background: #18bc9c;
+}
+.modal-body .panel-group {
+    margin-bottom: 0;
+}
+
+.order-details .panel {
+    box-shadow: none !important;
+}
+.order-details .panel-body {
+    padding: 0;
+    border: none  !important;
+}
+.order-details .panel-group {
+    margin-bottom: 0;
+}
+.order-details .panel-heading {
+    padding: 0;
+}
+
+.order-details div.col-sm-2.form-group {
+    width: 90px;
+    margin-bottom: 0 !important;
+}
+.order-details div.col-sm-6.form-group {
+    width: 300px;
+    margin-bottom: 5px !important;
+}
+
+.order-creation .form-group-details input {
+    padding-right: 20px;
+    width: 65px;;
+}
+
+.chats {
+    overflow-y: scroll;
+    height: 436px;
+}
+
+.order-creation .form-group-details .metric-addon {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
+}
+
+.orders {
+    padding-top: 120px;
+    margin-right: 90px;
+    margin-left: 60px;
+}
+
+.order-in-progress .panel-body hr {
+    margin-top: 18px;
+    margin-bottom: -20px;
+}
+
+.order-in-progress .panel-body, .order-open .panel-body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.order-in-progress .order-city, .order-open .order-city {
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.order-in-progress .order-city:hover, .order-open .order-city:hover {
+    color: rgba(85, 85, 85, 0.74);
+}
+
+.order-subinfo .order-sub.location:hover {
+    color: rgba(85, 85, 85, 0.74);
+}
+
+
+.order-actions {
+    float: right;
+    font-size: 22px;
+    margin-top: 7px;
+    margin-right: 10px;
+}
+
+.order-actions .fa {
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+.order-actions .fa-car {
+    color: rgba(68, 68, 68, 0.83);
+}
+
+.order-subinfo {
+    float: left;
+}
+
+.order-actions .fa:hover {
+    color: #888888;
+}
+
+.chat-actions {
+    float: right;
+    font-size: 22px;
+    margin-top: 0px;
+    margin-right: 75px;
+}
+
+.order-subinfo .order-sub {
+    margin-right: 12px;
+}
+
+.order-subinfo .order-sub .fa {
+    margin-right: 6px;
+}
+
+.order-creation .label-lg {
+    font-size: 16px;
+}
+
+.order-creation .modal-body {
+    padding-bottom: 0;
+}
+
+.order-creation .modal-body {
+    padding-top: 0;
+}
+
+.order-creation .order-date {
+    font-size: 18px;
+}
+
+.order-creation .order-date .fa {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.order-creation .order-date label {
+    cursor: pointer;
+}
+
+.order-creation .order-date input {
+    cursor: pointer;
+    font-weight: 600;
+    width: 95px;
+    display: inline-block;
+    /* override bootstrap, disable input bottom line*/
+    -webkit-box-shadow: inset 0 0 0 #ddd;
+    box-shadow: inset 0 0 0 #ddd;
+}
+
+.order-creation .order-date :hover {
+    color: rgba(68, 68, 68, 0.7);
+}
+
+.navbar-sub .nav-tabs > li {
+    width: 33%;
+    text-align: center;
+}
+
+.navbar-sub .nav-tabs > li > a, .navbar-sub .nav-tabs > li > a:focus {
+    font-size: 14px;
+    color: rgba(255, 243, 224, 0.9);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar-sub .nav-tabs > li > a:hover, .navbar-sub .nav-tabs > li > a:focus:hover {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar-sub .nav-tabs > li.active > a, .navbar-sub .nav-tabs > li.active > a:focus {
+    color: #fff;
+    -webkit-box-shadow: inset 0 -2px 0 #FFC107;
+    box-shadow: inset 0 -2px 0 #FFC107;
+}
+
+.btn-add-order {
+    color: #ffffff;
+    background-color: #FB8C00;
+    border-radius: 100%;
+    width: 4em;
+    height: 4em;
+    line-height: 4em;
+    font-size: 1.2em;
+    padding: 0;
+    cursor: pointer;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+}
+.btn-add-order:hover {
+    color: #ffffff;
+    background-color: #EF6C00;
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.btn-add-order:active:hover {
+    color: #ffffff;
+    background-color: #EF6C00;
+}
+.btn-add-order:active {
+    color: #ffffff;
+    background-image: radial-gradient(circle, #ffae70 10%, #EF6C00 11%);
+}
+.add {
+    font-weight:lighter;
+    font-size: 1.8em;
+    font-style: normal;
+}
+.order-actions [data-notifications] {
+    position: relative;
+}
+
+.order-actions [data-notifications]:after {
+    content: attr(data-notifications);
+    position: absolute;
+    font-size: 13px;
+    text-align: center;
+    background: red;
+    border-radius: 100%;
+    color: #f2f2f2;
+    right: -1px;
+    top: -6px;
+    width: 16px;
+    height: 16px;
+}
+

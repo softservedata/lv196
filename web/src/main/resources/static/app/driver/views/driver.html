@@ -1,0 +1,325 @@
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand">{{ 'driver_menu' | translate }}</span>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 20mm" id="top">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="{{ 'find_newOrder' | translate }}"
+             is-open="false">
+            <div class="site-content find-orders" style="background-color: #e9eaed; height: 25mm">
+                <div class="container col-xs-11" style="margin-top: -20mm">
+                    <table class="table table-striped table-hover table-responsive header-fixed">
+                        <thead>
+                        <tr>
+                            <th class="col-xs-3">{{ 'city_from' | translate }}</th>
+                            <th class="col-xs-3">{{ 'city_to' | translate }}</th>
+                            <th class="col-xs-2.5">{{ 'weight' | translate }}</th>
+                            <th class="col-xs-2.5">{{ 'arrival_in' | translate }}</th>
+                        </tr>
+                        </thead>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="{{ 'city_from' | translate }}"
+                                       ng-model="filterObject.cityFrom"
+                                       uib-typeahead="location as (location.city + ', ' + location.region + ', ' + location.oblast)
+                                       for location in findLocations($viewValue)"
+                                       typeahead-loading="loadingCityFrom" typeahead-no-results="noResultsCityFrom"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="{{ 'city_to' | translate }}"
+                                       ng-model="filterObject.cityTo"
+                                       uib-typeahead="location as (location.city + ', ' + location.region + ', ' + location.oblast)
+                                       for location in findLocations($viewValue)"
+                                       typeahead-loading="loadingCityTo" typeahead-no-results="noResultsCityTo"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="{{ 'weight' | translate }}"
+                                       ng-model="filterObject.weight"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input ng-focus="datePicker.open()" ng-model="filterObject.arrivalDate"
+                                       placeholder="{{ 'arrival_in' | translate }}"
+                                       is-open="datePicker.opened" uib-datepicker-popup="{{datePicker.format}}"
+                                       datepicker-options="datePicker.options" close-text="Close"
+                                       id="arrivalDateInput" class="form-control"/>
+                            </div>
+                        </td>
+                    </table>
+                </div>
+                <div class="input-group">
+                    <input class="btn btn-default btn-sm" ng-click="filter()" type="submit" name="filter_submit"
+                           style="margin-top: -5mm; float: right" value="{{ 'filter' | translate }}">
+                </div>
+            </div>
+            <div class="main" style="margin-top: 4mm">
+                <button class="btn btn-success btn-sm btn-round down" ng-click="scroll('down')" style="float: right; margin-top: -5mm" aria-hidden="true">
+                    <i class="fa fa-angle-double-down"></i>
+                </button>
+                <div ng-repeat="order in orders.open track by $index" class="panel panel-default order-open">
+                    <div class="panel-body">
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="addOffer(order.id)">{{
+                                'add_offer' | translate }}
+                            </button>
+                        </div>
+                        <div class="order-city" ng-click="status.open = !status.open">
+                            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
+                        </div>
+                        <div class="order-details">
+                            <uib-accordion close-others="true">
+                                <div uib-accordion-group is-open="status.open">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                    <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                        {{order.locationFrom.region}}, {{order.locationFrom.oblast}} &mdash;
+                                        {{order.locationTo.region}}, {{order.locationTo.oblast}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                    <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                        {{ 'dimensions' | translate }}: {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                    <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        {{ 'description' | translate }}: {{order.description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                        <div class="order-subinfo">
+                            <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+                            <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>{{ 'weight' | translate }} {{order.weight | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success btn-sm btn-round up" ng-click="scroll('top')" style="float: right" aria-hidden="true">
+                <i class="fa fa-angle-double-up"></i>
+            </button>
+            <div>
+                <footer>
+                    <ul uib-pagination class="pagination" id="down" items-per-page="filterObject.itemsPerPage" total-items="totalItems" ng-click="scroll('top')"
+                        ng-model="filterObject.currentPage" max-size="5" ng-change="pageChanged()" boundary-links="true" force-ellipses="true"></ul>
+                    <span class="col-xs-2">
+                        <label for="ordersItemsPerPage">{{ 'items_page' | translate }}</label>
+                            <select dir="rtl" id="ordersItemsPerPage" class="form-control col-xs-2" ng-model="filterObject.itemsPerPage" ng-change="setItemsPerPage()">
+                                <option value="5">5</option>
+                                <option value="10" ng-selected="true">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                     </span>
+                </footer>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="my-offers">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="{{ 'driver_open' | translate }}"
+             is-open="false">
+            <div class="main">
+                <div ng-repeat="order in orders.myOpen track by $index" class="panel panel-default order-open">
+                    <div class="panel-body">
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-danger btn-sm" ng-click="cancelOffer(order.id)">{{ 'cancel_offer' | translate }}</button>
+                            <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+                        <div class="order-city" ng-click="status.open = !status.open">
+                            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
+                        </div>
+                        <div class="order-details">
+                            <uib-accordion close-others="true">
+                                <div uib-accordion-group is-open="status.open">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                                {{order.locationFrom.region}}, {{order.locationFrom.oblast}} &mdash;
+                                                {{order.locationTo.region}}, {{order.locationTo.oblast}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                                {{ 'dimensions' | translate }}: {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                {{ 'description' | translate }}: {{order.description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                        <div class="order-subinfo">
+                            <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+                            <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>{{ 'weight' | translate }} {{order.weight | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="my-approved-orders">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="{{ 'approve_orders' | translate }}"
+             is-open="false">
+            <div class="main">
+                <div ng-repeat="order in orders.approved track by $index" class="panel panel-default order-in-progress">
+                    <div class="panel-body">
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-default" ng-click="showMap(order.id)" data-target=".bd-example-modal-lg">{{ 'set_points' | translate }}</button>
+                            <button type="button" class="btn btn-default" ng-show="notStarted" ng-click="startRoute(order.id)" data-target=".bd-example-modal-lg">{{ 'start' | translate }}</button>
+                            <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+                        <div class="order-city" ng-click="status.open = !status.open">
+                            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
+                        </div>
+                        <div class="order-details">
+                            <uib-accordion close-others="true">
+                                <div uib-accordion-group is-open="status.open">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                                {{order.locationFrom.region}}, {{order.locationFrom.oblast}} &mdash;
+                                                {{order.locationTo.region}}, {{order.locationTo.oblast}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                                {{ 'dimensions' | translate }}: {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                {{ 'description' | translate }}: {{order.description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                        <div class="order-subinfo">
+                            <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+                            <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>{{ 'weight' | translate }} {{order.weight | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="my-orders-in-progress">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="{{ 'orders_inProgress' | translate }}"
+             is-open="false">
+            <div class="main">
+                <div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
+                    <div class="panel-body">
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="approveDelivery(order.id)">{{ 'finish_route' | translate }}</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="trackingRedirect(order.id)">{{ 'track' | translate }}</button>
+                            <i ng-click="showChatByOrder(order.id)" class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+                        <div class="order-city" ng-click="status.open = !status.open">
+                            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
+                        </div>
+                        <div class="order-details">
+                            <uib-accordion close-others="true">
+                                <div uib-accordion-group is-open="status.open">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                                {{order.locationFrom.region}}, {{order.locationFrom.oblast}} &mdash;
+                                                {{order.locationTo.region}}, {{order.locationTo.oblast}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                                {{ 'dimensions' | translate }}: {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                {{ 'description' | translate }}: {{order.description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                        <div class="order-subinfo">
+                            <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+                            <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>{{ 'weight' | translate }} {{order.weight | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="my-closed-orders">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="{{ 'orders_closed' | translate }}"
+             is-open="false">
+            <div class="main">
+                <div ng-repeat="order in orders.closed track by $index" class="panel panel-default order-open">
+                    <div class="panel-body">
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="addFeedback(order)">{{ 'add_feedback' | translate }}</button>
+                        </div>
+                        <div class="order-city" ng-click="status.open = !status.open">
+                            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
+                        </div>
+                        <div class="order-details">
+                            <uib-accordion close-others="true">
+                                <div uib-accordion-group is-open="status.open">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-map-signs" aria-hidden="true"></i>
+                                                {{order.locationFrom.region}}, {{order.locationFrom.oblast}} &mdash;
+                                                {{order.locationTo.region}}, {{order.locationTo.oblast}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-bars" aria-hidden="true"></i>
+                                                {{ 'dimensions' | translate }}: {{order.height}} / {{order.width}} / {{order.length}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <span class="order-sub"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                {{ 'description' | translate }}: {{order.description}}</span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <i class="fa fa-star" aria-hidden="true"></i><label class="control-label">{{ 'customer_rate' | translate }}: </label>
+                                            <span uib-rating class="customer rating" read-only="true" ng-model="order.feedbackDto.rate" aria-labelledby="default-rating"></span>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label class="order-sub"><i class="fa fa-comment" aria-hidden="true"></i>{{ 'customer_feedback' | translate }}:
+                                                {{ order.feedbackDto.text }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                        <div class="order-subinfo">
+                            <span class="order-sub"><i class="fa fa-user" aria-hidden="true"></i>{{order.customerName}}</span>
+                            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+                            <span class="order-sub"><i class="fa fa-suitcase" aria-hidden="true"></i>{{ 'weight' | translate }} {{order.weight | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>

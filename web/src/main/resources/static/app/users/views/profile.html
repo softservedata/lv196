@@ -1,0 +1,140 @@
+<div class="navbar navbar-inverse navbar-default navbar-static-top profile">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand">{{ 'profile' | translate }}</span>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="main profile container-fluid">
+    <div class="col-sm-1" ng-if="!showCars"></div>
+    <div class="col-sm-3 profile center">
+        <h4>{{ 'photo' | translate }}</h4>
+        <form name="pwdForm" novalidate>
+            <div class="form-group" ng-controller="userImageUploadController">
+                <input type="image" class="profile-useravatar" uib-popover="{{ 'click_to_upload_a_photo' | translate }}"
+                       popover-trigger="'mouseenter'" popover-class="profile" ng-click="clickImage('userPhoto')"
+                       popover-popup-delay="1000" popover-append-to-body=true ng-src="{{loggedUser.photoUrl}}"
+                       alt="User avatar">
+                <input type="file" class="profile hiddenInput" accept="image/*" id="userPhotoUpload"
+                       custom-on-change="uploadUserPhotoCloud">
+                <uib-progressbar max="100" class="progress-striped active" value="progress" style="height: 16px;"
+                                 ng-if="showProgressBar"><span style="color:white; white-space:nowrap;"></span>
+                </uib-progressbar>
+            </div>
+            <div class="form-group">
+                <label for="rate">{{ 'rate' | translate }}:</label>
+                <span uib-rating class="rating" id="rate" ng-model="rate" read-only="true"
+                      aria-labelledby="default-rating"></span>
+            </div>
+            <br>
+            <button type="button" class="btn btn-default col-sm-12 profile-vertical-margin"
+                    ng-click="getPasswordParams()">{{ 'change_password' | translate }}
+            </button>
+            <div uib-collapse="!changePassword">
+                <div class="form-group"
+                     ng-class="{ 'has-error': pwdForm.current_password.$invalid || pwdForm.current_password.$pristine }">
+                    <label for="current_password">{{ 'enter_current_password' | translate }}:</label>
+                    <input type="password" class="form-control" name="current_password" id="current_password"
+                           ng-model="password.current" required ng-minlength="minPswdLength"
+                           ng-maxlength="maxPswdLength"
+                           placeholder="{{ 'current_password' | translate}}"/>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error': pwdForm.password0.$invalid || pwdForm.password0.$pristine ||
+                      password.newPassword != password.confirmPassword }">
+                    <label for="password0">{{ 'enter_new_password' | translate }}:</label>
+                    <input type="password" class="form-control" name="password0" id="password0"
+                           ng-model="password.newPassword"
+                           required ng-minlength="minPswdLength" ng-maxlength="maxPswdLength"
+                           placeholder="{{ 'new_password' | translate}}"/>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error': pwdForm.password1.$invalid || pwdForm.password1.$pristine
+                     || password.newPassword != password.confirmPassword}">
+                    <label for="password1">{{ 'repeat_new_password' | translate }}:</label>
+                    <input type="password" class="form-control" name="password1" id="password1"
+                           ng-model="password.confirmPassword"
+                           required ng-minlength="minPswdLength" ng-maxlength="maxPswdLength"
+                           placeholder="{{ 'confirm_password' | translate}}"/>
+                    <label ng-show="pwdForm.$invalid || pwdForm.$pristine || password.newPassword != password.confirmPassword">
+                        {{ 'password_prompt' | translate }}</label>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-danger profile-vertical-margin col-sm-5"
+                            ng-click="clearPasswordForm()">{{ 'cancel' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-primary profile-vertical-margin pull-right col-sm-5"
+                            ng-disabled="pwdForm.$invalid || password.newPassword != password.confirmPassword"
+                            ng-click="updateUserPassword()">{{ 'save' | translate }}
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary profile-vertical-margin col-sm-12" ng-show="showCars"
+                        ng-click="addCar()">{{ 'add_a_new_vehicle' | translate }}
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-1" ng-show="!showCars"></div>
+    <form class="col-sm-3 left" name="userDataForm">
+        <h4>{{ 'personal_data' | translate }}</h4>
+        <div class="form-group">
+            <label for="email">{{ 'email' | translate }}:</label>
+            <input type="text" disabled="true" class="form-control" id="email" ng-model="loggedUser.email"/>
+        </div>
+        <div class="form-group">
+            <label for="firstName">{{ 'fname' | translate }}:</label>
+            <input type="text" class="form-control" id="firstName" ng-model="loggedUser.firstName"/>
+        </div>
+        <div class="form-group">
+            <label for="lastName">{{ 'lname' | translate }}:</label>
+            <input type="text" class="form-control" id="lastName" ng-model="loggedUser.lastName"/>
+        </div>
+        <div class="form-group">
+            <label for="phone">{{ 'phone' | translate }}:</label>
+            <input type="text" class="form-control" id="phone" ng-model="loggedUser.phone"/>
+        </div>
+        <div class="form-group">
+            <button type="button" ng-show="!userDataForm.$pristine" class="btn btn-warning  col-sm-5"
+                    ng-click="cancelUpdateUser(userDataForm)">{{ 'cancel' | translate }}
+            </button>
+        </div>
+        <div class="form-group">
+            <button type="button" ng-show="!userDataForm.$pristine" class="btn btn-primary col-sm-5 pull-right"
+                    ng-click="updateUser(userDataForm)">{{ 'save' | translate }}
+            </button>
+        </div>
+    </form>
+    <div class="col-sm-6 form-group left" ng-if="showCars && (activeCarsPresent || inactiveCarsPresent)">
+        <h4>{{ 'cars' | translate }}</h4>
+        <uib-accordion close-others="false">
+            <div uib-accordion-group class="panel-default" ng-if="activeCarsPresent" heading="{{ 'active_cars' | translate }}"
+                 is-open="isActiveAccordionOpen">
+                <div ng-repeat="car in cars" ng-if="car.active">
+                    <div cars></div>
+                </div>
+            </div>
+            <div uib-accordion-group class="panel-default" ng-if="inactiveCarsPresent" heading="{{ 'inactive_cars' | translate }}"
+                 is-open="isInactiveAccordionOpen">
+                <div ng-repeat="car in cars" ng-if="!car.active">
+                    <div cars></div>
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>
+

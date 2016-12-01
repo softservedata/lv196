@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+
+    <title>Delivery</title>
+
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <link href="./bower_components/bootswatch-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./bower_components/leaflet-dist/leaflet.css" rel="stylesheet">
+    <link href="./bower_components/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+    <link href="./bower_components/leaflet-control-geocoder/dist/Control.Geocoder.css">
+    <link href="./bower_components/angular-rateit/dist/ng-rateit.css" rel="stylesheet">
+    <link href="./bower_components/angular-ui-notification/dist/angular-ui-notification.min.css" rel="stylesheet">
+    <link href="./bower_components/angular-material/angular-material.min.css" rel="stylesheet">
+    <link href="./bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" rel="stylesheet">
+
+    <link href="./css/main.css" rel="stylesheet">
+    <link href="./css/sidebar.css" rel="stylesheet">
+    <link href="./css/orders.css" rel="stylesheet">
+    <link href="./css/users.css" rel="stylesheet">
+    <link href="css/feedback.css" rel="stylesheet">
+    <link href="./css/tracking.css" rel="stylesheet">
+    <link href="./css/statistics.css" rel="stylesheet">
+    <link href="./css/profile.css" rel="stylesheet">
+    <link href="./css/chat.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="wrapper" ng-app="delivery">
+    <div class="box">
+
+        <div class="site-column col-xs-2 sidebar-offcanvas">
+
+            <div class="visible-xs ">
+                <a href="#" data-toggle="offcanvas" class="text-center">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
+
+            <div ng-controller="currentUserController">
+                <div class="sidebar-header hidden-xs">
+                    <div>
+                        <img ng-src="{{loggedUser.photoUrl}}" alt="User avatar" class="user-avatar" ng-cloak>
+                    </div>
+                    <div class="user-name" ng-cloak>{{loggedUser.firstName}} {{loggedUser.lastName}}
+                        <div style="display:inline" ng-controller="notificationController"
+                             class="{{circleStyle(amountNewNotification)}}">
+                            <i class="fa fa-bell" popover-append-to-body="true" popover-trigger="'outsideClick'" uib-popover-template="templateForNotification.templateUrl" popover-placement="right-top" ng-click="retrieveNotifications()" ng-cloak aria-hidden="true"
+                               data-notifications="{{amountNewNotification}}"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-controller="roleController" ng-init="getRole()" class="sidebar-menu hidden-xs" ng-cloak>
+                <a ui-sref="profile" ui-sref-active="active-list-item" class="sidebar-menu-item">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    {{ 'profile' | translate }}
+                </a>
+                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="orders" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-truck" aria-hidden="true"></i>
+                    {{ 'orders' | translate }}
+                </a>
+                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="orders-tracking" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-map" aria-hidden="true"></i>
+                    {{ 'orders-tracking' | translate }}
+                </a>
+                <a ng-show="forRoles(['Customer', 'Driver'])" ui-sref="messages" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <span class="fa-stack">
+                        <i class="fa fa-envelope fa-stack-1x"></i>
+                        <i ng-if="showMsgNotify" class="fa fa-circle fa-stack-1x text-danger notify"></i>
+                    </span>
+                    {{ 'messages' | translate }}
+                </a>
+                <a ng-show="forRole('Driver')" ui-sref="driver" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                    {{ 'driver' | translate }}
+                </a>
+                <a ng-show="forRoles(['Moderator','Manager'])" ui-sref="feedback" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-comment" aria-hidden="true"></i>
+                    {{ 'feedbacks' | translate }}
+                </a>
+                <a ng-show="forRoles(['Admin','Manager'])" ui-sref="users" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    {{ 'user_profiles' | translate }}
+                </a>
+                <a ng-show="forRoles(['Admin','Manager'])" ui-sref="statistics" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                    {{ 'statistics' | translate }}
+                </a>
+                <a ng-show="forRole('Admin')" ui-sref="adminMaps.inProgress" ui-sref-active="active-list-item"
+                   class="sidebar-menu-item">
+                    <i class="fa fa-truck" aria-hidden="true"></i>
+                    {{ 'tracking' | translate }}
+                </a>
+                <hr/>
+                <a href="logout" class="sidebar-menu-item">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    {{ 'logout' | translate }}
+                </a>
+            </div>
+
+            <div class="sidebar-footer hidden-xs">
+                <a href="welcome"><h3>Delivery</h3></a>
+                <div class="languages" ng-controller="LanguageSwitchController">
+                    <a ng-class="{'lang-on':lang=='uk', 'lang-off':lang!=='uk'}"
+                       ng-click="changeLanguage('uk')" translate="lang_uk"></a>
+                    <a ng-class="{'lang-on':lang=='en', 'lang-off':lang!=='en'}"
+                       ng-click="changeLanguage('en')" translate="lang_en"></a>
+                </div>
+            </div>
+            <div class="nav visible-xs">
+            </div>
+
+        </div>
+
+        <!-- main content -->
+        <div class="site-column main col-xs-10" ui-view>
+
+        </div>
+    </div>
+</div>
+
+<script src="./bower_components/angular/angular.min.js"></script>
+<script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="./bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="./bower_components/angular-translate/angular-translate.min.js"></script>
+<script src="./bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="./bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+<script src="./bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+<script src="./bower_components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+<script src="./bower_components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
+<script src="./app/app.js"></script>
+<script src="./app/common/i18n.js"></script>
+<script src="./bower_components/leaflet-dist/leaflet.js"></script>
+<script src="./bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="./bower_components/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+<script src="./app/common/extended/angular-ui-notification.js"></script>
+<script src="./bower_components/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="./bower_components/stomp-websocket/lib/stomp.min.js"></script>
+<script src="./bower_components/angular-rateit/dist/ng-rateit.js"></script>
+<script src="./bower_components/angular-aria/angular-aria.min.js"></script>
+<script src="./bower_components/angular-messages/angular-messages.min.js"></script>
+<script src="./bower_components/angular-material/angular-material.min.js"></script>
+<script src="./bower_components/chart.js/dist/Chart.min.js"></script>
+<script src="./bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+<script src="./bower_components/lodash/lodash.js"></script>
+<script src="./bower_components/cloudinary-core/cloudinary-core.js"></script>
+<script src="./bower_components/ng-file-upload/ng-file-upload-shim.js"></script>
+<script src="./bower_components/cloudinary_ng/js/angular.cloudinary.js"></script>
+<script src="./bower_components/ng-file-upload/ng-file-upload.js"></script>
+<script src="./bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js"></script>
+
+<script src="./app/orders/services/orderService.js"></script>
+<script src="./app/common/services/commonServices.js"></script>
+<script src="./app/chat/services/chat.js"></script>
+<script src="./app/orders/controllers/ordersController.js"></script>
+<script src="./app/orders/controllers/ordersInProgressController.js"></script>
+<script src="./app/orders/controllers/ordersOpenController.js"></script>
+<script src="./app/chat/controllers/conversationsController.js"></script>
+<script src="./app/orders/services/ordersProperty.js"></script>
+<script src="./app/orders/controllers/ordersClosedController.js"></script>
+<script src="./app/driver/controllers/driverController.js"></script>
+<script src="./app/users/controllers/usersController.js"></script>
+<script src="./app/feedback/controllers/feedbackController.js"></script>
+<script src="./app/feedback/controllers/editFeedbackController.js"></script>
+<script src="./app/feedback/controllers/feedbackInfoController.js"></script>
+<script src="./app/feedback/controllers/feedbackShowUserController.js"></script>
+<script src="./app/feedback/controllers/deleteFeedbackController.js"></script>
+<script src="./app/tracking/controller/trackingForCustomer.js"></script>
+<script src="./app/tracking/controller/trackingForAdmin.js"></script>
+<script src="app/tracking/controller/ordersTrackingController.js"></script>
+<script src="./app/common/controllers/userImageUploadController.js"></script>
+<script src="./app/common/controllers/carImageUploadController.js"></script>
+<script src="./app/notification/controller/notificationController.js"></script>
+<script src="./app/statistics/controllers/statisticsController.js"></script>
+<script src="app/users/controllers/roleController.js"></script>
+<script src="./app/users/controllers/userProfileController.js"></script>
+<script src="./app/users/controllers/currentUserController.js"></script>
+<script src="app/tracking/controller/trackingForDriver.js"></script>
+
+</body>
+</html>

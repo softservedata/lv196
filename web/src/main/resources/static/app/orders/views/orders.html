@@ -1,0 +1,33 @@
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand">{{ 'orders' | translate }}</span>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-sub">
+            <ul class="nav nav-tabs">
+                <li ui-sref-active="active"><a ui-sref="orders.inProgress" data-toggle="tab" aria-expanded="true">{{ 'in_progress' | translate }}</a></li>
+                <li ui-sref-active="active"><a ui-sref="orders.open" data-toggle="tab" aria-expanded="false">{{ 'open' | translate }}</a></li>
+                <li ui-sref-active="active"><a ui-sref="orders.closed" data-toggle="tab" aria-expanded="false">{{ 'closed' | translate }}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="site-content orders">
+    <ui-view></ui-view>
+</div>

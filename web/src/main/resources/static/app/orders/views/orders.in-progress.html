@@ -1,0 +1,44 @@
+<div ng-repeat="order in orders.inProgress track by $index" class="panel panel-default order-in-progress">
+    <div class="panel-body">
+        <div class="order-actions">
+            <button type="button" class="btn btn-default btn-sm" ng-click="approveDelivery(order.id)">{{ 'approve_delivery' | translate }}</button>
+            <i ng-click="showChat(order.approvedOfferId)" class="fa fa-envelope" aria-hidden="true"></i>
+        </div>
+        <div ng-click="status.open = !status.open" class="order-location">
+            {{order.locationFrom.city}} &mdash; {{order.locationTo.city}}
+        </div>
+        <div class="order-details">
+            <uib-accordion close-others="true">
+                <div uib-accordion-group is-open="status.open">
+                    <div class="row">
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">{{ 'weight' | translate }}</label>
+                            <input value="{{order.weight}}" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">{{ 'height' | translate }}</label>
+                            <input value="{{order.height}}" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">{{ 'width' | translate }}</label>
+                            <input value="{{order.width}}" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <label class="control-label">{{ 'length' | translate }}</label>
+                            <input value="{{order.length}}" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label">{{ 'description' | translate }}</label>
+                            <input value="{{order.description}}" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                </div>
+            </uib-accordion>
+        </div>
+        <div class="order-subinfo">
+            <span class="order-sub"><i class="fa fa-calendar" aria-hidden="true"></i>{{ 'arrival_in' | translate }} {{order.arrivalDate | date}}</span>
+            <span class="order-sub location" ng-if="order.orderStatus == 'IN_PROGRESS'" ui-sref="tracking({id: order.id})"><i class="fa fa-map-marker" aria-hidden="true"></i>Location</span>
+            <span class="order-sub"><i class="fa fa-car" aria-hidden="true"></i>{{order.driverName}}</span>
+        </div>
+    </div>
+</div>

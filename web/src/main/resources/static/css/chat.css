@@ -1,0 +1,188 @@
+.conversations {
+    padding-top: 80px;
+    margin-right: 120px;
+    margin-left: 90px;
+}
+
+.messages {
+    position: relative;
+    list-style: none;
+    padding: 0px 20px 0 15px;
+    margin: 0;
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.conversation.driver {
+    margin:  0px;
+    padding-left: 0px;
+    list-style: none;
+}
+.messages .message {
+    overflow: hidden;
+    margin-bottom: 5px;
+    opacity: 0;
+}
+.message-send {
+    top: 0;
+    right: 0;
+    margin-top: 5px;
+    margin-right: 20px;
+    font-size: 24px;
+    position: absolute;
+}
+.col-xs-11.message-input {
+    width: 96%;
+}
+.message-input .form-control {
+    font-size: 18px;
+}
+.message.left .avatar {
+    background-color: rgba(33, 150, 243, 0.42);
+    float: left;
+}
+.driver .message.left .text {
+    font-size: 14px;
+    padding-left: 55px;
+    margin: 0 !important;
+}
+
+.driver .message.left .text.conversations-body {
+    padding-top: 10px;
+}
+
+.text.driver-name {
+    font-weight: bold;
+}
+
+.chat-details {
+    padding-right: 10px;
+    float: right;
+    font-size: 13px;
+    margin: 0;
+}
+
+.chat-details .fa {
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    font-size: 20px
+}
+
+.conversations .panel-body hr {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.messages .load-more, .conversations-footer .load-more {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dialog {
+    background-color: #fff;
+    color: #555555;
+}
+
+.dialog .panel-body {
+    padding: 10px 30px 0px 30px;
+}
+
+.dialog:hover {
+    background-color: #f5f5f5;
+}
+
+.dialog.unseen :hover {
+    background-color: #f5f5f5;
+}
+
+.conversations .panel {
+    overflow-y: scroll;
+    height: 560px;
+    margin-bottom: 0px;
+}
+
+.messages .message.left .text_wrapper {
+    background-color: rgba(158, 158, 158, 0.2);
+    margin-left: 12px;
+    margin-top: 5px;
+}
+.messages .message.left .text_wrapper::after, .messages .message.left .text_wrapper::before {
+    right: 100%;
+    border-right-color: rgba(158, 158, 158, 0.1);
+}
+.messages .message.left .text {
+    color: rgba(29, 28, 28, 0.64);
+}
+.messages .message.right .avatar {
+    background-color: rgba(255, 87, 34, 0.47);
+    float: right;
+}
+.messages .message.right .text_wrapper {
+    margin-top: 5px;
+    background-color: #c7eafc;
+    margin-right: 12px;
+    float: right;
+}
+
+.messages a:hover, .conversations-footer a:hover,
+.messages a:focus, .conversations-footer a:focus {
+    text-decoration: none;
+}
+
+.messages .message.right .text_wrapper::after, .messages .message.right .text_wrapper::before {
+    left: 100%;
+    border-left-color: #c7eafc;
+}
+.messages .message.right .text {
+    color: rgba(51, 93, 140, 0.92);
+}
+.messages .message.appeared {
+    opacity: 1;
+}
+.message .avatar {
+    margin-top: 5px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.messages .message .text_wrapper {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 6px;
+    width: auto;
+    position: relative;
+}
+.messages .message .text_wrapper::after, .messages .message .text_wrapper:before {
+    top: 18px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.messages .message .text_wrapper::after {
+    border-width: 10px;
+    margin-top: -2px;
+}
+.messages .message .text_wrapper::before {
+    border-width: 10px;
+    margin-top: -2px;
+}
+.messages .message .text_wrapper .text {
+    font-size: 14px;
+}
+
+.messages .message.unseen {
+    margin-bottom: 0px;
+    width: 540px;
+    background-color: rgba(156, 39, 176, 0.09);
+    padding-right: 22px;
+    height: 55px;
+}
+
+.dialog.unseen {
+    background-color: rgba(0, 150, 136, 0.11);
+}
