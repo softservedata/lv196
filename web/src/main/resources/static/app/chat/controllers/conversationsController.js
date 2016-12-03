@@ -12,25 +12,32 @@ angular
 
             $conversations.findAll($scope.page, 8).then(response => {
                 processConversationsResponse(response.data);
-                $scope.chats = response.data.chats.concat($scope.chats);
             });
 
             function processConversationsResponse(data) {
                 $scope.page += 1;
+                $scope.chats = data.chats.concat($scope.chats);
+                $scope.havingMore = data.havingMore;
+            }
+
+            function refreshConversations(data) {
+                $scope.page = 1;
+                $scope.chats = data.chats;
                 $scope.havingMore = data.havingMore;
             }
 
             $scope.loadMore = () => {
                 $conversations
-                    .findAll($scope.page, 7)
-                    .then(response => processConversationsResponse(response.data));
+                    .findAll($scope.page, 8)
+                    .then(response => {
+                        processConversationsResponse(response.data);
+                    });
             };
 
             $scope.showChat = (offerId) => {
                 $chat.open(offerId).then(() => {
                     $conversations.findAll(0, 8).then(response => {
-                        processConversationsResponse(response.data);
-                        $scope.chats = response.data.chats;
+                        refreshConversations(response.data);
                     });
                 });
             };

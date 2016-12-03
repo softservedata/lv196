@@ -93,7 +93,7 @@
 }
 
 .dialog.unseen :hover {
-    background-color: #f5f5f5;
+    background-color: rgb(215, 236, 255);
 }
 
 .conversations .panel {

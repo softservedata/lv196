@@ -35,6 +35,31 @@ public class ChatController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @PreAuthorize(CUSTOMER_OR_DRIVER)
+    @RequestMapping(path = "/conversations/{page}/{size}", method = RequestMethod.GET)
+    @ResponseBody
+    ConversationDto conversations(@PathVariable Integer page, @PathVariable Integer size, Principal principal) {
+        return chatService.findByParticipant(principal.getName(), page, size);
+    }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(path = "/chat/{chatId}/{page}/{size}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseEntity<ChatHistoryDto> chatHistory(@PathVariable Long chatId, @PathVariable Integer page,
+                                               @PathVariable Integer size, Principal principal) {
+        return chatService
+                .findByIdAndParticipant(chatId, principal.getName())
+                .map(chat -> new ResponseEntity<>(chatService.findMessagesHistory(chatId, page, size), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED));
+    }
+
+    @PreAuthorize(AUTHENTICATED)
+    @RequestMapping(path = "/chat/{chatId}", method = RequestMethod.POST)
+    @ResponseBody
+    void createConversation(@PathVariable Long chatId, Principal principal) {
+        chatService.initChat(chatId, principal.getName());
+    }
+
     @MessageMapping("/chat/{chatId}")
     void handleMessage(@DestinationVariable("chatId") Long chatId,
                        @Payload ChatMessageDto dto, Principal principal) {
@@ -54,31 +79,6 @@ public class ChatController {
                                  @Payload ListOfLong ids, Principal principal) {
 
         return chatService.messagesSeen(ids, chatId, principal.getName());
-    }
-
-    @PreAuthorize(CUSTOMER_OR_DRIVER)
-    @RequestMapping(path = "/conversations/{page}/{size}", method = RequestMethod.GET)
-    @ResponseBody
-    ConversationDto conversations(@PathVariable Integer page, @PathVariable Integer size, Principal principal) {
-        return chatService.findByParticipant(principal.getName(), page, size);
-    }
-
-    @PreAuthorize(AUTHENTICATED)
-    @RequestMapping(path = "/chat/{chatId}/{page}/{size}", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseEntity<ChatHistoryDto> chatHistory(@PathVariable Long chatId, @PathVariable Integer page,
-                                                      @PathVariable Integer size, Principal principal) {
-        return chatService
-                .findByIdAndParticipant(chatId, principal.getName())
-                .map(chat -> new ResponseEntity<>(chatService.findMessagesHistory(chatId, page, size), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED));
-    }
-
-    @PreAuthorize(AUTHENTICATED)
-    @RequestMapping(path = "/chat/{chatId}", method = RequestMethod.POST)
-    @ResponseBody
-    void createConversation(@PathVariable Long chatId, Principal principal) {
-        chatService.initChat(chatId, principal.getName());
     }
 
     @PreAuthorize(AUTHENTICATED)
